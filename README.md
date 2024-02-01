@@ -22,7 +22,7 @@ This repository is created to align the implementation of digital wallets across
 
 ## Contributing
 
-Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo.
+Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Wallet providers can raise a PR once they have implemented and aligned with the RFCs. 
 
 ## Licensing
 
