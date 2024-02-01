@@ -24,6 +24,18 @@ This repository is created to align the implementation of digital wallets across
 
 Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Wallet providers can raise a PR once they have implemented and aligned with the RFCs. 
 
+## RFCs
+
+These are the RFCs identified to be specified towards ensuring producing reference code as well towards the EWC ITB. 
+
+| **RFC #** | **RFC Title**                                                                  |
+|-----------|--------------------------------------------------------------------------------|
+| RFC-001   | Issue Verifiable Credentials Workflow (v1.0)                                   |
+| RFC-002   | Present Verifiable Credentials Workflow (v1.0)                                 |
+| RFC-003   | Attest Individual Wallet Instance (TBD) - ARF/OID4 Security                    |
+| RFC-004   | Attest Enterprise Wallet Instance (TBD) - WP3/3.1.2 Requirements/OID4 Security |
+| RFC-100   | EWC Interoperability Profile 1.0 Towards Interoperability Test Bed (v1.0)      |
+
 ## Licensing
 
 Licensed under the Apache 2.0 License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
