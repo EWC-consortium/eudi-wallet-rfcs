@@ -17,7 +17,7 @@
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 <Please add your name as a reviewer once you review>
 
-**Status:** Work in Progress, Target to finish 15-Feb-2023
+**Status:** Work in Progress, Target to finish 15-Feb-2024
 
 **Table of Contents**
 
@@ -255,8 +255,9 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 The authorisation request is to grant access to the credential endpoint. Below is an example of such a request:
 
 ```http
-GET from https://my-issuer.rocks/auth/authorize?
-response_type=code
+GET https://my-issuer.rocks/auth/authorize?
+
+&response_type=code
 &scope=openid
 &issuer_state=tracker%3Dvcfghhj
 &state=client-state
@@ -342,7 +343,8 @@ Query params for the authorisation request are given below:
 The credential issuer can **optionally** request additional details to authenticate the client e.g. DID authentication. In this case, the authorisation response will contain a `response_type` parameter with the value `direct_post`. A sample response is as given:
 
 ```http
-HTTP 302 Found Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock&redirect_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Fdirect_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Frequest_uri%2F111d2819-9ab7-4959-83e5-f414c57fdc27
+HTTP/1.1 302 Found
+Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock&redirect_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Fdirect_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Frequest_uri%2F111d2819-9ab7-4959-83e5-f414c57fdc27
 ```
 
 Query params for the authorisation response are given below:
@@ -404,13 +406,14 @@ The holder wallet then responds with an `id_token` signed by the DID to the dire
 ```http
 POST /direct_post
 Content-Type: application/x-www-form-urlencoded
-id_token=eyJraWQiOiJkaW...a980484ecae1
+&id_token=eyJraWQiOiJkaW...a980484ecae1
 ```
 
 If additional details are not requested, the credential issuer will send an authorisation response with a `code` query parameter containing the short-lived authorisation code. A sample response is given below:
 
 ```http
-HTTP 302 Found Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
+HTTP/1.1 302 Found
+Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 ```
 
 ## 3.7 Token request
@@ -425,7 +428,7 @@ Host: server.example.com
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 
-grant_type=authorization_code
+&grant_type=authorization_code
 &code=SplxlOBeZQQYbYS6WxSbIA
 &code_verifier=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 &redirect_uri=https%3A%2F%2FWallet.example.org%2Fcb
@@ -469,7 +472,7 @@ POST /token HTTP/1.1
 Host: server.example.com
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=urn:ietf:params:oauth:grant-type:pre-authorized_code
+&grant_type=urn:ietf:params:oauth:grant-type:pre-authorized_code
 &pre-authorized_code=SplxlOBeZQQYbYS6WxSbIA
 &user_pin=493536
 ```
@@ -520,7 +523,6 @@ POST /credential
 Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
-Request body:
 {
   "format": "jwt_vc",
   "proof": {
@@ -643,7 +645,7 @@ The table below summarises the success/error responses that can be used:
    </td>
    <td><a href="https://business.igrant.io/">https://business.igrant.io/</a> 
    </td>
-   <td>Planned Mar’23
+   <td>Planned Mar’24
    </td>
   </tr>
   <tr>
@@ -651,7 +653,7 @@ The table below summarises the success/error responses that can be used:
    </td>
    <td><a href="https://apple.co/2Mz9nJp">iOS</a>, <a href="https://play.google.com/store/apps/details?id=io.igrant.mobileagent">Android</a>
    </td>
-   <td>Planned Mar’23
+   <td>Planned Mar’24
    </td>
   </tr>
   <tr>
