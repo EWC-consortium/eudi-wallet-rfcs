@@ -21,7 +21,29 @@
 
 **Table of Contents**
 
-[TOC]
+- [EWC RFC 001: Issue Verifiable Credential - v1.0](#ewc-rfc-001-issue-verifiable-credential---v10)
+- [1.0	Summary](#10summary)
+- [2.0	Motivation](#20motivation)
+- [3.0	Messages](#30messages)
+  - [3.1	Credential offer](#31credential-offer)
+  - [3.2	Credential offer response](#32credential-offer-response)
+  - [3.3 Discover request](#33-discover-request)
+  - [3.4 Discover response](#34-discover-response)
+  - [3.5 Authorisation request](#35-authorisation-request)
+  - [3.6 Authorisation response](#36-authorisation-response)
+  - [3.7 Token request](#37-token-request)
+    - [3.7.1 Authorisation code flow](#371-authorisation-code-flow)
+    - [3.7.2 Pre-authorised code flow](#372-pre-authorised-code-flow)
+  - [3.8 Token response](#38-token-response)
+  - [3.9 Credential request](#39-credential-request)
+  - [3.10 Credential response](#310-credential-response)
+    - [3.10.1In-time](#3101in-time)
+    - [3.10.2 Deferred](#3102-deferred)
+- [4.0	Alternate response format](#40alternate-response-format)
+- [5.0	Implementors](#50implementors)
+- [Open issues](#open-issues)
+- [6.0	Reference](#60reference)
+
 
 # 1.0	Summary
 
