@@ -55,12 +55,50 @@ The EWC LSP must align with the standard protocol for issuing credentials. This 
 
 # 3.0	Messages
 
-The credential offer can be an authorisation flow or a pre-authorised one, as shown in the figures below: 
+The credential issuance can be an authorisation flow or a pre-authorised one. These are depicted in the following diagrams, the assumption is that credential offer is obtained by holder wallet prior to discovery using same device (i.e. clicking on a link) or cross device (i.e scanning a QR code) flows.
 
-![Alt text](images/issuer-authorisation-code-flow.png)
+```mermaid
+  sequenceDiagram
+    participant I as Individual using EUDI Wallet
+    participant O as Organisational Wallet (Issuer)
+
+    Note over I,O: Discovery issuer capabilities
+    I->>O: GET: /.well-known/openid-credential-issuer
+    O-->>I: OpenID credential issuer configuration
+    I->>O: GET: /.well-known/openid-configuration
+    O-->>I: OpenID configuration for authorisation server
+
+    Note over I,O: Authenticate and Authorise
+    I->>O: Authorisation request
+    O-->>I: Authorisation response
+    I->>O: Token request
+    O-->>I: Token response
+
+    Note over I,O: Issue credential
+    I->>O: POST: Credential request with token
+    O-->>I: Credential response with acceptance token
+```
 Figure 1: Issuance using Authorisation Code Flow based on [1]
 
-![Alt text](images/issuer-pre-authorised-code-flow.png)
+```mermaid
+  sequenceDiagram
+      participant I as Individual using EUDI Wallet
+      participant O as Organisational Wallet (Issuer)
+      
+      Note over I,O: Discovery issuer capabilities
+      I->>O: GET: /.well-known/openid-credential-issuer
+      O-->>I: OpenID credential issuer configuration
+      I->>O: GET: /.well-known/openid-configuration
+      O-->>I: OpenID configuration for authorisation server
+
+      Note over I,O: Authenticate and Authorise
+      I->>O: POST: Pre-authorised token request with PIN
+      O-->>I: Token response
+
+      Note over I,O: Issue credential
+      I->>O: POST: Credential request with token
+      O-->>I: Credential response with acceptance token
+```
 Figure 2: Issuance using Pre-Authorisation Code Flow based on [1]
 
 ## 3.1	Credential offer
