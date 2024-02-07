@@ -137,21 +137,67 @@ For pre-authorised flow, the credential response is as given:
 
 ## 3.3 Discover request
 
-Here, the holder wallet requests the issuer’s authorisation server configurations. 
+Here, the holder wallet requests the issuer’s authorisation server configurations.
 
-```http
-GET https://server.example.com/.well-known/openid-configuration
-```
-
-Resolve `/.well-known/openid-configuration` endpoint for `credential_issuer` URI in the credential offer response. The holder wallets also sent the same request to get the issuer’s configurations.
+Resolve `/.well-known/openid-credential-issuer` endpoint for `credential_issuer` URI in the credential offer response.
 
 ```http
 GET https://server.example.com/.well-known/openid-credential-issuer
 ```
 
-Resolve `/.well-known/openid-credential-issuer` endpoint for `credential_issuer` URI in the credential offer response.
+Resolve `/.well-known/openid-configuration` endpoint for `authorization_server` URI present in the response for the above.
+
+```http
+GET https://server.example.com/.well-known/openid-configuration
+```
 
 ## 3.4 Discover response
+
+Once the well-known endpoint for **issuer server** configuration is resolved, the response is as given below:
+
+```json
+{
+  "credential_issuer": "https://server.example.com",
+  "authorization_server": "https://server.example.com",
+  "credential_endpoint": "https://server.example.com/credential",
+  "deferred_credential_endpoint": "https://server.example.com/credential_deferred",
+  "display": {
+    "name": "Issuer",
+    "location": "Belgium",
+    "locale": "en-GB",
+    "cover": {
+      "url": "https://server.example.com/cover.jpeg",
+      "alt_text": "Issuer"
+    },
+    "logo": {
+      "url": "https://server.example.com/logo.jpg",
+      "alt_text": "Issuer"
+    },
+    "description": "For queries about how we are managing your data please contact the Data Protection Officer."
+  },
+  "credentials_supported": [
+    {
+      "format": "jwt_vc",
+      "types": [
+        "VerifiableCredential",
+        "VerifiableAttestation",
+        "VerifiablePortableDocumentA1"
+      ],
+      "trust_framework": {
+        "name": "ebsi",
+        "type": "Accreditation",
+        "uri": "TIR link towards accreditation"
+      },
+      "display": [
+        {
+          "name": "Portable Document A1",
+          "locale": "en-GB"
+        }
+      ]
+    }
+  ]
+}
+```
 
 Once the well-known endpoint for **authorisation server** configuration is resolved, the response is as given below:
 
@@ -222,52 +268,6 @@ Once the well-known endpoint for **authorisation server** configuration is resol
   "id_token_types_supported": [
     "subject_signed_id_token",
     "attester_signed_id_token"
-  ]
-}
-```
-
-Once the well-known endpoint for **issuer server** configuration is resolved, the response is as given below:
-
-```json
-{
-  "credential_issuer": "https://server.example.com",
-  "authorization_server": "https://server.example.com",
-  "credential_endpoint": "https://server.example.com/credential",
-  "deferred_credential_endpoint": "https://server.example.com/credential_deferred",
-  "display": {
-    "name": "Issuer",
-    "location": "Belgium",
-    "locale": "en-GB",
-    "cover": {
-      "url": "https://server.example.com/cover.jpeg",
-      "alt_text": "Issuer"
-    },
-    "logo": {
-      "url": "https://server.example.com/logo.jpg",
-      "alt_text": "Issuer"
-    },
-    "description": "For queries about how we are managing your data please contact the Data Protection Officer."
-  },
-  "credentials_supported": [
-    {
-      "format": "jwt_vc",
-      "types": [
-        "VerifiableCredential",
-        "VerifiableAttestation",
-        "VerifiablePortableDocumentA1"
-      ],
-      "trust_framework": {
-        "name": "ebsi",
-        "type": "Accreditation",
-        "uri": "TIR link towards accreditation"
-      },
-      "display": [
-        {
-          "name": "Portable Document A1",
-          "locale": "en-GB"
-        }
-      ]
-    }
   ]
 }
 ```
