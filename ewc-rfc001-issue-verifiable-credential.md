@@ -60,6 +60,12 @@ The credential offer can be an authorisation flow or a pre-authorised one, as sh
 ![Alt text](images/issuer-authorisation-code-flow.png)
 Figure 1: Issuance using Authorisation Code Flow based on [1]
 
+The figure does not seem to implement the authorization code flow, 
+as it starts with a credential offer, while the auth code flow assumes the wallet already knows the issuer and requests its metadata
+ 
+![Alt text](images/auth_code_flow.png)
+Figure 1': Issuance using Authorisation Code Flow based on [1]
+
 ![Alt text](images/issuer-pre-authorised-code-flow.png)
 Figure 2: Issuance using Pre-Authorisation Code Flow based on [1]
 
@@ -136,6 +142,11 @@ For pre-authorised flow, the credential response is as given:
 ```
 
 ## 3.3 Discover request
+
+The order is wrong i think.. the correct should be:
+1. from the credential  offer you get the credential-issuer metadata
+2. from the authorization server entry (if available) of the credential issuer  metadata you get the AS metadata
+
 
 Here, the holder wallet requests the issuer’s authorisation server configurations. 
 
