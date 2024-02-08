@@ -35,7 +35,7 @@ These are the RFCs identified to be specified towards ensuring producing referen
 | RFC-002   | Present Verifiable Credentials Workflow                                                                                                         |
 | RFC-003   | Attest Individual Wallet Instance (TBD) - ARF/OID4 Security                                                                                     |
 | RFC-004   | Attest Enterprise Wallet Instance (TBD) - WP3/3.1.2 Requirements/OID4 Security                                                                  |
-| RFC-100   | EWC Interoperability Profile 1.0 Towards Interoperability Test Bed (v1.0)                                                                       |
+| RFC-100   | EWC Interoperability Profile Towards ITB - v1.0                                                                       |
 
 ## Licensing
 
