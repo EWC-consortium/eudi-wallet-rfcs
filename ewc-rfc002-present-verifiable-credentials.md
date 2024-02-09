@@ -43,9 +43,21 @@ The EWC LSP must align with the standard protocol for issuing credentials. This 
 
 # 3.0	Messages
 
+```mermaid
+  sequenceDiagram
+      participant I as Individual using EUDI Wallet
+      participant O as Organisational Wallet (Verifier)
+
+      I->>+O: GET: Authorisation request
+      O-->>-I: Redirect: VP token request
+      I->>+O: POST: VP token response
+      O-->>-I: Redirect: Authorisation response
+```
+Figure 1: Authorisation Code Flow based on [1]
+
 ## 3.1	Authorisation request
 
-Authorisation requests can be presented to the wallet by verifying in two ways. 1) by value 2) by reference as defined in JWT-Secured Authorization Request (JAR) [5]. The custom URL scheme for authorisation requests is `openid4vp://`. An  example is given below:
+Authorisation requests can be presented to the wallet by verifying in two ways. 1) by value 2) by reference as defined in JWT-Secured Authorization Request (JAR) [3]. The custom URL scheme for authorisation requests is `openid4vp://`. An  example is given below:
 
 ```
 openid4vp://?client_id=https://example.verifier.com&response_type=vp_token&scope=openid&redirect_uri=https://example.verifier.com/direct_post&request_uri=https://example.verifier.com/verifiable-presentation/e93c7ff6-c5b7-4619-8060-2ef4a66b0bb2&response_mode=direct_post&state=100b8521-461e-4f79-931e-ea5710c4fa5c&nonce=e6759e72-37e4-42f7-ab48-a9368971620f&presentation_definition={"id":+"2e3975b7-4834-4650-a97b-5c4f1cdf5f57",+"format":+{"jwt_vc":+{"alg":+["ES256"]},+"jwt_vp":+{"alg":+["ES256"]}},+"input_descriptors":+[{"id":+"841fd89b-f987-4052-88fc-30affccfd99c",+"constraints":+{"fields":+[{"path":+["$.type"],+"filter":+{"type":+"array",+"contains":+{"const":+"VerifiablePortableDocumentA1"}}}]}}]}
@@ -73,9 +85,9 @@ The authorisation request will contain the following fields:
    </td>
   </tr>
   <tr>
-   <td><code>redirect_uri</code>
+   <td><code>response_uri</code>
    </td>
-   <td>For redirection of the response
+   <td>This should be present when the <code>response_mode</code> is <code>direct_post</code>. 
    </td>
   </tr>
   <tr>
@@ -99,7 +111,7 @@ The authorisation request will contain the following fields:
   <tr>
    <td><code>presentation_definition</code>
    </td>
-   <td>The verifier requires proof. It must conform to the DIF Presentation Exchange specification [6].
+   <td>The verifier requires proof. It must conform to the DIF Presentation Exchange specification [4].
    </td>
   </tr>
 </table>
@@ -163,14 +175,6 @@ Some of the identifier deviations from success responses are as given:
    </td>
   </tr>
   <tr>
-   <td>DVV Wallet
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
    <td>iGrant.io Enterprise Wallet
    </td>
    <td><a href="https://business.igrant.io/">https://business.igrant.io/</a> 
@@ -208,7 +212,5 @@ Some of the identifier deviations from success responses are as given:
 
 1. OpenID Foundation (2023), 'OpenID for Verifiable Presentations (OID4VP)', Available at: [https://openid.net/specs/openid-4-verifiable-presentations-1_0.html](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html) (Accessed: February 1, 2024).
 2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.1.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: October 16, 2023).
-3. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
-4. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
-5. RFC 9101 OAuth 2.0 Authorization Framework: JWT-Secured Authorization Request (JAR) [https://www.rfc-editor.org/rfc/rfc9101.html#name-request-using-the-request_u](https://www.rfc-editor.org/rfc/rfc9101.html#name-request-using-the-request_u)  (Accessed: February 05, 2024)
-6. DIF Presentation Exchange:  [https://identity.foundation/presentation-exchange](https://identity.foundation/presentation-exchange)  (Accessed: February 07, 2024)
+3. RFC 9101 OAuth 2.0 Authorization Framework: JWT-Secured Authorization Request (JAR) [https://www.rfc-editor.org/rfc/rfc9101.html#name-request-using-the-request_u](https://www.rfc-editor.org/rfc/rfc9101.html#name-request-using-the-request_u)  (Accessed: February 05, 2024)
+4. DIF Presentation Exchange:  [https://identity.foundation/presentation-exchange](https://identity.foundation/presentation-exchange)  (Accessed: February 07, 2024)
