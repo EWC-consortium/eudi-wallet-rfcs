@@ -151,7 +151,7 @@ For pre-authorised flow, the credential response is as given:
   "credential_issuer": "https://server.example.com",
   "credentials": [
     {
-      "format": "jwt_vc",
+      "format": "jwt_vc_json",
       "types": [
         "VerifiableCredential",
         "VerifiableAttestation",
@@ -215,7 +215,7 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
   },
   "credentials_supported": [
     {
-      "format": "jwt_vc",
+      "format": "jwt_vc_json",
       "types": [
         "VerifiableCredential",
         "VerifiableAttestation",
@@ -584,7 +584,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-  "format": "jwt_vc",
+  "format": "jwt_vc_json",
   "proof": {
     "jwt": "eyJraWQiOiJkaWQ6a2...su7UFClz9NQnw",
     "proof_type": "jwt"
@@ -603,7 +603,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 ```json
 {
-  "format": "jwt_vc",
+  "format": "jwt_vc_json",
   "credential": "eyJ0eXAiOi...F0YluuK2Cog",
   "c_nonce": "fGFF7UkhLa",
   "c_nonce_expires_in": "86400"
