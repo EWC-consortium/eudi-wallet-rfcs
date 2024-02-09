@@ -27,7 +27,7 @@ Feel free to improve the plugin and send us a pull request. If you find any prob
 
 ## RFCs
 
-These are the RFCs identified to be specified towards ensuring producing reference code as well towards the EWC ITB. 
+These are the RFCs identified to be specified towards ensuring producing reference code as well towards the EWC ITB. The supported verifiable credentials and presentations are specified in the [EWC supported format csv file](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
 | **RFC #** | **RFC Title**                                                                                                                                        |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
