@@ -12,7 +12,7 @@
 * Mr Florin Coptil (Bosch, Germany)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Dr Mikael Linden (Vero, Finland) 
-* Mr Andreas Abraham (ValidatedID, Spain)
+* Dr Andreas Abraham (ValidatedID, Spain)
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 <Please add your name as a reviewer once you review>
@@ -120,7 +120,7 @@ Once the `credential_offer_uri` query param is resolved, the response for the au
   "credential_issuer": "https://server.example.com",
   "credentials": [
     {
-      "format": "jwt_vc",
+      "format": "jwt_vc_json",
       "types": [
         "VerifiableCredential",
         "VerifiableAttestation",
