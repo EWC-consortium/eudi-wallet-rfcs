@@ -29,13 +29,13 @@ Feel free to improve the plugin and send us a pull request. If you find any prob
 
 These are the RFCs identified to be specified towards ensuring producing reference code as well towards the EWC ITB. The supported verifiable credentials and presentations are specified in the [EWC supported format csv file](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
-| **RFC #** | **RFC Title**                                                                                                                                        |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| RFC-001   | [Issue Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md)      |
-| RFC-002   | [Present Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md) |
-| RFC-003   | Attest Individual Wallet Instance (TBD) - ARF/OID4 Security                                                                                          |
-| RFC-004   | Attest Enterprise Wallet Instance (TBD) - WP3/3.1.2 Requirements/OID4 Security                                                                       |
-| RFC-100   | EWC Interoperability Profile Towards ITB - v1.0                                                                                                      |
+| **RFC #** | **RFC Title**                                                                                                                                                           |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RFC-001   | [Issue Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md)                         |
+| RFC-002   | [Present Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md)                    |
+| RFC-003   | Attest Individual Wallet Instance (TBD) - ARF/OID4 Security                                                                                                             |
+| RFC-004   | Attest Enterprise Wallet Instance (TBD) - WP3/3.1.2 Requirements/OID4 Security                                                                                          |
+| RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
 
 ## Licensing
 
