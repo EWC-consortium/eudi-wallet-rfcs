@@ -415,7 +415,40 @@ Query params for the authorisation request are given below:
   <tr>
    <td><code>authorization_details</code>
    </td>
-   <td>As specified in OAuth 2.0 Rich Authorization Requests specification to specify fine-grained access [4]
+   <td>As specified in OAuth 2.0 Rich Authorization Requests specification to specify fine-grained access [4]. An example is as given below:
+
+   ```json
+   {
+      "type": "openid_credential",
+      "locations": [
+         "https://credential-issuer.example.com"
+      ],
+      "format": "jwt_vc_json",
+      "credential_definition": {
+         "type": [
+            "VerifiableCredential",
+            "UniversityDegreeCredential"
+         ]
+      }
+   }
+   ```
+   > [!NOTE]
+   > You may also use the earlier version as supported by EBSI.
+
+   ```json
+   {
+    "format": "jwt_vc",
+    "locations": [
+      "https://issuer.example.com"
+    ],
+    "type": "openid_credential",
+    "types": [
+      "VerifiableCredential",
+      "VerifiableAttestation",
+      "VerifiablePortableDocumentA1"
+    ]
+  }
+  ```
    </td>
   </tr>
   <tr>
