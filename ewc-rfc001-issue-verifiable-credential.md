@@ -230,6 +230,25 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
     },
     "description": "For queries about how we are managing your data please contact the Data Protection Officer."
   },
+  "credentials_supported": {
+    "VerifiablePortableDocumentA1": {
+      "format": "vc+sd-jwt",
+      "display": [
+        {
+          "name": "Portable Document A1",
+          "locale": "en-GB"
+        }
+      ]
+    }
+  }
+}
+```
+
+> [!NOTE]
+> In order to support all EBSI conformant wallets, the following format for the `credentials_supported` is also valid, but not **mandatory** to be supported:
+
+```json
+{
   "credentials_supported": [
     {
       "format": "jwt_vc",
@@ -253,6 +272,7 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
   ]
 }
 ```
+
 
 Once the well-known endpoint for **authorisation server** configuration is resolved, the response is as given below:
 
