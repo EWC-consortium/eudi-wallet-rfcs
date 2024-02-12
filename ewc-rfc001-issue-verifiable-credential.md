@@ -37,7 +37,7 @@
   - [3.8 Token response](#38-token-response)
   - [3.9 Credential request](#39-credential-request)
   - [3.10 Credential response](#310-credential-response)
-    - [3.10.1In-time](#3101in-time)
+    - [3.10.1  In-time](#3101--in-time)
     - [3.10.2 Deferred](#3102-deferred)
 - [4.0	Alternate response format](#40alternate-response-format)
 - [5.0	Implementors](#50implementors)
@@ -613,7 +613,37 @@ This request is made with the following query params:
 
 ## 3.9 Credential request
 
-If the credential is unavailable, the issuer responds with an acceptance token, indicating credential issuance is deferred.
+The Holder wallet makes a Credential Request to the Credential Endpoint as below:
+
+```http
+POST /credential
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAi...KTjcrDMg
+
+{
+   "format": "jwt_vc_json",
+   "credential_definition": {
+      "type": [
+         "VerifiableCredential",
+         "VerifiablePortableDocumentA1"
+      ],
+      "credentialSubject": {
+         "given_name": {},
+         "family_name": {},
+         "nationalities": {}
+      }
+   },
+   "proof": {
+      "proof_type": "jwt",
+      "jwt":"eyJraW...KWjceMcr"
+   }
+}
+```
+
+In the above the `credentialSubject` is optional. If specified, you can request specific fields to be included in the issued credential. If its not specified, all fields in the credential is included. 
+
+> [!NOTE]
+> In order to support all EBSI conformant wallets, the following format for the request is also valid, but not **mandatory** to be supported:
 
 ```http
 POST /credential
@@ -636,18 +666,24 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 ## 3.10 Credential response
 
-### 3.10.1In-time
+The credential response can happen in-time or can be deferred as described below. 
+
+### 3.10.1  In-time
+
+The In-time flow indicates that the credential is available immediately and the response format is as below: 
 
 ```json
 {
   "format": "jwt_vc",
   "credential": "eyJ0eXAiOi...F0YluuK2Cog",
   "c_nonce": "fGFF7UkhLa",
-  "c_nonce_expires_in": "86400"
+  "c_nonce_expires_in": 86400
 }
 ```
 
 ### 3.10.2 Deferred
+
+If the credential is unavailable, the issuer responds with an acceptance token, indicating credential issuance is deferred.
 
 ```json
 {
