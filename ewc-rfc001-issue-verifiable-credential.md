@@ -293,14 +293,10 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 }
 ```
 
-
 Once the well-known endpoint for **authorisation server** configuration is resolved, the response is as given below:
 
 ```json
 {
-  "redirect_uris": [
-    "https://server.example.com/direct_post"
-  ],
   "issuer": "https://server.example.com",
   "authorization_endpoint": "https://server.example.com/authorize",
   "token_endpoint": "https://server.example.com/token",
