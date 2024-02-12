@@ -247,13 +247,31 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 ```
 
 > [!NOTE]
-> In order to support all EBSI conformant wallets, the following format for the `credentials_supported` is also valid, but not **mandatory** to be supported:
+> In order to support all EBSI conformant wallets, the following format for the response is also valid, but not **mandatory** to be supported:
 
 ```json
 {
+  "credential_issuer": "https://server.example.com",
+  "authorization_server": "https://server.example.com",
+  "credential_endpoint": "https://server.example.com/credential",
+  "deferred_credential_endpoint": "https://server.example.com/credential_deferred",
+  "display": {
+    "name": "Issuer",
+    "location": "Belgium",
+    "locale": "en-GB",
+    "cover": {
+      "url": "https://server.example.com/cover.jpeg",
+      "alt_text": "Issuer"
+    },
+    "logo": {
+      "url": "https://server.example.com/logo.jpg",
+      "alt_text": "Issuer"
+    },
+    "description": "For queries about how we are managing your data please contact the Data Protection Officer."
+  },
   "credentials_supported": [
     {
-      "format": "jwt_vc_json",
+      "format": "jwt_vc",
       "types": [
         "VerifiableCredential",
         "VerifiableAttestation",
