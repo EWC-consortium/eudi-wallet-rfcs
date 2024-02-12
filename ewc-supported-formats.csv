@@ -2,6 +2,6 @@ Name,Type
 JSON Web Token - Verifiable Credential,jwt_vc
 JSON Web Token - Verifiable Presentation,jwt_vp
 Linked data platform - Verifiable Credential,ldp_vc
-Selection Disclosure - JSON Web Token,sd-jwt
-Selection Disclosure - JSON Web Token Verifiable Credential,vc+sd-jwt
-Selection Disclosure - JSON Web Token Verifiable Presentation,vp+sd-jwt
+Selective Disclosure - JSON Web Token,sd-jwt
+Selective Disclosure - JSON Web Token Verifiable Credential,vc+sd-jwt
+Selective Disclosure - JSON Web Token Verifiable Presentation,vp+sd-jwt
