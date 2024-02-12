@@ -113,7 +113,24 @@ Here, the `credential_offer_uri` query param contains the URL in which the crede
 
 ## 3.2	Credential offer response
 
-Once the `credential_offer_uri` query param is resolved, the response for the authorised flow is as follows:
+Once the `credential_offer_uri` query param is resolved, the response can be either of the following formats. 
+
+```json
+{
+  "credential_issuer": "https://server.example.com",
+  "credentials": [
+    "VerifiablePortableDocumentA1"
+  ],
+  "grants": {
+    "authorization_code": {
+      "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
+    }
+  }
+}
+```
+
+> [!NOTE]
+> In order to support all EBSI conformant wallets, the following format for the response is also valid, but not **mandatory** to be supported:
 
 ```json
 {
