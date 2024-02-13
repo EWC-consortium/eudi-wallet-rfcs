@@ -3,6 +3,7 @@
 **Authors:** 
 * Mr George Padaytti (iGrant.io, Sweden)
 * Mr Lal Chandran (iGrant.io, Sweden)
+* Dr Andreas Abraham (ValidatedID, Spain)
 
 <Please add if you wish to be an author>
 
@@ -12,7 +13,6 @@
 * Mr Florin Coptil (Bosch, Germany)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Dr Mikael Linden (Vero, Finland) 
-* Mr Andreas Abraham (ValidatedID, Spain)
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 <Please add your name as a reviewer once you review>
@@ -30,7 +30,6 @@
 - [4.0	Alternate response format](#40alternate-response-format)
 - [5.0	Implementors](#50implementors)
 - [6.0	Reference](#60reference)
-
 
 # 1.0	Summary
 
