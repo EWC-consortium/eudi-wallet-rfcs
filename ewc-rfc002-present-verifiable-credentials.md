@@ -12,7 +12,7 @@
 * Mr Florin Coptil (Bosch, Germany)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Dr Mikael Linden (Vero, Finland) 
-* Mr Andreas Abraham (ValidatedID, Spain)
+* Dr Andreas Abraham (ValidatedID, Spain)
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 
@@ -35,7 +35,7 @@
 
 # 1.0	Summary
 
-This specification implements the OID4VCI workflow for any verifier (relying party) as per reference specification [1]. This minimises risks towards interoperability across the European Wallet Ecosystem with a standard specification in the EUDI wallet ecosystem as per the ARF [2] requirements. 
+This specification implements the OIDC4VP workflow for any verifier (relying party) as per reference specification [1]. This minimises risks towards interoperability across the European Wallet Ecosystem with a standard specification in the EUDI wallet ecosystem as per the ARF [2] requirements. 
 
 # 2.0	Motivation
 
