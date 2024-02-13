@@ -39,7 +39,7 @@ This specification implements the OIDC4VP workflow for any verifier (relying par
 
 # 2.0	Motivation
 
-The EWC LSP must align with the standard protocol for issuing credentials. This is the basis of interoperability between Verifies (Relying Parties) and Holders across the EWC LSPs. The assumption is that the user is familiar with the EWC-chosen protocols and standards and can refer to original standards references when necessary.
+The EWC LSP must align with the standard protocol for issuing credentials. This is the basis of interoperability between Verifiers (Relying Parties) and Holders across the EWC LSPs. The assumption is that the user is familiar with the EWC-chosen protocols and standards and can refer to original standards references when necessary.
 
 # 3.0	Messages
 
