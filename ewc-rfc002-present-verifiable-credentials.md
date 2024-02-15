@@ -238,8 +238,10 @@ Some of the identifier deviations from success responses are as given:
    <td>ValidatedID
    </td>
    <td>
+     <a href="https://apps.apple.com/us/app/vidwallet/id1554340592">VIDwallet for iOS</a>, <a href="https://play.google.com/store/apps/details?id=com.validatedid.wallet">VIDwallet for Android</a>
    </td>
    <td>
+     Planned Mar’23
    </td>
   </tr>
   <tr>
