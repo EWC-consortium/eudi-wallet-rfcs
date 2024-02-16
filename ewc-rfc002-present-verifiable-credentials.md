@@ -33,11 +33,11 @@
 
 # 1.0	Summary
 
-This specification implements the OID4VCI workflow for any verifier (relying party) as per reference specification [1]. This minimises risks towards interoperability across the European Wallet Ecosystem with a standard specification in the EUDI wallet ecosystem as per the ARF [2] requirements. 
+This specification implements the OIDC4VP workflow for any verifier (relying party) as per reference specification [1]. This minimises risks towards interoperability across the European Wallet Ecosystem with a standard specification in the EUDI wallet ecosystem as per the ARF [2] requirements. 
 
 # 2.0	Motivation
 
-The EWC LSP must align with the standard protocol for issuing credentials. This is the basis of interoperability between Verifies (Relying Parties) and Holders across the EWC LSPs. The assumption is that the user is familiar with the EWC-chosen protocols and standards and can refer to original standards references when necessary.
+The EWC LSP must align with the standard protocol for issuing credentials. This is the basis of interoperability between Verifiers (Relying Parties) and Holders across the EWC LSPs. The assumption is that the user is familiar with the EWC-chosen protocols and standards and can refer to original standards references when necessary.
 
 # 3.0	Messages
 
@@ -251,8 +251,10 @@ Some of the identifier deviations from success responses are as given:
    <td>ValidatedID
    </td>
    <td>
+     <a href="https://apps.apple.com/us/app/vidwallet/id1554340592">VIDwallet for iOS</a>, <a href="https://play.google.com/store/apps/details?id=com.validatedid.wallet">VIDwallet for Android</a>
    </td>
    <td>
+     Planned Mar’23
    </td>
   </tr>
   <tr>
