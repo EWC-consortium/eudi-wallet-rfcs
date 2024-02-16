@@ -208,7 +208,7 @@ GET https://server.example.com/.well-known/oauth-authorization-server
 
 ## 3.4 Discover response
 
-Once the well-known endpoint for **issuer server** configuration is resolved, the response is as given below:
+Once the well-known endpoint for **issuer server** configuration is resolved, the response is as given below with credentials_supported as defined by [6]:
 
 ```json
 {
@@ -233,14 +233,52 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
     }
   ],
   "credentials_supported": {
-    "VerifiablePortableDocumentA1": {
+    "VerifiablePortableDocumentA1SdJwt": {
       "format": "vc+sd-jwt",
+      "scope": "VerifiablePortableDocumentA1",
+      "cryptographic_binding_methods_supported": [
+        "jwk"
+      ],
+      "cryptographic_suites_supported": [
+        "ES256"
+      ],
       "display": [
         {
           "name": "Portable Document A1",
-          "locale": "en-GB"
+          "locale": "en-GB",
+          "background_color": "#12107c",
+          "text_color": "#FFFFFF"
         }
-      ]
+      ],
+      "credential_definition": {
+        "vct": "VerifiablePortableDocumentA1",
+        "claims": {
+          "given_name": {
+            "display": [
+              {
+                "name": "Given Name",
+                "locale": "en-GB"
+              },
+              {
+                "name": "Vorname",
+                "locale": "de-DE"
+              }
+            ]
+          },
+          "last_name": {
+            "display": [
+              {
+                "name": "Surname",
+                "locale": "en-GB"
+              },
+              {
+                "name": "Nachname",
+                "locale": "de-DE"
+              }
+            ]
+          }
+        }
+      }
     }
   }
 }
@@ -670,17 +708,9 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "jwt_vc_json",
+   "format": "vc+sd-jwt",
    "credential_definition": {
-      "type": [
-         "VerifiableCredential",
-         "VerifiablePortableDocumentA1"
-      ],
-      "credentialSubject": {
-         "given_name": {},
-         "family_name": {},
-         "nationalities": {}
-      }
+      "vct": "VerifiablePortableDocumentA1"
    },
    "proof": {
       "proof_type": "jwt",
@@ -689,7 +719,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 }
 ```
 
-In the above the `credentialSubject` is optional. If specified, you can request specific fields to be included in the issued credential. If its not specified, all fields in the credential is included. 
+If specified, you can request specific fields to be included in the issued credential. If its not specified, all fields in the credential is included. 
 
 > [!NOTE]
 > In order to support all EBSI conformant wallets, the following format for the request is also valid, but not **mandatory** to be supported:
@@ -723,7 +753,7 @@ The In-time flow indicates that the credential is available immediately and the 
 
 ```json
 {
-  "format": "jwt_vc_json",
+  "format": "vc+sd-jwt",
   "credential": "eyJ0eXAiOi...F0YluuK2Cog",
   "c_nonce": "fGFF7UkhLa",
   "c_nonce_expires_in": 86400
@@ -887,3 +917,4 @@ The table below summarises the success/error responses that can be used:
 3. OpenID Foundation (2023), 'Self-Issued OpenID Provider v2 (SIOP v2)', Available at: [https://openid.net/specs/openid-connect-self-issued-v2-1_0.html](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html) (Accessed: October 01, 2023)
 4. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 5. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
+6. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 00, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
