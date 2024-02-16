@@ -291,6 +291,14 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    <td>
    </td>
   </tr>
+  <tr>
+   <td>Lissi ID-Wallet
+   </td>
+   <td><a href="https://testflight.apple.com/join/9AWbZISv">Testflight (iOS)</a>, <a href="https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta">Android</a>
+   </td>
+   <td>
+   </td>
+  </tr>
 </table>
 
 ## 6.2	Issuer Wallets
@@ -328,6 +336,15 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    <td>
    </td>
   </tr>
+  <tr>
+   <td>Lissi ID-Wallet Connector
+   </td>
+   <td><a href="https://www.lissi.id/for-organisations">https://lissi.id</a>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
 </table>
 
 
@@ -374,6 +391,16 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    <td>
    </td>
   </tr>
+  <tr>
+  <tr>
+   <td>Lissi ID-Wallet Connector
+   </td>
+   <td><a href="https://www.lissi.id/for-organisations">https://lissi.id</a>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
 </table>
 
 # 6.0	Reference
