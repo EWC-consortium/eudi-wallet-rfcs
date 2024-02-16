@@ -65,8 +65,8 @@ The credential issuance can be an authorisation flow or a pre-authorised one. Th
     Note over I,O: Discovery issuer capabilities
     I->>O: GET: /.well-known/openid-credential-issuer
     O-->>I: OpenID credential issuer configuration
-    I->>O: GET: /.well-known/openid-configuration
-    O-->>I: OpenID configuration for authorisation server
+    I->>O: GET: /.well-known/oauth-authorization-server
+    O-->>I: OAuth authorisation server metadata
 
     Note over I,O: Authenticate and Authorise
     I->>O: Authorisation request
@@ -88,8 +88,8 @@ Figure 1: Issuance using Authorisation Code Flow based on [1]
       Note over I,O: Discovery issuer capabilities
       I->>O: GET: /.well-known/openid-credential-issuer
       O-->>I: OpenID credential issuer configuration
-      I->>O: GET: /.well-known/openid-configuration
-      O-->>I: OpenID configuration for authorisation server
+      I->>O: GET: /.well-known/oauth-authorization-server
+      O-->>I: OAuth authorisation server metadata
 
       Note over I,O: Authenticate and Authorise
       I->>O: POST: Pre-authorised token request with PIN
@@ -200,10 +200,10 @@ Resolve `/.well-known/openid-credential-issuer` endpoint for `credential_issuer`
 GET https://server.example.com/.well-known/openid-credential-issuer
 ```
 
-Resolve `/.well-known/openid-configuration` endpoint for `authorization_server` URI present in the response for the above.
+Resolve `/.well-known/oauth-authorization-server` endpoint for `authorization_server` URI present in the response for the above.
 
 ```http
-GET https://server.example.com/.well-known/openid-configuration
+GET https://server.example.com/.well-known/oauth-authorization-server
 ```
 
 ## 3.4 Discover response
