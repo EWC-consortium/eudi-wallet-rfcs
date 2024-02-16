@@ -3,6 +3,7 @@
 **Authors:** 
 * Mr George Padaytti (iGrant.io, Sweden)
 * Mr Lal Chandran (iGrant.io, Sweden)
+* Dr Andreas Abraham (ValidatedID, Spain)
 
 <Please add if you wish to be an author>
 
@@ -12,10 +13,8 @@
 * Mr Florin Coptil (Bosch, Germany)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Dr Mikael Linden (Vero, Finland) 
-* Dr Andreas Abraham (ValidatedID, Spain)
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
-
 <Please add your name as a reviewer once you review>
 
 **Status:** Work in Progress, Ready for review by 12-Feb-2024
@@ -32,7 +31,6 @@
 - [5.0	Implementors](#50implementors)
 - [6.0	Reference](#60reference)
 
-
 # 1.0	Summary
 
 This specification implements the OIDC4VP workflow for any verifier (relying party) as per reference specification [1]. This minimises risks towards interoperability across the European Wallet Ecosystem with a standard specification in the EUDI wallet ecosystem as per the ARF [2] requirements. 
@@ -43,17 +41,32 @@ The EWC LSP must align with the standard protocol for issuing credentials. This 
 
 # 3.0	Messages
 
+As shown in Figure 1 below, a individual using the wallet presents a credential to a verifier on the same device that the device the wallet resides on.
+
 ```mermaid
   sequenceDiagram
       participant I as Individual using EUDI Wallet
       participant O as Organisational Wallet (Verifier)
 
-      I->>+O: GET: Authorisation request
-      O-->>-I: Redirect: VP token request
-      I->>+O: POST: VP token response
-      O-->>-I: Redirect: Authorisation response
+      O->>+I: GET: Authorisation request
+      I->>+O: POST: Authorisation response
 ```
-Figure 1: Authorisation Code Flow based on [1]
+Figure 1: Same Device Verification Flow based on [1]
+
+For cross device verification, there is an extra step to resolve the authoritsation request object from `request_uri` as given Figure 2 below:
+
+```mermaid
+  sequenceDiagram
+      participant I as Individual using EUDI Wallet
+      participant O as Organisational Wallet (Verifier)
+
+      O->>+I: GET: Authorisation request (`request_uri`)
+      I->>+O: GET: Request object, resolved from the `request_uri`
+      O->>+I: Respond with the Request object
+      I->>+O: POST: VP token response
+      O->>+I: Redirect: Authorisation response
+```
+Figure 2: Cross Device Verification Flow based on [1]
 
 ## 3.1	Authorisation request
 
@@ -63,8 +76,9 @@ Authorisation requests can be presented to the wallet by verifying in two ways: 
 openid4vp://?client_id=https://example.verifier.com
 &response_type=vp_token
 &scope=openid
-&redirect_uri=https://example.verifier.com/direct_post
-&request_uri=https://example.verifier.com/verifiable-presentation/e93c7ff6-c5b7-4619-8060-2ef4a66b0bb2&response_mode=direct_post&state=100b8521-461e-4f79-931e-ea5710c4fa5c
+&response_uri=https://example.verifier.com/direct_post
+&response_mode=direct_post
+&state=100b8521-461e-4f79-931e-ea5710c4fa5c
 &nonce=e6759e72-37e4-42f7-ab48-a9368971620f
 &presentation_definition={"id":+"2e3975b7-4834-4650-a97b-5c4f1cdf5f57",+"format":+{"jwt_vc":+{"alg":+["ES256"]},+"jwt_vp":+{"alg":+["ES256"]}},+"input_descriptors":+[{"id":+"841fd89b-f987-4052-88fc-30affccfd99c",+"constraints":+{"fields":+[{"path":+["$.type"],+"filter":+{"type":+"array",+"contains":+{"const":+"VerifiablePortableDocumentA1"}}}]}}]}
 ```
@@ -76,7 +90,7 @@ openid4vp://?request_uri=https://server.example.com/presentation-request
 ```
 
 > [!NOTE]
-> The above authorisation request can be presented to the holder wallet as a QR code, a link or as NFC blip. For QR code based presentation, it is recommended to use the request_uri as it makes the QR code compact. 
+> The above authorisation request can be presented to the holder wallet as a QR code, a link or as NFC blip. For QR code based presentation, it is recommended to use the `request_uri` as **it makes the QR code compact**. 
 
 The authorisation request will contain the following fields:
 
@@ -133,13 +147,12 @@ The authorisation request will contain the following fields:
 
 ## 3.2	Authorisation response
 
-Authorisation response is sent by constructing the `vp_token` and `presentation_submission` values. 
-
-An example `vp_token` is as given:
+Authorisation response is sent by constructing the `vp_token` and `presentation_submission` values. An example `vp_token` is as given:
 
 ```jwt
 eyJraWQiOiJkaWQ6a2V5OnoyZG16RDgxY2dQeDhWa2k3SmJ1dU1tRllyV1BnWW95dHlrVVozZXlxaHQxajlLYnJXd2pEYnJ2eDlIaHpBNWJlNEplaFJ2WlRvRGpRb0g4V0hkQURVeDlQeFpYRXVLUURYdDVkdXQ4QlpMaGpoaFNIanZtanROM3gyZzRqZlFNUXhjVWVZbzV3RTRTUmd0QTVDUWt6b3VjUVk5eVpjR0pLTXk4ZVVzQUZHZnpZNnBtNVcjejJkbXpEODFjZ1B4OFZraTdKYnV1TW1GWXJXUGdZb3l0eWtVWjNleXFodDFqOUticld3akRicnZ4OUhoekE1YmU0SmVoUnZaVG9EalFvSDhXSGRBRFV4OVB4WlhFdUtRRFh0NWR1dDhCWkxoamhoU0hqdm1qdE4zeDJnNGpmUU1ReGNVZVlvNXdFNFNSZ3RBNUNRa3pvdWNRWTl5WmNHSktNeThlVXNBRkdmelk2cG01VyIsInR5cCI6IkpXVCIsImFsZyI6IkVTMjU2IiwiandrIjp7Imt0eSI6IkVDIiwiY3J2IjoiUC0yNTYiLCJ4IjoiZTZsZXVsQThCS3otQ1lDVHMyUkowbzhjSDZTb1h0QXY2MmIwRUV5WDN4dyIsInkiOiJiRG10anZCYmlfRktBbEdCRFM5bkVfWUN2bF9pbjNsQ19nbkpDNHU5bkgwIn19.eyJhdWQiOiJodHRwczpcL1wvc3dlZGVuLWV1ZGktd2FsbGV0LmlncmFudC5pbyIsInN1YiI6ImRpZDprZXk6ejJkbXpEODFjZ1B4OFZraTdKYnV1TW1GWXJXUGdZb3l0eWtVWjNleXFodDFqOUticld3akRicnZ4OUhoekE1YmU0SmVoUnZaVG9EalFvSDhXSGRBRFV4OVB4WlhFdUtRRFh0NWR1dDhCWkxoamhoU0hqdm1qdE4zeDJnNGpmUU1ReGNVZVlvNXdFNFNSZ3RBNUNRa3pvdWNRWTl5WmNHSktNeThlVXNBRkdmelk2cG01VyIsIm5iZiI6MTcwNzEzMjYzNywiaXNzIjoiZGlkOmtleTp6MmRtekQ4MWNnUHg4VmtpN0pidXVNbUZZcldQZ1lveXR5a1VaM2V5cWh0MWo5S2JyV3dqRGJydng5SGh6QTViZTRKZWhSdlpUb0RqUW9IOFdIZEFEVXg5UHhaWEV1S1FEWHQ1ZHV0OEJaTGhqaGhTSGp2bWp0TjN4Mmc0amZRTVF4Y1VlWW81d0U0U1JndEE1Q1Frem91Y1FZOXlaY0dKS015OGVVc0FGR2Z6WTZwbTVXIiwidnAiOnsiaG9sZGVyIjoiZGlkOmtleTp6MmRtekQ4MWNnUHg4VmtpN0pidXVNbUZZcldQZ1lveXR5a1VaM2V5cWh0MWo5S2JyV3dqRGJydng5SGh6QTViZTRKZWhSdlpUb0RqUW9IOFdIZEFEVXg5UHhaWEV1S1FEWHQ1ZHV0OEJaTGhqaGhTSGp2bWp0TjN4Mmc0amZRTVF4Y1VlWW81d0U0U1JndEE1Q1Frem91Y1FZOXlaY0dKS015OGVVc0FGR2Z6WTZwbTVXIiwiaWQiOiJ1cm46dXVpZDo3OGQ3NjY1ZC00NWEzLTQwZTgtYWEzYS1mZTAwYjlhNTkxMWMiLCJ0eXBlIjpbIlZlcmlmaWFibGVQcmVzZW50YXRpb24iXSwiQGNvbnRleHQiOlsiaHR0cHM6XC9cL3d3dy53My5vcmdcLzIwMThcL2NyZWRlbnRpYWxzXC92MSJdLCJ2ZXJpZmlhYmxlQ3JlZGVudGlhbCI6WyJleUpoYkdjaU9pSkZVekkxTmlJc0ltdHBaQ0k2SW1ScFpEcHJaWGs2ZWpKa2JYcEVPREZqWjFCNE9GWnJhVGRLWW5WMVRXMUdXWEpYVUdkWmIzbDBlV3RWV2pObGVYRm9kREZxT1V0aWMyTllZVEYxUjI5bGJubG1iVlY1V1V0a1RWQldRMmRDVWtwQmQwVkdhVWd5UTFscWRIbG1abXRNVERGelpGTlRXbTVRY2twdGIwZE9abTE2UzFoR04yMDJTMEZ4TVZkalpYVkxVbFpUU2tWeGNYVnZRa2g2UVdWcFptMXpUVzFHZG1GSWFWVmFjRWh5Um1ab2EyaHplR1puVWxabmNXUlNkamwzYVdFM1pEVlpPQ042TW1SdGVrUTRNV05uVUhnNFZtdHBOMHBpZFhWTmJVWlpjbGRRWjFsdmVYUjVhMVZhTTJWNWNXaDBNV281UzJKelkxaGhNWFZIYjJWdWVXWnRWWGxaUzJSTlVGWkRaMEpTU2tGM1JVWnBTREpEV1dwMGVXWm1hMHhNTVhOa1UxTmFibEJ5U20xdlIwNW1iWHBMV0VZM2JUWkxRWEV4VjJObGRVdFNWbE5LUlhGeGRXOUNTSHBCWldsbWJYTk5iVVoyWVVocFZWcHdTSEpHWm1ocmFITjRabWRTVm1keFpGSjJPWGRwWVRka05WazRJaXdpZEhsd0lqb2lTbGRVSW4wLmV5SmxlSEFpT2pFM01EY3hNell4T1RBc0ltbGhkQ0k2TVRjd056RXpNalU1TUN3aWFYTnpJam9pWkdsa09tdGxlVHA2TW1SdGVrUTRNV05uVUhnNFZtdHBOMHBpZFhWTmJVWlpjbGRRWjFsdmVYUjVhMVZhTTJWNWNXaDBNV281UzJKelkxaGhNWFZIYjJWdWVXWnRWWGxaUzJSTlVGWkRaMEpTU2tGM1JVWnBTREpEV1dwMGVXWm1hMHhNTVhOa1UxTmFibEJ5U20xdlIwNW1iWHBMV0VZM2JUWkxRWEV4VjJObGRVdFNWbE5LUlhGeGRXOUNTSHBCWldsbWJYTk5iVVoyWVVocFZWcHdTSEpHWm1ocmFITjRabWRTVm1keFpGSjJPWGRwWVRka05WazRJaXdpYW5ScElqb2lkWEp1T21ScFpEbzFPV1k0TWpOa01TMHdNakl5TFRRMU0yUXRPR00yWlMwMU1XVXdNalUxTm1KaU1EWWlMQ0p1WW1ZaU9qRTNNRGN4TXpJMU9UQXNJbk4xWWlJNklpSXNJblpqSWpwN0lrQmpiMjUwWlhoMElqcGJJbWgwZEhCek9pOHZkM2QzTG5jekxtOXlaeTh5TURFNEwyTnlaV1JsYm5ScFlXeHpMM1l4SWwwc0ltTnlaV1JsYm5ScFlXeFRZMmhsYldFaU9sdDdJbWxrSWpvaWFIUjBjSE02THk5aGNHa3RZMjl1Wm05eWJXRnVZMlV1WldKemFTNWxkUzkwY25WemRHVmtMWE5qYUdWdFlYTXRjbVZuYVhOMGNua3Zkakl2YzJOb1pXMWhjeTk2TTAxblZVWlZhMkkzTWpKMWNUUjRNMlIyTlhsQlNtMXVUbTE2UkVabFN6VlZRemg0T0ROUmIyVk1TazBpTENKMGVYQmxJam9pUm5Wc2JFcHpiMjVUWTJobGJXRldZV3hwWkdGMGIzSXlNREl4SW4xZExDSmpjbVZrWlc1MGFXRnNVM1ZpYW1WamRDSTZleUpwWkNJNmJuVnNiQ3dpYzJWamRHbHZiakVpT25zaVpHRjBaVUpwY25Sb0lqb2lNVGsyT0MweE1pMHlPU0lzSW1admNtVnVZVzFsY3lJNklrTm9ZWEpzYjNSMFpTSXNJbTVoZEdsdmJtRnNhWFJwWlhNaU9sc2lVMFVpWFN3aWNHVnljMjl1WVd4SlpHVnVkR2xtYVdOaGRHbHZiazUxYldKbGNpSTZJakU1TmpneE1qSTVMVEUwTVRJaUxDSndiR0ZqWlVKcGNuUm9JanA3SW1OdmRXNTBjbmxEYjJSbElqb2lVMFVpTENKeVpXZHBiMjRpT2lKVGRHOWphMmh2YkcwaUxDSjBiM2R1SWpvaVUzUnZZMnRvYjJ4dEluMHNJbk5sZUNJNklrWmxiV0ZzWlNJc0luTjBZWFJsVDJaU1pYTnBaR1Z1WTJWQlpHUnlaWE56SWpwN0ltTnZkVzUwY25sRGIyUmxJam9pVTBVaUxDSndiM04wUTI5a1pTSTZJalF4T0NBM09DSXNJbk4wY21WbGRFNXZJam9pUjNWdWJtRnlJRVZ1WjJWc2JHRjFjeUIyWVdjZ09Dd2dPVEVnTVVJaUxDSjBiM2R1SWpvaVUzUnZZMnRvYjJ4dEluMHNJbk4wWVhSbFQyWlRkR0Y1UVdSa2NtVnpjeUk2ZXlKamIzVnVkSEo1UTI5a1pTSTZJbE5GSWl3aWNHOXpkRU52WkdVaU9pSTBNVGdnTnpnaUxDSnpkSEpsWlhST2J5STZJa2QxYm01aGNpQkZibWRsYkd4aGRYTWdkbUZuSURnc0lEa3hJREZDSWl3aWRHOTNiaUk2SWxOMGIyTnJhRzlzYlNKOUxDSnpkWEp1WVcxbElqb2lRVzVrWlhKemIyNGlMQ0p6ZFhKdVlXMWxRWFJDYVhKMGFDSTZJa0Z1WkdWeWMyOXVJbjBzSW5ObFkzUnBiMjR5SWpwN0ltTmxjblJwWm1sallYUmxSbTl5UkhWeVlYUnBiMjVCWTNScGRtbDBlU0k2ZEhKMVpTd2laR1YwWlhKdGFXNWhkR2x2YmxCeWIzWnBjMmx2Ym1Gc0lqcG1ZV3h6WlN3aVpXNWthVzVuUkdGMFpTSTZJakl3TWpRdE1EY3RNRE1pTENKdFpXMWlaWEpUZEdGMFpWZG9hV05vVEdWbmFYTnNZWFJwYjI1QmNIQnNhV1Z6SWpvaVNWUWlMQ0p6ZEdGeWRHbHVaMFJoZEdVaU9pSXlNREl6TFRBNUxUSXhJaXdpZEhKaGJuTnBkR2x2YmxKMWJHVnpRWEJ3YkhsQmMwVkRPRGd6TWpBd05DSTZabUZzYzJWOUxDSnpaV04wYVc5dU15STZleUpqYVhacGJFRnVaRVZ0Y0d4dmVXVmtVMlZzWmtWdGNHeHZlV1ZrSWpwbVlXeHpaU3dpWTJsMmFXeFRaWEoyWVc1MElqcG1ZV3h6WlN3aVkyOXVkSEpoWTNSVGRHRm1aaUk2Wm1Gc2MyVXNJbVZ0Y0d4dmVXVmtRVzVrVTJWc1prVnRjR3h2ZVdWa0lqcG1ZV3h6WlN3aVpXMXdiRzk1WldSVWQyOVBjazF2Y21WVGRHRjBaWE1pT21aaGJITmxMQ0psZUdObGNIUnBiMjRpT21aaGJITmxMQ0psZUdObGNIUnBiMjVFWlhOamNtbHdkR2x2YmlJNklpSXNJbVpzYVdkb2RFTnlaWGROWlcxaVpYSWlPbVpoYkhObExDSnRZWEpwYm1WeUlqcG1ZV3h6WlN3aWNHOXpkR1ZrUlcxd2JHOTVaV1JRWlhKemIyNGlPbVpoYkhObExDSndiM04wWldSVFpXeG1SVzF3Ykc5NVpXUlFaWEp6YjI0aU9uUnlkV1VzSW5ObGJHWkZiWEJzYjNsbFpGUjNiMDl5VFc5eVpWTjBZWFJsY3lJNlptRnNjMlVzSW5kdmNtdHBibWRKYmxOMFlYUmxWVzVrWlhJeU1TSTZabUZzYzJWOUxDSnpaV04wYVc5dU5DSTZleUpsYlhCc2IzbGxaU0k2Wm1Gc2MyVXNJbVZ0Y0d4dmVXVnlVMlZzWmtWdGNHeHZlV1ZrUVdOMGFYWnBkSGxEYjJSbGN5STZXeUl4T0RnNU1URXpNalEwSWwwc0ltNWhiV1ZDZFhOcGJtVnpjMDVoYldVaU9pSldiMngyYnlJc0luSmxaMmx6ZEdWeVpXUkJaR1J5WlhOeklqcDdJbU52ZFc1MGNubERiMlJsSWpvaVUwVWlMQ0p3YjNOMFEyOWtaU0k2SWpReE9DQTNPQ0lzSW5OMGNtVmxkRTV2SWpvaVIzVnVibUZ5SUVWdVoyVnNiR0YxY3lCMlhIVXdNR1UwWnlBNExDQXhOalFnUVNJc0luUnZkMjRpT2lKSGIzUmxZbTl5WnlKOUxDSnpaV3htUlcxd2JHOTVaV1JCWTNScGRtbDBlU0k2ZEhKMVpYMHNJbk5sWTNScGIyNDFJanA3SW01dlJtbDRaV1JCWkdSeVpYTnpJanBtWVd4elpTd2lkMjl5YTFCc1lXTmxRV1JrY21WemMyVnpJanBiZXlKaFpHUnlaWE56SWpwN0ltTnZkVzUwY25sRGIyUmxJam9pU1ZRaUxDSndiM04wUTI5a1pTSTZJak0wTVRNeUlpd2ljM1J5WldWMFRtOGlPaUpRYVdGNmVtRWdSSFZqWVNCa1pXZHNhU0JCWW5KMWVucHBJRElzSURRME1DSXNJblJ2ZDI0aU9pSlVjbWxsYzNSbEluMHNJbk5sY1c1dklqb3hmVjBzSW5kdmNtdFFiR0ZqWlU1aGJXVnpJanBiZXlKamIyMXdZVzU1VG1GdFpWWmxjM05sYkU1aGJXVWlPaUpCYzNOcFkzVnlZWHBwYjI1cElFZGxibVZ5WVd4cElGTXVjQzVCSWl3aWMyVnhibThpT2pGOVhYMHNJbk5sWTNScGIyNDJJanA3SW1Ga1pISmxjM01pT25zaVkyOTFiblJ5ZVVOdlpHVWlPaUpDUlNJc0luQnZjM1JEYjJSbElqb2lNVEF3TUNJc0luTjBjbVZsZEU1dklqb2lUV0ZwYmlCVGRISmxaWFFnTVNJc0luUnZkMjRpT2lKQ2NuVnpjMlZzY3lKOUxDSmtZWFJsSWpvaU1qQXlNeTB3T1Mwd055SXNJbVZ0WVdsc0lqb2lhVzVtYjBCdWMzTnBMV0psTG1WMUlpd2lhVzV6ZEdsMGRYUnBiMjVKUkNJNklrNVRVMGt0UWtVdE1ERWlMQ0p1WVcxbElqb2lUbUYwYVc5dVlXd2dVMjlqYVdGc0lGTmxZM1Z5YVhSNUlFOW1abWxqWlNJc0ltOW1abWxqWlVaaGVFNXZJam9pTURnd01DQTVPRGMyTlNJc0ltOW1abWxqWlZCb2IyNWxUbThpT2lJd09EQXdJREV5TXpRMUlpd2ljMmxuYm1GMGRYSmxJam9pVDJabWFXTnBZV3dnYzJsbmJtRjBkWEpsSW4xOUxDSmxlSEJwY21GMGFXOXVSR0YwWlNJNklqSXdNalF0TURJdE1EVlVNVEk2TWprNk5UQmFJaXdpYVdRaU9pSjFjbTQ2Wkdsa09qVTVaamd5TTJReExUQXlNakl0TkRVelpDMDRZelpsTFRVeFpUQXlOVFUyWW1Jd05pSXNJbWx6YzNWaGJtTmxSR0YwWlNJNklqSXdNalF0TURJdE1EVlVNVEU2TWprNk5UQmFJaXdpYVhOemRXVmtJam9pTWpBeU5DMHdNaTB3TlZReE1Ub3lPVG8xTUZvaUxDSnBjM04xWlhJaU9pSmthV1E2YTJWNU9ub3laRzE2UkRneFkyZFFlRGhXYTJrM1NtSjFkVTF0UmxseVYxQm5XVzk1ZEhsclZWb3paWGx4YUhReGFqbExZbk5qV0dFeGRVZHZaVzU1Wm0xVmVWbExaRTFRVmtOblFsSktRWGRGUm1sSU1rTlphblI1Wm1aclRFd3hjMlJUVTFwdVVISktiVzlIVG1adGVrdFlSamR0Tmt0QmNURlhZMlYxUzFKV1UwcEZjWEYxYjBKSWVrRmxhV1p0YzAxdFJuWmhTR2xWV25CSWNrWm1hR3RvYzNobVoxSldaM0ZrVW5ZNWQybGhOMlExV1RnaUxDSjBlWEJsSWpwYklsWmxjbWxtYVdGaWJHVkRjbVZrWlc1MGFXRnNJaXdpVm1WeWFXWnBZV0pzWlVGMGRHVnpkR0YwYVc5dUlpd2lWbVZ5YVdacFlXSnNaVkJ2Y25SaFlteGxSRzlqZFcxbGJuUkJNU0pkTENKMllXeHBaRVp5YjIwaU9pSXlNREkwTFRBeUxUQTFWREV4T2pJNU9qVXdXaUo5ZlEuTVpaajNJLThlcDQyd05CT0tZVkxIdWhaN3BvdnJkSjl2T216RHBWVktyQWtNR2VHRFN4SFB5aVBGcXpaaWk0bUw3VzlkYWtJaUx6eXNJWHNZbWRKUmciXX0sImV4cCI6MTcwNzEzMjY5NywiaWF0IjoxNzA3MTMyNjM3LCJub25jZSI6IjlhYTgyYmQ5LTkyYTgtNDE2Zi04NTc0LTJhMDIxMTE4MWMyOCIsImp0aSI6InVybjp1dWlkOjc4ZDc2NjVkLTQ1YTMtNDBlOC1hYTNhLWZlMDBiOWE1OTExYyJ9.cBFkT_--HcEbzS4mLnt_NdiPZo0mk9ndG-A1QUsg1arK2JUYSMObJvJQbqr-fzBmbTIOW8kZ-1_msCBcxh7XEA
 ```
+
 An example `presentation_submission` values is as given:
 
 ```json
@@ -252,6 +265,24 @@ Some of the identifier deviations from success responses are as given:
    <td>
    </td>
   </tr>
+  <tr>
+   <td>Lissi ID-Wallet
+   </td>
+   <td><a href="https://testflight.apple.com/join/9AWbZISv">Testflight (iOS)</a>, <a href="https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta">Android</a>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+  <tr>
+   <td>Lissi ID-Wallet Connector
+   </td>
+   <td><a href="https://www.lissi.id/for-organisations">https://lissi.id</a>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
 </table>
 
 # 6.0	Reference

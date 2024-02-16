@@ -1,9 +1,10 @@
 
-# EWC RFC 001: Issue Verifiable Credential - v1.0
+# EWC RFC001: Issue Verifiable Credential - v1.0
 
 **Authors:** 
 * Mr George Padaytti (iGrant.io, Sweden)
 * Mr Lal Chandran (iGrant.io, Sweden)
+* Dr Andreas Abraham (ValidatedID, Spain)
 <Please add if you wish to be an author>
 
 **Reviewers:** 
@@ -12,7 +13,6 @@
 * Mr Florin Coptil (Bosch, Germany)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Dr Mikael Linden (Vero, Finland) 
-* Dr Andreas Abraham (ValidatedID, Spain)
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 <Please add your name as a reviewer once you review>
@@ -21,7 +21,7 @@
 
 **Table of Contents**
 
-- [EWC RFC 001: Issue Verifiable Credential - v1.0](#ewc-rfc-001-issue-verifiable-credential---v10)
+- [EWC RFC001: Issue Verifiable Credential - v1.0](#ewc-rfc001-issue-verifiable-credential---v10)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Messages](#30messages)
@@ -854,6 +854,24 @@ The table below summarises the success/error responses that can be used:
    <td>
    </td>
   </tr>
+  <tr>
+   <td>Lissi ID-Wallet
+   </td>
+   <td><a href="https://testflight.apple.com/join/9AWbZISv">Testflight (iOS)</a>, <a href="https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta">Android</a>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+  <tr>
+   <td>Lissi ID-Wallet Connector
+   </td>
+   <td><a href="https://www.lissi.id/for-organisations">https://lissi.id</a>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
 </table>
 
 # Open issues
