@@ -76,8 +76,9 @@ Authorisation requests can be presented to the wallet by verifying in two ways: 
 openid4vp://?client_id=https://example.verifier.com
 &response_type=vp_token
 &scope=openid
-&redirect_uri=https://example.verifier.com/direct_post
-&request_uri=https://example.verifier.com/verifiable-presentation/e93c7ff6-c5b7-4619-8060-2ef4a66b0bb2&response_mode=direct_post&state=100b8521-461e-4f79-931e-ea5710c4fa5c
+&response_uri=https://example.verifier.com/direct_post
+&response_mode=direct_post
+&state=100b8521-461e-4f79-931e-ea5710c4fa5c
 &nonce=e6759e72-37e4-42f7-ab48-a9368971620f
 &presentation_definition={"id":+"2e3975b7-4834-4650-a97b-5c4f1cdf5f57",+"format":+{"jwt_vc":+{"alg":+["ES256"]},+"jwt_vp":+{"alg":+["ES256"]}},+"input_descriptors":+[{"id":+"841fd89b-f987-4052-88fc-30affccfd99c",+"constraints":+{"fields":+[{"path":+["$.type"],+"filter":+{"type":+"array",+"contains":+{"const":+"VerifiablePortableDocumentA1"}}}]}}]}
 ```
