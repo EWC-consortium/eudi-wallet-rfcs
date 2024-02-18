@@ -407,3 +407,6 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
 3. EWC RFC 001: Issue Verifiable Credential - v1.0 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md) 
 
 4. EWC RFC002: Present Verifiable Credentials - v1.0 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md) 
+
+5. ITB [PDF report](docs/itb_report.pdf)
+6. ITB [XML report](docs/itb_repoort.xml)
