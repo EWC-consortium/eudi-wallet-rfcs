@@ -237,18 +237,14 @@ For a Verifier service to become integrated for testing with the EWC Operational
   }
   ```
 
-	Where [https://verifier-service.com/](https://issuer-service.com/issueStatus)<span style="text-decoration:underline;">validationStatus</span> denotes the verifier polling endpoint and **sessionId** denotes a specific testing session that the ITB queries the status of. The Verifier MUST validate the verification process based on this sessionId, ensuring its correlation with any pre-existing presentation requests under the same ID.  Furthermore, the Verifier service MUST respond with a JSON object containing fields:
+Where [https://verifier-service.com/validationStatus](https://verifier-service.com/validationStatus) denotes the verifier polling endpoint and **sessionId** denotes a specific testing session that the ITB queries the status of. The Verifier MUST validate the verification process based on this sessionId, ensuring its correlation with any pre-existing presentation requests under the same ID.  Furthermore, the Verifier service MUST respond with a JSON object containing fields:
 
-	* **status**: a string representing the status of the issuance enumerating over the values “pending”, “ok”, and “failed”. 
-	
-	* **reason**: a string denoting the reasons for the failure of the verification (if any, ok in success cases). 
-
-	* **sessionId**: the aforementioned sessionId
-
-	* **attributes**: JSON containing the attributes successfully disclosed from the Wallet to the Verifier service
+ * **status:** a string representing the status of the issuance enumerating over the values “pending”, “ok”, and “failed”. 
+ * **reason:** a string denoting the reasons for the failure of the verification (if any, ok in success cases). 
+ * **sessionId:** the aforementioned sessionId
+ * **attributes:** JSON containing the attributes successfully disclosed from the Wallet to the Verifier service
 
 The WP4 team will handle the integration of these endpoints into the EWC Operational testing environment. The only responsibility of the Verifier is to build the endpoints mentioned above, document them in the provided template and share the filled-in template with the UAegean team ([triantafyllou.ni@aegean.gr](triantafyllou.ni@aegean.gr) or [esther.makaay@signicat.com](esther.makaay@signicat.com), [lal@igrant.io](lal@igrant.io).    
-
 
 ## 5.2	Interoperable Profile
 
@@ -346,7 +342,6 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
   </tr>
   <tr>
 </table>
-
 
 ## 6.3	Verifier Wallets
 
