@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TestCaseOverviewReport xmlns="http://www.gitb.com/tr/v1/" xmlns:ns2="http://www.gitb.com/core/v1/" xmlns:ns3="http://www.gitb.com/tbs/v1/" id="tc004">
+    <metadata>
+        <ns2:name>Test case 4: Verify CFF Boarding Pass</ns2:name>
+        <ns2:description>Test EUDI Wallet integration and interoperability with the CFF BoardingPass Credentials. In this variant the BoardingPass credential is Verified.</ns2:description>
+    </metadata>
+    <startTime>2024-02-15T10:18:41.000Z</startTime>
+    <endTime>2024-02-15T10:19:17.000Z</endTime>
+    <result>SUCCESS</result>
+    <message>Test case completed successfully.</message>
+    <steps>
+        <step id="1.2">
+            <description>Step 1: Request validation</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="SR" id="1.2">
+                <date>2024-02-15T10:19:13.676Z</date>
+                <result>SUCCESS</result>
+            </report>
+        </step>
+        <step id="1.2.1">
+            <description>Step 2: Request credential validation</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TAR" id="1.2.1">
+                <date>2024-02-15T10:18:44.373Z</date>
+                <result>SUCCESS</result>
+                <counters>
+                    <nrOfAssertions>0</nrOfAssertions>
+                    <nrOfErrors>0</nrOfErrors>
+                    <nrOfWarnings>0</nrOfWarnings>
+                </counters>
+            </report>
+        </step>
+        <step id="1.2.2">
+            <description>Step 3: Check status code</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TAR" name="String Validation" id="1.2.2">
+                <date>2024-02-15T10:18:47.092Z</date>
+                <result>SUCCESS</result>
+                <counters>
+                    <nrOfAssertions>0</nrOfAssertions>
+                    <nrOfErrors>0</nrOfErrors>
+                    <nrOfWarnings>0</nrOfWarnings>
+                </counters>
+                <reports/>
+            </report>
+        </step>
+        <step id="1.2.3">
+            <description>Step 4: Check non-empty QR code</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TAR" id="1.2.3">
+                <date>2024-02-15T10:18:47.162Z</date>
+                <result>SUCCESS</result>
+                <counters>
+                    <nrOfAssertions>0</nrOfAssertions>
+                    <nrOfErrors>0</nrOfErrors>
+                    <nrOfWarnings>0</nrOfWarnings>
+                </counters>
+            </report>
+        </step>
+        <step id="1.3">
+            <description>Step 5: Check response</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="SR" id="1.3">
+                <date>2024-02-15T10:19:16.599Z</date>
+                <result>SUCCESS</result>
+            </report>
+        </step>
+        <step id="1.3.1">
+            <description>Step 6: Get the validation response</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TAR" id="1.3.1">
+                <date>2024-02-15T10:19:16.228Z</date>
+                <result>SUCCESS</result>
+                <counters>
+                    <nrOfAssertions>0</nrOfAssertions>
+                    <nrOfErrors>0</nrOfErrors>
+                    <nrOfWarnings>0</nrOfWarnings>
+                </counters>
+            </report>
+        </step>
+        <step id="1.3.2">
+            <description>Step 7: Check status code</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TAR" name="String Validation" id="1.3.2">
+                <date>2024-02-15T10:19:16.483Z</date>
+                <result>SUCCESS</result>
+                <counters>
+                    <nrOfAssertions>0</nrOfAssertions>
+                    <nrOfErrors>0</nrOfErrors>
+                    <nrOfWarnings>0</nrOfWarnings>
+                </counters>
+                <reports/>
+            </report>
+        </step>
+        <step id="1.3.4">
+            <description>Step 8: Check validation status</description>
+            <report xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TAR" name="String Validation" id="1.3.4">
+                <date>2024-02-15T10:19:16.599Z</date>
+                <result>SUCCESS</result>
+                <counters>
+                    <nrOfAssertions>0</nrOfAssertions>
+                    <nrOfErrors>0</nrOfErrors>
+                    <nrOfWarnings>0</nrOfWarnings>
+                </counters>
+                <reports/>
+            </report>
+        </step>
+    </steps>
+</TestCaseOverviewReport>
