@@ -392,7 +392,8 @@ Once the well-known endpoint for **authorisation server** configuration is resol
     "did:ebsi:v1"
   ],
   "subject_trust_frameworks_supported": [
-    "ebsi"
+    "ebsi",
+    "ewc-issuer-trust-list"
   ],
   "id_token_types_supported": [
     "subject_signed_id_token",
