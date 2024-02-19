@@ -401,6 +401,7 @@ Once the well-known endpoint for **authorisation server** configuration is resol
   ]
 }
 ```
+Currently, we retain the trust framework specified by EBSI. Subsequently, we will specify an additional RFC defining the EWC trusted issuer list. 
 
 ## 3.5 Authorisation request
 
