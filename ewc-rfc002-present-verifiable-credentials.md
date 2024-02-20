@@ -26,6 +26,7 @@
 - [2.0	Motivation](#20motivation)
 - [3.0	Messages](#30messages)
   - [3.1	Authorisation request](#31authorisation-request)
+    - [3.1.1 Scope Parameter Usage](#311-scope-parameter-usage)
   - [3.2	Authorisation response](#32authorisation-response)
 - [4.0	Alternate response format](#40alternate-response-format)
 - [5.0	Implementors](#50implementors)
@@ -75,7 +76,6 @@ Authorisation requests can be presented to the wallet by verifying in two ways: 
 ```sh
 openid4vp://?client_id=https://example.verifier.com
 &response_type=vp_token
-&scope=com.example.passport_credential_presentation
 &response_uri=https://example.verifier.com/direct_post
 &response_mode=direct_post
 &state=100b8521-461e-4f79-931e-ea5710c4fa5c
@@ -159,6 +159,18 @@ According to OIDCVP draft version >= 18, the scope parameter can be used as an o
 3. It is RECOMMENDED to use collision-resistant scope values.
 4. An example could be: `scope=com.example.passport_credential_presentation`
 5. The specific scope values and their mapping to Presentation Definitions are not defined in this specification. 
+
+An  example usage of `scope` parameter is as given below:
+
+```sh
+openid4vp://?client_id=https://example.verifier.com
+&response_type=vp_token
+&scope=com.example.passport_credential_presentation
+&response_uri=https://example.verifier.com/direct_post
+&response_mode=direct_post
+&state=100b8521-461e-4f79-931e-ea5710c4fa5c
+&nonce=e6759e72-37e4-42f7-ab48-a9368971620f
+```
 
 ## 3.2	Authorisation response
 
