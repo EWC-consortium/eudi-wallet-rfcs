@@ -145,6 +145,9 @@ The authorisation request will contain the following fields:
   </tr>
 </table>
 
+> [!NOTE]
+> The authorisation request within EWC context only supports `direct_post` as `response_mode` due to security concerns that come with the alternative method using redirect URIs. 
+
 ## 3.2	Authorisation response
 
 Authorisation response is sent by constructing the `vp_token` and `presentation_submission` values. An example `vp_token` is as given:
