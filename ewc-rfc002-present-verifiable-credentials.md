@@ -75,7 +75,7 @@ Authorisation requests can be presented to the wallet by verifying in two ways: 
 ```sh
 openid4vp://?client_id=https://example.verifier.com
 &response_type=vp_token
-&scope=openid
+&scope=com.example.passport_credential_presentation
 &response_uri=https://example.verifier.com/direct_post
 &response_mode=direct_post
 &state=100b8521-461e-4f79-931e-ea5710c4fa5c
@@ -110,7 +110,7 @@ The authorisation request will contain the following fields:
   <tr>
    <td><code>scope</code>
    </td>
-   <td>The value must be <code>openid</code>
+   <td>Optional value, details are specified in [Section 3.1.1](#3.1.1-scope-parameter-usage)
    </td>
   </tr>
   <tr>
@@ -147,6 +147,18 @@ The authorisation request will contain the following fields:
 
 > [!NOTE]
 > The authorisation request within EWC context only supports `direct_post` as `response_mode` due to security concerns that come with the alternative method using redirect URIs. 
+
+### [3.1.1 Scope Parameter Usage](#3.1.1-scope-parameter-usage)
+
+According to OIDCVP draft version >= 18, the scope parameter can be used as an optional parameter to request verifiable presentations using the scope parameter. When this parameter is presented, it must fulfill the following requirements: 
+
+1. The scope value MUST serve as an alias for a well-defined Presentation Definition, which will be referenced in the `presentation_submission` response parameter.
+2. Scope value definition MUST enable Verifiers to determine: 
+    * **Presentation definition** `definition_id` and **Input Descriptor(s)** `descriptor_map.id` in the `presentation_submission` response parameter
+    * **Credential formats and types** in the `vp_token` response parameter
+3. It is RECOMMENDED to use collision-resistant scope values.
+4. An example could be: `scope=com.example.passport_credential_presentation`
+5. The specific scope values and their mapping to Presentation Definitions are not defined in this specification. 
 
 ## 3.2	Authorisation response
 
