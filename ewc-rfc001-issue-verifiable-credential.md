@@ -384,12 +384,9 @@ Once the well-known endpoint for **authorisation server** configuration is resol
     }
   },
   "subject_syntax_types_supported": [
-    "did:key",
-    "did:ebsi"
-  ],
-  "subject_syntax_types_discriminations": [
     "did:key:jwk_jcs-pub",
-    "did:ebsi:v1"
+    "did:ebsi:v1",
+    "did:ebsi:v2"
   ],
   "subject_trust_frameworks_supported": [
     "ebsi",
