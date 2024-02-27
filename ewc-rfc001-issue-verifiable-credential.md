@@ -43,6 +43,7 @@
 - [5.0	Implementors](#50implementors)
 - [Open issues](#open-issues)
 - [6.0	Reference](#60reference)
+- [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
 
 
 # 1.0	Summary
@@ -919,3 +920,12 @@ The table below summarises the success/error responses that can be used:
 4. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 5. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 6. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 00, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
+
+# Appendix A: Public key resolution
+
+For a JWT there are multiple ways for resolving the public key using the `kid` header claim:
+
+* If the key identifier is a DID then use a DID resolver to obtain the public key
+* If the key identifier is not a DID, then resolve the JWKs endpoint in the AS configuration and match the public key from the JWK set using the key identifier.
+
+Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.

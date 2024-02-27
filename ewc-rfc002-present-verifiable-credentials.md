@@ -31,6 +31,7 @@
 - [4.0	Alternate response format](#40alternate-response-format)
 - [5.0	Implementors](#50implementors)
 - [6.0	Reference](#60reference)
+- [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
 
 # 1.0	Summary
 
@@ -318,3 +319,12 @@ Some of the identifier deviations from success responses are as given:
 2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.1.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: October 16, 2023).
 3. RFC 9101 OAuth 2.0 Authorization Framework: JWT-Secured Authorization Request (JAR) [https://www.rfc-editor.org/rfc/rfc9101.html#name-request-using-the-request_u](https://www.rfc-editor.org/rfc/rfc9101.html#name-request-using-the-request_u)  (Accessed: February 05, 2024)
 4. DIF Presentation Exchange:  [https://identity.foundation/presentation-exchange](https://identity.foundation/presentation-exchange)  (Accessed: February 07, 2024)
+
+# Appendix A: Public key resolution
+
+For a JWT there are multiple ways for resolving the public key using the `kid` header claim:
+
+* If the key identifier is a DID then use a DID resolver to obtain the public key
+* If the key identifier is not a DID, then resolve the JWKs endpoint in the AS configuration and match the public key from the JWK set using the key identifier.
+
+Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
