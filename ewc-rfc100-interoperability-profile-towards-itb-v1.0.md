@@ -325,11 +325,12 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    </td>
   </tr>
   <tr>
-   <td>UAegean 
+   <td>UAegean on behalf of CFF
    </td>
    <td>
    </td>
    <td>
+   Planned Mar'23
    </td>
   </tr>
   <tr>
@@ -379,11 +380,11 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    </td>
   </tr>
   <tr>
-   <td>UAegean 
+   <td>UAegean on behalf of CFF 
    </td>
    <td>
    </td>
-   <td>
+   <td>Planned Mar’23
    </td>
   </tr>
   <tr>
