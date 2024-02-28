@@ -263,7 +263,7 @@ Some of the identifier deviations from success responses are as given:
    </td>
    <td><a href="https://business.igrant.io/">https://business.igrant.io/</a> 
    </td>
-   <td>Planned Mar’23
+   <td>Planned Mar’24
    </td>
   </tr>
   <tr>
@@ -271,7 +271,7 @@ Some of the identifier deviations from success responses are as given:
    </td>
    <td><a href="https://apple.co/2Mz9nJp">iOS</a>, <a href="https://play.google.com/store/apps/details?id=io.igrant.mobileagent">Android</a>
    </td>
-   <td>Planned Mar’23
+   <td>Planned Mar’24
    </td>
   </tr>
   <tr>
@@ -281,15 +281,15 @@ Some of the identifier deviations from success responses are as given:
      <a href="https://apps.apple.com/us/app/vidwallet/id1554340592">VIDwallet for iOS</a>, <a href="https://play.google.com/store/apps/details?id=com.validatedid.wallet">VIDwallet for Android</a>
    </td>
    <td>
-     Planned Mar’23
+     Planned Mar’24
    </td>
   </tr>
   <tr>
-   <td>UAegean 
+   <td>UAegean on behalf of CFF
    </td>
    <td>
    </td>
-   <td>
+   <td>Planned Mar’24
    </td>
   </tr>
   <tr>

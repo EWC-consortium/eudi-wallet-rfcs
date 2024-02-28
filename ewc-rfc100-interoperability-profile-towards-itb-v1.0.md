@@ -330,7 +330,7 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    <td>
    </td>
    <td>
-   Planned Mar'23
+   Planned Mar'24
    </td>
   </tr>
   <tr>
@@ -384,7 +384,7 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    </td>
    <td>
    </td>
-   <td>Planned Mar’23
+   <td>Planned Mar’24
    </td>
   </tr>
   <tr>
