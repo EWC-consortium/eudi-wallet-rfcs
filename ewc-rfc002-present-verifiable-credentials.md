@@ -285,7 +285,7 @@ Some of the identifier deviations from success responses are as given:
    </td>
   </tr>
   <tr>
-   <td>UAegean on behalf of CFF
+   <td>UAegean on behalf of Cyclades Fast Ferries
    </td>
    <td>
    </td>
