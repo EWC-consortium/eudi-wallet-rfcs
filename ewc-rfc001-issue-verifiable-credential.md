@@ -878,11 +878,11 @@ The table below summarises the success/error responses that can be used:
    </td>
   </tr>
   <tr>
-   <td>UAegean 
+   <td>UAegean on behalf of Cyclades Fast Ferries
    </td>
    <td>
    </td>
-   <td>
+   <td>Planned Mar’24
    </td>
   </tr>
   <tr>
