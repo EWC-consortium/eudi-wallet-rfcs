@@ -325,7 +325,7 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    </td>
   </tr>
   <tr>
-   <td>UAegean on behalf of CFF
+   <td>UAegean on behalf of Cyclades Fast Ferries
    </td>
    <td>
    </td>
@@ -380,7 +380,7 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
    </td>
   </tr>
   <tr>
-   <td>UAegean on behalf of CFF 
+   <td>UAegean on behalf of Cyclades Fast Ferries 
    </td>
    <td>
    </td>
