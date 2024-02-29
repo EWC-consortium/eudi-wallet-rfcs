@@ -5,8 +5,6 @@
 * Mr Lal Chandran (iGrant.io, Sweden)
 * Dr Andreas Abraham (ValidatedID, Spain)
 
-<Please add if you wish to be an author>
-
 **Reviewers:** 
 
 * Dr Nikos Triantafyllou (University of the Aegean, Greece)
@@ -15,9 +13,8 @@
 * Dr Mikael Linden (Vero, Finland) 
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
-<Please add your name as a reviewer once you review>
 
-**Status:** Work in Progress, Ready for review by 12-Feb-2024
+**Status:** Approved for v1.0 release
 
 **Table of Contents**
 
@@ -242,76 +239,18 @@ Some of the identifier deviations from success responses are as given:
 
 # 5.0	Implementors
 
-<table>
-  <tr>
-   <td><strong>Wallet</strong>
-   </td>
-   <td><strong>Link, if any</strong>
-   </td>
-   <td><strong>ITB compliance</strong>
-   </td>
-  </tr>
-  <tr>
-   <td>Amadeus
-   </td>
-   <td><a href="https://tid-wallet-dev.azurewebsites.net/">https://tid-wallet-dev.azurewebsites.net/</a> 
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>iGrant.io Enterprise Wallet
-   </td>
-   <td><a href="https://business.igrant.io/">https://business.igrant.io/</a> 
-   </td>
-   <td>Planned Mar’24
-   </td>
-  </tr>
-  <tr>
-   <td>iGrant.io Data Wallet
-   </td>
-   <td><a href="https://apple.co/2Mz9nJp">iOS</a>, <a href="https://play.google.com/store/apps/details?id=io.igrant.mobileagent">Android</a>
-   </td>
-   <td>Planned Mar’24
-   </td>
-  </tr>
-  <tr>
-   <td>ValidatedID
-   </td>
-   <td>
-     <a href="https://apps.apple.com/us/app/vidwallet/id1554340592">VIDwallet for iOS</a>, <a href="https://play.google.com/store/apps/details?id=com.validatedid.wallet">VIDwallet for Android</a>
-   </td>
-   <td>
-     Planned Mar’24
-   </td>
-  </tr>
-  <tr>
-   <td>UAegean on behalf of Cyclades Fast Ferries
-   </td>
-   <td>
-   </td>
-   <td>Planned Mar’24
-   </td>
-  </tr>
-  <tr>
-   <td>Lissi ID-Wallet
-   </td>
-   <td><a href="https://testflight.apple.com/join/9AWbZISv">Testflight (iOS)</a>, <a href="https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta">Android</a>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-  <tr>
-   <td>Lissi ID-Wallet Connector
-   </td>
-   <td><a href="https://www.lissi.id/for-organisations">https://lissi.id</a>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-</table>
+
+| Wallet                          | Link                                                                                                                                         | ITB compliance | Holder | Issuer | Verifier |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | :----: | :----: | :------: |
+| Amadeus                         | [itd-wallet-dev.azurewebsites.net/](https://itd-wallet-dev.azurewebsites.net/)                                                               | Mar'24         |   ✅    |        |    ✅     |
+| DVV Wallet                      |                                                                                                                                              | Mar'24         |   ✅    |   ✅    |    ✅     |
+| iGrant.io Enterprise Wallet     | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                                                 | Mar'24         |   ✅    |   ✅    |    ✅     |
+| iGrant.io Data Wallet           | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              | Mar'24         |   ✅    |   ✅    |    ✅     |
+| ValidatedID                     | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) | Mar'24         |   ✅    |   ✅    |    ✅     |
+| UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |   ✅    |        |    ✅     |
+| Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | TBD            |   ✅    |        |          |
+| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | TBD            |        |   ✅    |    ✅     |
+
 
 # 6.0	Reference
 
