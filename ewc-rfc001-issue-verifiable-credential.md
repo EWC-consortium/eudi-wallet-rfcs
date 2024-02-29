@@ -37,7 +37,7 @@
     - [3.10.1  In-time](#3101--in-time)
     - [3.10.2 Deferred](#3102-deferred)
 - [4.0	Alternate response format](#40alternate-response-format)
-- [5.0	Implementors](#50implementors)
+- [5.0	Implementers](#50implementers)
 - [6.0	Reference](#60reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
 
@@ -821,19 +821,19 @@ The table below summarises the success/error responses that can be used:
   </tr>
 </table>
 
-# 5.0	Implementors
+# 5.0	Implementers
 
 
-| Wallet                          | Link                                                                                                            | ITB compliance | Holder | Issuer | Verifier |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------- | -------------- | :----: | :----: | :------: |
-| Amadeus                         | [itd-wallet-dev.azurewebsites.net/](https://itd-wallet-dev.azurewebsites.net/)                                  | Mar'24 |   ✅    |        |    ✅     |
-| DVV Wallet                      |                                                                                                                 |  Mar'24 |   ✅    |   ✅    |    ✅     |
-| iGrant.io Enterprise Wallet     | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                              |  Mar'24 |   ✅    |   ✅    |    ✅     |
-| iGrant.io Data Wallet           | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent) | Mar'24 |   ✅    |   ✅    |    ✅     |
-| ValidatedID                     | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet)                                                                        | Mar'24 |   ✅    |   ✅    |    ✅     |
-| UAegean (Cyclades Fast Ferries) |                                                                                                                 | Mar'24 |   ✅    |        |    ✅     |
-| Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)                                                                                       | TBD            |   ✅    |        |          |
-| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                    | TBD            |        |   ✅    |    ✅     |
+| Wallet                          | Link                                                                                                                                         | ITB compliance | Holder | Issuer | Verifier |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | :----: | :----: | :------: |
+| Amadeus                         | [itd-wallet-dev.azurewebsites.net/](https://itd-wallet-dev.azurewebsites.net/)                                                               | Mar'24         |   ✅    |        |    ✅     |
+| DVV Wallet                      |                                                                                                                                              | Mar'24         |   ✅    |   ✅    |    ✅     |
+| iGrant.io Enterprise Wallet     | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                                                 | Mar'24         |   ✅    |   ✅    |    ✅     |
+| iGrant.io Data Wallet           | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              | Mar'24         |   ✅    |   ✅    |    ✅     |
+| ValidatedID                     | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) | Mar'24         |   ✅    |   ✅    |    ✅     |
+| UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |   ✅    |        |    ✅     |
+| Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | TBD            |   ✅    |        |          |
+| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | TBD            |        |   ✅    |    ✅     |
 
 
 # 6.0	Reference

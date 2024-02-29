@@ -26,7 +26,7 @@
     - [3.1.1 Scope Parameter Usage](#311-scope-parameter-usage)
   - [3.2	Authorisation response](#32authorisation-response)
 - [4.0	Alternate response format](#40alternate-response-format)
-- [5.0	Implementors](#50implementors)
+- [5.0	Implementers](#50implementers)
 - [6.0	Reference](#60reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
 
@@ -237,7 +237,7 @@ Some of the identifier deviations from success responses are as given:
   </tr>
 </table>
 
-# 5.0	Implementors
+# 5.0	Implementers
 
 
 | Wallet                          | Link                                                                                                                                         | ITB compliance | Holder | Issuer | Verifier |
