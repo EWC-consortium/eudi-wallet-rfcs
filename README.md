@@ -37,6 +37,12 @@ These are the RFCs identified to be specified towards ensuring producing referen
 | RFC-004   | Attest Enterprise Wallet Instance (TBD) - WP3/3.1.2 Requirements/OID4 Security                                                                                          |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
 
+## Funding
+
+![image](https://github.com/EWC-consortium/ewc-wiki/assets/455274/1ac9b4e3-06b9-4c3c-a2af-ec5fbf584517)
+
+The project is co-funded by the European Union. Views and opinions expressed are, however, those of the author(s) only and do not necessarily reflect those of the European Union or the granting authority. Neither the European Union nor the granting authority can be held responsible for them.
+
 ## Licensing
 
 Licensed under the Apache 2.0 License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
