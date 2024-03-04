@@ -49,6 +49,7 @@ These are the RFCs identified to be specified towards ensuring producing referen
 | UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |        |   ✅    |    ✅     |
 | Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | TBD            |   ✅    |        |          |
 | Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | TBD            |        |   ✅    |    ✅     |
+| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                     | TBD            |        |   ✅    |    ✅     |
 
 
 ## Funding
