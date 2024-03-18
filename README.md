@@ -39,16 +39,19 @@ These are the RFCs identified to be specified towards ensuring producing referen
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
 
 ## Implementers
+
 | Wallet                          | Link                                                                                                                                         | ITB compliance | Holder | Issuer | Verifier |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | :----: | :----: | :------: |
-| Amadeus                         | [Passport Verifier](https://tid-wallet-dev.azurewebsites.net/passport)                                                                       | Mar'24         |        |        |    ✅     |
-| DVV Wallet                      |                                                                                                                                              | Mar'24         |   ✅    |   ✅    |    ✅     |
-| iGrant.io Enterprise Wallet     | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                                                 | Mar'24         |   ✅    |   ✅    |    ✅     |
-| iGrant.io Data Wallet           | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              | Mar'24         |   ✅    |   ✅    |    ✅     |
-| ValidatedID                     | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) | Mar'24         |   ✅    |   ✅    |    ✅     |
-| UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |        |   ✅    |    ✅     |
-| Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | TBD            |   ✅    |        |          |
-| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | TBD            |        |   ✅    |    ✅     |
+| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport)                                                                      | Mar'24         |        |        |    ✅    |
+| DVV Wallet                      |                                                                                                                                              | TBD         |   ✅   |   ✅   |    ✅    |
+| iGrant.io Enterprise Wallet     | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                                                 | Mar'24         |   ✅   |   ✅   |    ✅    |
+| iGrant.io Data Wallet           | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              | Mar'24         |   ✅   |   ✅   |    ✅    |
+| ValidatedID                     | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) | Mar'24         |   ✅   |   ✅   |    ✅    |
+| UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |        |   ✅   |    ✅    |
+| Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | April'24          |   ✅   |        |          |
+| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | April'24            |        |   ✅   |    ✅    |
+| DigiIdentity   |                                                                                                                  | May'24            |   ✅   |      |       |
+| E-Group   |                                                                                                                  | May'24            |    |   ✅    |  ✅     |
 | Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                     | TBD            |        |   ✅    |    ✅     |
 
 
