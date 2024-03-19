@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="EWC API documentation" />
+    <title>EWC API documentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind:wght@400;700&amp;family=Roboto+Mono&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script
+      type="module"
+      src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"
+    ></script>
+    <script>
+      // JavaScript to modify render-style based on screen width
+      window.addEventListener("DOMContentLoaded", (event) => {
+        const rapiDocElement = document.querySelector("rapi-doc");
+        if (window.innerWidth <= 768) {
+          // Assuming 768px as the breakpoint for tablet size
+          rapiDocElement.setAttribute("render-style", "read"); // for sizes less than a tablet
+
+          // Function to apply the style when the element is available
+          const applyStyleToApiInfo = () => {
+            const mainContentElement =
+              rapiDocElement.shadowRoot.querySelector(".main-content");
+            const apiInfoElement =
+              rapiDocElement.shadowRoot.querySelector("#api-info");
+            const labelOperationPathElements =
+              rapiDocElement.shadowRoot.querySelectorAll(
+                "[part*='section-operation-webhook-method']"
+              );
+
+            if (
+              apiInfoElement &&
+              labelOperationPathElements &&
+              mainContentElement &&
+              sidebar
+            ) {
+              mainContentElement.style.padding = "10px";
+              apiInfoElement.style.marginLeft = "0";
+              labelOperationPathElements.forEach(function (element) {
+                element.style.overflowX = "scroll";
+              });
+              observer.disconnect(); // Stop observing once style is applied
+            }
+          };
+
+          // Observe changes in the Shadow DOM
+          const observer = new MutationObserver(applyStyleToApiInfo);
+          if (rapiDocElement.shadowRoot) {
+            observer.observe(rapiDocElement.shadowRoot, {
+              childList: true,
+              subtree: true,
+            });
+            applyStyleToApiInfo(); // Try applying the style immediately in case the element is already there
+          }
+        } else {
+          rapiDocElement.setAttribute("render-style", "focused"); // for sizes greater than a tablet
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <rapi-doc
+      render-style="focused"
+      show-components="true"
+      spec-url="./ewc.yaml"
+      allow-spec-file-download="true"
+      show-curl-before-try="true"
+      schema-style="table"
+      regular-font="Hind"
+      font-size="large"
+      mono-font="Roboto Mono"
+      schema-expand-level="1"
+      default-schema-tab="schema"
+      theme="light"
+      show-header="false"
+      nav-bg-color="#1d3468"
+      nav-text-color="#fff"
+      primary-color="#1d3468"
+      persist-auth="true"
+      show-method-in-nav-bar="as-colored-block"
+    >
+      <img
+        slot="nav-logo"
+        style="width: 200px; margin: 0 auto"
+        src="./assets/image.png"
+      />
+    </rapi-doc>
+  </body>
+</html>

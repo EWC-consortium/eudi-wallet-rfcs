@@ -1,12 +1,1061 @@
 info:
   contact:
-    name: EWC 
+    name: EWC
     url: https://eudiwalletconsortium.org/
-  description:
-    The EWC APIs are defined to be used across all wallet providers within EWC according the [EWC RFCs](https://github.com/EWC-consortium/eudi-wallet-rfcs). 
+  description: The EWC APIs are defined to be used across all wallet providers within EWC according the [EWC RFCs](https://github.com/EWC-consortium/eudi-wallet-rfcs).
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
   title: EWC APIs
-  version: 2024.03.1
-openapi: 3.1.0
+  version: 2024.3.1
+openapi: 3.0.3
+servers:
+  - description: Wallet server
+    url: https://wallet.example.com
+tags:
+  - description: This consists of endpoints for an issuer
+    name: issuer
+  - description: This consists of endpoints for a verifier
+    name: verifier
+paths:
+  /credential-offer/{credentialOfferId}:
+    get:
+      summary: Credential offer
+      description: Credential offer
+      operationId: credentialOffer
+      parameters:
+        - description: Unique ID for the credential offer
+          in: path
+          name: credentialOfferId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/OpenIdCredentialOffer"
+                  - $ref: "#/components/schemas/EbsiCredentialOffer"
+
+      tags:
+        - issuer
+  /.well-known/openid-credential-issuer:
+    get:
+      summary: Discover well-known OpenID credential issuer configuration endpoint
+      description: Discover well-known OpenID credential issuer configuration endpoint
+      operationId: discoverWellKnownOpenIdCredentialIssuerConfiguration
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WellKnownOpenIdIssuerConfiguration"
+                  - $ref: "#/components/schemas/WellKnownEBSIIssuerConfiguration"
+
+      tags:
+        - issuer
+  /.well-known/oauth-authorization-server:
+    get:
+      summary: Discover well-known OpenID authorisation server configuration endpoint
+      description: Discover well-known OpenID authorisation server configuration endpoint
+      operationId: discoverWellKnownOpenIdAuthorisationIssuerConfiguration
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WellKnownOpenIdAuthorisationServerConfiguration"
+
+      tags:
+        - issuer
+  /auth/authorize:
+    get:
+      tags:
+        - issuer
+      summary: Authorisation request
+      description: Authorisation request
+      operationId: authorisationRequest
+      parameters:
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+          example: code
+          description: The value must be 'code'
+        - name: scope
+          in: query
+          required: true
+          schema:
+            type: string
+          example: openid
+          description: The value must be 'openid'
+        - name: state
+          in: query
+          required: true
+          schema:
+            type: string
+          example: client-state
+          description: The client uses an opaque value to maintain the state between the request and callback.
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+          example: did:key:z2dmzD81cgPx8Vki7JbuuMmFYrWPgYoytykUZ3eyqht1j9KbsEYvdrjxMjQ4tpnje9BDBTzuNDP3knn6qLZErzd4bJ5go2CChoPjd5GAH3zpFJP5fuwSk66U5Pq6EhF4nKnHzDnznEP8fX99nZGgwbAh1o7Gj1X52Tdhf7U4KTk66xsA5r
+          description: Decentralised identifier
+        - name: authorization_details
+          in: query
+          required: true
+          schema:
+            type: string
+          example: |
+            [
+              {
+                "format": "jwt_vc",
+                "locations": [
+                  "https://issuer.example.com"
+                ],
+                "type": "openid_credential",
+                "types": [
+                  "VerifiableCredential",
+                  "VerifiableAttestation",
+                  "VerifiablePortableDocumentA1"
+                ]
+              }
+            ]
+          description: |
+            As specified in OAuth 2.0 Rich Authorization Requests specification to specify fine-grained access.
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "openid:"
+          description: For redirection of the response.
+        - name: nonce
+          in: query
+          required: true
+          schema:
+            type: string
+          example: glkFFoisdfEui43
+          description: A value used to associate a client session with an ID token and to mitigate replay attacks.
+        - name: code_challenge
+          in: query
+          required: true
+          schema:
+            type: string
+          example: YjI0ZTQ4NTBhMzJmMmZhNjZkZDFkYzVhNzlhNGMyZDdjZDlkMTM4YTY4NjcyMTA5M2Q2OWQ3YjNjOGJlZDBlMSAgLQo=
+          description: As specified in PKCE for OAuth Public Client specification.
+        - name: code_challenge_method
+          in: query
+          required: true
+          schema:
+            type: string
+          example: S256
+          description: As specified in PKCE for OAuth Public Client specification.
+        - name: client_metadata
+          in: query
+          required: true
+          schema:
+            type: string
+          example: |
+            {
+              "vp_formats_supported": {
+                "jwt_vp": {
+                  "alg": [
+                    "ES256"
+                  ]
+                },
+                "jwt_vc": {
+                  "alg": [
+                    "ES256"
+                  ]
+                }
+              },
+              "response_types_supported": [
+                "vp_token",
+                "id_token"
+              ],
+              "authorization_endpoint": "openid://"
+            }
+          description: Holder wallets are non-reachable and can utilise this field in the Authorisation Request to deliver configuration.
+        - name: issuer_state
+          in: query
+          required: false
+          schema:
+            type: string
+          example: tracker%3Dvcfghhj
+          description: If present in the credential offer.
+      responses:
+        "302":
+          description: Authorisation response
+          headers:
+            Location:
+              schema:
+                type: string
+              example: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock&redirect_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Fdirect_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Frequest_uri%2F111d2819-9ab7-4959-83e5-f414c57fdc27
+  /direct_post:
+    post:
+      tags:
+        - "issuer"
+      summary: Direct post
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                id_token:
+                  type: string
+                  description: The id_token signed by the DID
+      responses:
+        "302":
+          description: Direct Post response
+          headers:
+            Location:
+              schema:
+                type: string
+                description: The URL to redirect to after processing the request
+  /token:
+    post:
+      tags:
+        - "issuer"
+      summary: Token request
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AuthorisationCodeTokenRequest"
+      responses:
+        "200":
+          description: Token response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+  /credential:
+    post:
+      tags:
+        - "issuer"
+      summary: Credential Request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/OpenIdCredentialRequest"
+                - $ref: "#/components/schemas/EbsiCredentialRequest"
+      responses:
+        "200":
+          description: Credential response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/InTimeCredentialResponse"
+                  - $ref: "#/components/schemas/DeferredCredentialResponse"
+  /deferred-credential:
+    post:
+      tags:
+        - "issuer"
+      summary: Deferred Credential Request
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+            example: Bearer eyJ0eXAi...KTjcrDMg
+          description: Acceptance token from the credential response
+      responses:
+        "200":
+          description: Credential response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InTimeCredentialResponse"
+components:
+  schemas:
+    OpenIdCredentialOffer:
+      title: OpenID Credential Offer
+      type: object
+      properties:
+        credential_issuer:
+          type: string
+          description: "Credential issuer endpoint"
+          example: https://server.example.com
+        credentials:
+          type: array
+          description: "Credential types available for issuance"
+          items:
+            type: string
+            example: "PortableDocumentA1"
+        grants:
+          oneOf:
+            - $ref: "#/components/schemas/AuthorisationCodeGrant"
+            - $ref: "#/components/schemas/PreAuthorisedCodeGrant"
+      required:
+        - credential_issuer
+        - credentials
+        - grants
+    EbsiCredentialOffer:
+      title: EBSI Credential Offer
+      type: object
+      properties:
+        credential_issuer:
+          type: string
+          description: "Credential issuer endpoint"
+          example: https://server.example.com
+        credentials:
+          type: array
+          description: "Credential types available for issuance"
+          items:
+            type: object
+            properties:
+              format:
+                type: string
+                description: "Credential format"
+                enum:
+                  - "jwt_vc"
+                  - "ldp_vc"
+                  - "vc+sd-jwt"
+              types:
+                type: array
+                description: "Credential type"
+                items:
+                  type: string
+                  example: "PortableDocumentA1"
+              trust_framework:
+                type: object
+                description: "Trust framework"
+                properties:
+                  name:
+                    type: string
+                    description: "Name of the trust framework"
+                    example: "ebsi"
+                  type:
+                    type: string
+                    description: "Type of the trust framework"
+                    example: "Accreditation"
+                  uri:
+                    type: string
+                    description: "URI of the trust framework"
+                    example: "TIR link towards accreditation"
+                required:
+                  - name
+                  - type
+                  - uri
+            required:
+              - format
+              - types
+              - trust_framework
+        grants:
+          oneOf:
+            - $ref: "#/components/schemas/AuthorisationCodeGrant"
+            - $ref: "#/components/schemas/PreAuthorisedCodeGrant"
+      required:
+        - credential_issuer
+        - credentials
+        - grants
+    AuthorisationCodeGrant:
+      type: object
+      title: "Authorisation code grant"
+      properties:
+        authorization_code:
+          type: object
+          description: "Authorisation code grant"
+          properties:
+            issuer_state:
+              type: string
+              description: "Issuer state"
+              example: "eyJhbGciOiJSU0Et...FYUaBy"
+          required:
+            - issuer_state
+      required:
+        - authorization_code
+    PreAuthorisedCodeGrant:
+      type: object
+      title: "Pre-authorised code grant"
+      properties:
+        urn:ietf:params:oauth:grant-type:pre-authorized_code:
+          description: "Pre-authorised code grant"
+          type: object
+          properties:
+            pre-authorized_code:
+              type: string
+              description: "Pre-authorised code"
+              example: "eyJhbGciOiJSU0Et...FYUaBy"
+            user_pin_required:
+              type: boolean
+              description: "User pin required or not"
+              example: true
+          required:
+            - pre-authorized_code
+            - user_pin_required
+      required:
+        - urn:ietf:params:oauth:grant-type:pre-authorized_code
+    WellKnownOpenIdIssuerConfiguration:
+      title: Well-known OpenID credential issuer configuration
+      type: object
+      properties:
+        credential_issuer:
+          type: string
+        authorization_server:
+          type: string
+        credential_endpoint:
+          type: string
+        deferred_credential_endpoint:
+          type: string
+        display:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              location:
+                type: string
+              locale:
+                type: string
+              cover:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  alt_text:
+                    type: string
+                required:
+                  - url
+                  - alt_text
+              logo:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  alt_text:
+                    type: string
+                required:
+                  - url
+                  - alt_text
+              description:
+                type: string
+            required:
+              - name
+              - location
+              - locale
+              - cover
+              - logo
+              - description
+        credentials_supported:
+          type: object
+          properties:
+            VerifiablePortableDocumentA1SdJwt:
+              type: object
+              properties:
+                format:
+                  type: string
+                scope:
+                  type: string
+                cryptographic_binding_methods_supported:
+                  type: array
+                  items:
+                    type: string
+                cryptographic_suites_supported:
+                  type: array
+                  items:
+                    type: string
+                display:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      locale:
+                        type: string
+                      background_color:
+                        type: string
+                      text_color:
+                        type: string
+                    required:
+                      - name
+                      - locale
+                      - background_color
+                      - text_color
+                credential_definition:
+                  type: object
+                  properties:
+                    vct:
+                      type: string
+                    claims:
+                      type: object
+                      properties:
+                        given_name:
+                          type: object
+                          properties:
+                            display:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  locale:
+                                    type: string
+                                required:
+                                  - name
+                                  - locale
+                          required:
+                            - display
+                        last_name:
+                          type: object
+                          properties:
+                            display:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  locale:
+                                    type: string
+                                required:
+                                  - name
+                                  - locale
+                          required:
+                            - display
+                      required:
+                        - given_name
+                        - last_name
+                  required:
+                    - vct
+                    - claims
+              required:
+                - format
+                - scope
+                - cryptographic_binding_methods_supported
+                - cryptographic_suites_supported
+                - display
+                - credential_definition
+          required:
+            - VerifiablePortableDocumentA1SdJwt
+      required:
+        - credential_issuer
+        - authorization_server
+        - credential_endpoint
+        - deferred_credential_endpoint
+        - display
+        - credentials_supported
+    WellKnownEBSIIssuerConfiguration:
+      title: Well-known EBSI credential issuer configuration
+      type: object
+      properties:
+        credential_issuer:
+          type: string
+        authorization_server:
+          type: string
+        credential_endpoint:
+          type: string
+        deferred_credential_endpoint:
+          type: string
+        display:
+          type: object
+          properties:
+            name:
+              type: string
+            location:
+              type: string
+            locale:
+              type: string
+            cover:
+              type: object
+              properties:
+                url:
+                  type: string
+                alt_text:
+                  type: string
+              required:
+                - url
+                - alt_text
+            logo:
+              type: object
+              properties:
+                url:
+                  type: string
+                alt_text:
+                  type: string
+              required:
+                - url
+                - alt_text
+            description:
+              type: string
+          required:
+            - name
+            - location
+            - locale
+            - cover
+            - logo
+            - description
+        credentials_supported:
+          type: array
+          items:
+            type: object
+            properties:
+              format:
+                type: string
+              types:
+                type: array
+                items:
+                  type: string
+              trust_framework:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  uri:
+                    type: string
+                required:
+                  - name
+                  - type
+                  - uri
+              display:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    locale:
+                      type: string
+                  required:
+                    - name
+                    - locale
+            required:
+              - format
+              - types
+              - trust_framework
+              - display
+      required:
+        - credential_issuer
+        - authorization_server
+        - credential_endpoint
+        - deferred_credential_endpoint
+        - display
+        - credentials_supported
+    WellKnownOpenIdAuthorisationServerConfiguration:
+      title: Well-known OpenID authorisation server configuration
+      type: object
+      properties:
+        issuer:
+          type: string
+        authorization_endpoint:
+          type: string
+        token_endpoint:
+          type: string
+        jwks_uri:
+          type: string
+        scopes_supported:
+          type: array
+          items:
+            type: string
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        response_modes_supported:
+          type: array
+          items:
+            type: string
+        grant_types_supported:
+          type: array
+          items:
+            type: string
+        subject_types_supported:
+          type: array
+          items:
+            type: string
+        id_token_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        request_object_signing_alg_values_supported:
+          type: array
+          items:
+            type: string
+        request_parameter_supported:
+          type: boolean
+        request_uri_parameter_supported:
+          type: boolean
+        token_endpoint_auth_methods_supported:
+          type: array
+          items:
+            type: string
+        request_authentication_methods_supported:
+          type: object
+          properties:
+            authorization_endpoint:
+              type: array
+              items:
+                type: string
+          required:
+            - authorization_endpoint
+        vp_formats_supported:
+          type: object
+          properties:
+            jwt_vp:
+              type: object
+              properties:
+                alg_values_supported:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - alg_values_supported
+            jwt_vc:
+              type: object
+              properties:
+                alg_values_supported:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - alg_values_supported
+          required:
+            - jwt_vp
+            - jwt_vc
+        subject_syntax_types_supported:
+          type: array
+          items:
+            type: string
+        subject_trust_frameworks_supported:
+          type: array
+          items:
+            type: string
+        id_token_types_supported:
+          type: array
+          items:
+            type: string
+      required:
+        - issuer
+        - authorization_endpoint
+        - token_endpoint
+        - jwks_uri
+        - scopes_supported
+        - response_types_supported
+        - response_modes_supported
+        - grant_types_supported
+        - subject_types_supported
+        - id_token_signing_alg_values_supported
+        - request_object_signing_alg_values_supported
+        - request_parameter_supported
+        - request_uri_parameter_supported
+        - token_endpoint_auth_methods_supported
+        - request_authentication_methods_supported
+        - vp_formats_supported
+        - subject_syntax_types_supported
+        - subject_trust_frameworks_supported
+        - id_token_types_supported
+    AuthorisationResponse:
+      title: Authorisation response
+      type: object
+      properties:
+        state:
+          type: string
+          description: The client uses an opaque value to maintain the state between the request and callback.
+        client_id:
+          type: string
+          description: Decentralised identifier
+        redirect_uri:
+          type: string
+          description: For redirection of the response
+        response_type:
+          type: string
+          description: The value must be 'id_token' if the issuer requests DID authentication.
+        response_mode:
+          type: string
+          description: The value must be 'direct_post'
+        scope:
+          type: string
+          description: The value must be 'openid'
+        nonce:
+          type: string
+          description: A value used to associate a client session with an ID token and to mitigate replay attacks.
+        request_uri:
+          type: string
+          description: The authorisation server's private key signed the request.
+    AuthorisationDetails:
+      title: Authorisation Details
+      type: object
+      properties:
+        type:
+          type: string
+        locations:
+          type: array
+          items:
+            type: string
+        format:
+          type: string
+        credential_definition:
+          type: object
+          properties:
+            type:
+              type: array
+              items:
+                type: string
+          required:
+            - type
+      required:
+        - type
+        - locations
+        - format
+        - credential_definition
+    EBSIAuthorisationDetails:
+      title: EBSI Authorisation Details
+      type: object
+      properties:
+        format:
+          type: string
+        locations:
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+        types:
+          type: array
+          items:
+            type: string
+      required:
+        - format
+        - locations
+        - type
+        - types
+    ClientMetaData:
+      title: Client Meta Data
+      type: object
+      properties:
+        vp_formats_supported:
+          type: object
+          properties:
+            jwt_vp:
+              type: object
+              properties:
+                alg:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - alg
+            jwt_vc:
+              type: object
+              properties:
+                alg:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - alg
+          required:
+            - jwt_vp
+            - jwt_vc
+        response_types_supported:
+          type: array
+          items:
+            type: string
+        authorization_endpoint:
+          type: string
+      required:
+        - vp_formats_supported
+        - response_types_supported
+        - authorization_endpoint
+    AuthorisationCodeTokenRequest:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          example: authorization_code
+          description: Grant type for authorization
+        code:
+          type: string
+          example: SplxlOBeZQQYbYS6WxSbIA
+          description: Authorization code
+        code_verifier:
+          type: string
+          example: dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
+          description: Wallet-generated secure random token used to validate the original code_challenge
+        redirect_uri:
+          type: string
+          example: https://Wallet.example.org/cb
+          description: Redirect URI
+    PreAuthorisedCodeTokenRequest:
+      type: object
+      properties:
+        grant_type:
+          type: string
+          example: urn:ietf:params:oauth:grant-type:pre-authorized_code
+          description: Grant type for authorization
+        pre-authorized_code:
+          type: string
+          example: SplxlOBeZQQYbYS6WxSbIA
+          description: Code representing the Credential Issuer's authorisation for the Wallet to obtain Credentials of a certain type. This code must be short-lived and single-use.
+        user_pin:
+          type: string
+          example: 493536
+          description: The end user pin is decided by the issuer and sent to the holder through an out-of-band process. E.g. Email, SMS
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+        token_type:
+          type: string
+        expires_in:
+          type: number
+        id_token:
+          type: string
+        c_nonce:
+          type: string
+        c_nonce_expires_in:
+          type: number
+      required:
+        - access_token
+        - refresh_token
+        - token_type
+        - expires_in
+        - id_token
+        - c_nonce
+        - c_nonce_expires_in
+    OpenIdCredentialRequest:
+      type: object
+      properties:
+        format:
+          type: string
+          example: vc+sd-jwt
+          description: Format of the credential
+        credential_definition:
+          type: object
+          properties:
+            vct:
+              type: string
+              example: VerifiablePortableDocumentA1
+              description: Verifiable credential type
+        proof:
+          type: object
+          properties:
+            proof_type:
+              type: string
+              example: jwt
+              description: Proof type of the credential
+            jwt:
+              type: string
+              example: eyJraW...KWjceMcr
+              description: JWT for the proof
+    EbsiCredentialRequest:
+      title: EBSI Credential Request
+      type: object
+      properties:
+        format:
+          type: string
+        proof:
+          type: object
+          properties:
+            jwt:
+              type: string
+            proof_type:
+              type: string
+          required:
+            - jwt
+            - proof_type
+        types:
+          type: array
+          items:
+            type: string
+      required:
+        - format
+        - proof
+        - types
+    InTimeCredentialResponse:
+      title: In-time Credential Response
+      type: object
+      properties:
+        format:
+          type: string
+        credential:
+          type: string
+        c_nonce:
+          type: string
+        c_nonce_expires_in:
+          type: number
+      required:
+        - format
+        - credential
+        - c_nonce
+        - c_nonce_expires_in
+    DeferredCredentialResponse:
+      title: Deferred Credential Response
+      type: object
+      properties:
+        acceptance_token:
+          type: string
+        c_nonce:
+          type: string
+        c_nonce_expires_in:
+          type: number
+      required:
+        - acceptance_token
+        - c_nonce
+        - c_nonce_expires_in
+
+    PresentationSubmission:
+      type: object
+      properties:
+        definition_id:
+          type: string
+        descriptor_map:
+          type: array
+          items:
+            type: object
+            properties:
+              format:
+                type: string
+              id:
+                type: string
+              path:
+                type: string
+              path_nested:
+                type: object
+                properties:
+                  format:
+                    type: string
+                  id:
+                    type: string
+                  path:
+                    type: string
+                required:
+                - format
+                - id
+                - path
+            required:
+            - format
+            - id
+            - path
+            - path_nested
+        id:
+          type: string
+      required:
+      - definition_id
+      - descriptor_map
+      - id
