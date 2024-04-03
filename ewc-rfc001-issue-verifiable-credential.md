@@ -218,14 +218,6 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
       "name": "Issuer",
       "location": "Belgium",
       "locale": "en-GB",
-      "cover": {
-        "url": "https://server.example.com/cover.jpeg",
-        "alt_text": "Issuer"
-      },
-      "logo": {
-        "url": "https://server.example.com/logo.jpg",
-        "alt_text": "Issuer"
-      },
       "description": "For queries about how we are managing your data please contact the Data Protection Officer."
     }
   ],
@@ -294,14 +286,6 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
     "name": "Issuer",
     "location": "Belgium",
     "locale": "en-GB",
-    "cover": {
-      "url": "https://server.example.com/cover.jpeg",
-      "alt_text": "Issuer"
-    },
-    "logo": {
-      "url": "https://server.example.com/logo.jpg",
-      "alt_text": "Issuer"
-    },
     "description": "For queries about how we are managing your data please contact the Data Protection Officer."
   },
   "credentials_supported": [
