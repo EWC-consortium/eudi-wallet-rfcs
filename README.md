@@ -50,7 +50,7 @@ These are the RFCs identified to be specified towards ensuring producing referen
 | UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |        |   ✅   |    ✅    |
 | Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | April'24          |   ✅   |        |          |
 | Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | April'24            |        |   ✅   |    ✅    |
-| DigiIdentity   |                                                                                                                  | May'24            |   ✅   |      |       |
+| Digidentity   | [iOS](https://apps.apple.com/nl/app/digidentity-wallet/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity) | May'24            |   ✅   |   ✅   |   ✅   |
 | E-Group   |                                                                                                                  | May'24            |    |   ✅    |  ✅     |
 | Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                     | TBD            |        |   ✅    |    ✅     |
 
