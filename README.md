@@ -72,7 +72,7 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | April'24            |        |   ✅   |    ✅    |
 | Digidentity   | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity) | May'24            |   ✅   |   ✅   |   ✅   |
 | E-Group   |                                                                                                                  | May'24            |    |   ✅    |  ✅     |
-| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                     | TBD            |        |   ✅    |    ✅     |
+| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                     | May'24            |        |   ✅    |    ✅     |
 
 
 ## Funding
