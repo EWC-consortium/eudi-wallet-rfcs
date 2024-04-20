@@ -38,15 +38,15 @@ RFCs go through this process towards the Large Scale Pilots (LSPs):
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
 
-| **RFC #** | **RFC Title**                                                                                                                                                           |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| RFC-003   | PID Issuance                                                                                                                                                            |
-| RFC-004   | Individual Wallet Attestation                                                                                                                                           |
-| RFC-005   | LPID Issuance                                                                                                                                                           |
-| RFC-006   | Organisational Wallet Attestation                                                                                                                                       |
-| RFC-007   | Payment Wallet Attestation                                                                                                                                              |
-| RFC-008   | Strong Customer Authentication                                                                                                                                          |
-| RFC-009   | Payment Transaction                                                                                                                                         |
+| **RFC #** | **RFC Title**                                                                          |
+| --------- | -------------------------------------------------------------------------------------- |
+| RFC-003   | [Person Identification Data  Issuance](ewc-rfc003-issue-person-identification-data.md) |
+| RFC-004   | Individual Wallet Attestation                                                          |
+| RFC-005   | LPID Issuance                                                                          |
+| RFC-006   | Organisational Wallet Attestation                                                      |
+| RFC-007   | Payment Wallet Attestation                                                             |
+| RFC-008   | Strong Customer Authentication                                                         |
+| RFC-009   | Payment Transaction                                                                    |
 
 ### Approved RFCs
 
@@ -62,17 +62,17 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 | Wallet                          | Link                                                                                                                                         | ITB compliance | Holder | Issuer | Verifier |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | :----: | :----: | :------: |
-| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport)                                                                      | Mar'24         |        |        |    ✅    |
-| DVV Wallet                      |                                                                                                                                              | TBD         |   ✅   |   ✅   |    ✅    |
-| iGrant.io Enterprise Wallet     | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                                                 | Mar'24         |   ✅   |   ✅   |    ✅    |
-| iGrant.io Data Wallet           | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              | Mar'24         |   ✅   |   ✅   |    ✅    |
-| ValidatedID                     | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) | Mar'24         |   ✅   |   ✅   |    ✅    |
-| UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |        |   ✅   |    ✅    |
-| Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | April'24          |   ✅   |        |          |
-| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | April'24            |        |   ✅   |    ✅    |
-| Digidentity   | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity) | May'24            |   ✅   |   ✅   |   ✅   |
-| E-Group   |                                                                                                                  | May'24            |    |   ✅    |  ✅     |
-| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                     | May'24            |        |   ✅    |    ✅     |
+| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport)                                                                      | Mar'24         |        |        |    ✅     |
+| DVV Wallet                      |                                                                                                                                              | TBD            |   ✅    |   ✅    |    ✅     |
+| iGrant.io Enterprise Wallet     | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                                                 | Mar'24         |   ✅    |   ✅    |    ✅     |
+| iGrant.io Data Wallet           | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              | Mar'24         |   ✅    |   ✅    |    ✅     |
+| ValidatedID                     | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) | Mar'24         |   ✅    |   ✅    |    ✅     |
+| UAegean (Cyclades Fast Ferries) |                                                                                                                                              | Mar'24         |        |   ✅    |    ✅     |
+| Lissi ID-Wallet                 | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     | April'24       |   ✅    |        |          |
+| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                                 | April'24       |        |   ✅    |    ✅     |
+| Digidentity                     | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity)                      | May'24         |   ✅    |   ✅    |    ✅     |
+| E-Group                         |                                                                                                                                              | May'24         |        |   ✅    |    ✅     |
+| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                     | May'24         |        |   ✅    |    ✅     |
 
 
 ## Funding
