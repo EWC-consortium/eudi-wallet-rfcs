@@ -1,20 +1,23 @@
-# EWC RFC003: Issue PID - v1.0
+# EWC RFC003: Issue Person Identification Data (PID) - v1.0
 
 **Authors:** 
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Mr Lal Chandran (iGrant.io, Sweden)
 
 **Reviewers:** 
-TBD
+* Mr George Padayatti (iGrant.io, Sweden)
 
 **Status:** Ready for Review
 
 **Table of Contents**
 
-- [EWC RFC003: Issue PID - v1.0](#ewc-RFC003-issue-verifiable-credential---v10)
+- [EWC RFC003: Issue Person Identification Data (PID) - v1.0](#ewc-rfc003-issue-person-identification-data-pid---v10)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Messages](#30messages)
+    - [Preliminary Steps for PID Issuance:](#preliminary-steps-for-pid-issuance)
+    - [PID Credential Issuance Process:](#pid-credential-issuance-process)
+    - [Post-Issuance Verification and Management:](#post-issuance-verification-and-management)
   - [3.1	Credential offer](#31credential-offer)
   - [3.2	Credential offer response](#32credential-offer-response)
   - [3.3 Discover request](#33-discover-request)
@@ -29,6 +32,8 @@ TBD
   - [3.10 Credential response](#310-credential-response)
     - [3.10.1  In-time](#3101--in-time)
     - [3.10.2 Deferred](#3102-deferred)
+  - [3.11 Issuer Authorization Verification](#311-issuer-authorization-verification)
+  - [3.12 Check Wallet's Conformity](#312-check-wallets-conformity)
 - [4.0	Alternate response format](#40alternate-response-format)
 - [5.0	Implementers](#50implementers)
 - [6.0	Reference](#60reference)
@@ -38,7 +43,6 @@ TBD
 # 1.0	Summary
 
 This specification implements the OID4VCI workflow for issuing Person Identification Data (PID) credentials by government-approved identity providers within the European Wallet Ecosystem. It defines a standard process to minimize risks and ensure interoperability in issuing high-assurance PIDs across the EUDI wallet ecosystem, adhering to the requirements set forth in the ARF [2].
-
 
 # 2.0	Motivation
 
@@ -103,24 +107,24 @@ Following the issuance of the PID, initial and periodic verification procedures 
 
 ## 3.1	Credential offer
 
-For PID credential issuance, it is recommended to send the Credential Offer by Reference using the credential_offer_uri parameter to avoid QR code data overload, especially in scenarios where the user needs to scan the QR code for initiating the process. The endpoint expected to be embedded in the QR code is:
+For PID credential issuance, the member state PID issuer will adopt RFC001 for credential offer pre-authorised code flow, using the credential_offer_uri parameter as shown below:
 
 ```
 openid-credential-offer://?credential_offer_uri=https://identity-provider.gov/pid-credential-offer
 
 ```
 
-In this case, the credential_offer_uri query parameter contains the URL where the credential offer from the government-approved identity provider can be resolved. This approach ensures a streamlined user experience while maintaining the necessary information exchange for the PID issuance process.
+In this case, the `credential_offer_uri` query parameter contains the URL where the credential offer from the government-approved identity provider can be resolved. This approach ensures a streamlined user experience while maintaining the necessary information exchange for the PID issuance process. The holder wallet obtains the above by scanning a QR code for cross-device workflows or via a deeplink for same-device workflows.
 
 ## 3.2	Credential offer response
 
-Upon resolving the credential_offer_uri query parameter, the identity provider responds with details of the PID credential offer. The response format is adapted to the specific requirements of PID issuance and may include information such as the credential type related to personal identification and the applicable trust framework. The response can be in one of the following formats:
+On resolving the `credential_offer_uri` query parameter, the issuer responds with details of the PID credential offer. The response format is adapted to the specific requirements of PID issuance and may include information such as the credential type related to personal identification and the applicable trust framework. The response can be in one of the following formats:
 
 ```json
 {
   "credential_issuer": "https://identity-provider.gov",
   "credentials": [
-    "Person Identification Data"
+    "PersonIdentificationData"
   ],
   "grants": {
     "authorization_code": {
@@ -138,10 +142,10 @@ Upon resolving the credential_offer_uri query parameter, the identity provider r
   "credential_issuer": "https://identity-provider.gov",
   "credentials": [
     {
-      "format": "jwt_vc_json",
+      "format": "jwt_vc",
       "types": [
         "VerifiableCredential",
-        "PersonalIdentityData"
+        "PersonIdentificationData"
       ],
       "trust_framework": {
         "name": "ewc-issuer-trust-list",
@@ -158,7 +162,7 @@ Upon resolving the credential_offer_uri query parameter, the identity provider r
 }
 ```
 
-The holder's wallet retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, sd-jwt_vc) is specified, focusing on the PID. This process ensures that the credential issuance aligns with the stringent requirements for Personal Identity Data within the EWC ecosystem.
+The holder's wallet retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, vc+sd-jwt) is specified, focusing on the PID. This process ensures that the credential issuance aligns with the stringent requirements for PID within the EWC ecosystem.
 
 For the pre-authorized flow, the credential response format is adapted to include the necessary grants for PID issuance:
 
@@ -167,15 +171,15 @@ For the pre-authorized flow, the credential response format is adapted to includ
   "credential_issuer": "https://identity-provider.gov",
   "credentials": [
     {
-      "format": "jwt_vc_json",
+      "format": "vc+sd-jwt",
       "types": [
         "VerifiableCredential",
-        "PersonalIdentityData"
+        "PersonIdentificationData"
       ],
       "trust_framework": {
-        "name": "ebsi",
+        "name": "ewc-issuer-trust-list",
         "type": "Accreditation",
-        "uri": "Link to the trust framework accreditation"
+        "uri": "Link to the issuer trust list"
       }
     }
   ],
@@ -190,15 +194,13 @@ For the pre-authorized flow, the credential response format is adapted to includ
 
 ## 3.3 Discover request
 
-The holder's wallet initiates a request to discover the government identity provider’s authorization server configurations, essential for PID credential issuance.
-
-To obtain the issuer's configurations, the wallet resolves the /.well-known/openid-credential-issuer endpoint using the credential_issuer URI found in the PID credential offer response:
+The holder's wallet initiates a request to discover the government identity provider’s authorization server configurations, essential for PID credential issuance. To obtain the issuer's configurations, the wallet resolves the /.well-known/openid-credential-issuer endpoint using the credential_issuer URI found in the PID credential offer response (as per EWC RFC001):
 
 ```http
 GET https://identity-provider.gov/.well-known/openid-credential-issuer
 ```
 
-Subsequently, the wallet requests the /.well-known/oauth-authorization-server endpoint to retrieve the authorization server metadata:
+Subsequently, the wallet requests the `/.well-known/oauth-authorization-server` endpoint to retrieve the authorization server metadata:
 
 ```http
 GET https://identity-provider.gov/.well-known/oauth-authorization-server
@@ -206,7 +208,7 @@ GET https://identity-provider.gov/.well-known/oauth-authorization-server
 
 ## 3.4 Discover response
 
-Upon resolving the .well-known endpoints, the **identity provider** responds with its configuration, tailored to support PID credential issuance. The response includes details about supported credentials, endpoints for issuing and managing credentials. It also specifies the cryptographic methods and trust frameworks applicable for PID credentials, as defined by [6]:
+Upon resolving the well-known endpoints, the **identity provider** responds with its configuration, tailored to support PID credential issuance. The response includes details about supported credentials, endpoints for issuing and managing credentials. It also specifies the cryptographic methods and trust frameworks applicable for PID credentials, as defined by [6]:
 
 ```json
 {
@@ -231,9 +233,9 @@ Upon resolving the .well-known endpoints, the **identity provider** responds wit
     }
   ],
   "credentials_supported": {
-    "PersonalIdentityData": {
+    "PersonIdentificationData": {
       "format": "vc+sd-jwt",
-      "scope": "PersonalIdentityData",
+      "scope": "PersonIdentificationData",
       "cryptographic_binding_methods_supported": [
         "jwk"
       ],
@@ -242,14 +244,14 @@ Upon resolving the .well-known endpoints, the **identity provider** responds wit
       ],
       "display": [
         {
-          "name": "Personal Identity Data",
+          "name": "Personal Identification Data",
           "locale": "en-GB",
           "background_color": "#000000",
           "text_color": "#FFFFFF"
         }
       ],
       "credential_definition": {
-        "vct": "PersonalIdentityData",
+        "vct": "PersonIdentificationData",
         "claims": {
           "given_name": {
             "display": [
@@ -304,7 +306,7 @@ Upon resolving the .well-known endpoints, the **identity provider** responds wit
       "format": "jwt_vc",
       "types": [
         "VerifiableCredential",
-        "PersonalIdentityData"
+        "PersonIdentificationData"
       ],
       "trust_framework": {
         "name": "ewc-issuer-trust-list",
@@ -313,7 +315,7 @@ Upon resolving the .well-known endpoints, the **identity provider** responds wit
       },
       "display": [
         {
-          "name": "Personal Identity Data",
+          "name": "Person Identification Data",
           "locale": "en-GB"
         }
       ]
@@ -455,7 +457,7 @@ Query params for the authorisation request are given below:
       "credential_definition": {
          "type": [
             "VerifiableCredential",
-            "UniversityDegreeCredential"
+            "PersonIdentificationData"
          ]
       }
    }
@@ -473,7 +475,7 @@ Query params for the authorisation request are given below:
     "types": [
       "VerifiableCredential",
       "VerifiableAttestation",
-      "VerifiablePortableDocumentA1"
+      "PersonIdentificationData"
     ]
   }
   ```
@@ -589,6 +591,9 @@ If no additional details are requested, the identity provider issues an authoriz
 HTTP/1.1 302 Found
 Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 ```
+
+> [!NOTE]
+> The above can be deeplinked to the EUDI wallet as well. 
 
 ## 3.7 Token request
 
@@ -706,7 +711,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 {
    "format": "vc+sd-jwt",
    "credential_definition": {
-      "vct": "PersonalIdentityData"
+      "vct": "PersonIdentificationData"
    },
    "proof": {
       "proof_type": "jwt",
@@ -734,7 +739,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
   "types": [
     "VerifiableCredential",
     "VerifiableAttestation",
-    "PersonalIdentityData"
+    "PersonIdentificationData"
   ]
 }
 ```
