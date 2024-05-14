@@ -110,7 +110,9 @@ sequenceDiagram
     participant PP as PID Provider/authentic source
     participant PPW as PID Provider wallet
 	participant CW as Client wallet
+    participant VDR 
     participant AS as Autentication server
+    
     
     NP->>PP: Apply for LPID at eService
     PP->>PPW: "Send LPID" request (credential schema, client wallet endpoint)
