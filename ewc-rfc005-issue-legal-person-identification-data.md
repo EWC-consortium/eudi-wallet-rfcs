@@ -49,25 +49,37 @@ This specification implements the OID4VCI workflow for issuing Legal Person Iden
 
 The EWC LSP must align with the standard protocol for issuing LPID from trusted and accredited sources. This uniform approach serves as the foundation for enabling interoperability between identity providers and wallet holders throughout the EWC ecosystem. This RFC assumes that users are familiar with the chosen EWC protocols and standards, and can reference the original specifications when required. 
 
-# 3.0	Messages
+# 3.0 LPID Issuance Process
 
-The LPID credential issuance incorporates comprehensive steps to ensure the security, reliability, and compliance. This includes both an authorization flow and a pre-authorized flow, with additional preliminary and post-issuance steps to align with regulatory standards and security best practices. The transactions of the LPID issuance is illustrated below, incorporating the critical steps of **Wallet Conformity, Trust Anchor Verification, Reliable Data Acquisition, PID Generation, Secure Issuance and Storage, Initial and Periodic Verification, and Renewal and Revocation Policies Management**.
-
-### Preliminary Steps for LPID Issuance:
+The LPID Issuance process is implemanted according to national law, however some verifications must be implemented across all PID Providers. These verifications include:
 
 1. **Authentication:** The natural person requesting a LPID on behalf of a legal person must ne authenticated using LoA High.
 
 2. **Authorization:** The representative rights of the natural person requesting a LPID must be verified.
 
-3. **Signing:** The natural person requesting a LPID must sign the LPID application. Only applies if regulated in national law.
+3. **Signing:** The natural person requesting a LPID might have to sign the LPID application. This step is **optional** and only applies if regulated in national law.
 
-4. **Status:** The status of the leagal person must be verified. At the very least, the legal person for which an LPID is requested must be registered at a business register.
+4. **Status:** The status of the legal person must be verified. These states are not yet regulated, but at the very least, the legal person for which an LPID is requested must be registered at a business register.
 
-5. **Wallet Conformity:** Before initiating the LPID issuance, the user's wallet must be confirmed to comply with established standards. This includes possessing an internal certificate from Certification Assessment Bodies (CAB) that validates its conformity, ensuring the wallet's capability to securely manage the LPID and associated qualified electronic attestations.
+The issuance process can either start in:
+1. the wallet application, grahical user interface of the wallet or
+2. the eService of the PID provider.
+
+The first approach requires the wallet provider to implement support for a lookup of all PID Providers. It also requires the User to have a wallet solution [] with a wallet application. An end user representing the legal person chooses an PID Provider to request an LPID from directly from the wallet application. The wallet application then redirects the end user to the eService of the PID Pprovider for the issuance process. 
+
+The second approach has no dependency to the implementaion of the wallet or the wallet solution of the User. An end user representing the legal person goes directly to the eService of the PID Provider to apply for/request an LPID. All communication between wallets is done in the backend.
+
+Once an application/request has been approved in the LPID process of a PID Provider, the transctions between wallets takes place in order to issue an LPID to a wallet instance of a legal person. Theese transactions are described in the chapter below.
+
+# 3.0 LPID issuance to a wallet instance
+
+### Preliminary Steps for LPID Issuance:
+
+5. **Wallet Conformity:** Before initiating the LPID issuance, the user's wallet must be confirmed to comply with established standards. This includes possessing an wallet instance attestaion (WIA), wallet trust evidence (WTE), both issued by the wallet provider [ARF], and PID issued by a PID Provider.
 
 6. **Trust Anchor Verification:** The issuing entity's authorization within the Trust Anchor framework must be validated, ensuring it is listed as an authorized actor, thus guaranteeing that only verified entities can issue the LPID.
 
-7. **Data Acquisition from Reliable Sources:** Data used for LPID generation must be supplied from authentic sorces, such as business registries, ensuring the LPID credentials are based on accurate and up-to-date information.
+7. **Data Acquisition from Reliable Sources:** Data used for LPID generation must be supplied from authentic sorces, such as business registries, ensuring the LPID credentials are based on accurate and up-to-date information. In use cases where the PID provider differs from the authentic source the PID Provider must have access to information in the authentic source.
 
 ### LPID Credential Issuance Process:
 The LPID issuance process starts with a natural person applying for, or requesting depending on national regulation, an LPID on behalf of a legal person.
@@ -89,23 +101,37 @@ config:
 sequenceDiagram
 
     autonumber
-    participant U as Natural person
+    participant NP as Natural person
     participant PP as PID Provider/authentic source
     participant PPW as PID Provider wallet
 	participant CW as Client wallet
     participant AS as Autentication server
     
-    U->>PP: Apply for LPID at eService
+    NP->>PP: Apply for LPID at eService
     PP->>PPW: "Send LPID" request (credential schema, client wallet endpoint)
+    
+    Note over PPW,VDR: Wallet conformity check
     PPW->>CW: Request L/PID, WIA, WTE presentations
     CW-->>PPW: PID, WIA, WTE presentations
-    PPW->>PPW: Verify & validate presentations
+   
+    Note over PPW,VDR: Verification & validation
+    PPW->>VDR: Request verification & validation information
+    VDR-->>PPW: Information
+    PPW->>PPW: Verify & validate presentations and issuers
     alt Client wallet is Valid
     PPW->>PPW: Create credential offer
     PPW->>CW: Send credential offer 
+    
+    Note over PPW, VDR: Wallet conformity check
     CW->>PPW: Request LPID and WIA presentations
     PPW-->>CW: LPID & WIA presentations
-    CW->>CW: Verify & validate presentations
+    
+    Note over CW,VDR: Verification & validation
+    CW->>VDR: Request verification & validation information
+    VDR-->>CW: Information
+    CW->>CW: Verify & validate presentations and issuers
+    
+    Note over CW, AS: Authenticate & authorize
     alt Preauthorized flow
     CW->>AS: Token request
     AS-->>CW: Acess token
@@ -117,25 +143,75 @@ sequenceDiagram
     AS-->>CW: Acess Token
     end
     CW->>PPW: LPID Credential request (access token)
+    
+    Note over PPW, CW: LPID generation, issuance and storage
     PPW->>PPW: Create credential
     PPW->>PPW: Encrypt credential
     PPW->>PPW: Seal credential
     PPW-->>CW: LPID Credential
+    CW->>CW: Accept and store LPID
+    
+    Note over CW, NP: Confirmation
+    CW->>PPW: ACK
     PPW->>PP: ACK
     end
     alt Client wallet is not Valid
     PPW->>PP: WARN ("Client wallet doesn't validate", CODE)
     end
-    PP->>U: Inform user
+    PP->>NP: Inform user
 ```
-Figure 1: LPID Issuance flow between wallets of PID provider and legal person wallet 
+Figure 1: Transactions between wallets of PID provider and legal person wallet for LPID issuance
 
-The process highlights the integration of the new preliminary steps with the traditional authorization code flow and pre-authorized code flow, adhering to the OID4VCI specification. It ensures a robust framework for digital identity issuance, from initial compliance verification to the secure generation and storage of LPID credentials, followed by ongoing management.
+The sequence diagram highlights the integration of the new preliminary steps (3-7, 10-14) using OpenID4VP with the traditional authorization code flow and pre-authorized code flow, adhering to the OID4VCI specification. It ensures a robust framework for digital identity issuance, from initial compliance verification to the secure generation and storage of LPID credentials, followed by ongoing management.
+
+## Steps:
+1. A natural person uses the eService of an PID Provider to apply for/request an LPID.
+2. The application/request for an LPID in the eService has been approved after verification checks described in chapter 3 above. The PID provider requests the PID Provider wallet to create and send an LPID.
+3. The PID provider wallet requests the Client wallet for WIA, WTE, PID using the endpoint either submitted by the natural person in the first step or by information in the redirect url if the LPID process started in a wallet application with a redirect.
+4. Client wallet returns presentations of WTE, WIA, (PID).
+5. PID provider wallet requests information from VDR for verifiacation and validation.
+6. VDR returns requested information.
+7. PID provider wallet verifies and validates presentations of and issuer of WTE and WIA (and PID).
+ALT - Client wallet is Valid
+8. wallet creates LPID offer.
+9. Wallet sends LPID offer to Client wallet.
+10. Client wallet requests WIA and PID from PID provider wallet.
+11. PID provider wallet returs presentations of PID and WIA.
+12. Client wallet requests information from VDR for verifiacation and validation.
+13. VDR returns requested information.
+14. Client wallet verifies and validates presentations of and issuer of WTE and WIA (and PID).
+ALT - Preauthorized flow
+15. Client wallet requests token from autorization server.
+16. Authorization server return access token.
+END ALT - Preauthorized flow
+ALT - Authorization flow
+17. Client wallet requests access from Authorization server.
+18. Authorization server returns acess response.
+29. Client wallet requests access from autorization server.
+20. Authorization server return access token.
+END ALT - Authorization flow
+21. Client wallet requests LPID credential, including access token, from PID Provider wallet.
+22. PID provider wallet creates LPID.
+23. PID provider wallet encrypts LPID.
+24. PID provider wallet  seals LPID.
+25. PID provider wallet sends LPID to Client wallet.
+26. Client wallet accepts LPID and stores it.
+27. Client wallet sends ACK to PID provider wallet.
+28. PID provider wallet sends ACK to PID provider.
+END ALT - Client wallet is Valid
+ALT - Client wallet is NOT Valid
+29. PID provider wallet sends a warning to the PID Provider including warning code and warning text message.
+END ALT - Client wallet is NOT Valid
+30. PID provider informs the natural person of the result from application/request for LPID.
+
+# 4.0	Messages
+
+The LPID credential issuance incorporates comprehensive steps to ensure the security, reliability, and compliance. This includes both an authorization flow and a pre-authorized flow, with additional preliminary and post-issuance steps to align with regulatory standards and security best practices. The transactions of the LPID issuance is illustrated below, incorporating the critical steps of **Wallet Conformity, Trust Anchor Verification, Reliable Data Acquisition, PID Generation, Secure Issuance and Storage, Initial and Periodic Verification, and Renewal and Revocation Policies Management**.
 
 ### Post-Issuance Verification and Management:
 Following the issuance of the LPID, policies for the renewal and revocation of LPIDs (and (qualified)electronic attestations) must be established to address changes in the legal person's status.
 
-## 3.1 Discover request
+## 4.1 Discover request
 
 The holder's wallet initiates a request to discover the government identity provider’s authorization server configurations, essential for LPID credential issuance. To obtain the issuer's configurations, the wallet resolves the /.well-known/openid-credential-issuer endpoint using the credential_issuer URI found in the LPID credential offer response (as per EWC RFC001):
 
@@ -149,7 +225,7 @@ Subsequently, the wallet requests the `/.well-known/oauth-authorization-server` 
 GET https://identity-provider.gov/.well-known/oauth-authorization-server
 ```
 
-## 3.2 Discover response
+## 4.2 Discover response
 
 Upon resolving the well-known endpoints, the **identity provider** responds with its configuration, tailored to support LPID credential issuance. The response includes details about supported credentials, endpoints for issuing and managing credentials. It also specifies the cryptographic methods and trust frameworks applicable for LPID credentials, as defined by [6]:
 
@@ -336,7 +412,7 @@ Once the well-known endpoint for **authorisation server** configuration is resol
 ```
 Currently, we retain the trust framework specified by EBSI. Subsequently, we will specify an additional RFC defining the EWC trusted issuer list. 
 
-## 3.3	Credential offer
+## 4.3	Credential offer
 
 For LPID credential issuance, the member state LPID issuer will adopt RFC001 for credential offer pre-authorised code flow, using the credential_offer_uri parameter as shown below:
 
@@ -347,7 +423,7 @@ openid-credential-offer://?credential_offer_uri=https://identity-provider.gov/pi
 
 In this case, the `credential_offer_uri` query parameter contains the URL where the credential offer from the government-approved identity provider can be resolved. This approach ensures a streamlined user experience while maintaining the necessary information exchange for the LPID issuance process. The holder wallet obtains the above by scanning a QR code for cross-device workflows or via a deeplink for same-device workflows.
 
-## 3.4	Credential offer response
+## 4.4	Credential offer response
 
 On resolving the `credential_offer_uri` query parameter, the issuer responds with details of the LPID credential offer. The response format is adapted to the specific requirements of LPID issuance and may include information such as the credential type related to personal identification and the applicable trust framework. The response can be in one of the following formats:
 
@@ -423,7 +499,7 @@ For the pre-authorized flow, the credential response format is adapted to includ
 }
 ```
 
-## 3.5 Authorisation request
+## 4.5 Authorisation request
 
 The authorization request seeks permission to access the LPID credential endpoint. Here is an adapted example of this request, specifically aimed at LPID issuance by a government identity provider:
 
@@ -544,7 +620,7 @@ Query params for the authorisation request are given below:
 </table>
 
 
-## 3.6 Authorisation response
+## 4.6 Authorisation response
 
 In the context of LPID credential issuance, the government identity provider may **optionally** request additional details for enhanced authentication, such as DID verification. In scenarios necessitating this heightened security, the authorization response will include a `response_type` parameter set to `direct_post`. An example of such a response is:
 
@@ -625,9 +701,9 @@ Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 > [!NOTE]
 > The above can be deeplinked to the EUDI wallet as well. 
 
-## 3.7 Token request
+## 4.7 Token request
 
-### 3.7.1 Authorisation code flow
+### 4.7.1 Authorisation code flow
 
 For LPID credential issuance, the token request using the authorization code flow is structured as follows:
 
@@ -672,7 +748,7 @@ This request is made with the following query params:
   </tr>
 </table>
 
-### 3.7.2 Pre-authorised code flow
+### 4.7.2 Pre-authorised code flow
 
 In scenarios where a pre-authorized code is used, the token request is structured as follows:
 
@@ -710,7 +786,7 @@ This request is made with the following query params:
   </tr>
 </table>
 
-## 3.8 Token response
+## 4.8 Token response
 
 The token response for PID credential issuance includes:
 
@@ -729,7 +805,7 @@ The token response for PID credential issuance includes:
 This response grants the wallet an access and a refresh token for requesting the LPID credential.
 
 
-## 3.9 Credential request
+## 4.9 Credential request
 
 To request the LPID credential, the holder’s wallet sends a request to the LPID Endpoint as follows:
 
@@ -774,11 +850,11 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 }
 ```
 
-## 3.10 Credential response
+## 4.10 Credential response
 
 The issuance of LPID credentials may proceed directly or be deferred, contingent on the issuer's readiness to issue the credential immediately or require additional processing time.
 
-### 3.10.1  In-time
+### 4.10.1  In-time
 
 In cases where the LPID credential is immediately available, the response is structured as follows:
 
@@ -792,7 +868,7 @@ In cases where the LPID credential is immediately available, the response is str
 ```
 This response provides the LPID credential in an encoded format, ensuring that the recipient can use it straightaway. The c_nonce ensures the response's freshness, enhancing security.
 
-### 3.10.2 Deferred
+### 4.10.2 Deferred
 
 Should the credential not be ready for immediate issuance, the response includes an acceptance token, signaling that the LPID credential's issuance is deferred:
 
@@ -812,15 +888,15 @@ Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
 ```
 The holder can later use the acceptance_token to request the credential once it's ready for issuance.
 
-## 3.11 Issuer Authorization Verification
+## 4.11 Issuer Authorization Verification
 
 During this process, the wallet queries the Trust Anchor to ascertain the issuer's trust status, thereby affirming that the issuer has been vetted and is compliant with established standards and regulations governing LPID. It ensures that only entities with verified trustworthiness can issue LPID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
 
-## 3.12 Check Wallet's Conformity
+## 4.12 Check Wallet's Conformity
 
 This verification process involves assessing whether the wallet possesses an internal certificate, issued by Certification Assessment Bodies (CAB), which confirms its compliance with the requisite standards for securely handling LPID digital identities and associated qualified electronic attestations. It guarantees the secure storage and management of the LPID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
 
-# 4.0	Alternate response format
+# 5.0	Alternate response format
 
 Standard HTTP response codes shall be supported. Any additional ones can be formulated in the following format.
 
@@ -866,18 +942,19 @@ The table below summarises the success/error responses that can be used:
   </tr>
 </table>
 
-# 5.0	Implementers
+# 6.0	Implementers
 
 Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-wallet-rfcs?tab=readme-ov-file#implementers).
 
-# 6.0	Reference
+# 7.0	Reference
 
-1. OpenID Foundation (2023), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-12.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-12.html) (Accessed: January 10, 2024).
-2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.1.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: October 16, 2023).
-3. OpenID Foundation (2023), 'Self-Issued OpenID Provider v2 (SIOP v2)', Available at: [https://openid.net/specs/openid-connect-self-issued-v2-1_0.html](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html) (Accessed: October 01, 2023)
+1. OpenID Foundation (2023), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html]) (Published: February 8, 2024).
+2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
+3. OpenID Foundation (2023), 'Self-Issued OpenID Provider v2 (SIOP v2)', Available at: [https://openid.net/specs/openid-connect-self-issued-v2-1_0.html]) (Published: November 28, 2023)
 4. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 5. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 6. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 00, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
+7. Definition of wallet solution, online reference...
 
 # Appendix A: Public key resolution
 
