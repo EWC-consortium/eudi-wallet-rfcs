@@ -59,7 +59,7 @@ The LPID credential issuance process incorporates comprehensive steps to ensure 
 
 2. **Authorization:** The representative rights of the natural person requesting a LPID must be verified.
 
-(3. **Signing:** The natural person requesting a LPID must sign the LPID application. Only applies if regulated in national law.)
+3. **Signing:** The natural person requesting a LPID must sign the LPID application. Only applies if regulated in national law.
 
 4. **Status:** The status of the leagal person must be verified. At the very least, the legal person for which an LPID is requested must be registered at a business register.
 
@@ -73,9 +73,61 @@ The LPID credential issuance process incorporates comprehensive steps to ensure 
 
 The LPID issuance follows detailed steps starting from the discovery of issuer capabilities, through authentication and authorization, leading to the actual credential issuance. The process is adapted to include the preliminary steps, ensuring a secure and compliant issuance path.
 
-INSERT SEQUENCE DIAGRAM.
+```mermaid
+---
+config:
+  theme: base
+  themeVariables:
+    actorBkg: "lightgrey"
+    actorBorder: "darkgrey"
+    loopTextColor: "black"
+    labelBoxBkgColor: "lightblue"
+    labelBoxBorderColor: "grey"
+---
 
-Figure 1: LPID Issuance Process 
+sequenceDiagram
+
+    autonumber
+    participant U as Natural person
+    participant PP as PID Provider/authentic source
+    participant PPW as PID Provider wallet
+	participant CW as Client wallet
+    participant AS as Autentication server
+    
+    U->>PP: Apply for LPID at eService
+    PP->>PPW: "Send LPID" request (credential schema, client wallet endpoint)
+    PPW->>CW: Request L/PID, WIA, WTE presentations
+    CW-->>PPW: PID, WIA, WTE presentations
+    PPW->>PPW: Verify & validate presentations
+    alt Client wallet is Valid
+    PPW->>PPW: Create credential offer
+    PPW->>CW: Send credential offer 
+    CW->>PPW: Request LPID and WIA presentations
+    PPW-->>CW: LPID & WIA presentations
+    CW->>CW: Verify & validate presentations
+    alt Preauthorized flow
+    CW->>AS: Token request
+    AS-->>CW: Acess token
+    end
+    alt Authorization flow
+    CW->>AS: Authorization request
+    AS-->>CW: Athorization response
+    CW->>AS: Token request
+    AS-->>CW: Acess Token
+    end
+    CW->>PPW: LPID Credential request (access token)
+    PPW->>PPW: Create credential
+    PPW->>PPW: Encrypt credential
+    PPW->>PPW: Seal credential
+    PPW-->>CW: LPID Credential
+    PPW->>PP: ACK
+    end
+    alt Client wallet is not Valid
+    PPW->>PP: WARN ("Client wallet doesn't validate", CODE)
+    end
+    PP->>U: Inform user
+```
+Figure 1: LPID Issuance flow between wallets of PID provider and legal person wallet 
 
 The process highlights the integration of the new preliminary steps with the traditional authorization code flow and pre-authorized code flow, adhering to the OID4VCI specification. It ensures a robust framework for digital identity issuance, from initial compliance verification to the secure generation and storage of LPID credentials, followed by ongoing management.
 
