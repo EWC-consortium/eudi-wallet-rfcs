@@ -210,7 +210,7 @@ ALT - Client wallet is NOT Valid
 END ALT - Client wallet is NOT Valid
 30. PID provider informs the natural person of the result from application/request for LPID.
 
-## 4.3 Post-Issuance Verification and Management:
+## 4.2 Post-Issuance Verification and Management:
 
 Following the issuance of the LPID, policies for the renewal and revocation of LPIDs must be established by the PID Provider to reflect changes in the legal person's registered information.
 
