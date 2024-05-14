@@ -10,6 +10,7 @@
 
 **Status:** Draft
 
+<!--
 **Table of Contents**
 
 - [EWC RFC005: Issue Legal Person Identification Data (LPID) - v1.0](#ewc-rfc005-issue-legal-person-identification-data-pid---v001)
@@ -40,7 +41,7 @@
 - [8.0	Reference](#80reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
 
-
+-->
 
 # 1.0	Summary
 
