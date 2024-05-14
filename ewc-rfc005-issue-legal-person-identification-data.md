@@ -51,11 +51,11 @@ The EWC LSP must align with the standard protocol for issuing LPID from trusted 
 
 # 3.0	Messages
 
-The LPID credential issuance process incorporates comprehensive steps to ensure the security, reliability, and compliance. This includes both an authorization flow and a pre-authorized flow, with additional preliminary and post-issuance steps to align with regulatory standards and security best practices. The process is illustrated below, incorporating the critical steps of Wallet Conformity, Trust Anchor Verification, Reliable Data Acquisition, PID Generation, Secure Issuance and Storage, Initial and Periodic Verification, and Renewal and Revocation Policies Management.
+The LPID credential issuance incorporates comprehensive steps to ensure the security, reliability, and compliance. This includes both an authorization flow and a pre-authorized flow, with additional preliminary and post-issuance steps to align with regulatory standards and security best practices. The transactions of the LPID issuance is illustrated below, incorporating the critical steps of **Wallet Conformity, Trust Anchor Verification, Reliable Data Acquisition, PID Generation, Secure Issuance and Storage, Initial and Periodic Verification, and Renewal and Revocation Policies Management**.
 
 ### Preliminary Steps for LPID Issuance:
 
-1. **Authentication: **The natural person requesting a LPID on behalf of a legal person must ne authenticated using LoA High.
+1. **Authentication:** The natural person requesting a LPID on behalf of a legal person must ne authenticated using LoA High.
 
 2. **Authorization:** The representative rights of the natural person requesting a LPID must be verified.
 
@@ -70,6 +70,7 @@ The LPID credential issuance process incorporates comprehensive steps to ensure 
 7. **Data Acquisition from Reliable Sources:** Data used for LPID generation must be supplied from authentic sorces, such as business registries, ensuring the LPID credentials are based on accurate and up-to-date information.
 
 ### LPID Credential Issuance Process:
+The LPID issuance process starts with a natural person applying for, or requesting depending on national regulation, an LPID on behalf of a legal person.
 
 The LPID issuance follows detailed steps starting from the discovery of issuer capabilities, through authentication and authorization, leading to the actual credential issuance. The process is adapted to include the preliminary steps, ensuring a secure and compliant issuance path.
 
