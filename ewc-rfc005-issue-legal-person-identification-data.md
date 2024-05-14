@@ -126,8 +126,8 @@ sequenceDiagram
     VDR-->>PPW: Information
     PPW->>PPW: Verify & validate presentations and issuers
     alt Client wallet is Valid
-    PPW->>PPW: Create credential offer
-    PPW->>CW: Send credential offer 
+    PPW->>PPW: Create credential offer response
+    PPW->>CW: Send credential offer response
     
     Note over PPW, VDR: Wallet conformity check
     CW->>PPW: Request LPID and WIA presentations
@@ -182,8 +182,8 @@ Not included in the diagram is the revocation information that must be published
 6. VDR returns requested information.
 7. PID provider wallet verifies and validates presentations of and issuer of WTE and WIA (and PID).
 ALT - Client wallet is Valid
-8. wallet creates LPID offer.
-9. Wallet sends LPID offer to Client wallet.
+8. wallet creates LPID **offer response**.
+9. Wallet sends LPID **offer response** to Client wallet.
 10. Client wallet requests WIA and PID from PID provider wallet.
 11. PID provider wallet returs presentations of PID and WIA.
 12. Client wallet requests information from VDR for verifiacation and validation.
