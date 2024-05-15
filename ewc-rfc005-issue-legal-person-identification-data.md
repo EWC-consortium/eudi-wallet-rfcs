@@ -114,7 +114,7 @@ sequenceDiagram
     participant AS as Autentication server
     
     
-    NP->>PP: Apply for LPID at eService
+    NP->>PP: Apply for/request LPID at eService
     PP->>PPW: "Send LPID" request (credential schema, client wallet endpoint)
     
     Note over PPW,VDR: Wallet conformity check
