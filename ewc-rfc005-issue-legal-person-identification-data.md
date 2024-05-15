@@ -111,9 +111,9 @@ sequenceDiagram
     participant NP as Natural person
     participant PP as PID Provider/authentic source
     participant PPW as PID Provider wallet
-	participant CW as Client wallet
+	participant CW as Legal person wallet
     participant VDR 
-    participant AS as Autentication server
+    participant AS as Authorization server
     
     
     NP->>PP: Apply for/request LPID at eService
