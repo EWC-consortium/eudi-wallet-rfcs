@@ -53,7 +53,7 @@ The EWC LSP must align with the standard protocol for issuing LPID from trusted 
 
 # 3.0 LPID Issuance Process
 
-The LPID issuance process is implemented by PID providers according to national law. The process may differ between member stated but some verifications must be implemented across all PID Providers. These verifications include:
+The LPID issuance process is implemented by PID providers according to national law. The process may differ between member states but some verifications must be implemented in an LPID issuance process across all PID Providers. These verifications include:
 
 1. **Authentication:** The natural person requesting a LPID on behalf of a legal person must ne authenticated using LoA High.
 
@@ -64,14 +64,14 @@ The LPID issuance process is implemented by PID providers according to national 
 4. **Status:** The status of the legal person must be verified. These states are not yet regulated, but at the very least, the legal person for which an LPID is requested must be registered at a business register.
 
 The issuance process can either start in:
-1. the wallet application, grahical user interface of the wallet or
+1. a wallet application, the grahical user interface of the wallet *or*
 2. the eService of the PID provider.
 
-The first approach requires the wallet provider to implement support for a lookup of all PID Providers. It also requires the User to have a wallet solution [] with a wallet application. An end user representing the legal person chooses an PID Provider to request an LPID from directly from the wallet application. The wallet application then redirects the end user to the eService of the PID Pprovider for the issuance process. 
+The first approach requires the wallet provider to implement support for a lookup of all PID Providers. It also requires the User (natural person or legal person, as defined in eIDAS2 [8]) to have a wallet solution [8] that includes a wallet application. Wallet applications are optional and not all legal persons may opt for a wallet solution that includes a graphical user interface. An end user representing the legal person chooses an PID Provider in the wallet application to apply for/request an LPID from. The wallet application then redirects the end user to the eService of the PID Pprovider for the issuance process. After completeing the eService procedure, the natural person is redirected back to the wallet application from where a offer reqest is initiated.
 
-The second approach has no dependency to the implementaion of the wallet or the wallet solution of the User. An end user representing the legal person goes directly to the eService of the PID Provider to apply for/request an LPID. All communication between wallets is done in the backend.
+The second approach has no dependency to the implementaion of the wallet or the wallet solution of the User. An end user representing the legal person goes directly to the eService of the PID Provider to apply for/request an LPID. After completeing the eService procedure, the PID Provider initiates a offer response to the wallet instance of the legal person which endpoint the representative of the lagal person supplied. The endpoint can be a url or a DID for instance. All communication between wallets is done in the backend.
 
-Once an application/request has been approved in the LPID process of a PID Provider, the transctions between wallets takes place in order to issue an LPID to a wallet instance of a legal person. Theese transactions are described in the chapter below.
+Once an application/request has been approved in the LPID process of a PID Provider, the creation and issuance of the LPID is done in the wallet of the PID provider. The transctions between the wallets of PID Provider and legal person are described in the chapter below.
 
 # 4.0 LPID issuance to a wallet instance
 
@@ -90,6 +90,8 @@ In order to issue an LPID from an issuer wallet instance, som preliminary steps 
 The LPID issuance process starts with a natural person applying for, or requesting depending on national regulation, an LPID on behalf of a legal person.
 
 The LPID issuance follows detailed steps starting from the discovery of issuer capabilities, through authentication and authorization, leading to the actual credential issuance. The process is adapted to include the preliminary steps, ensuring a secure and compliant issuance path.
+
+The sequence diagram below descibes the second option, as outlined in the chapter above, where an end user enters the eService of a PID provider directly, without use of a wallet application. For the first flow, the transactions are in a slightly different order and a discovery of the PID providers offers must be done as well, GET: /.well-known/openid-credential-issuer.
 
 ```mermaid
 ---
@@ -964,12 +966,13 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 # 8.0	Reference
 
 1. OpenID Foundation (2023), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html]) (Published: February 8, 2024).
-2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
+2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2024-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
 3. OpenID Foundation (2023), 'Self-Issued OpenID Provider v2 (SIOP v2)', Available at: [https://openid.net/specs/openid-connect-self-issued-v2-1_0.html]) (Published: November 28, 2023)
 4. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 5. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 6. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 00, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
 7. Definition of wallet solution, [https://github.com/malinnorlander/eudi-wallet-rfcs/blob/main/images/Concept%20model.png], as defined in EWC.
+8. eIDAS2, add online resource.
 
 # Appendix A: Public key resolution
 
