@@ -138,6 +138,10 @@ sequenceDiagram
     VDR-->>CW: Information
     CW->>CW: Verify & validate presentations and issuers
     
+    Note over CW,PP: Discovery of issuer capabilities
+    CW->>PP: GET: /.well-known/oauth-authorization-server
+    PP-->>CW: OAuth authorization server metadata
+
     Note over CW, AS: Authenticate & authorize
     alt Preauthorized flow
     CW->>AS: Token request
