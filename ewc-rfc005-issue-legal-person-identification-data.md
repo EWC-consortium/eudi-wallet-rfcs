@@ -926,6 +926,19 @@ Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
 ```
 The holder can later use the acceptance_token to request the credential once it's ready for issuance.
 
+### 5.10.3 LPID Schema
+
+The LPID attributes: legal name, EUID
+THE LPID metadata: .....
+
+**>> ADD table or picture of LPID attributes <<**
+
+
+```json
+{
+  senaste versionen av schemat Lars tagit fram
+}
+```
 ## 5.11 Issuer Authorization Verification
 
 During this process, the wallet queries the Trust Anchor to ascertain the issuer's trust status, thereby affirming that the issuer has been vetted and is compliant with established standards and regulations governing LPID. It ensures that only entities with verified trustworthiness can issue LPID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
