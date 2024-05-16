@@ -74,21 +74,22 @@ The second approach has no dependency to the implementaion of the wallet or the 
 The picture below shows a generic outline of the LPID issuance process, the actual implemntation depends on national regulations.
 ![Generic LPID issuance process](images/Generic%20LPID%20issuance%20process.png)
 
-Figure 1. Generic LPID issuance process
+*Figure 1. Generic LPID issuance process*
 
+**Process steps:**
 Start: Natural person visists PID providers eService for LPID issuance
-
-1. Natural person authenitcates using LoA High (any LoA High certified method)
-2. PID provider verifies naural person credentials
-3. PID Provider verifies powers of natural person to represent the legal person for which the LPID is requested (according to national regulation)
-4. PID provier verifies the status of the legal person (according to regulation)
-5. When all checks succeds
-6. PID provider asks natural person for wallet id or endpoint for the wallet of the legal person
-7. Natural person enters wallet id/endpoint
-8. PID provider creates LPID
-9. PID provider publishes revocation information for the issued PID
-10. PID provider sends the LPID to the wallet instance of the legal person appointed by the natural person
-
+1. The natural person authenticates using LoA High (any LoA High certified method). (Not done during pilot as there is no LoA High available yet.)
+2. PID Provider verifies the natural person credentials.
+3. The natural person signs and submits the application for an LPID. (signing using existing methods)
+4. PID Provider verifies the signature of the natural person.
+5. PID Provider verifies the powers of the natural person to represent the legal person for which the LPID is requested (according to assumptions as national regulation isn’t in place yet).
+6. PID Provider verifies the status of the legal person (according to assumptions as national regulation isn’t in place yet).
+7. Verification of results from steps 4-6.
+8. PID Provider asks the natural person for a wallet id or endpoint for the wallet of the legal person. (Endpoint in first phase to avoid DID registration)
+9. The natural person submits wallet id/endpoint. 
+10. PID Provider creates the schema with data for the LPID.
+11. PID Provider publishes revocation information for the LPID to be issued.
+12. PID Provider issues the LPID to the wallet instance of the legal person appointed by the natural person. (done by the PID Provider wallet, details shown in the following chapter.
 End: LPID is stored in wallet instance
 
 Once an application/request has been approved in the LPID process of a PID Provider, the creation and issuance of the LPID is done in the wallet of the PID provider. The transctions between the wallets of PID Provider and legal person are described in the chapter below.
@@ -193,7 +194,7 @@ sequenceDiagram
     end
     PP->>NP: Inform user
 ```
-Figure 1: Transactions between wallets of PID provider and legal person wallet for LPID issuance
+*Figure 2. Transactions between wallets of PID provider and legal person wallet for LPID issuance*
 
 The sequence diagram highlights the integration of the new preliminary steps (3-7, 10-14) using OpenID4VP with the traditional authorization code flow and pre-authorized code flow, adhering to the OID4VCI specification. It ensures a robust framework for digital identity issuance, from initial compliance verification to the secure generation and storage of LPID credentials, followed by ongoing management. 
 
