@@ -71,6 +71,9 @@ The first approach requires the wallet provider to implement support for a looku
 
 The second approach has no dependency to the implementaion of the wallet or the wallet solution of the User. An end user representing the legal person goes directly to the eService of the PID Provider to apply for/request an LPID. After completeing the eService procedure, the PID Provider initiates a offer response to the wallet instance of the legal person which endpoint the representative of the lagal person supplied. The endpoint can be a url or a DID for instance. All communication between wallets is done in the backend.
 
+The picture below shows a generic outline of the LPID issuance process, the actual implemntation depends on national regulations.
+![Generic LPID issuance process](images/Generic%20LPID%20issuance%20process.png)
+
 Once an application/request has been approved in the LPID process of a PID Provider, the creation and issuance of the LPID is done in the wallet of the PID provider. The transctions between the wallets of PID Provider and legal person are described in the chapter below.
 
 # 4.0 LPID issuance to a wallet instance
