@@ -240,7 +240,7 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
         }
       ],
       "credential_definition": {
-        "vct": "VerifiablePortableDocumentA1",
+        "type": "VerifiablePortableDocumentA1",
         "claims": {
           "given_name": {
             "display": [
@@ -690,7 +690,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 {
    "format": "vc+sd-jwt",
    "credential_definition": {
-      "vct": "VerifiablePortableDocumentA1"
+      "type": "VerifiablePortableDocumentA1"
    },
    "proof": {
       "proof_type": "jwt",
