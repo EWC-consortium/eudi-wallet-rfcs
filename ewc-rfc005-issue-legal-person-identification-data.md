@@ -1,4 +1,4 @@
-# EWC RFC005: Issue Legal Person Identification Data (LPID) - v0.1
+# EWC RFC005: Issue Legal Person Identification Data (LPID) - v0.4
 
 **Authors:** 
 * Mrs Malin Norlander (Bolagsverket, Sweden)
@@ -13,7 +13,7 @@
 <!--
 **Table of Contents**
 
-- [EWC RFC005: Issue Legal Person Identification Data (LPID) - v1.0](#ewc-rfc005-issue-legal-person-identification-data-pid---v001)
+- [EWC RFC005: Issue Legal Person Identification Data (LPID) - v1.0](#ewc-rfc005-issue-legal-person-identification-data-pid---v004)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0 LPID Issuance Process](#30lpid-issiance-process)
