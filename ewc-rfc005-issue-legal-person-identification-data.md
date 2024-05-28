@@ -933,10 +933,132 @@ THE LPID metadata: .....
 
 **>> ADD table or picture of LPID attributes <<**
 
-
 ```json
 {
-  senaste versionen av schemat Lars tagit fram
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "EWC - Legal PID",
+    "description": "Schema for Legal PID -  EWC WP3",
+    "type": "object",
+    "properties": {
+        "issuer_name": {
+            "description": "Name of issuer from the MS that issued the ODI instance",
+            "type": "string"
+        },
+        "issuer_id": {
+            "description": "ODI Id of the issuing authority. (Business register identifier for BRIS)",
+            "type": "string"
+        },
+        "issuer_country": {
+            "description": "Alpha-2 country code, as defined in ISO 3166-1, of the issuing country or territory.",
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 2
+        },
+        "issuance_date": {
+            "description": "Date and possibly time of issuance",
+            "type": "string",
+            "format": "datetime"
+        },
+        "expiry_date": {
+            "description": "Date and possibly time of ODI expiration",
+            "format": "datetime"
+        },
+        "authentic_source_id": {
+            "description": "ODI Id of the issuing authority. (Business register identifier for BRIS)",
+            "type": "string"
+        },
+        "authentic_source_name": {
+            "description": "Name of issuer from the MS that issued the ODI instance",
+            "type": "string"
+        },
+        "credentialSubject": {
+            "description": "Attributes representing a Legal PID",
+            "type": "object",
+            "properties": {
+                "legal_person_id": {
+                    "description": "Unique id for organisation according to EUID",
+                    "type": "string"
+                },
+                "legal_person_name": {
+                    "description": "Legal person name",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "legal_person_id",
+                "legal_person_name"
+            ]
+        },
+        "credentialStatus": {
+            "description": "Defines suspension and/or revocation details for the issued credential. Further redefined by the type extension",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Exact identity for the credential status",
+                    "type": "string",
+                    "format": "uri"
+                },
+                "type": {
+                    "description": "Defines the revocation type extension",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "type"
+            ]
+        },
+        "credentialSchema": {
+            "description": "One or more schemas that validate the Verifiable Credential.",
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/credentialSchema"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/credentialSchema"
+                    }
+                }
+            ]
+        }
+    },
+    "required": [
+        "credentialSubject",
+        "credentialStatus",
+        "credentialSchema",
+        "issuer_name",
+        "issuer_id",
+        "issuer_country",
+        "issuance_date",
+        "expiry_date",
+        "authentic_source_id",
+        "authentic_source_name"
+    ],
+    "$defs": {
+        "credentialSchema": {
+            "description": "Contains information about the credential schema on which the issued credential is based",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "References the credential schema stored on the Trusted Schemas Registry (TSR) on which the Verifiable Authorisation is based on",
+                    "type": "string",
+                    "format": "uri"
+                },
+                "type": {
+                    "description": "Defines credential schema type",
+                    "type": "string",
+                    "enum": [
+                        "FullJsonSchemaValidator2021"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "type"
+            ]
+        }
+    }
 }
 ```
 ## 5.11 Issuer Authorization Verification
