@@ -927,9 +927,105 @@ The holder can later use the acceptance_token to request the credential once it'
 ### 5.10.3 LPID Schema
 
 The LPID attributes: legal name, EUID
+
+<table>
+  <tr>
+   	<td><strong>Attribute</strong></td>
+   	<td><strong>Data element identifier</strong></td>
+	<td><strong>Definition</strong></td>
+	<td><strong>Presence (Mandatory/Optional)</strong>/td>
+   	<td><strong>Proposition</strong></td>
+  </tr>
+  <tr>
+   	<td>LegalPersonIdentifier</td>
+   	<td>legal_person_identifier</td>
+	<td>Unique id for legal persons</td>
+	<td>M</td>
+	<td>EUID</td>
+  </tr>
+  <tr>
+   	<td>LegalPersonName</td>
+   	<td>legal_person_name</td>
+	<td>Name of the legal person</td>
+	<td>M</td>
+	<td>One statutory name</td>
+  </tr>
+</table>
+
 THE LPID metadata: .....
 
-**>> ADD table or picture of LPID attributes <<**
+<table>
+  <tr>
+   	<td><strong>Attribute</strong></td>
+   	<td><strong>Data element identifier</strong></td>
+	<td><strong>Definition</strong></td>
+	<td><strong>Presence (Mandatory/Optional)</strong>/td>
+   	<td><strong>Proposition</strong></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td></td>
+   	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+  </tr>
+</table>
 
 ```json
 {
