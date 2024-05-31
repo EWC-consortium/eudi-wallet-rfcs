@@ -189,17 +189,17 @@ ALT - Client wallet is Valid
     
 	ALT - Preauthorized flow
 
-	17. Client wallet requests token from autorization server.
-	18. Authorization server return access token.
+17. Client wallet requests token from autorization server.
+18. Authorization server return access token.
     
 	END ALT - Preauthorized flow
 	
  	ALT - Authorization flow
 
-	19. Client wallet requests access from Authorization server.
-	20. Authorization server returns access response.
-	21. Client wallet requests access from autorization server.
-	22. Authorization server return access token.
+19. Client wallet requests access from Authorization server.
+20. Authorization server returns access response.
+21. Client wallet requests access from autorization server.
+22. Authorization server return access token.
     
 	END ALT - Authorization flow
 
