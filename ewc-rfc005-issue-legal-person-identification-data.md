@@ -141,26 +141,24 @@ sequenceDiagram
     PP->>PPW: "Send LPID" request (credential schema, client wallet endpoint)
     
     Note over PPW,VDR: Wallet conformity check
-    PPW->>CW: Request L/PID, WIA, WTE presentations
-    CW-->>PPW: PID, WIA, WTE presentations
+    PPW->>CW: Authorization request (Presentation definition for L/PID, WIA, WTE)
+    CW-->>PPW: Authorization response (VP Token with Verifiable Presentation(s) of PID, WIA, WTE)
+    CW->>PPW: Authorization request (Presentation definition for L/PID, WIA)
+    PPW-->>CW: Authorization response (VP Token with Verifiable Presentation(s) of PID, WIA)
    
     Note over PPW,VDR: Verification & validation
     PPW->>VDR: Request verification & validation information
     VDR-->>PPW: Information
-    PPW->>PPW: Verify & validate presentations and issuers
-    alt Client wallet is Valid
-    PPW->>PPW: Create credential offer response
-    PPW->>CW: Send credential offer response
-    
-    Note over PPW, VDR: Wallet conformity check
-    CW->>PPW: Request LPID and WIA presentations
-    PPW-->>CW: LPID & WIA presentations
-    
-    Note over CW,VDR: Verification & validation
     CW->>VDR: Request verification & validation information
     VDR-->>CW: Information
-    CW->>CW: Verify & validate presentations and issuers
+    PPW->>PPW: Verify & validate presentations (including issuers)
+    CW->>CW: Verify & validate presentations (including issuers)
     
+    alt Legal person wallet is Valid
+    Note over PPW, CW: Credential offer
+    PPW->>PPW: Create credential offer response
+    PPW->>CW: Send credential offer response
+       
     Note over CW,PP: Discovery of issuer capabilities
     CW->>PP: GET: /.well-known/oauth-authorization-server
     PP-->>CW: OAuth authorization server metadata
@@ -168,20 +166,20 @@ sequenceDiagram
     Note over CW, AS: Authenticate & authorize
     alt Preauthorized flow
     CW->>AS: Token request
-    AS-->>CW: Acess token
+    AS-->>CW: Access token
     end
     alt Authorization flow
     CW->>AS: Authorization request
     AS-->>CW: Athorization response
     CW->>AS: Token request
-    AS-->>CW: Acess Token
+    AS-->>CW: Access Token
     end
     CW->>PPW: LPID Credential request (access token)
     
     Note over PPW, CW: LPID generation, issuance and storage
     PPW->>PPW: Create credential
-    PPW->>PPW: Encrypt credential
     PPW->>PPW: Seal credential
+    PPW->>PPW: Encrypt credential
     PPW-->>CW: LPID Credential
     CW->>CW: Accept and store LPID
     
@@ -189,7 +187,7 @@ sequenceDiagram
     CW->>PPW: ACK
     PPW->>PP: ACK
     end
-    alt Client wallet is not Valid
+    alt Legal person wallet is not Valid
     PPW->>PP: WARN ("Client wallet doesn't validate", CODE)
     end
     PP->>NP: Inform user
@@ -222,7 +220,7 @@ ALT - Preauthorized flow
 END ALT - Preauthorized flow
 ALT - Authorization flow
 17. Client wallet requests access from Authorization server.
-18. Authorization server returns acess response.
+18. Authorization server returns access response.
 29. Client wallet requests access from autorization server.
 20. Authorization server return access token.
 END ALT - Authorization flow
