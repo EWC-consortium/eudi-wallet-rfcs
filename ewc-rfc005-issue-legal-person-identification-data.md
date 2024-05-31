@@ -10,38 +10,6 @@
 
 **Status:** Ready for review
 
-<!--
-**Table of Contents**
-
-- [EWC RFC005: Issue Legal Person Identification Data (LPID) - v1.0](#ewc-rfc005-issue-legal-person-identification-data-pid---v004)
-- [1.0	Summary](#10summary)
-- [2.0	Motivation](#20motivation)
-- [3.0 LPID Issuance Process](#30lpid-issiance-process)
-- [4.0 LPID Issuance to a wallet instance](#40lpid-issuance-to-a-wallet-instance)
-	- [4.1 LPID Issuance Process](#40lpid-issiance-process)
-- [5.0	Messages](#50messages)
-  	- [5.1 Discover request](#53-discover-request)
-  	- [5.2 Discover response](#54-discover-response)
-  	- [5.3 Credential offer](#51credential-offer)
-  	- [5.4 Credential offer response](#52credential-offer-response)
-  	- [5.5 Authorisation request](#55-authorisation-request)
-  	- [5.6 Authorisation response](#56-authorisation-response)
-  	- [5.7 Token request](#57-token-request)
-    		- [5.7.1 Authorisation code flow](#571-authorisation-code-flow)
-    		- [5.7.2 Pre-authorised code flow](#572-pre-authorised-code-flow)
-  	- [5.8 Token response](#58-token-response)
-  	- [5.9 Credential request](#59-credential-request)
-  	- [5.10 Credential response](#510-credential-response)
-    		- [5.10.1  In-time](#5101--in-time)
-    		- [5.10.2 Deferred](#5102-deferred)
-  	- [5.11 Issuer Authorization Verification](#511-issuer-authorization-verification)
-  	- [5.12 Check Wallet's Conformity](#512-check-wallets-conformity)
-- [6.0	Alternate response format](#60alternate-response-format)
-- [7.0	Implementers](#70implementers)
-- [8.0	Reference](#80reference)
-- [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
-
--->
 
 # 1.0	Summary
 
@@ -140,7 +108,7 @@ sequenceDiagram
     NP->>PP: Apply for/request LPID at eService
     PP->>PPW: "Send LPID" request (credential schema, client wallet endpoint)
     
-    Note over PPW,VDR: Wallet conformity check
+    Note over PPW,VDR: Wallet conformity check using OpenID4VP
     PPW->>CW: Authorization request (Presentation definition for L/PID, WIA, WTE)
     CW-->>PPW: Authorization response (VP Token with Verifiable Presentation(s) of PID, WIA, WTE)
     CW->>PPW: Authorization request (Presentation definition for L/PID, WIA)
@@ -201,19 +169,19 @@ Not included in the diagram is the revocation information that must be published
 **Sequence diagram steps:**
 1. A natural person uses the eService of an PID Provider to apply for/request an LPID.
 2. The application/request for an LPID in the eService has been approved after verification checks described in chapter 3 above. The PID provider requests the PID Provider wallet to create and send an LPID. The request sent includes the information and schema needed for credential construction and the endpoint for the Client wallet. The endpoint is either given by the natural person or included in the redirection url from the wallet application.
-3. The PID provider wallet requests the Client wallet for WIA, WTE, PID using the endpoint either submitted by the natural person in the first step or by information in the redirect url if the LPID process started in a wallet application with a redirect.
-4. Client wallet returns presentations of WTE, WIA, (PID).
-5. PID provider wallet requests information from VDR for verifiacation and validation.
-6. VDR returns requested information.
-7. PID provider wallet verifies and validates presentations of and issuer of WTE and WIA (and PID).
+3. Authorization request. The PID provider wallet requests the Client wallet for WIA, WTE, PID using the endpoint either submitted by the natural person in the first step or by information in the redirect url if the LPID process started in a wallet application with a redirect. 
+4. Authorization response. Client wallet returns presentations of WTE, WIA, (PID).
+5. Authorization request. Client wallet requests WIA and PID from PID provider wallet.
+6. Authorization response. PID provider wallet returs presentations of PID and WIA.
+7. PID provider wallet requests information from VDR for verifiacation and validation.
+8. VDR returns requested information.
+9. Client wallet requests information from VDR for verifiacation and validation.
+10. VDR returns requested information.
+11. PID provider wallet verifies and validates presentations and issuer of WTE and WIA (and PID).
+12. Client wallet verifies and validates presentations and issuer of WIA and LPID.
 ALT - Client wallet is Valid
-8. wallet creates LPID **offer response**.
-9. Wallet sends LPID **offer response** to Client wallet.
-10. Client wallet requests WIA and PID from PID provider wallet.
-11. PID provider wallet returs presentations of PID and WIA.
-12. Client wallet requests information from VDR for verifiacation and validation.
-13. VDR returns requested information.
-14. Client wallet verifies and validates presentations of and issuer of WTE and WIA (and PID).
+13. wallet creates LPID **offer response**.
+14. Wallet sends LPID **offer response** to Client wallet.
 ALT - Preauthorized flow
 15. Client wallet requests token from autorization server.
 16. Authorization server return access token.
