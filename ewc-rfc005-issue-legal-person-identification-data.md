@@ -182,29 +182,31 @@ Not included in the diagram is the revocation information that must be published
 ALT - Client wallet is Valid
 13. wallet creates LPID **offer response**.
 14. Wallet sends LPID **offer response** to Client wallet.
+15. GET: /.well-known/oauth-authorization-server, Client wallet requests authorization server info.
+16. OAuth authorization server metadata, PID provider returns authorization server info.
 ALT - Preauthorized flow
-15. Client wallet requests token from autorization server.
-16. Authorization server return access token.
+17. Client wallet requests token from autorization server.
+18. Authorization server return access token.
 END ALT - Preauthorized flow
 ALT - Authorization flow
-17. Client wallet requests access from Authorization server.
-18. Authorization server returns access response.
-29. Client wallet requests access from autorization server.
-20. Authorization server return access token.
+19. Client wallet requests access from Authorization server.
+20. Authorization server returns access response.
+21. Client wallet requests access from autorization server.
+22. Authorization server return access token.
 END ALT - Authorization flow
-21. Client wallet requests LPID credential, including access token, from PID Provider wallet.
-22. PID provider wallet creates LPID.
-23. PID provider wallet encrypts LPID.
-24. PID provider wallet  seals LPID.
-25. PID provider wallet sends LPID to Client wallet.
-26. Client wallet accepts LPID and stores it.
-27. Client wallet sends ACK to PID provider wallet.
-28. PID provider wallet sends ACK to PID provider.
+23. Client wallet requests LPID credential, including access token, from PID Provider wallet.
+24. PID provider wallet creates LPID.
+25. PID provider wallet encrypts LPID.
+26. PID provider wallet  seals LPID.
+27. PID provider wallet sends LPID to Client wallet.
+28. Client wallet accepts LPID and stores it.
+29. Client wallet sends ACK to PID provider wallet.
+30. PID provider wallet sends ACK to PID provider.
 END ALT - Client wallet is Valid
 ALT - Client wallet is NOT Valid
-29. PID provider wallet sends a warning to the PID Provider including warning code and warning text message.
+31. PID provider wallet sends a warning to the PID Provider including warning code and warning text message.
 END ALT - Client wallet is NOT Valid
-30. PID provider informs the natural person of the result from application/request for LPID.
+32. PID provider informs the natural person of the result from application/request for LPID.
 
 ## 4.2 Post-Issuance Verification and Management:
 
@@ -934,69 +936,90 @@ THE LPID metadata: .....
    	<td><strong>Data element identifier</strong></td>
 	<td><strong>Definition</strong></td>
 	<td><strong>Presence (Mandatory/Optional)</strong></td>
-   	<td><strong>Proposition</strong></td>
+   	<td><strong>Comments</strong></td>
   </tr>
   <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
+   	<td>Issuer Name</td>
+   	<td>issuer_name</td>
+	<td>Name of the issuer derived from the MS that has issued the LPID.</td>
+	<td>M</td>
+	<td>E.g. Bolagsverket</td>
   </tr>
   <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
+   	<td>Issuer id</td>
+   	<td>issuer_id</td>
+	<td>Id of the issuer</td>
+	<td>M</td>
+	<td>EUID of issuer or did</td>
   </tr>
   <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-  </tr>
-  <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
+   	<td>Issuer trusted list/VDR</td>
+   	<td>TBD</td>
+	<td>Location for verification information of issuer.</td>
+	<td>M</td>
 	<td></td>
   </tr>
   <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-  </tr>
-  <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
+   	<td>Issuing country</td>
+   	<td>issuing_country</td>
+	<td>Alpha-2 country code as defined in ISO 3166-1 of the issuing country or territory.</td>
+	<td>M</td>
 	<td></td>
   </tr>
   <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-  </tr>
-  <tr>
-   	<td></td>
-   	<td></td>
-	<td></td>
-	<td></td>
+   	<td>Issuing date</td>
+   	<td>issuance_date</td>
+	<td>Date and time when the LPID was issued.</td>
+	<td>M</td>
 	<td></td>
   </tr>
   <tr>
-   	<td></td>
-   	<td></td>
+   	<td>Date of expiration</td>
+   	<td>expiry_date</td>
+	<td>Date and time when the LPID expires.</td>
+	<td>M</td>
 	<td></td>
+  </tr>
+  <tr>
+   	<td>Schema id</td>
+   	<td>TBD</td>
+	<td>Id of the schema the LPID is based on.</td>
+	<td>M</td>
 	<td></td>
+  </tr>
+  <tr>
+   	<td>Schema version</td>
+   	<td>TBD</td>
+	<td>The version of the schema the LPID is based on.</td>
+	<td>M</td>
+	<td></td>
+  </tr>
+  <tr>
+   	<td>Schema location</td>
+   	<td>TBD</td>
+	<td>The location for schema verification information.</td>
+	<td>M</td>
+	<td></td>
+  </tr>
+<tr>
+   	<td>Revocation id</td>
+   	<td>TBD</td>
+	<td>Information used for validation of LPID.</td>
+	<td>M</td>
+	<td></td>
+  </tr>
+	<tr>
+   	<td>Revocation list location</td>
+   	<td>TBD</td>
+	<td>The location for revocation information for the LPID.</td>
+	<td>M</td>
+	<td></td>
+  </tr>
+	<tr>
+   	<td>Authentic source</td>
+   	<td>TBD</td>
+	<td>The authentic source for the attributes in the LPID.</td>
+	<td>M</td>
 	<td></td>
   </tr>
 </table>
