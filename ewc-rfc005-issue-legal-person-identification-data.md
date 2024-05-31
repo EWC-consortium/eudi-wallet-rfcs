@@ -941,7 +941,7 @@ The LPID attributes: legal name, EUID
    	<td>legal_person_identifier</td>
 	<td>Unique id for legal persons</td>
 	<td>M</td>
-	<td>EUID</td>
+	<td>EUID*</td>
   </tr>
   <tr>
    	<td>LegalPersonName</td>
@@ -951,6 +951,12 @@ The LPID attributes: legal name, EUID
 	<td>One statutory name</td>
   </tr>
 </table>
+
+*EUID technical structure:
+
+<country code><business register code>.<domestic registration number>_<optional validation character>
+
+Example from Bolagsverket: SEBOLREG.5560678965
 
 THE LPID metadata: .....
 
