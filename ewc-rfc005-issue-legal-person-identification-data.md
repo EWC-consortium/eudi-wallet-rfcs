@@ -8,7 +8,7 @@
 **Reviewers:** 
 * Mr Lal Chandran (iGrant.io, Sweden)
 
-**Status:** Draft
+**Status:** Ready for review
 
 <!--
 **Table of Contents**
