@@ -179,34 +179,40 @@ Not included in the diagram is the revocation information that must be published
 10. VDR returns requested information.
 11. PID provider wallet verifies and validates presentations and issuer of WTE and WIA (and PID).
 12. Client wallet verifies and validates presentations and issuer of WIA and LPID.
+    
 ALT - Client wallet is Valid
-13. wallet creates LPID **offer response**.
-14. Wallet sends LPID **offer response** to Client wallet.
-15. GET: /.well-known/oauth-authorization-server, Client wallet requests authorization server info.
-16. OAuth authorization server metadata, PID provider returns authorization server info.
+
+14. wallet creates LPID **offer response**.
+15. Wallet sends LPID **offer response** to Client wallet.
+16. GET: /.well-known/oauth-authorization-server, Client wallet requests authorization server info.
+17. OAuth authorization server metadata, PID provider returns authorization server info.
+    
 ALT - Preauthorized flow
+
 17. Client wallet requests token from autorization server.
 18. Authorization server return access token.
+    
 END ALT - Preauthorized flow
+
 ALT - Authorization flow
-19. Client wallet requests access from Authorization server.
-20. Authorization server returns access response.
-21. Client wallet requests access from autorization server.
-22. Authorization server return access token.
+20. Client wallet requests access from Authorization server.
+21. Authorization server returns access response.
+22. Client wallet requests access from autorization server.
+23. Authorization server return access token.
 END ALT - Authorization flow
-23. Client wallet requests LPID credential, including access token, from PID Provider wallet.
-24. PID provider wallet creates LPID.
-25. PID provider wallet encrypts LPID.
-26. PID provider wallet  seals LPID.
-27. PID provider wallet sends LPID to Client wallet.
-28. Client wallet accepts LPID and stores it.
-29. Client wallet sends ACK to PID provider wallet.
-30. PID provider wallet sends ACK to PID provider.
+24. Client wallet requests LPID credential, including access token, from PID Provider wallet.
+25. PID provider wallet creates LPID.
+26. PID provider wallet encrypts LPID.
+27. PID provider wallet  seals LPID.
+28. PID provider wallet sends LPID to Client wallet.
+29. Client wallet accepts LPID and stores it.
+30. Client wallet sends ACK to PID provider wallet.
+31. PID provider wallet sends ACK to PID provider.
 END ALT - Client wallet is Valid
 ALT - Client wallet is NOT Valid
-31. PID provider wallet sends a warning to the PID Provider including warning code and warning text message.
+32. PID provider wallet sends a warning to the PID Provider including warning code and warning text message.
 END ALT - Client wallet is NOT Valid
-32. PID provider informs the natural person of the result from application/request for LPID.
+33. PID provider informs the natural person of the result from application/request for LPID.
 
 ## 4.2 Post-Issuance Verification and Management:
 
