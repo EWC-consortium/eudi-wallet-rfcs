@@ -933,7 +933,7 @@ The LPID attributes: legal name, EUID
    	<td><strong>Attribute</strong></td>
    	<td><strong>Data element identifier</strong></td>
 	<td><strong>Definition</strong></td>
-	<td><strong>Presence (Mandatory/Optional)</strong>/td>
+	<td><strong>Presence (Mandatory/Optional)</strong></td>
    	<td><strong>Proposition</strong></td>
   </tr>
   <tr>
@@ -959,7 +959,7 @@ THE LPID metadata: .....
    	<td><strong>Attribute</strong></td>
    	<td><strong>Data element identifier</strong></td>
 	<td><strong>Definition</strong></td>
-	<td><strong>Presence (Mandatory/Optional)</strong>/td>
+	<td><strong>Presence (Mandatory/Optional)</strong></td>
    	<td><strong>Proposition</strong></td>
   </tr>
   <tr>
