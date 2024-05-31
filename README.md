@@ -20,11 +20,11 @@
 
 ## About
 
-This repository is created to align the implementation of digital wallets across the EWC LSP consortium wallet providers. This also ensures all wallets providers can self-test and sign off against the EWC Interoperability Test Bed (ITB). 
+This repository is created to align the implementation of digital wallets across the EWC LSP consortium wallet providers. This also ensures all wallets providers can self-test and sign off against the EWC Interoperability Test Bed (ITB).
 
 ## Contributing
 
-Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Wallet providers can raise a PR once they have implemented and aligned with the RFCs. 
+Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Wallet providers can raise a PR once they have implemented and aligned with the RFCs.
 
 ## RFC Process Summary
 
@@ -34,19 +34,19 @@ RFCs go through this process towards the Large Scale Pilots (LSPs):
 
 ## Current RFCs
 
-### Candidate RFCs
+### Candidate RFCs (Work in progress)
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
 
-| **RFC #** | **RFC Title**                                                                          |
-| --------- | -------------------------------------------------------------------------------------- |
-| RFC-003   | [Person Identification Data  Issuance](ewc-rfc003-issue-person-identification-data.md) |
-| RFC-004   | Individual Wallet Attestation                                                          |
-| RFC-005   | LPID Issuance                                                                          |
-| RFC-006   | Organisational Wallet Attestation                                                      |
-| RFC-007   | Payment Wallet Attestation                                                             |
-| RFC-008   | Strong Customer Authentication                                                         |
-| RFC-009   | Payment Transaction                                                                    |
+| **RFC #** | **RFC Title**                                                                                  |
+| --------- | ---------------------------------------------------------------------------------------------- |
+| RFC-003   | [Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md)          |
+| RFC-004   | Individual Wallet Attestation                                                                  |
+| RFC-005   | [Issue Legal Person Identification Data](ewc-rfc005-issue-legal-person-identification-data.md) |
+| RFC-006   | Organisational Wallet Attestation                                                              |
+| RFC-007   | Payment Wallet Attestation                                                                     |
+| RFC-008   | Strong Customer Authentication                                                                 |
+| RFC-009   | Payment Transaction                                                                            |
 
 ### Approved RFCs
 
@@ -57,7 +57,6 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | RFC-001   | [Issue Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md)                         |
 | RFC-002   | [Present Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md)                    |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
-
 
 ## EWC Wallets (ITB - Compliant)
 
@@ -71,13 +70,13 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 ### Organisation Wallets for Issuers and Verifiers
 
-| Wallet                        | Link                                                                                                                                         | Issuer | Verifier |
-| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | :----: | :------: |
-| iGrant.io Organisation Wallet | [demo-business.igrant.io/](https://demo-business.igrant.io/)                                                                                 |   ✅    |    ✅     |
-| Lissi ID-Wallet Connector     | [lissi.id](https://lissi.id)                                                                                                                 |   ✅    |    ✅     |
-| ValidatedID                   | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) |   ✅    |    ✅     | ✅ |
+| Wallet                        | Link                                                         | Issuer | Verifier |
+| ----------------------------- | ------------------------------------------------------------ | :----: | :------: |
+| iGrant.io Organisation Wallet | [demo-business.igrant.io/](https://demo-business.igrant.io/) |   ✅    |    ✅     |
+| Lissi ID-Wallet Connector     | [lissi.id](https://lissi.id)                                 |   ✅    |    ✅     |
+| ValidatedID                   |                                                              |   ✅    |    ✅     |
 
-## Planned EWC Walets
+## Planned EWC Wallets
 
 ### Holder Wallets for Individuals
 
@@ -85,7 +84,6 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | ----------- | ----------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
 | Digidentity | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity) |   ✅    |   ✅    |    ✅     |
 | DVV Wallet  |                                                                                                                         |   ✅    |   ✅    |    ✅     |
-
 
 ### Organisation Wallets for Issuers and Verifiers
 
@@ -96,7 +94,6 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | UAegean (Cyclades Fast Ferries) |                                                                         |   ✅    |    ✅     |
 | E-Group                         |                                                                         |   ✅    |    ✅     |
 | Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |   ✅    |    ✅     |
-
 
 ## Funding
 
