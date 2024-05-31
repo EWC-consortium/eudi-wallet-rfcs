@@ -954,7 +954,7 @@ The LPID attributes: legal name, EUID
 
 *EUID technical structure:
 
-\<country code\><business register code>.<domestic registration number>_<optional validation character>
+\<country code\>\<business register code\>.\<domestic registration number\>_\<optional validation character\>
 
 Example from Bolagsverket: SEBOLREG.5560678965
 
