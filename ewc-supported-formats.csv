@@ -3,7 +3,6 @@ JSON Web Token - Verifiable Credential,jwt_vc
 JSON Web Token - Verifiable Presentation,jwt_vp
 W3C JWT - Verifiable Credential,jwt_vc_json
 W3C JWT - Verifiable Presentation,jwt_vp_json
-Linked data proof - Verifiable Credential,ldp_vc
 Selective Disclosure - JSON Web Token,sd-jwt
 Selective Disclosure - JSON Web Token Verifiable Credential,vc+sd-jwt
 Selective Disclosure - JSON Web Token Verifiable Presentation,vp+sd-jwt
