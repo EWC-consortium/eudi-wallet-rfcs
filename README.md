@@ -66,7 +66,7 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
 | iGrant.io Data Wallet | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              |   ✅    |   ✅    |    ✅     |
 | Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     |   ✅    |        |          |
-| ValidatedID           | [iOS](https://apps.apple.com/us/app/vidwallet/id1554340592), [Android](https://play.google.com/store/apps/details?id=com.validatedid.wallet) |   ✅    |   ✅    |    ✅     |
+| ValidatedID           | [iOS](https://apps.apple.com/us/app/id-wallet-lsp/id6504026408), [Android](https://play.google.com/store/apps/details?id=com.vididentity.wallet.lsp) |   ✅    |   ✅    |    ✅     |
 
 ### Organisation Wallets for Issuers and Verifiers
 
