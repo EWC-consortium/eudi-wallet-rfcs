@@ -20,17 +20,19 @@
 
 ## About
 
-This repository is created to align the implementation of digital wallets across the EWC LSP consortium wallet providers. This also ensures all wallets providers can self-test and sign off against the EWC Interoperability Test Bed (ITB).
+This repository is created to align the implementation of digital wallets across the EWC LSP consortium wallet providers. This also ensures all wallet providers can self-test and sign off against the EWC Interoperability Test Bed (ITB).
 
 ## Contributing
 
-Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Wallet providers can raise a PR once they have implemented and aligned with the RFCs.
+Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Once implemented and aligned with the RFCs, wallet providers can raise a PR.
 
 ## RFC Process Summary
 
 RFCs go through this process towards the Large Scale Pilots (LSPs):
 
 ![image](https://github.com/EWC-consortium/eudi-wallet-rfcs/assets/455274/2113d6b6-1398-4004-8054-2a91551ef437)
+ 
+Each wallet needs to follow the EWC RFC and perform compliance tests against the EWC Interoperability Test Bed (ITB) to be interoperable with other wallets within EWC. Kindly use the #wallet-support in [EWC slack for support](https://eudigitaliden-gax7504.slack.com/archives/C063LNT4L4R).
 
 ## Current RFCs
 
@@ -50,7 +52,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 
 ### Approved RFCs
 
-These are the approved RFCs identified to be specified towards wallet providers, producing reference code and the EWC Interoperability Test Bed (ITB). The supported verifiable credentials and presentations are specified in the [EWC supported format csv file](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
+These are the approved RFCs identified to be specified towards wallet providers, producing reference codes and the EWC Interoperability Test Bed (ITB). The supported verifiable credentials and presentations are specified in the [EWC supported format csv file](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
 | **RFC #** | **RFC Title**                                                                                                                                                           |
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -89,20 +91,20 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 | Wallet                          | Link                                                                    | Issuer | Verifier |
 | ------------------------------- | ----------------------------------------------------------------------- | :----: | :------: |
-| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |    ✅     |
-| DVV Wallet                      |                                                                         |   ✅    |    ✅     |
-| UAegean (Cyclades Fast Ferries) |                                                                         |   ✅    |    ✅     |
-| E-Group                         |                                                                         |   ✅    |    ✅     |
-| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |   ✅    |    ✅     |
+| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |    ✅    |
+| DVV Wallet                      |                                                                         |   ✅    |    ✅    |
+| UAegean (Cyclades Fast Ferries) |                                                                         |   ✅    |    ✅    |
+| E-Group                         |                                                                         |   ✅    |    ✅    |
+| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |   ✅    |    ✅    |
 
 ## Funding
 
 ![image](https://github.com/EWC-consortium/ewc-wiki/assets/455274/1ac9b4e3-06b9-4c3c-a2af-ec5fbf584517)
 
-The project is co-funded by the European Union. Views and opinions expressed are, however, those of the author(s) only and do not necessarily reflect those of the European Union or the granting authority. Neither the European Union nor the granting authority can be held responsible for them.
+The project is co-funded by the European Union. However, the views and opinions expressed are those of the author(s) only and do not necessarily reflect those of the European Union or the granting authority. Neither the European Union nor the granting authority can be held responsible.
 
 ## Licensing
 
-Licensed under the Apache 2.0 License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+Licensed under the Apache 2.0 License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. The IP is handled as part of the EWC IP agreement. 
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the LICENSE for the specific language governing permissions and limitations under the License.
