@@ -1,4 +1,4 @@
-# EWC RFC001: Issue Verifiable Credential - v1.0
+# EWC RFC001: Issue Verifiable Credential - v2.0
 
 **Authors:** 
 * Mr George Padaytti (iGrant.io, Sweden)
@@ -14,11 +14,13 @@
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 
-**Status:** Approved for v1.0 release
+**Status:** 
+Current: Draft 13 alignment
+29-Feb-2024: Approved for v1.0 release
 
 **Table of Contents**
 
-- [EWC RFC001: Issue Verifiable Credential - v1.0](#ewc-rfc001-issue-verifiable-credential---v10)
+- [EWC RFC001: Issue Verifiable Credential - v2.0](#ewc-rfc001-issue-verifiable-credential---v20)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Messages](#30messages)
@@ -114,15 +116,15 @@ Once the `credential_offer_uri` query param is resolved, the response can be eit
 
 ```json
 {
-  "credential_issuer": "https://server.example.com",
-  "credentials": [
-    "VerifiablePortableDocumentA1"
-  ],
-  "grants": {
-    "authorization_code": {
-      "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
+    "credential_issuer": "https://server.example.com",
+    "credential_configuration_ids": [
+        "VerifiablePortableDocumentA1"
+    ],
+    "grants": {
+        "authorization_code": {
+            "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
+        }
     }
-  }
 }
 ```
 
@@ -155,37 +157,65 @@ Once the `credential_offer_uri` query param is resolved, the response can be eit
 }
 ```
 
-The holder wallet obtains the JSON and can process it. The format is the credential format. In the context of EWC LSPs, it can be `jwt_vc` or `sd-jwt_vc`.  
+The holder wallet retrieves the JSON and processes it using the credential format identifier. The supported credential format identifiers for this are listed in the context of EWC LSPs, which can be found [here](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
-For pre-authorised flow, the credential response is as given:
-
+For pre-authorised flow with a transaction code, the credential response is as given:
 
 ```json
 {
-  "credential_issuer": "https://server.example.com",
-  "credentials": [
-    {
-      "format": "jwt_vc_json",
-      "types": [
-        "VerifiableCredential",
-        "VerifiableAttestation",
-        "VerifiablePortableDocumentA1"
-      ],
-      "trust_framework": {
-        "name": "ebsi",
-        "type": "Accreditation",
-        "uri": "TIR link towards accreditation"
+   "credential_issuer": "https://server.example.com",
+   "credential_configuration_ids": [
+      "VerifiablePortableDocumentA1",
+   ],
+   "grants": {
+      "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
+         "pre-authorized_code": "oaKazRN8I0IbtZ0C7JuMn5",
+         "tx_code": {
+            "length": 4,
+            "input_mode": "numeric",
+            "description": "Please provide the one-time code that was sent via e-mail or offline"
+         }
       }
-    }
-  ],
-  "grants": {
-    "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
-      "pre-authorized_code": "eyJhbGciOiJSU0Et...FYUaBy",
-      "user_pin_required": true
-    }
-  }
+   }
 }
 ```
+
+For pre-authorised flow without a transaction code, the credential response is as given:
+
+```json
+{
+   "credential_issuer": "https://server.example.com",
+   "credential_configuration_ids": [
+      "VerifiablePortableDocumentA1",
+   ],
+   "grants": {
+      "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
+         "pre-authorized_code": "oaKazRN8I0IbtZ0C7JuMn5",
+      }
+   }
+}
+```
+
+The following options are available for different grant types:
+
+**For `authorization_code`**
+
+| Field                    | Description                                                                                                                                                                                                                                                                                                             |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **issuer_state**         | OPTIONAL. String value created by the Credential Issuer and opaque to the Wallet. Used to bind the subsequent Authorization Request with the Credential Issuer to a context set up during previous steps. If received, it MUST be included in the subsequent Authorization Request as the issuer_state parameter value. |
+| **authorization_server** | OPTIONAL string that the Wallet can use to identify the Authorization Server when the authorization_servers parameter in the Credential Issuer metadata has multiple entries. It MUST match one of the values in the authorization_servers array.                                                                       |
+
+For `urn:ietf:params:oauth:grant-type:pre-authorized_code`:
+
+| Field                               | Description                                                                                                                                                                                                                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **pre-authorized_code**             | REQUIRED. The code representing the Credential Issuer's authorisation for the Wallet to obtain Credentials of a certain type. This code MUST be short-lived and single-use. It MUST be included in the subsequent Token Request.                                                                  |
+| **tx_code**                         | OPTIONAL. Object specifying whether the Authorization Server expects presentation of a Transaction Code by the End-User along with the Token Request. Intended to bind the Pre-Authorized Code to a certain transaction to prevent replay. If required, it MUST be sent in the tx_code parameter. |
+| &nbsp;&nbsp;&nbsp;&nbsp;input_mode  | OPTIONAL. String specifying the input character set. Possible values are numeric (only digits) and text (any characters). The default is numeric.                                                                                                                                                 |
+| &nbsp;&nbsp;&nbsp;&nbsp;length      | OPTIONAL. Integer specifying the length of the Transaction Code. This helps the Wallet render the input screen and improve the user experience.                                                                                                                                                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;description | OPTIONAL. String containing guidance for the Holder of the Wallet on how to obtain the Transaction Code. It is RECOMMENDED to display this description next to the Transaction Code input screen. The length MUST NOT exceed 300 characters.                                                      |
+| **interval**                        | OPTIONAL. The minimum amount of time in seconds that the Wallet SHOULD wait between polling requests to the token endpoint. If no value is provided, Wallets MUST use 5 as the default.                                                                                                           |
+| **authorization_server**            | OPTIONAL string that the Wallet can use to identify the Authorization Server when the authorization_servers parameter in the Credential Issuer metadata has multiple entries. It MUST match one of the values in the authorization_servers array.                                                 |
 
 ## 3.3 Discover request
 
@@ -682,6 +712,33 @@ This request is made with the following query params:
 
 The Holder wallet makes a Credential Request to the Credential Endpoint as below:
 
+**For W3C VC with credential format identifier** `jwt_vc_json`:
+
+```http
+POST /credential
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAi...KTjcrDMg
+
+{
+   "format": "jwt_vc_json",
+   "credential_definition": {
+      "type": [
+         "VerifiableCredential",
+         "VerifiablePortableDocumentA1"
+      ]
+   },
+   "proof": {
+      "proof_type": "jwt",
+      "jwt":"eyJraWQiOiJkaWQ6ZX..zM"
+   }
+}
+```
+> [!NOTE]
+> In the above, the credentialSubject is optional and is not considered within the scope of EWC LSP. 
+
+**For IETF SD-JWT VC with credential format identifier** `vc+sd-jwt`:
+
+
 ```http
 POST /credential
 Content-Type: application/json
@@ -689,17 +746,15 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
    "format": "vc+sd-jwt",
-   "credential_definition": {
-      "type": "VerifiablePortableDocumentA1"
-   },
+   "vct": "SD_JWT_VC_example_in_OpenID4VCI",
    "proof": {
       "proof_type": "jwt",
-      "jwt":"eyJraW...KWjceMcr"
+      "jwt":"eyJ0eXAiOiJvc..1WlA"
    }
 }
 ```
 
-If specified, you can request specific fields to be included in the issued credential. If its not specified, all fields in the credential is included. 
+If specified, you can request specific fields to be included in the issued credential. If its not specified, all fields in the credential is included.
 
 > [!NOTE]
 > In order to support all EBSI conformant wallets, the following format for the request is also valid, but not **mandatory** to be supported:
@@ -811,7 +866,7 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 
 # 6.0	Reference
 
-1. OpenID Foundation (2023), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-12.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-12.html) (Accessed: January 10, 2024).
+1. OpenID Foundation (2023), 'OpenID for Verifiable Credential Issuance', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html) (Accessed: July 11, 2024).
 2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.1.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: October 16, 2023).
 3. OpenID Foundation (2023), 'Self-Issued OpenID Provider v2 (SIOP v2)', Available at: [https://openid.net/specs/openid-connect-self-issued-v2-1_0.html](https://openid.net/specs/openid-connect-self-issued-v2-1_0.html) (Accessed: October 01, 2023)
 4. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
