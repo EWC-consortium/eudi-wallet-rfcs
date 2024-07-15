@@ -29,6 +29,8 @@ Current: Draft 13 alignment
   - [3.3 Discover request](#33-discover-request)
   - [3.4 Discover response](#34-discover-response)
   - [3.5 Authorisation request](#35-authorisation-request)
+    - [3.5.1 Using `authorization_details`](#351-using-authorization_details)
+    - [3.5.2 Using `scope`](#352-using-scope)
   - [3.6 Authorisation response](#36-authorisation-response)
   - [3.7 Token request](#37-token-request)
     - [3.7.1 Authorisation code flow](#371-authorisation-code-flow)
@@ -413,39 +415,33 @@ Currently, we retain the trust framework specified by EBSI. Subsequently, we wil
 
 ## 3.5 Authorisation request
 
+There are two possible ways to request the issuance of a specific Credential type in an Authorization Request. One way is to use the `authorization_details` request parameter with one or more authorization details objects of type `openid_credential`. The other method is through the use of `scope`.
+
+### 3.5.1 Using `authorization_details`
+
 The authorisation request is to grant access to the credential endpoint. Below is an example of such a request:
 
 ```http
 GET https://my-issuer.rocks/auth/authorize?
 
-&response_type=code
-&scope=openid
-&issuer_state=tracker%3Dvcfghhj
-&state=client-state
-&client_id=did%3Akey%3Az2dmzD81cgPx8Vki7JbuuMmFYrWPgYoytykUZ3eyqht1j9KbsEYvdrjxMjQ4tpnje9BDBTzuNDP3knn6qLZErzd4bJ5go2CChoPjd5GAH3zpFJP5fuwSk66U5Pq6EhF4nKnHzDnznEP8fX99nZGgwbAh1o7Gj1X52Tdhf7U4KTk66xsA5r
-&authorization_details=%5B%7B%22format%22%3A%22jwt_vc%22%2C%22locations%22%3A%5B%22https%3A%2F%2Fissuer.example.com%22%5D%2C%22type%22%3A%22openid_credential%22%2C%22types%22%3A%5B%22VerifiableCredential%22%2C%22VerifiableAttestation%22%2C%22VerifiablePortableDocumentA1%22%5D%7D%5D
-&redirect_uri=openid%3A
-&nonce=glkFFoisdfEui43
-&code_challenge=YjI0ZTQ4NTBhMzJmMmZhNjZkZDFkYzVhNzlhNGMyZDdjZDlkMTM4YTY4NjcyMTA5M2Q2OWQ3YjNjOGJlZDBlMSAgLQo%3D
-&code_challenge_method=S256
-&client_metadata=%7B%22vp_formats_supported%22%3A%7B%22jwt_vp%22%3A%7B%22alg%22%3A%5B%22ES256%22%5D%7D%2C%22jwt_vc%22%3A%7B%22alg%22%3A%5B%22ES256%22%5D%7D%7D%2C%22response_types_supported%22%3A%5B%22vp_token%22%2C%22id_token%22%5D%2C%22authorization_endpoint%22%3A%22openid%3A%2F%2F%22%7D
-
-Host: https://server.example.com
+GET /authorize?
+  response_type=code
+  &client_id=s6BhdRkqt3
+  &code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+  &code_challenge_method=S256
+  &authorization_details=[{"type": "openid_credential", "
+    credential_configuration_id": "VerifiablePortableDocumentA1"}]
+  &redirect_uri=https://client.example.org/cb
+Host: server.example.com
 ```
 
-Query params for the authorisation request are given below:
+The query params for the authorisation request with `authorization_details` are as described below:
 
 <table>
   <tr>
    <td><code>response_type</code>
    </td>
    <td>The value must be ‘code’
-   </td>
-  </tr>
-  <tr>
-   <td><code>scope</code>
-   </td>
-   <td>The value must be ‘openid’
    </td>
   </tr>
   <tr>
@@ -463,23 +459,34 @@ Query params for the authorisation request are given below:
   <tr>
    <td><code>authorization_details</code>
    </td>
-   <td>As specified in OAuth 2.0 Rich Authorization Requests specification to specify fine-grained access [4]. An example is as given below:
+   <td>As specified in OAuth 2.0 Rich Authorization Requests specification to specify fine-grained access [4]. 
+   
+   An example of W3C VC credential format is as given below:
 
    ```json
-   {
-      "type": "openid_credential",
-      "locations": [
-         "https://credential-issuer.example.com"
-      ],
-      "format": "jwt_vc_json",
-      "credential_definition": {
-         "type": [
-            "VerifiableCredential",
-            "UniversityDegreeCredential"
-         ]
-      }
-   }
+    [
+        {
+            "type": "openid_credential",
+            "credential_configuration_id": "VerifiablePortableDocumentA1",
+            "credential_definition": {
+                "credentialSubject": {}
+            }
+        }
+    ]
    ```
+
+  The IETF SD-JWT VC is as given:
+
+   ```json
+  [
+      {
+          "type": "openid_credential",
+          "format": "vc+sd-jwt",
+          "vct": "VerifiablePortableDocumentA1"
+      }
+  ]
+  ```
+
    > [!NOTE]
    > You may also use the earlier version as supported by EBSI.
 
@@ -531,6 +538,82 @@ Query params for the authorisation request are given below:
   </tr>
 </table>
 
+### 3.5.2 Using `scope`
+
+Below is an example of such a request using `scope` parameter. Here, the wallet gets the `scope` during discovery:
+
+```http
+GET https://my-issuer.rocks/auth/authorize?
+
+GET /authorize?
+  response_type=code
+  &scope=VerifiablePortableDocumentA1
+  &resource=https%3A%2F%2Fcredential-issuer.example.com
+  &client_id=s6BhdRkqt3
+  &code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
+  &code_challenge_method=S256
+  &redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
+Host: server.example.com
+```
+
+The query params for the authorisation request with `scope` are as described below:
+
+<table>
+  <tr>
+  <td><code>response_type</code>
+  </td>
+  <td>The value must be ‘code’
+  </td>
+  </tr>
+  <tr>
+  <td><code>scope</code>
+  </td>
+  <td>A JSON string that identifies the scope value supported by the Credential Issuer for a particular Credential. The value can be consistent across multiple credential configuration objects. The Authorization Server must uniquely identify the Credential Issuer based on the scope value. The Wallet can use this value in the Authorization Request. Scope values in this Credential Issuer metadata may overlap with those in the scopes_supported parameter of the Authorization Server.
+  </td>
+  </tr>
+  <tr>
+  <td><code>state</code>
+  </td>
+  <td>The client uses an opaque value to maintain the state between the request and callback.
+  </td>
+  </tr>
+  <tr>
+  <td><code>client_id</code>
+  </td>
+  <td>Decentralised identifier
+  </td>
+  </tr>
+  <tr>
+  <td><code>redirect_uri</code>
+  </td>
+  <td>For redirection of the response
+  </td>
+  </tr>
+  <tr>
+  <td><code>code_challenge</code>
+  </td>
+  <td>As specified in PKCE for OAuth Public Client specification [5]
+  </td>
+  </tr>
+  <tr>
+  <td><code>code_challenge_method</code>
+  </td>
+  <td>As specified in PKCE for OAuth Public Client specification
+  </td>
+  </tr>
+  <tr>
+  <td><code>client_metadata</code>
+  </td>
+  <td>Holder wallets are non-reachable and can utilise this field in the Authorisation Request to deliver configuration
+  </td>
+  </tr>
+  <tr>
+  <td><code>issuer_state</code>
+  </td>
+  <td>If present in the credential offer
+  </td>
+  </tr>
+</table>
 
 ## 3.6 Authorisation response
 
