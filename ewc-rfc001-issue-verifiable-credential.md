@@ -252,11 +252,11 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
       "name": "Issuer",
       "location": "Belgium",
       "locale": "en-GB",
-      "description": "For queries about how we are managing your data please contact the Data Protection Officer."
+      "description": "For queries about how we manage your data please contact the Data Protection Officer."
     }
   ],
-  "credentials_supported": {
-    "VerifiablePortableDocumentA1SdJwt": {
+  "credential_configurations_supported": {
+    "VerifiablePortableDocumentA1": {
       "format": "vc+sd-jwt",
       "scope": "VerifiablePortableDocumentA1",
       "cryptographic_binding_methods_supported": [
@@ -273,33 +273,30 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
           "text_color": "#FFFFFF"
         }
       ],
-      "credential_definition": {
-        "type": "VerifiablePortableDocumentA1",
-        "claims": {
-          "given_name": {
-            "display": [
-              {
-                "name": "Given Name",
-                "locale": "en-GB"
-              },
-              {
-                "name": "Vorname",
-                "locale": "de-DE"
-              }
-            ]
-          },
-          "last_name": {
-            "display": [
-              {
-                "name": "Surname",
-                "locale": "en-GB"
-              },
-              {
-                "name": "Nachname",
-                "locale": "de-DE"
-              }
-            ]
-          }
+      "claims": {
+        "given_name": {
+          "display": [
+            {
+              "name": "Given Name",
+              "locale": "en-GB"
+            },
+            {
+              "name": "Vorname",
+              "locale": "de-DE"
+            }
+          ]
+        },
+        "last_name": {
+          "display": [
+            {
+              "name": "Surname",
+              "locale": "en-GB"
+            },
+            {
+              "name": "Nachname",
+              "locale": "de-DE"
+            }
+          ]
         }
       }
     }
@@ -413,6 +410,7 @@ Once the well-known endpoint for **authorisation server** configuration is resol
   ]
 }
 ```
+
 Currently, we retain the trust framework specified by EBSI. Subsequently, we will specify an additional RFC defining the EWC trusted issuer list. 
 
 ## 3.5 Authorisation request
