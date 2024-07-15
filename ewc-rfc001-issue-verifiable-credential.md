@@ -36,6 +36,8 @@ Current: Draft 13 alignment
     - [3.7.1 Authorisation code flow](#371-authorisation-code-flow)
     - [3.7.2 Pre-authorised code flow](#372-pre-authorised-code-flow)
   - [3.8 Token response](#38-token-response)
+    - [3.8.1 With `authorization_details`](#381-with-authorization_details)
+    - [3.8.1 With `scope`](#381-with-scope)
   - [3.9 Credential request](#39-credential-request)
   - [3.10 Credential response](#310-credential-response)
     - [3.10.1  In-time](#3101--in-time)
@@ -754,7 +756,7 @@ Content-Type: application/x-www-form-urlencoded
 
 &grant_type=urn:ietf:params:oauth:grant-type:pre-authorized_code
 &pre-authorized_code=SplxlOBeZQQYbYS6WxSbIA
-&user_pin=493536
+&tx_code=493536
 ```
 
 This request is made with the following query params:
@@ -773,14 +775,43 @@ This request is made with the following query params:
    </td>
   </tr>
   <tr>
-   <td><code>user_pin</code>
+   <td><code>tx_code</code>
    </td>
-   <td>The end user pin is decided by the issuer and sent to the holder through an out-of-band process. E.g. Email, SMS
+   <td>Specifies if the Authorization Server expects the End-User to present a Transaction Code with the Token Request in a Pre-Authorized Code Flow. If not required, this object is absent by default. The Transaction Code binds the Pre-Authorized Code to a specific transaction, preventing replay attacks. The End-User PIN is set by the issuer and sent to the holder via email, SMS, or another out-of-band method.
    </td>
   </tr>
 </table>
 
 ## 3.8 Token response
+
+### 3.8.1 With `authorization_details`
+
+If `authorization_details` is used in authorisation request ([refer chapter 3.5.1](#351-using-authorization_details)), the token response will be as given:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Cache-Control: no-store
+
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6Ikp..sHQ",
+  "token_type": "bearer",
+  "expires_in": 86400,
+  "c_nonce": "tZignsnFbp",
+  "c_nonce_expires_in": 86400,
+  "authorization_details": [
+    {
+      "type": "openid_credential",
+      "credential_configuration_id": "VerifiablePortableDocumentA1",
+      "credential_identifiers": [ "VerifiablePortableDocumentA1-Spain", "VerifiablePortableDocumentA1-Sweden", "VerifiablePortableDocumentA1-Germany" ]
+    }
+  ]
+}
+```
+
+### 3.8.1 With `scope`
+
+If `scope` is used in authorisation request ([refer chapter 3.5.2](#352-using-scope)), the token response will be as given:
 
 ```json
 {
