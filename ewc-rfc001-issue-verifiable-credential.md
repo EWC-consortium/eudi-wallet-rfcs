@@ -417,6 +417,9 @@ Currently, we retain the trust framework specified by EBSI. Subsequently, we wil
 
 There are two possible ways to request the issuance of a specific Credential type in an Authorization Request. One way is to use the `authorization_details` request parameter with one or more authorization details objects of type `openid_credential`. The other method is through the use of `scope`.
 
+  > [!NOTE]
+   > HAIP[6] chapter 4.2 mandatorily requires Pushed Authorisation Request as per [7]
+
 ### 3.5.1 Using `authorization_details`
 
 The authorisation request is to grant access to the credential endpoint. Below is an example of such a request:
@@ -955,6 +958,7 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 4. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 5. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 6. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 00, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
+7. Lodderstedt, T., Campbell, B., Sakimura, N., Tonge, D., and F. Skokan, "OAuth 2.0 Pushed Authorization Requests", RFC 9126, DOI 10.17487/RFC9126, September 2021, <https://www.rfc-editor.org/info/rfc9126>.
 
 # Appendix A: Public key resolution
 
