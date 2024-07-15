@@ -190,9 +190,25 @@ The Organisation Wallet stores the received credential.
 It may then be used by the Natural Person for authentication purposes.
 
 # 3.2 Messages
+The message flow for obtaining a natural person credential consists of the request and issuance of the actual credential ([3.2.1 Issue Credential](#321-issue-credential)) as well as a sub-message flow that enables the authentication of the applicant ([3.2.2 Present PID](#322-present-pid)).
+It should be noted that the main message flow is controlled by the organisational wallet, while the authentication message flow is carried out by the personal user wallet.
+Both workflows are described according to the DIF-WACI protocol [1].
 
 ## 3.2.1 Issue Credential
+
+
 ### 3.2.1.1 Credential Manifest
+The DIF Credential Manifest is designed to standardize and streamline the issuance and verification of digital credentials.
+It specifies a common structure for defining what information (credentials) an issuer needs from a holder, how this information should be presented, and the criteria for validation.
+This framework enables interoperability across different systems and providers by ensuring that digital credentials can be easily understood and processed regardless of the issuing entity.
+The Credential Manifest facilitates secure, trustworthy, and user-centric identity verification processes, enhancing the efficiency and reliability of digital interactions.
+
+In the following, the Credential Manifest defines the credentials issued by the EAA Provider.
+In this case, a Natural Person Credential is offered as defined in the corresponding JSON-LD schema.
+The credential manifest also provides information about the provider's DID and the credential formats offered, including the signature algorithms supported.
+
+The Credential Manifest of the provider is assumed to be known to the Organisation Wallet.
+If it is not known, it must first be requested by sending a `Propose Credential` message to the provider and receiving the manifest in the subsequent `Offer Credential` message, as defined in the DIF-WACI protocol [1].
 
 ```json
 {
@@ -243,6 +259,17 @@ It may then be used by the Natural Person for authentication purposes.
 ```
 
 ### 3.2.1.2 Credential Application (Request)
+The `Credential Application` message is sent from the Organisation Wallet to the EAA Provider after the credential request has been made by the user.
+
+If a communication channel exists between the Organisation Wallet and the EAA Provider, the channel specific Peer DIDs are used in the `from` and `to` fields of the DIDComm message.
+In this example, we assume that no communication channel exists and a new one needs to be established by generating new Peer DIDs on each side of the channel.
+Therefore, the Organisation Wallet generates a new key pair for secure communication with the specific provider.
+It then encodes the generated public key and connection information, such as the endpoint being offered, into the Peer DID and places it in the `from` field of the request.
+To initiate the channel, the message is delivered to the provider using its public DID.
+The provider then announces its Peer DID in the response message for further communication.
+
+The Credential Application references the Credential Manifest of the Provider to indicate what type of credential the Organisational Wallet is requesting.
+Furthermore, the applicant is defined by the identity of the user managed by the Organisation Wallet, here called `did:example:natural-person-1`.
 
 ```json
 {
@@ -286,6 +313,11 @@ It may then be used by the Natural Person for authentication purposes.
 ```
 
 ### 3.2.1.3 Credential Fulfilment (Issue)
+If the applicant is authorised to receive a Natural Person Credential, it will be issued by the EAA Provider and sent to the Organisation Wallet.
+
+In the `Credential Fulfilment` message, the provider indicates which credential has been issued according to the Credential Manifest.
+
+TODO: Why VerifiablePresentation?
 
 ```json
 {
@@ -774,3 +806,4 @@ The invitation's `id` serves as a thread id `pthid` in the following and enables
 1. Decentralized Identity Foundation (DIF) (2023), Wallet And Credential Interactions (WACI) DIDComm Interop Profile, Available at: https://identity.foundation/waci-didcomm/ (Accessed at: July 9, 2024).
 2. World Wide Web Consortium (W3C) (2024), Verifiable Credentials Data Model v2.0, Available at: https://www.w3.org/TR/vc-data-model-2.0/ (Accessed at: July 9, 2024).
 3. European Commission (2023), The European Digital Identity Wallet Architecture and Reference Framework (2024-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
+4. Decentralized Identity Foundation (DIF) (2023), Credential Manifest, Available at: https://identity.foundation/credential-manifest (Accessed at: July 15, 2024).
