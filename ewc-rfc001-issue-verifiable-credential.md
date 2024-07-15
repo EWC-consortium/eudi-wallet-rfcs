@@ -897,7 +897,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 ## 3.10 Credential response
 
-The credential response can happen in-time or can be deferred as described below. 
+The credential response can happen in-time or can be deferred as described below.
 
 ### 3.10.1  In-time
 
@@ -914,7 +914,28 @@ The In-time flow indicates that the credential is available immediately and the 
 
 ### 3.10.2 Deferred
 
-If the credential is unavailable, the issuer responds with an acceptance token, indicating credential issuance is deferred.
+If the credential is unavailable, the issuer responds with an acceptance token, indicating credential issuance is deferred. The response is as below:
+
+```json
+{
+  "transaction_id": "8xLOxBtZp8",
+  "c_nonce": "wlbQc6pCJp",
+  "c_nonce_expires_in": 86400
+}
+```
+
+The `transaction_id` is used to identity the deferred transaction when the credential is issued at a later time with the following deferred credential endpoint:
+
+```http
+POST /deferred-credential
+Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
+{
+   "transaction_id": "8xLOxBtZp8"
+}
+```
+
+>[Note]
+> If the response contains `acceptance_token` field, then it can be understood the credential is not available now and should be later available through the deferred credential endpoint. An example response is as given below:
 
 ```json
 {
@@ -922,13 +943,6 @@ If the credential is unavailable, the issuer responds with an acceptance token, 
   "c_nonce": "wlbQc6pCJp",
   "c_nonce_expires_in": 86400
 }
-```
-
-If the response contains `acceptance_token` field, then it can be understood the credential is not available now and should be later available through the deferred credential endpoint. 
-
-```http
-POST /deferred-credential
-Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
 ```
 
 # 4.0	Alternate response format
