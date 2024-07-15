@@ -15,7 +15,7 @@
 
 This specification defines the workflow for issuing an Organisation Credential.
 As the exchange of credentials between organisational server wallets has unique requirements, dedicated workflows are required to provide streamlined processes.
-While this RFC utilizes the Decentralized Identity Foundation's (DIF) Wallet And Credential Interactions (WACI) for DIDComm Interop Profile [1] for exchanging credentials, it is open to alternative message exchange protocols.
+While this RFC utilizes the Decentralized Identity Foundation's (DIF) Wallet And Credential Interactions (WACI) DIDComm Interop Profile [1] for exchanging credentials, it is open to alternative message exchange protocols.
 We also propose to define credentials using the W3C Credential Format [2], which is based on JSON-LD.
 This allows the complex semantics of organisational credentials to be expressed in a concise but specific way.
 In addition, W3C Verifiable Credentials provide cryptographic flexibility so that we can take advantage of well-established signature schemes such as ECDSA-SD, while retaining the flexibility to use modern schemes such as BBS.
@@ -26,8 +26,11 @@ The presented standard processes and formats ensure interoperability across the 
 
 The EWC LSP handles a variety of credentials that are exchanged between different types of organisations.
 The goal of this RFC is to provide a standard protocol for requesting and issuing organisational credentials.
-The goal is to provide greater flexibility in terms of authentication methods and credential types.
-Since the credentials are exchanged with a focus on organisations, we anticipate the use of server-based organisational wallets, which have different requirements than personal mobile wallets.
+Depending on the use case, organisations need certain information about their business partners, such as authorised signatories, tax numbers or ultimate beneficial owners.
+This data needs to be validated and kept up to date.
+To simplify the management of this master data, we propose the introduction of organisational credentials, for example issued by an Attestation Provider verifying data from an authentic source such as the relevant commercial register.
+We aim to provide greater flexibility in terms of authentication methods and credential types.
+Since the credentials in scope are exchanged with a focus on organisations, we anticipate the use of server-based organisational wallets, which have different requirements than personal mobile wallets.
 Therefore, we propose the introduction of an organisation-specific identity for natural persons that allows requesting and presenting organisational credentials without the need to interact with a personal wallet.
 This will significantly simplify the handling of organisational credentials and enable a wide range of use cases.
 Organisation wallets can handle processes automatically without human interaction and present the required credentials independently.
@@ -768,6 +771,6 @@ The invitation's `id` serves as a thread id `pthid` in the following and enables
 # 6.0	Reference
 
 
-1. Decentralized Identity Foundation (DIF) (2023), Wallet And Credential Interactions (WACI) for DIDComm Interop Profile, Available at: https://identity.foundation/waci-didcomm/ (Accessed at: July 9, 2024).
+1. Decentralized Identity Foundation (DIF) (2023), Wallet And Credential Interactions (WACI) DIDComm Interop Profile, Available at: https://identity.foundation/waci-didcomm/ (Accessed at: July 9, 2024).
 2. World Wide Web Consortium (W3C) (2024), Verifiable Credentials Data Model v2.0, Available at: https://www.w3.org/TR/vc-data-model-2.0/ (Accessed at: July 9, 2024).
 3. European Commission (2023), The European Digital Identity Wallet Architecture and Reference Framework (2024-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
