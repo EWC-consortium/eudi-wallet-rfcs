@@ -1,5 +1,3 @@
-# eudi-wallet-rfcs
-
 <h1 align="center">
     EWC - EUDI Wallet Request for Comments (RFCs) 
 </h1>
