@@ -741,6 +741,12 @@ This request is made with the following query params:
    <td>Wallet-generated secure random token used to validate the original <code>code_challenge</code> provided in the initial Authorization Request
    </td>
   </tr>
+   <tr>
+   <td><code>redirect_uri</code>
+   </td>
+   <td>For redirection of the response as per <a href=#https://www.rfc-editor.org/rfc/rfc6749.html#section-3.1.2">IETF RFC6749 Section 3.1.2</a>
+   </td>
+  </tr>
 </table>
 
 ### 3.7.2 Pre-authorised code flow
