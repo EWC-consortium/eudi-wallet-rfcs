@@ -767,7 +767,7 @@ This request is made with the following query params:
    </td>
   </tr>
   <tr>
-   <td>pre-<code>authorized_code</code>
+   <td><code>pre-authorized_code</code>
    </td>
    <td>Code representing the Credential Issuer's authorisation for the Wallet to obtain Credentials of a certain type. This code must be short-lived and single-use.
    </td>
