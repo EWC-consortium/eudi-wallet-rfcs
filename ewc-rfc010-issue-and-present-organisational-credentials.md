@@ -14,8 +14,11 @@
 # 1.0	Summary
 
 This specification defines the workflow for issuing an Organisation Credential.
-As the exchange of credentials between organisational server wallets has unique requirements, dedicated workflows are required to provide streamlined processes.
-While this RFC utilizes the Decentralized Identity Foundation's (DIF) Wallet And Credential Interactions (WACI) DIDComm Interop Profile [1] for exchanging credentials, it is open to alternative message exchange protocols.
+Because the exchange of credentials between organisational server wallets has unique requirements compared to personal wallets, dedicated workflows are required to ensure streamlined processes.
+In particular, organisational server wallets are expected to operate autonomously under certain conditions.
+Further, actors (human or machine) within organisations need to authenticate and provide authorisation when interacting with remote organisations.
+Therefore, protocols with greater informative value and flexibility are required in order to be able to express the complex organisational structures.
+For this purpose, this RFC utilizes the Decentralized Identity Foundation's (DIF) Wallet And Credential Interactions (WACI) DIDComm Interop Profile [1] for exchanging credentials.
 We also propose to define credentials using the W3C Credential Format [2], which is based on JSON-LD.
 This allows the complex semantics of organisational credentials to be expressed in a concise but specific way.
 In addition, W3C Verifiable Credentials provide cryptographic flexibility so that we can take advantage of well-established signature schemes such as ECDSA-SD, while retaining the flexibility to use modern schemes such as BBS.
@@ -28,7 +31,7 @@ The EWC LSP handles a variety of credentials that are exchanged between differen
 The goal of this RFC is to provide a standard protocol for requesting and issuing organisational credentials.
 Depending on the use case, organisations need certain information about their business partners, such as authorised signatories, tax numbers or ultimate beneficial owners.
 This data needs to be validated and kept up to date.
-To simplify the management of this master data, we propose the introduction of organisational credentials, for example issued by an Attestation Provider verifying data from an authentic source such as the relevant commercial register.
+To simplify the management of this master data, we propose the use of organisational credentials, for example issued by an Attestation Provider verifying data from an authentic source such as the relevant commercial register.
 We aim to provide greater flexibility in terms of authentication methods and credential types.
 Since the credentials in scope are exchanged with a focus on organisations, we anticipate the use of server-based organisational wallets, which have different requirements than personal mobile wallets.
 Therefore, we propose the introduction of an organisation-specific identity for natural persons that allows requesting and presenting organisational credentials without the need to interact with a personal wallet.
