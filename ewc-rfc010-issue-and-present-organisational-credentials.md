@@ -219,38 +219,18 @@ If it is not known, it must first be requested by sending a `Propose Credential`
   "outputDescriptors": [
     {
       "id": "natural-person-credential",
-      "schema": [
-        {
-          "uri": "https://spherity.github.io/oid/#NaturalPerson",
-          "required": true
-        }
-      ],
-      "name": "Natural Person Credential"
+      "schema": "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
+      ]
     }
   ],
   "format": {
-    "jwt": {
-      "alg": ["EdDSA", "ES256K", "ES384"]
-    },
-    "jwt_vc": {
-      "alg": ["ES256K", "ES384"]
-    },
-    "jwt_vp": {
-      "alg": ["EdDSA", "ES256K"]
-    },
     "ldp_vc": {
       "proof_type": [
         "JsonWebSignature2020",
         "Ed25519Signature2018",
         "EcdsaSecp256k1Signature2019",
-        "RsaSignature2018"
+        "ecdsa-sd-2023"
       ]
-    },
-    "ldp_vp": {
-      "proof_type": ["Ed25519Signature2018"]
-    },
-    "ldp": {
-      "proof_type": ["RsaSignature2018"]
     }
   }
 }
@@ -267,42 +247,40 @@ To initiate the channel, the message is delivered to the provider using its publ
 The provider then announces its Peer DID in the response message for further communication.
 
 The Credential Application references the Credential Manifest of the Provider to indicate what type of credential the Organisational Wallet is requesting.
-Furthermore, the applicant is defined by the identity of the user managed by the Organisation Wallet, here called `did:example:natural-person-1`.
+Furthermore, the applicant is defined by the identity of the user managed by the Organisation Wallet, here `did:key:zDnaeVXmpeF4fafnTY44Fba4yCUMgxhPf85XEoajZbsBxPnEC`.
 
 ```json
 {
   "type": "https://didcomm.org/issue-credential/3.0/request-credential",
   "id": "c6686159-ef49-45b2-938f-51818da14723",
-  "thid": "c6686159-ef49-45b2-938f-51818da14723",
-  "from": "did:peer:connection-1-organisation",
-  "to": ["did:example:provider"],
+  "pthid": "6346b86f-c216-42f1-a0dc-ff733de2708d",
+  "from": "did:peer:2.VzDnaeXJT2DCDJyzRPXGErHYevjvZw85UT8GKnVxVBieH2mSmi.SeyJ0IjoiZG0iLCJzIjp7InVyaSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9kaWRjb21tIiwiYSI6WyJkaWRjb21tL3YyIl0sInIiOlsiZGlkOmtleTp6RG5hZVhKVDJEQ0RKeXpSUFhHRXJIWWV2anZadzg1VVQ4R0tuVnhWQmllSDJtU21pI2tleS0xIl19fQ",
+  "to": "did:peer:2.VzDnaeVQ53PrRWHhijjTCwRhez7927X92evThvdnHYQVz6mt4i.SeyJ0IjoiZG0iLCJzIjp7InVyaSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9kaWRjb21tIiwiYSI6WyJkaWRjb21tL3YyIl0sInIiOlsiZGlkOmtleTp6RG5hZVZRNTNQclJXSGhpampUQ3dSaGV6NzkyN1g5MmV2VGh2ZG5IWVFWejZtdDRpI2tleS0xIl19fQ",
   "body": {},
   "attachments": [
     {
       "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
-      "media_type": "application/json",
       "format": "dif/credential-manifest/application@v1.0",
+      "media_type": "application/json",
       "data": {
         "json": {
+          "id": "c407be9a-6a17-4577-91c7-ed327c8fa8ea",
           "@context": [
-            "https://www.w3.org/2018/credentials/v1",
+            "https://www.w3.org/ns/credentials/v2",
             "https://identity.foundation/credential-manifest/application/v1"
           ],
-          "type": "CredentialApplication",
           "credential_application": {
-            "id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+            "id": "888963b8-c087-4e70-afbb-11fba91e66b3",
             "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
-            "applicant": "did:example:natural-person-1",
-            "manifest_id": "natural-person-manifest",
+            "applicant": "did:key:zDnaeVXmpeF4fafnTY44Fba4yCUMgxhPf85XEoajZbsBxPnEC",
+            "manifest_id": "075c7ccf-db02-42fd-bedb-d9fc369438c4",
             "format": {
               "ldp_vc": {
-                "proof_type": [
-                  "JsonWebSignature2020",
-                  "EcdsaSecp256k1Signature2019"
-                ]
+                "proof_type": ["ecdsa-sd-2023"]
               }
             }
-          }
+          },
+          "type": ["CredentialApplication"]
         }
       }
     }
