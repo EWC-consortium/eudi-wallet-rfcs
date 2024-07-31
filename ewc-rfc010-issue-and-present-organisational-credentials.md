@@ -39,7 +39,7 @@ structure:
 * present organisational credentials
 
 
-# 1.0	Summary
+# 1	Summary
 
 This specification defines the workflow for issuing an Organisation Credential.
 Because the exchange of credentials between organisational server wallets has unique requirements compared to personal wallets, dedicated workflows are required to ensure streamlined processes.
@@ -53,7 +53,7 @@ In addition, W3C Verifiable Credentials provide cryptographic flexibility so tha
 The presented standard processes and formats ensure interoperability across the European Wallet Ecosystem with a standard specification in the EUDI Wallet Ecosystem according to the requirements of the ARF [3].
 
 
-# 2.0	Motivation
+# 2	Motivation
 
 The EWC LSP handles a variety of credentials that are exchanged between different types of organisations.
 The goal of this RFC is to provide a standard protocol for requesting and issuing organisational credentials.
@@ -70,7 +70,21 @@ In addition, processes that require the verifiable liability of a responsible pe
 The defined protocols and standards serve as a foundation for enabling interoperability between organisations throughout the EWC ecosystem.
 This RFC assumes that users are familiar with the chosen EWC protocols and standards, and can reference the original specifications when required. 
 
-# 3.0 Initialisation
+# 3 Trust Model
+
+## 3.1 DIDs
+
+## 3.2 Trust List
+
+## 3.3 Credentials and Holder Binding
+
+## 3.4 Signatory Rights
+
+## 3.5 Power of Attorney
+
+# 4 Prerequisites
+
+# 4.1 Initialisation
 This section describes the requirements for setting up the organisational wallet and adding users to the system.
 Users in the system are members of the organisation.
 Cryptographic material is managed by the Organisation Wallet through a key management system.
@@ -79,59 +93,20 @@ Private keys shall not be retrievable and shall only be used for cryptographic o
 In addition, each user is assigned a unique Decentralised Identifier (DID).
 The user's organisation-specific DID can be used to issue, request and present credentials.
 
-## 3.1 Organisation wallet initialisation
+## 4.2 Organisation wallet initialisation
 Before an organisational wallet can be used, it must be initialised.
 In this process, the user management procedures are defined and an organisation-specific DID and key material are generated.
 The organisation-specific DID enables the implementation of actions that do not require the traceability of a responsible person.
 Such actions can be either part of automated processes or triggered by authorised persons.
 
-```mermaid
-sequenceDiagram
-    %%{init: { 'sequence': {'noteAlign': 'left'} }}%%
-    autonumber
-
-    participant Admin as Administrator
-    participant OrgWallet as Organisation Wallet
-    Admin->>Admin: Defines configuration
-    note right of Admin:  - service endpoints<br/>- authentication methods (password, OIDC, LDAP, ...<br/>- ...
-    Admin->>OrgWallet: creates wallet (configuration)
-    OrgWallet->>OrgWallet: create Key Pair
-    note left of OrgWallet:  - DID of the legal entity used as<br/> subject information id<br/>in the enterprise credential<br/>private key accessible by any user of the wallet
-    OrgWallet->>OrgWallet: create DID
-    OrgWallet -->> Admin: notify: wallet created
-```
-
-## 3.2 User enrollment
 Once the Organisation Wallet has been initialised, users (natural persons) can be enrolled.
 Enrolling a user involves generating a user-specific DID and key material.
 Note that the generated DID is different from the DID a user may have in a personal wallet.
 As a result, members of an organisation benefit from role-specific credentials in their day-to-day work without having to rely on their personal wallet.
 In addition, the generated material is securely stored in the organisation's key management system and can only be accessed by the assigned user for credential requests and presentations.
 
-In the following sample workflow, an administrator invites a user to create a dedicated account in the Organisation Wallet.
-Alternatively, user management can be performed remotely.
-Either way, the Organisation Wallet maintains a dedicated DID and key material for each user.
+# 5 Issue Natural Person Credential
 
-```mermaid
-sequenceDiagram
-    autonumber
-
-    participant Admin as Administrator
-    participant OrgWallet as Organisation Wallet
-    participant NP as Natural Person
-
-    Admin ->> OrgWallet: Invite user
-    OrgWallet ->> NP: Invite
-    NP ->> OrgWallet: Request DID
-
-    OrgWallet ->> OrgWallet: Create Key Pair and DID for Natural Person
-    OrgWallet ->> OrgWallet: Store Key Pair and DID for Natural Person
-
-    OrgWallet -->> NP: Request approved
-    OrgWallet -->> Admin: Notify
-```
-
-# 3.0 Issuing Natural Person Credentials
 Natural persons with signatory rights in the organisation are issued with a Natural Person Credential, which can be used to prove their registration with a trusted authority such as a business registry.
 This credential can also be used for authentication purposes, for example when requesting an Organisation Credential.
 The Natural Person Credential is linked to the Natural Person's DID generated in the Organisation Wallet.
@@ -142,7 +117,7 @@ These rights typically include the authority to enter into binding agreements, t
 Signatory rights ensure that the signer is recognized as a legitimate party to the contract, with the capacity to fulfill the obligations and claim benefits stipulated within the agreement.
 In legal contexts, these rights are crucial for validating the enforceability of contracts and other legal documents.
 
-# 3.1 Process
+## 5.1 Process
 In order for users to demonstrate their signatory rights on behalf of the organisation to business partners, they must possess a credential that has been issued by a reliable authority.
 To obtain this credential, the user must request it from a trustworthy authority such as a business registry (EAA Provider).
 Prior to the issuance of the credential, the credential provider must authenticate the user by requesting the user's PID.
@@ -187,15 +162,12 @@ The Organisation Wallet stores the received credential.
 It may then be used by the Natural Person for authentication purposes.
 5. The Organisation Wallet acknowledges receipt of the Natural Person Credential.
 
-# 3.2 Messages
+## 5.2 Messages
 The message flow for obtaining a natural person credential consists of the request and issuance of the actual credential ([3.2.1 Issue Credential](#321-issue-credential)) as well as a sub-message flow that enables the authentication of the applicant ([3.2.2 Present PID](#322-present-pid)).
 It should be noted that the main message flow is controlled by the organisational wallet, while the authentication message flow is carried out by the personal user wallet.
 Both workflows are described according to the DIF-WACI protocol [1].
 
-## 3.2.1 Issue Credential
-
-
-### 3.2.1.1 Credential Manifest
+### 5.2.1 Credential Manifest
 The DIF Credential Manifest is designed to standardize and streamline the issuance and verification of digital credentials.
 It specifies a common structure for defining what information (credentials) an issuer needs from a holder, how this information should be presented, and the criteria for validation.
 This framework enables interoperability across different systems and providers by ensuring that digital credentials can be easily understood and processed regardless of the issuing entity.
@@ -236,7 +208,7 @@ If it is not known, it must first be requested by sending a `Propose Credential`
 }
 ```
 
-### 3.2.1.2 Credential Application (Request)
+### 5.2.2 Credential Application (Request)
 The `Credential Application` message is sent from the Organisation Wallet to the EAA Provider after the credential request has been made by the user.
 
 If a communication channel exists between the Organisation Wallet and the EAA Provider, the channel specific Peer DIDs are used in the `from` and `to` fields of the DIDComm message.
@@ -288,12 +260,10 @@ Furthermore, the applicant is defined by the identity of the user managed by the
 }
 ```
 
-### 3.2.1.3 Credential Fulfilment (Issue)
+### 5.2.3 Credential Fulfilment (Issue)
 If the applicant is authorised to receive a Natural Person Credential, it will be issued by the EAA Provider and sent to the Organisation Wallet.
 
 In the `Credential Fulfilment` message, the provider indicates which credential has been issued according to the Credential Manifest.
-
-TODO: Why VerifiablePresentation?
 
 ```json
 {
@@ -367,13 +337,14 @@ TODO: Why VerifiablePresentation?
 }
 ```
 
-# 4.0 Issuing Organisational Credentials
 
-# 4.1 Process
+# 6 Issue Enterprise Credential
 
-# 4.2 Messages
+## 6.1 Process
 
-## 4.2.1 Credential Manifest
+## 6.2 Messages
+
+## 6.2.1 Credential Manifest
 
 ```json
 {
@@ -423,7 +394,7 @@ TODO: Why VerifiablePresentation?
 }
 ```
 
-## 4.2.2 Credential Application (Request)
+## 6.2.2 Credential Application (Request)
 
 ```json
 {
@@ -466,7 +437,7 @@ TODO: Why VerifiablePresentation?
 }
 ```
 
-## 4.2.3 Credential Fulfilment (Issue)
+## 6.2.3 Credential Fulfilment (Issue)
 
 ```json
 {
@@ -573,13 +544,15 @@ TODO: Why VerifiablePresentation?
 }
 ```
 
-# 5.0 Presenting Organisation Credentials
+# 7 Issue Power of Attorney Credential
 
-# 5.1 Process
+## 7.1 Process
 
-# 5.2 Messages
+## 7.2 Messages
 
-# 6.0	Reference
+# 8 Present Organisation Credentials
+
+# 9	Reference
 
 
 1. Decentralized Identity Foundation (DIF) (2023), Wallet And Credential Interactions (WACI) DIDComm Interop Profile, Available at: https://identity.foundation/waci-didcomm/ (Accessed at: July 9, 2024).
