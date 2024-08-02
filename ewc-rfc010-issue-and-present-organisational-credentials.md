@@ -41,17 +41,15 @@ structure:
 
 # 1	Summary
 
-This specification defines the workflow for issuing an Organisation Credential.
-Because the exchange of credentials between organisational server wallets has unique requirements compared to personal wallets, dedicated workflows are required to ensure streamlined processes.
-In particular, organisational server wallets are expected to operate autonomously under certain conditions.
-Further, actors (human or machine) within organisations need to authenticate and provide authorisation when interacting with remote organisations.
-Therefore, protocols with greater informative value and flexibility are required in order to be able to express the complex organisational structures.
-For this purpose, this RFC utilizes the Decentralized Identity Foundation's (DIF) Wallet And Credential Interactions (WACI) DIDComm Interop Profile [1] for exchanging credentials.
-We also propose to define credentials using the W3C Credential Format [2], which is based on JSON-LD.
-This allows the complex semantics of organisational credentials to be expressed in a concise but specific way.
-In addition, W3C Verifiable Credentials provide cryptographic flexibility so that we can take advantage of well-established signature schemes such as ECDSA-SD, while retaining the flexibility to use modern schemes such as BBS.
-The presented standard processes and formats ensure interoperability across the European Wallet Ecosystem with a standard specification in the EUDI Wallet Ecosystem according to the requirements of the ARF [3].
-
+This specification defines the workflows for issuing and presenting organisational credentials.
+Compared to personal wallets, organisational wallets have a different mode of operation and different requirements.
+Organisational wallets are expected to run in managed server environments and be in continuous operation.
+They also manage multiple identities, including the organisation's identity and the identities of its representatives.
+Therefore, a specific trust model and protocols are required.
+The trust model describes the root of trust and the actors and identifiers involved.
+It also expresses how entities are authorised to act in a particular role on behalf of an organisation and how these rights can be delegated.
+To prove these relationships, three types of credentials are introduced: enterprise credentials, natural person credentials and power of attorney credentials.
+We also describe the issuance process of these three types of credentials and how they are used for verifiable presentations.
 
 # 2	Motivation
 
@@ -60,12 +58,14 @@ The goal of this RFC is to provide a standard protocol for requesting and issuin
 Depending on the use case, organisations need certain information about their business partners, such as authorised signatories, tax numbers or ultimate beneficial owners.
 This data needs to be validated and kept up to date.
 To simplify the management of this master data, we propose the use of organisational credentials, for example issued by an Attestation Provider verifying data from an authentic source such as the relevant commercial register.
+
 We aim to provide greater flexibility in terms of authentication methods and credential types.
 Since the credentials in scope are exchanged with a focus on organisations, we anticipate the use of server-based organisational wallets, which have different requirements than personal mobile wallets.
-Therefore, we propose the introduction of an organisation-specific identity for natural persons that allows requesting and presenting organisational credentials without the need to interact with a personal wallet.
+Therefore, we propose the use of legal entity identifiers that represent legal persons or natural persons.
 This will significantly simplify the handling of organisational credentials and enable a wide range of use cases.
-Organisation wallets can handle processes automatically without human interaction and present the required credentials independently.
+Organisational wallets can handle processes automatically without human interaction and present the required credentials independently.
 In addition, processes that require the verifiable liability of a responsible person are enabled by signing such requests using the representative's organisation-specific identity.
+This process does not require natural persons to interact with a personal wallet.
 
 The defined protocols and standards serve as a foundation for enabling interoperability between organisations throughout the EWC ecosystem.
 This RFC assumes that users are familiar with the chosen EWC protocols and standards, and can reference the original specifications when required. 
@@ -74,13 +74,75 @@ This RFC assumes that users are familiar with the chosen EWC protocols and stand
 
 ## 3.1 DIDs
 
-## 3.2 Trust List
+Organisational wallets manage two types of identities: legal person and natural person.
+Each legal person and natural person is identified by a unique identifier.
+The use of Decentralised Identifiers (DIDs) permits the implementation of self-sovereign digital identities.
+Each DID is associated with a DID Document that may contains public keys, service endpoints, and other metadata needed for interactions.
+DIDs can be used across various platforms and services, fostering interoperability and user autonomy in the digital identity landscape.
+In the context of this RFC, the DID of a natural person is only used in the context of the organisation and managed using the organisational wallet.
+
+DID Documents are resolved using a DID method.
+While the workflows presented in this RFC are agnostic to the used DID method, we use two types of DID methods as examples: `DID:key` and `DID:peer`.
+Legal and natural persons are identified using the `DID:key` method.
+The `DID:key` method allows for the creation of DIDs directly from cryptographic key pairs without relying on a trust infrastructure.
+Therefore, this RFC is independent from the selection of a concrete trust infrastructure and can be adjusted flexibly.
+The `DID:peer` method is used for establishing secure bilateral communication channels for requesting and presenting credentials.
+The method encodes an ephemeral key bound to specific a DIDComm connection.
+
+## 3.2 Trust Lists
+
+In order to verify verifiable credentials, the Relying Party needs a trust relationship with the Attestation Provider.
+This RFC is independent of the trust infrastructure that provides the trust anchor.
+It is expected that a trust infrastructure providing trust lists is available.
+Trust lists provide the DIDs of trusted Attestation Providers and Relying Parties.
+As a result, the wallet can verify the authenticity of the Relying Party before presenting a verifiable credential, and the Relying Party can verify the authenticity of the Attestation Provider upon presentation of the credential.
 
 ## 3.3 Credentials and Holder Binding
 
+It is expected that organisational credentials exhibit a high degree of complexity and interdependencies.
+The W3C Credential Format [2] utilizes JSON-LD for expressing complex semantics in a concise but specific way.
+JSON-LD enables semantic interoperability by utilizing schemas that participants have agreed upon.
+As a result, present vocabularies such as the SEMIC Core Vocabularies [5] can be reused to ensure cross-border interoperability.
+In addition, W3C Verifiable Credentials provide cryptographic flexibility so that we can take advantage of well-established signature schemes such as ECDSA-SD, while retaining the flexibility to use modern schemes such as BBS.
+
+Verifiable Credentials include claims about legal or natural persons and are requested, stored, and presented using the organisational wallet.
+An enterprise credential is bound to a legal person by its DID.
+The organisational wallet can be configured to act autonomously by signing and presenting the enterprise credential.
+Furthermore, enterprise credentials may express the roles of natural persons in the enterprise by referencing their organisation-specific DID.
+As a result, natural persons can sign and present enterprise credentials to prove certain roles or rights (see sections [3.4 Signatory Rights](#34-signatory-rights) and [3.5 Power of Attorney](#35-power-of-attorney)).
+
+One of the key differences between organisational wallets and personal wallets is their availability and the need to operate autonomously.
+This requires protocols that do not require human intervention.
+The Decentralized Identity Foundation's (DIF) Wallet And Credential Interactions (WACI) DIDComm Interop Profile [1] enables autonomous credential exchange.
+In addition, it does not require an existing connection for secure communication between organisational agents.
+
 ## 3.4 Signatory Rights
 
+Organisations have associated natural persons who are authorised to act on behalf of the organisation.
+These signatory rights are notified by the organisation to national commercial registers.
+The national commercial registers issue enterprise credentials to organisations including the relevant signatory rights (see section [6. Issue Enterprise Credential](#6-issue-enterprise-credential).
+Therefore, the national commercial registers act as Attestation Providers.
+For authorisation purposes, natural persons may present the enterprise credential to Relying Parties.
+The enterprise credential contains a list of natural persons with signatory rights.
+This list also includes the unique identifiers of the natural persons in the form of a DID.
+By signing the credential presentation using the private key associated with a natural person DID that is part of the signatory list, users of the organisational wallet can prove to Relying Parties, that they have signatory rights.
+The Relying Party verifies the signature and associates the DID used with the signatory entry in the enterprise credential.
+
+In order to include the DID in the enterprise credential, the relevant natural persons must first register with the commercial register.
+This process involves the authentication and communication of the natural person DID, which is managed in the organisational wallet.
+Further, a natural person credential is issued to enable authentication and proof of certain attributes, such as name and date of birth (see section [5. Issue Natural Person Credential](#5-issue-natural-person-credential)).
+
 ## 3.5 Power of Attorney
+
+Natural persons can delegate certain rights to another natural person by issuing a power of attorney credential (see section [7. Issue Power of Attorney Credential](#7-issue-power-of-attorney-credential)).
+In this case, the delegator acts as an Attestation Provider within the organisational wallet.
+Delegates can be natural persons or machines identified by a DID.
+Typically, but not necessarily, the delegate's identity will be managed in the same organisational wallet as the delegator's identity if they belong to the same organisation.
+
+Power of attorney credentials contain information about the delegation rights, such as which actions are delegated, and a provenance proof of the delegation rights.
+For this purpose, a credential proving the delegator's rights is embedded into the power of attorney credential.
+For example, to delegate signatory rights, the delegator would need to embed the enterprise credential that proves his or her signatory rights.
+In addition, power of attorney can be chained by including a power of attorney credential that delegates the relevant rights.
 
 # 4. General concept
 
@@ -850,3 +912,4 @@ sequenceDiagram
 2. World Wide Web Consortium (W3C) (2024), Verifiable Credentials Data Model v2.0, Available at: https://www.w3.org/TR/vc-data-model-2.0/ (Accessed at: July 9, 2024).
 3. European Commission (2023), The European Digital Identity Wallet Architecture and Reference Framework (2024-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
 4. Decentralized Identity Foundation (DIF) (2023), Credential Manifest, Available at: https://identity.foundation/credential-manifest (Accessed at: July 15, 2024).
+5. European Commission (2024), ISA² - Interoperability solutions for public administrations, businesses and citizens - Core Vocabularies, Available at: https://ec.europa.eu/isa2/solutions/core-vocabularies_en/ (Accessed: July 31, 2024)
