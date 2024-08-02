@@ -91,18 +91,6 @@ Users of the organisation wallet are members of the organisation. Users can be h
 * Power of attorney credential: The subject of this type of credential is a delegation of authority from one user of the enterprise wallet to another user.
 It is possible to refer from within one credential to another. This allows to describe very complex organisation structures. Referencing is done using the id of the subject information property.
 
-## 4.2 Organisation wallet initialisation
-Before an organisational wallet can be used, it must be initialised.
-In this process, the user management procedures are defined and an organisation-specific DID and key material are generated.
-The organisation-specific DID enables the implementation of actions that do not require the traceability of a responsible person.
-Such actions can be either part of automated processes or triggered by authorised persons.
-
-Once the Organisation Wallet has been initialised, users (natural persons) can be enrolled.
-Enrolling a user involves generating a user-specific DID and key material.
-Note that the generated DID is different from the DID a user may have in a personal wallet.
-As a result, members of an organisation benefit from role-specific credentials in their day-to-day work without having to rely on their personal wallet.
-In addition, the generated material is securely stored in the organisation's key management system and can only be accessed by the assigned user for credential requests and presentations.
-
 # 5 Issue Natural Person Credential
 
 ## 5.1 General
