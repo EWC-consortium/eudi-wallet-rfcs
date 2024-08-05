@@ -557,7 +557,7 @@ sequenceDiagram
       "type": [
         "VerifiableCredential",
         "ChainedCredential",
-        "PowerOfAttorney"
+        "PowerOfAttorneyCredential"
       ],
       "issuer": "did:key:...", // did of delegating user who asserts the delegated right for the authorized user
       "validFrom": "2024-07-30T10:20:55.189Z",
@@ -642,12 +642,12 @@ In the above shown POA-Credential an organisation credential is embedded into th
 The Organisation Wallet stores Organisation Credentials. Credentials contain claims about the enterprise which are asserted by a trusted issuer. By presenting this claims to business partners, the business partners can verify the authenticity of the claims if they trust the issuer. Before an enterprise can present credentials it has to request credentials from issuers.
 Credentials can be requested by any user of the Organisation Wallet with specific rights. The user proofs his rights against the issuer by presenting an Natural Person Credential (signatory rights) or a POA-Credential (delegated rights). The issuer looks up the data of the organisation, verifies if the requesting user is authorized to request the Organisation Credentials and submits the credentials if the requesting user is authorized.   
 
-## 6.1 Prerequisites
+## 7.2 Prerequisites
 
 * The company is registered at the EAA-Provider.
 * The user has the rights to request Organisation Credential either by signatories rights or by power of attorney
 
-## 6.2 Workflow
+## 7.3 Workflow
 
 ```mermaid
 sequenceDiagram
@@ -658,249 +658,951 @@ sequenceDiagram
   participant EAAP as EAA-Provider
 
   User->>OrgWallet: Instructs to request Organisation Credentials
-  OrgWallet->>EAAP: Request for Organisation Credentials
-  activate EAAP
-  activate OrgWallet
-  EAAP->>OrgWallet: Request for Proof of Authorization
-  activate OrgWallet
-  activate EAAP
-  OrgWallet-)EAAP: Presentation of Natural Person Credential or POA Credential
-  EAAP-)OrgWallet: Close connection with Acknowledgement
-  deactivate OrgWallet
-  deactivate EAAP
+  OrgWallet->>EAAP: Propose Credential
+  EAAP->>OrgWallet: Offer Credential with Manifest
+  OrgWallet->>EAAP: Request for Organisation Credentials with<br>Natural Person Credential or POA Credential 
   EAAP->>EAAP: Check Permissions
   EAAP->>EAAP: Create Enterprise Credential
   EAAP-)OrgWallet: Submit Enterprise Credential
   OrgWallet-)EAAP: Close connection with Acknowledgement
-  deactivate OrgWallet
-  deactivate EAAP
   OrgWallet->>OrgWallet: Store Enterprise Credential
 ```
 
 ## 6.3 Steps
 
 1. The user instructs the wallet to requests the Organisation Credentials
-2. The Organisation Wallet sends the request to the EAA-Provider. The invitation and the credential manifest of the EAA-Provider are pre-configured in the organisation wallet. The request establishes a new DIDComm thread between the EAAP-Provider and the Organisation Wallet.
+2. The Organisational Wallet triggers the credential issuing process by sending a `Propose Credential` message. The request establishes a new DIDComm connection between the EAA Provider and the Organisational Wallet. The DIDComm out of band invitation is pre-configured in the wallet.
 
-    <JsonDisplay json={CredentialRequest} />
+  Pre-configured invite:
+   ```json
+   {
+     "type": "https://didcomm.org/out-of-band/2.0/invitation",
+     "id": "f137e0db-db7b-4776-9530-83c808a34a42",
+     "from": "did:peer:2...", // peer DID of EAA Provider
+     "body": {
+       "goal-code": "issue organisational credential",
+       "accept": ["didcomm/v2"]
+     }
+   }
+   ```
+  ***_NOTE_:***
+  If the invitation is unknown, it needs to be received out of band (QR-Code, deep-link, email, ...).
 
-   pre-configured credential manifest:
+  `Propose Credential` message:
+   ```json
+   {
+     "type": "https://didcomm.org/issue-credential/3.0/propose-credential",
+     "id": "7f62f655-9cac-4728-854a-775ba6944593",
+     "pthid": "f137e0db-db7b-4776-9530-83c808a34a42", // invite ID
+     "from": "did:peer:2...", // peer DID of Organisational Wallet
+     "to": "did:peer:2..." // peer DID of EAA Provider
+   }
+   ```
 
-    <JsonDisplay json={CredentialManifest} />
+   3. The EAA Provider sends a `Offer Credential` message to the Organisational Wallet that includes a `Credential Manifest`. The manifest describes the credentials being offered, in this case Organisational Credentials. Organisational credentials are only issued to Natural Persons which have corresponding signatory rights or Power of Attorney. Therefore, the manifest of the EAA Provider also requests the presentation of an Natural Person Credential or a PoA-Credential to prove the rights to request the organisational credentials.
 
-   :::info
-   The WACI doesn't allow to select specific claims in `output_descriptor`
-   :::
-   :::info
-   The manifest format specified above follows the WACI for better readability. It is not required for pre-configured manifests.
-   :::
+      `Offer Credential` message:
+       ```json
+       {
+         "type": "https://didcomm.org/issue-credential/3.0/offer-credential",
+         "id": "c6686159-ef49-45b2-938f-51818da14723",
+         "thid": "7f62f655-9cac-4728-854a-775ba6944593",
+         "from": "did:peer:2...", // peer DID of EAA Provider
+         "to": "did:peer:2...", // peer DID of Organisational Wallet
+         "body": {},
+         "attachments": [
+           {
+             "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+             "data": {
+               "json": {
+                 "options":{
+                   "challenge":"508adef4-b8e0-4edf-a53d-a260371c1423",
+                   "domain":"9rf25a28rs96"
+                 },
+                 "credential_manifest": {
+                   "id": "075c7ccf-db02-42fd-bedb-d9fc369438c4",
+                   "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
+                   "issuer": {
+                     "id": "did:key:...", // DID of EAA Provider
+                     "name": "Bundesanzeiger Verlag"
+                   },
+                   "output_descriptors": [
+                     {
+                       "id": "LegalPersonCredential",
+                       "schema": "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                     }
+                   ],
+                   "presentation_definition": {
+                     "id": "8246867e-fdce-48de-a825-9d84ec16c6c9",
+                     "input_descriptors": [
+                       {
+                         "id:": "NaturalPersonCredentialOrPoACredential",
+                         "frame": {
+                           "@context": [
+                             "https://www.w3.org/ns/credentials/v2",
+                             "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
+                           ],
+                           "type": [
+                             "VerifiableCredential",
+                             "LegalEntityCertificate",
+                             "PowerOfAttorneyACertificate"
+                           ],
+                           "credentialSubject": {
+                             "@explicit": true,
+                             "type": [
+                               "NaturalPerson",
+                               "PowerOfAttorney"
+                             ],
+                             "id": {},
+                             "companyName": {},
+                             "euid": {},
+                             "dateOfBirth": {},
+                             "familyName": {},
+                             "givenName": {},
+                             "proxiedPermissions": {}
+                           } 
+                         }
+                       }
+                     ]
+                   }
+                 }
+               }
+             },
+             "format": "dif/credential-manifest/application@v1.0",
+             "media_type": "application/json"
+           }
+         ]
+       }
+       ```
 
-3. The %%Bundesanzeiger|EAAP%% requests credentials to verify authorisation. It sends a presentation requests and opens a new sub thread `0ac534c8-98ed-4fe3-8a41-3600775e1e92` within the existing DIDComm parent thread `c6686159-ef49-45b2-938f-51818da14723`.
+4. The Organisational Wallet requests the Organsational Credentials from the EAA Provider.
 
-    <JsonDisplay json={RequestPresentation} />
-
-4. The user presents either the Natural Person Credential or %%POA-Credential|power-of-attorney-credential%% to the %%Bundesanzeiger|EAAP%%
-
-
-# 7 Issue organisation Credential
-
-## 7.1 Process
-
-## 7.2 Messages
-
-## 7.2.1 Credential Manifest
-
-```json
-{
-  "id": "organisation-credential-manifest",
-  "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
-  "issuer": {
-    "id": "did:example:provider",
-    "name": "Example EAA Provider"
-  },
-  "outputDescriptors": [
+   `Request Credential` message:
+    ```json
     {
-      "id": "organisation-credential",
-      "schema": [
+      "type": "https://didcomm.org/issue-credential/3.0/request-credential",
+      "id": "c6686159-ef49-45b2-938f-51818da14723",
+      "thid": "7f62f655-9cac-4728-854a-775ba6944593",
+      "from": "did:peer:2...", // peer DID of Organisational Wallet
+      "to": "did:peer:2...", // peer DID of EAA Provider
+      "body": {},
+      "attachments": [
         {
-          "uri": "https://spherity.github.io/oid#LegalEntityCertificate",
-          "required": true
-        }
-      ],
-      "name": "Organisation Credential"
-    }
-  ],
-  "format": {
-    "jwt": {
-      "alg": ["EdDSA", "ES256K", "ES384"]
-    },
-    "jwt_vc": {
-      "alg": ["ES256K", "ES384"]
-    },
-    "jwt_vp": {
-      "alg": ["EdDSA", "ES256K"]
-    },
-    "ldp_vc": {
-      "proof_type": [
-        "JsonWebSignature2020",
-        "Ed25519Signature2018",
-        "EcdsaSecp256k1Signature2019",
-        "RsaSignature2018"
-      ]
-    },
-    "ldp_vp": {
-      "proof_type": ["Ed25519Signature2018"]
-    },
-    "ldp": {
-      "proof_type": ["RsaSignature2018"]
-    }
-  }
-}
-```
-
-## 7.2.2 Credential Application (Request)
-
-```json
-{
-  "type": "https://didcomm.org/issue-credential/3.0/request-credential",
-  "id": "c6686159-ef49-45b2-938f-51818da14723",
-  "thid": "c6686159-ef49-45b2-938f-51818da14723",
-  "from": "did:example:organisation",
-  "to": ["did:example:provider"],
-  "body": {},
-  "attachments": [
-    {
-      "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
-      "media_type": "application/json",
-      "format": "dif/credential-manifest/application@v1.0",
-      "data": {
-        "json": {
-          "@context": [
-            "https://www.w3.org/2018/credentials/v1",
-            "https://identity.foundation/credential-manifest/application/v1"
-          ],
-          "type": "CredentialApplication",
-          "credential_application": {
-            "id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-            "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
-            "applicant": "did:example:organisation",
-            "manifest_id": "organisation-credential-manifest",
-            "format": {
-              "ldp_vc": {
-                "proof_type": [
-                  "JsonWebSignature2020",
-                  "EcdsaSecp256k1Signature2019"
+          "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+          "data": {
+            "json": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2",
+                "https://identity.foundation/credential-manifest/application/v1"
+              ],
+              "id": "c407be9a-6a17-4577-91c7-ed327c8fa8ea",
+              "credential_application": {
+                "id": "888963b8-c087-4e70-afbb-11fba91e66b3",
+                "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
+                "format": {
+                  "ldp_vc": {
+                    "proof_type": [
+                      "ecdsa-sd-2023"
+                    ]
+                  }
+                },
+                "applicant": "did:key:...", // Natural Person DID
+                "manifest_id": "075c7ccf-db02-42fd-bedb-d9fc369438c4" // ID of pre-configured manifest
+              },
+              "presentation_submission":{
+                "id":"2e161b2c-606b-416f-b04f-7f06edac55a1",
+                "definition_id":"8246867e-fdce-48de-a825-9d84ec16c6c9",
+                "descriptor_map":[
+                  {
+                    "id":"LegalPersonId",
+                    "format":"ldp_vp",
+                    "path":"$.verifiableCredential[0]"
+                  }
                 ]
-              }
+              },
+              "verifiableCredential":[
+                {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2",
+                    "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                  ],
+                  "type": [
+                    "VerifiableCredential",
+                    "LegalEntityCertificate"
+                  ],
+                  "issuer": "did:key:...", // DID of EAA Provider
+                  "validFrom": "2024-07-30T10:11:22.985Z",
+                  "validUntil": "2034-07-30T10:11:22.985Z",
+                  "credentialSubject": {
+                    "type": "NaturalPerson",
+                    "id": "did:key:...", // Natural Person DID
+                    "birthDate": "1970-01-01",
+                    "domicile": {
+                      "addressCountry": "Germany",
+                      "addressLocality": "Berlin",
+                      "postalCode": "10119"
+                    },
+                    "familyName": "Doe",
+                    "gender": "Male",
+                    "givenName": "John",
+                    "jobTitle": "CEO"
+                  },
+                  "proof": {
+                    "created": "2024-07-30T10:11:22Z",
+                    "cryptosuite": "ecdsa-sd-2023",
+                    "proofPurpose": "assertionMethod",
+                    "proofValue": "u2V0AhV...",
+                    "verificationMethod": "did:key:..." // DID of EAA Provider
+                  }
+                }
+              ],
+              "type": [
+                "VerifiablePresentation",
+                "CredentialApplication"
+              ]
+            }
+          },
+          "format": "dif/credential-manifest/application@v1.0",
+          "media_type": "application/json"
+        }
+      ]
+    }
+    ```
+   
+5. The EAA proofs the permissions of the requester to request organisation credentials.
+6. The EAA creates the oranisational credentials.
+7. The EAA subbmits the credentials
+
+    ```json
+    {
+      "type": "https://didcomm.org/issue-credential/3.0/issue-credential",
+      "id": "7a476bd8-cc3f-4d80-b784-caeb2ff265da",
+      "thid": "c6686159-ef49-45b2-938f-51818da14723",
+      "from": "did:peer:2.VzDnaeVQ53PrRWHhijjTCwRhez7927X92evThvdnHYQVz6mt4i.SeyJ0IjoiZG0iLCJzIjp7InVyaSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9kaWRjb21tIiwiYSI6WyJkaWRjb21tL3YyIl0sInIiOlsiZGlkOmtleTp6RG5hZVZRNTNQclJXSGhpampUQ3dSaGV6NzkyN1g5MmV2VGh2ZG5IWVFWejZtdDRpI2tleS0xIl19fQ",
+      "to": "did:peer:2.VzDnaeXJT2DCDJyzRPXGErHYevjvZw85UT8GKnVxVBieH2mSmi.SeyJ0IjoiZG0iLCJzIjp7InVyaSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9kaWRjb21tIiwiYSI6WyJkaWRjb21tL3YyIl0sInIiOlsiZGlkOmtleTp6RG5hZVhKVDJEQ0RKeXpSUFhHRXJIWWV2anZadzg1VVQ4R0tuVnhWQmllSDJtU21pI2tleS0xIl19fQ",
+      "body": {},
+      "attachments": [
+        {
+          "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+          "format": "dif/credential-manifest/fulfillment@v1.0",
+          "media_type": "application/json",
+          "data": {
+            "json": {
+              "id": "a30e3b91-fb77-4d22-95fa-871689c322e2",
+              "manifest_id": "dcc75a16-19f5-4273-84ce-4da69ee2b7fe",
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2",
+                "https://identity.foundation/credential-manifest/fulfillment/v1"
+              ],
+              "credential_fulfillment": {
+                "descriptor_map": [
+                  {
+                    "format": "ldp_vc",
+                    "id": "Enterprise Credential",
+                    "path": "$.verifiableCredential[0]"
+                  }
+                ]
+              },
+              "type": [
+                "CredentialResponse",
+                "VerifiablePresentation"
+              ],
+              "verifiableCredential": [
+                {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2",
+                    "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                  ],
+                  "type": [
+                    "VerifiableCredential",
+                    "LegalEntityCertificate"
+                  ],
+                  "issuer": "did:key:zDnaexEHa3xyCcG1pNCj65VPcbrYrrxVfxMW2qCsDN3XzqzxP",
+                  "validFrom": "2024-07-30T10:15:32.859Z",
+                  "validUntil": "2034-07-30T10:15:32.858Z",
+                  "credentialSubject": {
+                    "address": {
+                      "addressCountry": "Germany",
+                      "addressLocality": "Berlin",
+                      "postalCode": "10119"
+                    },
+                    "businessObject": "Trading Company",
+                    "businessYear": {
+                      "balance": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "currency": "EUR",
+                      "date": "2024-01-01",
+                      "employeeCount": "39",
+                      "revenue": "2933"
+                    },
+                    "companyIdentifier": "urn:mdms:12345678",
+                    "companyName": "Flower Power AG",
+                    "directParentCompany": "did:key:fictive-7",
+                    "ekrn": "3333",
+                    "euid": "ANY EUID",
+                    "evidence": {
+                      "source": "Transparency register",
+                      "type": "Evidence",
+                      "verificationDate": "2014-01-01",
+                      "verifiedField": [
+                        "CEO",
+                        "CTO"
+                      ]
+                    },
+                    "exchange": {
+                      "country": "Germany",
+                      "marketIdentificationCode": "AA",
+                      "name": "Boerse Stuttgart",
+                      "tickerSymbol": "BB"
+                    },
+                    "functionary": {
+                      "authorizationExtent": "full",
+                      "isAuthorizedRepresentative": true,
+                      "isExclusionOfParagraph181": false,
+                      "legalEntityId": "did:key:zDnaeVXmpeF4fafnTY44Fba4yCUMgxhPf85XEoajZbsBxPnEC",
+                      "role": "CEO"
+                    },
+                    "generalPartner": {
+                      "legalEntityId": "did:key:fictive-6",
+                      "share": {
+                        "absolute": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "absoluteInEur": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "isDirectShare": true,
+                        "relative": "20",
+                        "type": "Share"
+                      },
+                      "type": "Shareholder"
+                    },
+                    "handoverDescription": "no flag",
+                    "handoverFlag": false,
+                    "id": "did:key:zDnaedjxqnoS2jK7RsNmRgbVNGsGnj7zSr74Y71NAMrAPZa6Q",
+                    "insolvencyStatus": "none",
+                    "isFoundation": false,
+                    "isin": "1234567890",
+                    "isNfrdObligated": false,
+                    "isTrust": false,
+                    "legalForm": "GmbH",
+                    "lei": "ABC988",
+                    "leiNextIssuance": "2027-01-10",
+                    "leiStatus": "active",
+                    "liquidationStatus": "none",
+                    "nace020": {
+                      "code": "IT",
+                      "industryDescription": "Tech Int. Trade",
+                      "type": "Industry"
+                    },
+                    "previousName": [
+                      "AL",
+                      "DI"
+                    ],
+                    "registerIdentification": {
+                      "companyId": "ACDC",
+                      "companyIdCountryCode": "DE",
+                      "registerLocation": "Berlin, Moabit",
+                      "registerNumber": "123AVB",
+                      "registerType": "ABC123",
+                      "registerTypeDescription": "Amtsgericht Tiergarten"
+                    },
+                    "registrationDate": "2010-01-01",
+                    "regulator": {
+                      "description": "Int. Trade",
+                      "name": "BaFin",
+                      "regulatorId": "DeBa"
+                    },
+                    "shareholder": {
+                      "generalPartner": {
+                        "legalEntityId": "did:key:fictive-5",
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "type": "Shareholder"
+                      },
+                      "handover": false,
+                      "handoverDescription": "none",
+                      "legalEntityId": "did:key:fictive-4",
+                      "share": {
+                        "absolute": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "absoluteInEur": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "isDirectShare": true,
+                        "relative": "20",
+                        "type": "Share"
+                      },
+                      "shareholder": {
+                        "legalEntityId": "did:key:fictive-5",
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "type": "Shareholder"
+                      },
+                      "type": [
+                        "Shareholder",
+                        "ShareholderLegalPerson"
+                      ],
+                      "votingRightsRelative": "20"
+                    },
+                    "status": "active",
+                    "type": [
+                      "LegalPersonId",
+                      "LegalPersonBaseData",
+                      "LegalPerson"
+                    ],
+                    "ultimateBeneficiaryOwner": {
+                      "capital": {
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelativeDirect": "20"
+                      },
+                      "fictitious": {
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelativeDirect": "20"
+                      },
+                      "naturalPersonId": "did:key:fictive-2",
+                      "otherControl": {
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelativeDirect": "20"
+                      },
+                      "votingRights": {
+                        "otherControlReason": "20",
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelative": "20",
+                        "votingRightsRelativeDirect": "20"
+                      }
+                    },
+                    "ultimateParentCompany": "did:key:fictive-8",
+                    "vatId": "22222ABC",
+                    "wz2008": {
+                      "code": "IT",
+                      "industryDescription": "Tech Int. Trade",
+                      "type": "Industry"
+                    }
+                  },
+                  "proof": {
+                    "created": "2024-07-30T10:15:32Z",
+                    "cryptosuite": "ecdsa-sd-2023",
+                    "proofPurpose": "assertionMethod",
+                    "proofValue": "u2V0AhVh...",
+                    "type": "DataIntegrityProof",
+                    "verificationMethod": "did:key:zDnaexEHa3xyCcG1pNCj65VPcbrYrrxVfxMW2qCsDN3XzqzxP#zDnaexEHa3xyCcG1pNCj65VPcbrYrrxVfxMW2qCsDN3XzqzxP"
+                  }
+                }
+              ]
             }
           }
         }
+      ]
+    }
+    ```
+
+9. The Organisational Wallet aknowledge the reception of the credential and closes the DIDComm connection.
+    ```json
+    {
+      "type": "https://didcomm.org/present-proof/3.0/ack",
+      "id": "e2f3747b-41e8-4e46-abab-ba51472ab1c3",
+      "thid": "c6686159-ef49-45b2-938f-51818da14723",
+      "from": "did:peer:2.VzDnaeXJT2DCDJyzRPXGErHYevjvZw85UT8GKnVxVBieH2mSmi.SeyJ0IjoiZG0iLCJzIjp7InVyaSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9kaWRjb21tIiwiYSI6WyJkaWRjb21tL3YyIl0sInIiOlsiZGlkOmtleTp6RG5hZVhKVDJEQ0RKeXpSUFhHRXJIWWV2anZadzg1VVQ4R0tuVnhWQmllSDJtU21pI2tleS0xIl19fQ",
+      "to": "did:peer:2.VzDnaeVQ53PrRWHhijjTCwRhez7927X92evThvdnHYQVz6mt4i.SeyJ0IjoiZG0iLCJzIjp7InVyaSI6Imh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9kaWRjb21tIiwiYSI6WyJkaWRjb21tL3YyIl0sInIiOlsiZGlkOmtleTp6RG5hZVZRNTNQclJXSGhpampUQ3dSaGV6NzkyN1g5MmV2VGh2ZG5IWVFWejZtdDRpI2tleS0xIl19fQ",
+      "body": {
+        "status": "OK"
       }
     }
-  ]
-}
+    ```
+
+# 8 Present Organisation Credentials
+
+## 8.1 Description
+
+The enterprise can use Organisation Credentials to prove certain claims about legal entities. In addition to proving the claims, the presenter also authenticates to the verifier using their DID. Users with signatory rights can proof their rights just by presenting the Organisation Credentials. Users without signatory must present a Power of Attorney Credential together with the Organisation Credential.
+The credential chain within PoA Credential provides the trust. The starting point (trust anchor) must be a Legal Person Credential defining the signatory rights.
+Organisation Credentials are held by an Enterprise, i.e. by a group of persons. The Organisation Credentials are shared by the users of the Organisation Wallet. Any user can present the Organisation Credentials.
+
+## 8.2 Prerequisites
+
+* The is signed in to the Organisation Wallet
+* The Organisation Credentials are stored in the Organisation Wallet
+* The user has the signatory rights or power of attorney to request the service.
+* The user has requested the service.
+
+## 8.3 Workflow
+
+```mermaid
+sequenceDiagram
+  autonumber
+
+  participant User as User
+  participant OrgWallet as Organisation Wallet
+  participant ServiceProvider as Service Provider
+
+  ServiceProvider->>OrgWallet: Invite
+  OrgWallet->>ServiceProvider: Propose Presentation
+  ServiceProvider->>OrgWallet: Requests Proof
+  OrgWallet->>User: Shows requested claims
+  User->>OrgWallet: Confirms presentations of credentials
+  OrgWallet->>ServiceProvider: Present Enterprise Credentials and Natural Person Credential or POA Credential
+  ServiceProvider->>ServiceProvider: Check Permissions
+  ServiceProvider->>OrgWallet: Acknowledge with closing DIDComm-Connection
+  ServiceProvider->>OrgWallet: Allow access to request service
 ```
 
-## 7.2.3 Credential Fulfilment (Issue)
+### Steps
+
+
+1. The Service Provider sends an invitation to the Wallet to request proof of rights to access the specific service.
+```json
+   {
+     "type": "https://didcomm.org/out-of-band/2.0/invitation",
+     "id": "f137e0db-db7b-4776-9530-83c808a34a42",
+     "from": "did:peer:2...", // peer DID of Service Provider
+     "body": {
+       "goal-code": "present proof",
+       "accept": ["didcomm/v2"]
+     }
+   }
+   ```
+***_NOTE_:***
+The presentation is sent out of band, e.g. by a deep link.
+
+2. The wallet proposes to send a presentation. The message establishes the DIDComm connection.
+
+`Propose Credential` message:
+   ```json
+   {
+     "type": "https://didcomm.org/issue-credential/3.0/propose-presentation",
+     "id": "7f62f655-9cac-4728-854a-775ba6944593",
+     "pthid": "f137e0db-db7b-4776-9530-83c808a34a42", // invite ID
+     "from": "did:peer:2...", // peer DID of Organisational Wallet
+     "to": "did:peer:2..." // peer DID of Service Provider
+   }
+   ```
+
+4. The Wallet shows the claims to the user.
+5. The user confirms the presentation of the requested claims.
+6. The wallet presents the Organisation Credentials. If the requester doesn't have signatory rights together with the POA-Credential proofing the rights.
 
 ```json
 {
-  "type": "https://didcomm.org/issue-credential/3.0/issue-credential",
-  "id": "7a476bd8-cc3f-4d80-b784-caeb2ff265da",
-  "thid": "c6686159-ef49-45b2-938f-51818da14723",
-  "from": "did:example:provider",
-  "to": ["did:example:organisation"],
+  "type": "https://didcomm.org/present-proof/3.0/presentation",
+  "id": "f1ca8245-ab2d-4d9c-8d7d-94bf310314ef",
+  "thid": "0ac534c8-98ed-4fe3-8a41-3600775e1e92",
+  "from": "did:peer:2...",
+  "to": "did:peer:2...",
   "body": {},
   "attachments": [
     {
-      "id": "e00e11d4-906d-4c88-ba72-7c66c7113a79",
-      "media_type": "application/json",
-      "format": "dif/credential-manifest/fulfillment@v1.0",
+      "id": "2a3f1c4c-623c-44e6-b159-179048c51260",
+      "media_type": "application/ld+json",
+      "format": "dif/presentation-exchange/submission@v1.0",
       "data": {
         "json": {
           "@context": [
-            "https://www.w3.org/2018/credentials/v1",
-            "https://identity.foundation/credential-manifest/fulfillment/v1"
+            "https://www.w3.org/ns/credentials/v2",
+            "https://identity.foundation/presentation-exchange/submission/v1"
           ],
-          "type": ["VerifiablePresentation", "CredentialFulfillment"],
-          "credential_fulfillment": {
-            "id": "a30e3b91-fb77-4d22-95fa-871689c322e2",
-            "manifest_id": "dcc75a16-19f5-4273-84ce-4da69ee2b7fe",
+          "type": [
+            "VerifiablePresentation",
+            "PresentationSubmission"
+          ],
+          "presentation_submission": {
+            "id": "1d257c50-454f-4c96-a273-c5368e01fe63",
+            "definition_id": "32f54163-7166-48f1-93d8-ff217bdb0654",
             "descriptor_map": [
               {
-                "id": "driver_license_output",
-                "format": "ldp_vc",
+                "id": "LegalEntityCredentials",
+                "format": "ldp_vp",
                 "path": "$.verifiableCredential[0]"
               }
             ]
           },
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2024-07-25T07:26:37Z",
+            "verificationMethod": "did:key:zDnaeVXmpeF4fafnTY44Fba4yCUMgxhPf85XEoajZbsBxPnEC#zDnaeVXmpeF4fafnTY44Fba4yCUMgxhPf85XEoajZbsBxPnEC",
+            "cryptosuite": "ecdsa-sd-2023",
+            "proofPurpose": "authentication",
+            "challenge": "31abea30-be5f-4ab2-99ae-6b7a0208ac76",
+            "domain": "4jt78h47fh47",
+            "proofValue": "u2V0AhVh..."
+          },
           "verifiableCredential": [
             {
               "@context": [
-                "https://www.w3.org/2018/credentials/v1",
-                "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
+                "https://www.w3.org/ns/credentials/v2",
+                "https://oid.spherity.com/contexts/oid/v1.jsonld"
               ],
-              "type": ["VerifiableCredential", "LegalEntityCertificate"],
-              "id": "urn:uuid:f086cced-1153-4540-993b-b4d52ca499c2",
-              "issuanceDate": "2019-12-03T12:19:52Z",
-              "expirationDate": "2029-12-03T12:19:52Z",
-              "issuer": "did:example:provider",
+              "type": [
+                "VerifiableCredential",
+                "LegalEntityCertificate"
+              ],
+              "issuer": "did:key:zDnaexEHa3xyCcG1pNCj65VPcbrYrrxVfxMW2qCsDN3XzqzxP",
+              "validFrom": "2024-07-30T10:15:32.859Z",
+              "validUntil": "2034-07-30T10:15:32.858Z",
               "credentialSubject": {
-                "id": "did:example:organisation",
-                "type": ["LegalPersonId", "LegalPersonBaseData"],
-                "euid": "DEPLPOAG.123456789",
-                "companyName": "Flower Power AG",
                 "address": {
-                  "postalCode": "10119",
                   "addressCountry": "Germany",
-                  "addressLocality": "Berlin"
+                  "addressLocality": "Berlin",
+                  "postalCode": "10119"
                 },
-                "registerIdentification": {
-                  "registerType": "ABC123",
-                  "registerTypeDescription": "Amtsgericht Tiergarten",
-                  "registerLocation": "Berlin, Moabit",
-                  "registerNumber": "123AVB",
-                  "companyId": "ACDC",
-                  "companyIdCountryCode": "DE"
-                },
-                "previousName": ["AL", "DI"],
-                "status": "active",
-                "liquidationStatus": "none",
-                "insolvencyStatus": "none",
-                "legalForm": "GmbH",
-                "isFoundation": false,
-                "isNfrdObligated": false,
-                "isTrust": false,
                 "businessObject": "Trading Company",
-                "registrationDate": "2010-01-01",
+                "businessYear": {
+                  "balance": {
+                    "amount": "399399",
+                    "currency": "EUR",
+                    "type": "Balance"
+                  },
+                  "currency": "EUR",
+                  "date": "2024-01-01",
+                  "employeeCount": "39",
+                  "revenue": "2933"
+                },
+                "companyIdentifier": "urn:mdms:12345678",
+                "companyName": "Flower Power AG",
+                "directParentCompany": "did:key:fictive-7",
+                "ekrn": "3333",
+                "euid": "ANY EUID",
+                "evidence": {
+                  "source": "Transparency register",
+                  "type": "Evidence",
+                  "verificationDate": "2014-01-01",
+                  "verifiedField": [
+                    "CEO",
+                    "CTO"
+                  ]
+                },
                 "exchange": {
-                  "name": "Boerse Stuttgart",
                   "country": "Germany",
                   "marketIdentificationCode": "AA",
+                  "name": "Boerse Stuttgart",
                   "tickerSymbol": "BB"
                 },
+                "functionary": {
+                  "authorizationExtent": "full",
+                  "isAuthorizedRepresentative": true,
+                  "isExclusionOfParagraph181": false,
+                  "legalEntityId": "did:key:zDnaeVXmpeF4fafnTY44Fba4yCUMgxhPf85XEoajZbsBxPnEC",
+                  "role": "CEO"
+                },
+                "generalPartner": {
+                  "legalEntityId": "did:key:fictive-6",
+                  "share": {
+                    "absolute": {
+                      "amount": "399399",
+                      "currency": "EUR",
+                      "type": "Balance"
+                    },
+                    "absoluteInEur": {
+                      "amount": "399399",
+                      "currency": "EUR",
+                      "type": "Balance"
+                    },
+                    "isDirectShare": true,
+                    "relative": "20",
+                    "type": "Share"
+                  },
+                  "type": "Shareholder"
+                },
+                "handoverDescription": "no flag",
+                "handoverFlag": false,
+                "id": "did:key:zDnaedjxqnoS2jK7RsNmRgbVNGsGnj7zSr74Y71NAMrAPZa6Q",
+                "insolvencyStatus": "none",
+                "isFoundation": false,
                 "isin": "1234567890",
-                "vatId": "22222ABC",
+                "isNfrdObligated": false,
+                "isTrust": false,
+                "legalForm": "GmbH",
                 "lei": "ABC988",
+                "leiNextIssuance": "2027-01-10",
                 "leiStatus": "active",
-                "leiNextIssuance": "2027-01-10"
+                "liquidationStatus": "none",
+                "nace020": {
+                  "code": "IT",
+                  "industryDescription": "Tech Int. Trade",
+                  "type": "Industry"
+                },
+                "previousName": [
+                  "AL",
+                  "DI"
+                ],
+                "registerIdentification": {
+                  "companyId": "ACDC",
+                  "companyIdCountryCode": "DE",
+                  "registerLocation": "Berlin, Moabit",
+                  "registerNumber": "123AVB",
+                  "registerType": "ABC123",
+                  "registerTypeDescription": "Amtsgericht Tiergarten"
+                },
+                "registrationDate": "2010-01-01",
+                "regulator": {
+                  "description": "Int. Trade",
+                  "name": "BaFin",
+                  "regulatorId": "DeBa"
+                },
+                "shareholder": {
+                  "generalPartner": {
+                    "legalEntityId": "did:key:fictive-5",
+                    "share": {
+                      "absolute": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "absoluteInEur": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "isDirectShare": true,
+                      "relative": "20",
+                      "type": "Share"
+                    },
+                    "type": "Shareholder"
+                  },
+                  "handover": false,
+                  "handoverDescription": "none",
+                  "legalEntityId": "did:key:fictive-4",
+                  "share": {
+                    "absolute": {
+                      "amount": "399399",
+                      "currency": "EUR",
+                      "type": "Balance"
+                    },
+                    "absoluteInEur": {
+                      "amount": "399399",
+                      "currency": "EUR",
+                      "type": "Balance"
+                    },
+                    "isDirectShare": true,
+                    "relative": "20",
+                    "type": "Share"
+                  },
+                  "shareholder": {
+                    "legalEntityId": "did:key:fictive-5",
+                    "share": {
+                      "absolute": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "absoluteInEur": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "isDirectShare": true,
+                      "relative": "20",
+                      "type": "Share"
+                    },
+                    "type": "Shareholder"
+                  },
+                  "type": [
+                    "Shareholder",
+                    "ShareholderLegalPerson"
+                  ],
+                  "votingRightsRelative": "20"
+                },
+                "status": "active",
+                "type": [
+                  "LegalPersonId",
+                  "LegalPersonBaseData",
+                  "LegalPerson"
+                ],
+                "ultimateBeneficiaryOwner": {
+                  "capital": {
+                    "share": {
+                      "absolute": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "absoluteInEur": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "isDirectShare": true,
+                      "relative": "20",
+                      "type": "Share"
+                    },
+                    "shareRelativeDirect": "20",
+                    "votingRightsRelativeDirect": "20"
+                  },
+                  "fictitious": {
+                    "share": {
+                      "absolute": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "absoluteInEur": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "isDirectShare": true,
+                      "relative": "20",
+                      "type": "Share"
+                    },
+                    "shareRelativeDirect": "20",
+                    "votingRightsRelativeDirect": "20"
+                  },
+                  "naturalPersonId": "did:key:fictive-2",
+                  "otherControl": {
+                    "share": {
+                      "absolute": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "absoluteInEur": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "isDirectShare": true,
+                      "relative": "20",
+                      "type": "Share"
+                    },
+                    "shareRelativeDirect": "20",
+                    "votingRightsRelativeDirect": "20"
+                  },
+                  "votingRights": {
+                    "otherControlReason": "20",
+                    "share": {
+                      "absolute": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "absoluteInEur": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "isDirectShare": true,
+                      "relative": "20",
+                      "type": "Share"
+                    },
+                    "shareRelativeDirect": "20",
+                    "votingRightsRelative": "20",
+                    "votingRightsRelativeDirect": "20"
+                  }
+                },
+                "ultimateParentCompany": "did:key:fictive-8",
+                "vatId": "22222ABC",
+                "wz2008": {
+                  "code": "IT",
+                  "industryDescription": "Tech Int. Trade",
+                  "type": "Industry"
+                }
               },
               "proof": {
-                "created": "2021-06-07T20:02:44.730614315Z",
-                "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..NVum9BeYkhzwslZXm2cDOveQB9njlrCRSrdMZgwV3zZfLRXmZQ1AXdKLLmo4ClTYXFX_TWNyB8aFt9cN6sSvCg",
+                "created": "2024-07-30T10:15:32Z",
+                "cryptosuite": "ecdsa-sd-2023",
                 "proofPurpose": "assertionMethod",
-                "type": "Ed25519Signature2018",
-                "verificationMethod": "did:orb:EiA3Xmv8A8vUH5lRRZeKakd-cjAxGC2A4aoPDjLysjghow#tMIstfHSzXfBUF7O0m2FiBEfTb93_j_4ron47IXPgEo"
+                "proofValue": "u2V0AhVh..."
               }
             }
-          ],
-          "proof": {
-            "created": "2021-06-07T20:02:44.730614315Z",
-            "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..NVum9BeYkhzwslZXm2cDOveQB9njlrCRSrdMZgwV3zZfLRXmZQ1AXdKLLmo4ClTYXFX_TWNyB8aFt9cN6sSvCg",
-            "proofPurpose": "authentication",
-            "type": "Ed25519Signature2018",
-            "verificationMethod": "did:orb:EiA3Xmv8A8vUH5lRRZeKakd-cjAxGC2A4aoPDjLysjghow#tMIstfHSzXfBUF7O0m2FiBEfTb93_j_4ron47IXPgEo"
-          }
+          ]
         }
       }
     }
@@ -908,7 +1610,14 @@ sequenceDiagram
 }
 ```
 
-# 8 Present Organisation Credentials
+7. Service Provider checks permissions by verifying the signatory rights of the requester in the Organisation credential or the PoA-Credential.
+8. Service Provider aknowledges the reception of the proof and closes the DIDcomm connection.
+9. Service Provider gives access to the requested service (e.g. opening a Bank account)
+
+### Result
+
+- The user has access to the requested service at the service provider.
+
 
 # 9	Reference
 
