@@ -11,8 +11,8 @@
 **Status:** Ready for review
 
 notes:
-* exchange of organisation credentials - issue and present
-* organisation credentials are credentials about legal entities and their relationships
+* exchange of organisational credentials - issue and present
+* organisational credentials are credentials about legal entities and their relationships
 * legal entities are legal persons (companies) or natural persons (humans related to the company - employee, shareholder, ultimate beneficiary owners, ...)
 * enterprise wallets holds organisational credentials and are operated by the company
   * used by a group a persons (employees of the company)
@@ -20,8 +20,8 @@ notes:
   * company is liable for misuse of issued credentials
   * internal role model (visibility of credentials and claims)
   * running 24/7
-* complex organisation credentials  
-* signatory rights based on organisation credentials
+* complex organisational credentials  
+* signatory rights based on organisational credentials
 * delegation of rights based on power of attorney credentials
 
 structure:
@@ -34,7 +34,7 @@ structure:
   * signatory rights
   * power of attorney
 * issue natural person credential
-* issue organisation credential
+* issue organisational credential
 * issue power of attorney credential
 * present organisational credentials
 
@@ -48,7 +48,7 @@ They also manage multiple identities, including the organisation's identity and 
 Therefore, a specific trust model and protocols are required.
 The trust model describes the root of trust and the actors and identifiers involved.
 It also expresses how entities are authorised to act in a particular role on behalf of an organisation and how these rights can be delegated.
-To prove these relationships, three types of credentials are introduced: enterprise credentials, natural person credentials and power of attorney credentials.
+To prove these relationships, three types of credentials are introduced: organisational credentials, natural person credentials and power of attorney credentials.
 We also describe the issuance process of these three types of credentials and how they are used for verifiable presentations.
 
 # 2	Motivation
@@ -106,10 +106,10 @@ As a result, present vocabularies such as the SEMIC Core Vocabularies [5] can be
 In addition, W3C Verifiable Credentials provide cryptographic flexibility so that we can take advantage of well-established signature schemes such as ECDSA-SD, while retaining the flexibility to use modern schemes such as BBS.
 
 Verifiable Credentials include claims about legal or natural persons and are requested, stored, and presented using the organisational wallet.
-An enterprise credential is bound to a legal person by its DID.
-The organisational wallet can be configured to act autonomously by signing and presenting the enterprise credential.
-Furthermore, enterprise credentials may express the roles of natural persons in the enterprise by referencing their organisation-specific DID.
-As a result, natural persons can sign and present enterprise credentials to prove certain roles or rights (see sections [3.4 Signatory Rights](#34-signatory-rights) and [3.5 Power of Attorney](#35-power-of-attorney)).
+An organisational credential is bound to a legal person by its DID.
+The organisational wallet can be configured to act autonomously by signing and presenting the organisational credential.
+Furthermore, organisational credentials may express the roles of natural persons in the enterprise by referencing their organisation-specific DID.
+As a result, natural persons can sign and present organisational credentials to prove certain roles or rights (see sections [3.4 Signatory Rights](#34-signatory-rights) and [3.5 Power of Attorney](#35-power-of-attorney)).
 
 One of the key differences between organisational wallets and personal wallets is their availability and the need to operate autonomously.
 This requires protocols that do not require human intervention.
@@ -120,15 +120,15 @@ In addition, it does not require an existing connection for secure communication
 
 Organisations have associated natural persons who are authorised to act on behalf of the organisation.
 These signatory rights are notified by the organisation to national commercial registers.
-The national commercial registers issue enterprise credentials to organisations including the relevant signatory rights (see section [6. Issue Enterprise Credential](#6-issue-enterprise-credential).
+The national commercial registers issue organisational credentials to organisations including the relevant signatory rights (see section [6. Issue Organisational Credential](#6-issue-organisation-credential).
 Therefore, the national commercial registers act as Attestation Providers.
-For authorisation purposes, natural persons may present the enterprise credential to Relying Parties.
-The enterprise credential contains a list of natural persons with signatory rights.
+For authorisation purposes, natural persons may present the organisational credential to Relying Parties.
+The organisational credential contains a list of natural persons with signatory rights.
 This list also includes the unique identifiers of the natural persons in the form of a DID.
 By signing the credential presentation using the private key associated with a natural person DID that is part of the signatory list, users of the organisational wallet can prove to Relying Parties, that they have signatory rights.
-The Relying Party verifies the signature and associates the DID used with the signatory entry in the enterprise credential.
+The Relying Party verifies the signature and associates the DID used with the signatory entry in the organisational credential.
 
-In order to include the DID in the enterprise credential, the relevant natural persons must first register with the commercial register.
+In order to include the DID in the organisational credential, the relevant natural persons must first register with the commercial register.
 This process involves the authentication and communication of the natural person DID, which is managed in the organisational wallet.
 Further, a natural person credential is issued to enable authentication and proof of certain attributes, such as name and date of birth (see section [5. Issue Natural Person Credential](#5-issue-natural-person-credential)).
 
@@ -141,17 +141,17 @@ Typically, but not necessarily, the delegate's identity will be managed in the s
 
 Power of attorney credentials contain information about the delegation rights, such as which actions are delegated, and a provenance proof of the delegation rights.
 For this purpose, a credential proving the delegator's rights is embedded into the power of attorney credential.
-For example, to delegate signatory rights, the delegator would need to embed the enterprise credential that proves his or her signatory rights.
+For example, to delegate signatory rights, the delegator would need to embed the organisational credential that proves his or her signatory rights.
 In addition, power of attorney can be chained by including a power of attorney credential that delegates the relevant rights.
 
 # 4. General concept
 
-An organisation wallet is used by a user to request, receive and presents organizational credentials by interacting with issuers (EAA-provioder) and verifiers (service-providers).  
-Users of the organisation wallet are members of the organisation. Users can be human or system users. System users are defined for handling automatic use cases. Each user added to an organisation wallet gets an identity by assigning a decentralized identifier (DID). Cryptographic material is managed by the Organisation Wallet through a key management system. The user is the controller of the DID, i.e. only he has access to the private key related to his DID. The user's organisation-specific DID can be used to issue, request and present credentials. There are three types of organisational credentials hold in the organisation wallet:
+An organisational wallet is used by a user to request, receive and presents organizational credentials by interacting with EAA Providers and Relying Parties.  
+Users of the organisational wallet are members of the organisation. Users can be human or system users. System users are defined for handling automatic use cases. Each user added to an organisational wallet gets an identity by assigning a decentralized identifier (DID). Cryptographic material is managed by the Organisational Wallet through a key management system. The user is the controller of the DID, i.e. only he has access to the private key related to his DID. The user's organisation-specific DID can be used to issue, request and present credentials. There are three types of organisational credentials hold in the organisational wallet:
 * Legal person credential: The subject of this type of credential is a legal person, i.e. a company, organisation, ...
-* Natural person credential: The subject of this type of credential is a human being. Please note that this credential is only valid in the context of the organisation. It isn't the PID as defined by the EUDI-wallet, but can be derived from the PID.
-* Power of attorney credential: The subject of this type of credential is a delegation of authority from one user of the enterprise wallet to another user.
-It is possible to refer from within one credential to another. This allows to describe very complex organisation structures. Referencing is done using the id of the subject information property.
+* Natural person credential: The subject of this type of credential is a human being. Please note that this credential is only valid in the context of the organisation. The natural person credential is different from the PID as defined by the EUDI-wallet. However, the PID can be used for authentication when requesting the credential.
+* Power of attorney credential: The subject of this type of credential is a delegation of authority from one user of the organisational wallet to another user.
+It is possible to refer from within one credential to another. This allows to describe very complex organisational structures. Referencing is done using the id of the subject information property.
 
 # 5 Issue Natural Person Credential
 
@@ -160,9 +160,9 @@ It is possible to refer from within one credential to another. This allows to de
 Signatory rights ensure that the signer is recognized as a legitimate party to the contract, with the capacity to fulfill the obligations and claim benefits stipulated within the agreement.
 In legal contexts, these rights are crucial for validating the enforceability of contracts and other legal documents.
 
-Signatory rights are asserted by EAA-provider within the organisation credential.
+Signatory rights are asserted by an EAA Provider within the organisational credential.
 
-snippet of the organisation credential asserting signatory rights to a natural person:
+The following snippet shows an organisational credential asserting signatory rights to a natural person:
 ```json
 "functionary": {
   "legalEntityId": "did:key:...",  // DID of the user with signatory rights 
@@ -173,17 +173,18 @@ snippet of the organisation credential asserting signatory rights to a natural p
 }
 ```
 
-In order to assign the rights to a specific user of the organisation wallet the EAA-provider needs the DID of this specific user.
+In order to assign the rights to a specific user of the organisational wallet the EAA Provider needs the DID of this specific user.
 
-For this purpose the EAA-provider accepts a credential request from the user, authenticates him and issues a natural person credential bound to his DID. Afterward, the DID is known to the EAA-Provider and can be used within the organisation credential to assign signatory rights to a natural person.
+For this purpose the EAA Provider accepts a credential request from the user, authenticates them and issues a natural person credential bound to his DID. The DID is then known to the EAA Provider and can be used to assign signatory rights to a natural person in the organisational credential.
 
 
 **_NOTE:_**
-When requesting the Organisation Credential from the EAA-Provider for every reference to a Natural Person, that has already requested a Natural Person Credential and consequently registered his DID at the EAA-Provider, the DID of the Natural Person is used. If a Natural Person referenced by an Organisation Credential is not yet registered at the time the credential is issued, a unique identifier (`urn:uuid:5042da0d-3675-4739-8c60-1c58390540a0`) is used for the reference instead of a DID.
+The EAA provider will use the Natural Person's DID to reference them in them in the Organisational Credential if the Natural Person has previously registered.
+If the Natural Person has not previously registered, a unique identifier (`urn:uuid:5042da0d-3675-4739-8c60-1c58390540a0`) will be used for the reference in the Organisational Credential instead of a DID.
 
 ## 5.2 Prerequisite
 
-- User was added to the Organisational Wallet and got assigned a DID
+The user has been added to the Organisational Wallet and has received a DID.
 
 ## 5.3 Workflow
 
@@ -194,132 +195,131 @@ sequenceDiagram
   autonumber
 
   participant User as User
-  participant OrgWallet as Organisation Wallet
-  participant EAAP as EAA-Provider
+  participant OrgWallet as Organisational Wallet
+  participant EAAP as EAA Provider
 
   User->>OrgWallet: Instruct wallet to request Natural Person Credential
-  OrgWallet->>EAAP: Credential Propose
-  EAAP->>OrgWallet: Credential Offer (manifest)
-  OrgWallet->>EAAP: Credential Request
+  OrgWallet->>EAAP: Propose Credential
+  EAAP->>OrgWallet: Offer Credential (manifest)
+  OrgWallet->>EAAP: Request Credential
 
   Note over User, EAAP: Authentication of user
 
   EAAP-)EAAP: Store PID Information and Natural Person DID
   EAAP-)OrgWallet: Issue Credential (Natural Person Credential)
-  OrgWallet -) EAAP: Close with acknowledgement
+  OrgWallet -) EAAP: Close with Acknowledgement
 ```
 
 ## 5.4 Steps
 
-1. The user instructs the Organisation Wallet to request a Natural Person Credential from the relevant authority (EAA Provider).
-2. The Organisation Wallet triggers the credential issuing process by sending a Credential Propose message. The request establishes a new DID-Comm connection between the EAA-Provider and the Organisation Wallet. The DID-Comm OOB invitation is pre-configured in the wallet.
-   preconfigured invite:
-    ```json
-    {
-      "type":"https://didcomm.org/out-of-band/2.0/invitation",
-      "id":"f137e0db-db7b-4776-9530-83c808a34a42",
-      "from":"did:peer:2...", // did of EAA-Provider
-      "body":{
-        "goal-code":"issue natural person certificate",
-        "accept":[
-          "didcomm/v2"
-        ]
-      }
-    }   
-    ```
-   ***_NOTE_***
-   Alternatively, if the invitation isn't known it needs to be received out of band (QR-Code, deep-link, email, ...).
+1. The user instructs the Organisational Wallet to request a Natural Person Credential from the relevant authority (EAA Provider).
+2. The Organisational Wallet triggers the credential issuing process by sending a `Propose Credential` message. The request establishes a new DIDComm connection between the EAA Provider and the Organisational Wallet. The DIDComm out of band invitation is pre-configured in the wallet.
 
-    credential propose message:
+   Pre-configured invite:
     ```json
     {
-       "type":"https://didcomm.org/issue-credential/3.0/propose-credential",
-       "id":"7f62f655-9cac-4728-854a-775ba6944593",
-       "pthid":"f137e0db-db7b-4776-9530-83c808a34a42", //invite id
-       "from":"did:peer:2...", // peer did EAA-Provider
-       "to":[
-          "did:example:issuer"
-       ]
+      "type": "https://didcomm.org/out-of-band/2.0/invitation",
+      "id": "f137e0db-db7b-4776-9530-83c808a34a42",
+      "from": "did:peer:2...", // peer DID of EAA Provider
+      "body": {
+        "goal-code": "issue natural person certificate",
+        "accept": ["didcomm/v2"]
+      }
+    }
+    ```
+   ***_NOTE_:***
+   If the invitation is unknown, it needs to be received out of band (QR-Code, deep-link, email, ...).
+
+    `Propose Credential` message:
+    ```json
+    {
+      "type": "https://didcomm.org/issue-credential/3.0/propose-credential",
+      "id": "7f62f655-9cac-4728-854a-775ba6944593",
+      "pthid": "f137e0db-db7b-4776-9530-83c808a34a42", // invite ID
+      "from": "did:peer:2...", // peer DID of Organisational Wallet
+      "to": "did:peer:2..." // peer DID of EAA Provider
     }
     ```
    
-3. The EAA-Provider sends credential offer message to the Organisation Wallet. The manifest offers to issue Natural Person Credential. Natural Person Credentials are only issued in the context of an Organisation. Therefore, the manifest of the EAA-Provider also requests the presentation of an Organisation Credential.
+3. The EAA Provider sends a `Offer Credential` message to the Organisational Wallet that includes a `Credential Manifest`. The manifest describes the credentials being offered, in this case Natural Person Credentials. Natural Person Credentials are only issued in the context of an Organisation. Therefore, the manifest of the EAA Provider also requests the presentation of an Organisational Credential to prove the request is sent from the Organisational Wallet.
 
-```json
-{
-  "type": "https://didcomm.org/issue-credential/3.0/offer-credential",
-  "id": "c6686159-ef49-45b2-938f-51818da14723",
-  "pthid": "6346b86f-c216-42f1-a0dc-ff733de2708d",
-  "from": "did:peer:2...", // peer did EAA-Provider
-  "to": "did:peer:2...", // peer did Organisation Wallet
-  "body": {},
-  "attachments": [
+    `Offer Credential` message:
+    ```json
     {
-      "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
-      "data": {
-        "json": {
-          "options":{
-            "challenge":"508adef4-b8e0-4edf-a53d-a260371c1423",
-            "domain":"9rf25a28rs96"
-          },
-          "credential_manifest": {
-            "id": "075c7ccf-db02-42fd-bedb-d9fc369438c4",
-            "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
-            "issuer": {
-              "id": "did:key:zDnaexEHa3xyCcG1pNCj65VPcbrYrrxVfxMW2qCsDN3XzqzxP",
-              "name": "Bundesanzeiger Verlag"
-            },
-            "output_descriptors": [
-              {
-                "id": "NaturalPersonCredential",
-                "schema": "https://oid.spherity.com/contexts/oid/v1.jsonld"
-              }
-            ],
-            "presentation_definition": {
-              "id": "8246867e-fdce-48de-a825-9d84ec16c6c9",
-              "input_descriptors": [
-                {
-                  "id:": "LegalPersonId",
-                  "frame": {
-                    "@context": [
-                      "https://www.w3.org/ns/credentials/v2",
-                      "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
-                    ],
-                    "type": [
-                      "VerifiableCredential",
-                      "LegalEntityCertificate"
-                    ],
-                    "credentialSubject": {
-                      "@explicit": true,
-                      "type": [
-                        "LegalPersonId"
-                      ],
-                      "companyName": {},
-                      "euid": {}
-                    }
+      "type": "https://didcomm.org/issue-credential/3.0/offer-credential",
+      "id": "c6686159-ef49-45b2-938f-51818da14723",
+      "thid": "7f62f655-9cac-4728-854a-775ba6944593",
+      "from": "did:peer:2...", // peer DID of EAA Provider
+      "to": "did:peer:2...", // peer DID of Organisational Wallet
+      "body": {},
+      "attachments": [
+        {
+          "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+          "data": {
+            "json": {
+              "options":{
+                "challenge":"508adef4-b8e0-4edf-a53d-a260371c1423",
+                "domain":"9rf25a28rs96"
+              },
+              "credential_manifest": {
+                "id": "075c7ccf-db02-42fd-bedb-d9fc369438c4",
+                "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
+                "issuer": {
+                  "id": "did:key:...", // DID of EAA Provider
+                  "name": "Bundesanzeiger Verlag"
+                },
+                "output_descriptors": [
+                  {
+                    "id": "NaturalPersonCredential",
+                    "schema": "https://oid.spherity.com/contexts/oid/v1.jsonld"
                   }
+                ],
+                "presentation_definition": {
+                  "id": "8246867e-fdce-48de-a825-9d84ec16c6c9",
+                  "input_descriptors": [
+                    {
+                      "id:": "LegalPersonId",
+                      "frame": {
+                        "@context": [
+                          "https://www.w3.org/ns/credentials/v2",
+                          "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
+                        ],
+                        "type": [
+                          "VerifiableCredential",
+                          "LegalEntityCertificate"
+                        ],
+                        "credentialSubject": {
+                          "@explicit": true,
+                          "type": [
+                            "LegalPersonId"
+                          ],
+                          "companyName": {},
+                          "euid": {}
+                        }
+                      }
+                    }
+                  ]
                 }
-              ]
+              }
             }
-          }
+          },
+          "format": "dif/credential-manifest/application@v1.0",
+          "media_type": "application/json"
         }
-      },
-      "format": "dif/credential-manifest/application@v1.0",
-      "media_type": "application/json"
+      ]
     }
-  ]
-}
-```
+    ```
 
-4. The Organisation Wallet sends a credential request for a Natural Person Credential to the EAA-Provider. The DID-Comm OOB invitation and the credential manifest are pre-configured in the Enterprise Wallet. 
+4. The Organisational Wallet requests a Natural Person Credential from the EAA Provider.
 
+    `Request Credential` message:
     ```json
     {
       "type": "https://didcomm.org/issue-credential/3.0/request-credential",
       "id": "c6686159-ef49-45b2-938f-51818da14723",
       "thid": "7f62f655-9cac-4728-854a-775ba6944593",
-      "from": "did:peer:2...", // peer did Organisation Wallet
-      "to": "did:peer:2...", // peer did EAA-Provider
+      "from": "did:peer:2...", // peer DID of Organisational Wallet
+      "to": "did:peer:2...", // peer DID of EAA Provider
       "body": {},
       "attachments": [
         {
@@ -341,8 +341,8 @@ sequenceDiagram
                     ]
                   }
                 },
-                "applicant": "did:key:...", // natural person DID
-                "manifest_id": "075c7ccf-db02-42fd-bedb-d9fc369438c4" // id of pre-configured manifest
+                "applicant": "did:key:...", // Natural Person DID
+                "manifest_id": "075c7ccf-db02-42fd-bedb-d9fc369438c4" // ID of pre-configured manifest
               },
               "presentation_submission":{
                 "id":"2e161b2c-606b-416f-b04f-7f06edac55a1",
@@ -365,11 +365,11 @@ sequenceDiagram
                     "VerifiableCredential",
                     "LegalEntityCertificate"
                   ],
-                  "issuer": "did:key:...", // did of organisation - self issued credential
+                  "issuer": "did:key:...", // DID of Organisation - self issued credential
                   "validFrom": "2024-07-30T10:15:32.859Z",
                   "validUntil": "2034-07-30T10:15:32.858Z",
                   "credentialSubject": {
-                    "id": "did:key:...", //did of organisation                
+                    "id": "did:key:...", // DID of Organisation                
                     "type": "LegalPersonId",
                     "companyName": "Flower Power AG",
                     "euid": "ANY EUID"
@@ -380,11 +380,12 @@ sequenceDiagram
                     "proofPurpose": "assertionMethod",
                     "proofValue": "u2V0AhVh ...",
                     "type": "DataIntegrityProof",
-                    "verificationMethod": "did:key:..." // key of organisation - self signed
+                    "verificationMethod": "did:key:..." // DID of Organisation - self signed
                   }
                 }
               ],
               "type": [
+                "VerifiablePresentation",
                 "CredentialApplication"
               ]
             }
@@ -396,22 +397,24 @@ sequenceDiagram
     }
     ```    
 
-The EAA-Provider authenticates the user before issuing the Natural Person Credential. There are several options to authenticate the user depending on the local laws and the capabilities of the EAA-Provider:
+    The EAA Provider authenticates the user before issuing the Natural Person Credential. There are several options to authenticate the user depending on the local laws and the capabilities of the EAA Provider:
 
-* PID (Personal EUDI Wallet)
-* Video-Ident 
-* national eID (e.g. "Personalausweis" in Germany)
-* federated IDs
+    * PID (Personal EUDI Wallet)
+    * Video-Ident 
+    * national eID (e.g. "Personalausweis" in Germany)
+    * federated IDs
 
-5. The EAA-Provider verifies the authenticated claims of the user against the transparency register. He also verifies that the user is an employee of the company and finally stores the Natural Person DID, the DID of the organisation and a reference to the corresponding entry of the transparency register.
-6. The EAA-Provider issues the Natural Person Credential to the Organisation.
+5. The EAA Provider verifies the authenticated claims of the user against the transparency register. The EAA Provider also verifies that the user is an employee of the company and finally stores the Natural Person DID, the DID of the organisation and a reference to the corresponding entry of the transparency register.
+6. The EAA Provider issues the Natural Person Credential and sends it to the Organisational Wallet.
+
+    `Issue Credential` message:
     ```json
     {
       "type": "https://didcomm.org/issue-credential/3.0/issue-credential",
       "id": "015c54fb-f9d4-4bd8-a2ab-157ca4776b3e",
       "thid": "c6686159-ef49-45b2-938f-51818da14723",
-      "from": "did:peer:2...", //did of EAA-Provider
-      "to": "did:peer:2...", //did of organisational wallet
+      "from": "did:peer:2...", // DID of EAA Provider
+      "to": "did:peer:2...", // DID of Organisational Wallet
       "body": {},
       "attachments": [
         {
@@ -427,7 +430,7 @@ The EAA-Provider authenticates the user before issuing the Natural Person Creden
               "credential_response": {
                 "id": "fb61b375-0b0d-4715-ab2d-fe6b15874e64",
                 "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
-                "applicant": "did:key:...", // natural person DID,
+                "applicant": "did:key:...", // Natural Person DID
                 "manifest_id": "075c7ccf-db02-42fd-bedb-d9fc369438c4",
                 "application_id": "888963b8-c087-4e70-afbb-11fba91e66b3",
                 "fulfillment": {
@@ -454,12 +457,12 @@ The EAA-Provider authenticates the user before issuing the Natural Person Creden
                     "VerifiableCredential",
                     "LegalEntityCertificate"
                   ],
-                  "issuer": "did:key:...", // did of EAA-Provider
+                  "issuer": "did:key:...", // DID of EAA Provider
                   "validFrom": "2024-07-30T10:11:22.985Z",
                   "validUntil": "2034-07-30T10:11:22.985Z",
                   "credentialSubject": {
                     "type": "NaturalPerson",
-                    "id": "did:key:...", // did of natural person
+                    "id": "did:key:...", // Natural Person DID
                     "birthDate": "1970-01-01",
                     "domicile": {
                       "addressCountry": "Germany",
@@ -476,7 +479,7 @@ The EAA-Provider authenticates the user before issuing the Natural Person Creden
                     "cryptosuite": "ecdsa-sd-2023",
                     "proofPurpose": "assertionMethod",
                     "proofValue": "u2V0AhV...",
-                    "verificationMethod": "did:key:..." // key of EAA-Provider
+                    "verificationMethod": "did:key:..." // DID of EAA Provider
                   }
                 }
               ]
@@ -487,22 +490,24 @@ The EAA-Provider authenticates the user before issuing the Natural Person Creden
     }
     ```
 
-7. The Organisation Wallet acknowledges the reception of the credential and closes the connection.
-```json
-{
-  "type": "https://didcomm.org/present-proof/3.0/ack",
-  "id": "a22ffba5-5524-4e28-ad83-f7eb5bac6a86",
-  "thid": "c6686159-ef49-45b2-938f-51818da14723",
-  "from": "did:peer:2...", // did of organisation wallet
-  "to": "did:peer:2...", // did of EAA-provider
-  "body": {
-    "status": "OK"
-  }
-}
-```
+7. The Organisational Wallet acknowledges the reception of the credential and closes the connection.
+
+    `Acknowledgement` message:
+    ```json
+    {
+      "type": "https://didcomm.org/present-proof/3.0/ack",
+      "id": "a22ffba5-5524-4e28-ad83-f7eb5bac6a86",
+      "thid": "c6686159-ef49-45b2-938f-51818da14723",
+      "from": "did:peer:2...", // DID of Organisational Wallet
+      "to": "did:peer:2...", // DID of EAA Provider
+      "body": {
+        "status": "OK"
+      }
+    }
+    ```
 ## 5.5 Result
 
-* The Natural Person DID of the user is registered at the EAA-Provider.
+* The Natural Person DID of the user is registered at the EAA Provider.
 * The Natural Person Credential is stored in the wallet workspace of the user.
 
 # 6 Issue Power of Attorney Credential
