@@ -64,9 +64,13 @@ We aim to provide the best user experience by separating user identity proofing 
 As a result of the identity proofing process, a Natural Person Credential is issued to the applicant and stored in the Organisational Wallet.
 The cryptographic material bound to the Natural Person Credential is subsequently used for authentication purposes.
 This will avoid  "wallet dance" scenarios, significantly simplify the handling of organisational credentials and enable a wide range of use cases.
-Organisational wallets can handle processes automatically without human interaction and present the required credentials independently.
+Organisational Wallets can handle processes automatically without human interaction and present the required credentials independently.
 In addition, processes that require the verifiable liability of a responsible person are enabled by signing such requests using the representative's organisation-specific identity.
 This process does not require natural persons to interact with a personal wallet.
+
+Server-based Organisational Wallets are expected to be in continuous operation.
+In order to process requests automatically, we propose the use of the DIDComm protocol for the issuance and presentation of verifiable credentials.
+The DIDComm protocol provides persistent secure connections that allow messages to be exchanged without the need to re-establish connections.
 
 The defined protocols and standards serve as a foundation for enabling interoperability between organisations throughout the EWC ecosystem.
 This RFC assumes that users are familiar with the chosen EWC protocols and standards, and can reference the original specifications when required. 
