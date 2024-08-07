@@ -54,15 +54,16 @@ We also describe the issuance process of these three types of credentials and ho
 # 2	Motivation
 
 The EWC LSP handles a variety of credentials that are exchanged between different types of organisations.
-The goal of this RFC is to provide a standard protocol for requesting and issuing organisational credentials.
+The goal of this RFC is to provide a standard protocol for issuing and presenting organisational credentials.
 Depending on the use case, organisations need certain information about their business partners, such as authorised signatories, tax numbers or ultimate beneficial owners.
 This data needs to be validated and kept up to date.
-To simplify the management of this master data, we propose the use of organisational credentials, for example issued by an Attestation Provider verifying data from an authentic source such as the relevant commercial register.
+To simplify the management of this master data, we propose the use of organisational credentials, for example issued by an Attestation Provider asserting data from an authentic source such as the relevant commercial register.
 
-We aim to provide greater flexibility in terms of authentication methods and credential types.
 Since the credentials in scope are exchanged with a focus on organisations, we anticipate the use of server-based organisational wallets, which have different requirements than personal mobile wallets.
-Therefore, we propose the use of legal entity identifiers that represent legal persons or natural persons.
-This will significantly simplify the handling of organisational credentials and enable a wide range of use cases.
+We aim to provide the best user experience by separating user identity proofing from authentication.
+As a result of the identity proofing process, a Natural Person Credential is issued to the applicant and stored in the Organisational Wallet.
+The cryptographic material bound to the Natural Person Credential is subsequently used for authentication purposes.
+This will avoid  "wallet dance" scenarios, significantly simplify the handling of organisational credentials and enable a wide range of use cases.
 Organisational wallets can handle processes automatically without human interaction and present the required credentials independently.
 In addition, processes that require the verifiable liability of a responsible person are enabled by signing such requests using the representative's organisation-specific identity.
 This process does not require natural persons to interact with a personal wallet.
@@ -517,15 +518,16 @@ sequenceDiagram
 Certain processes require proof of authority from a representative who has signatory rights such as the CEO.
 While this is currently done manually by presenting signed sheets of paper, we want to automate the process and increase the level of security.
 
-A user of the Organisation Wallet can delegate his authority or parts of it to another user of the wallet by issuing a power of attorney credential (POA Credential). The POA Credential needs to contain claims defining the delegate rights, the DID of the receiver of the rights and a chain of credentials to establish trust. The trust anchor of the chain has to be a Natural Person Credential of a user with signatures rights. The Organisation Credential issued by the EAA-Provider proves the signature rights of the user acting as trust anchor.
-By presenting the Organisation Credential and the POA Credentials to the verifier, the user of the wallet can prove that he or she is authorized.
-The credentials are automatically verifiable, streamlining the authorisation process.
+A user of the Organisation Wallet can delegate his authority or parts of it to another user of the wallet by issuing a Power of Attorney Credential (PoA Credential). The PoA Credential needs to contain claims defining the delegate rights, the DID of the delegatee and a chain of credentials to establish trust. 
+The trust chain terminates with the Organisational credential issued by the EAA Provider asserting the signatory rights.
+By presenting the Organisation Credential and the PoA Credentials to the verifier, the user of the wallet can prove that he or she is authorized.
+The credentials are verifiable without requiring human interaction, streamlining the authorisation process.
 
 ## 6.2 Prerequisite
 
-* The delegating user has been added to the Organisation Wallet and has got assigned a DID.
-* The delegating user needs to have the required signatory rights or a POA Credential with the required rights.
-* The user to be authorized has been added to the Organisation Wallet and has got assigned a DID.
+* The delegator has been added to the Organisation Wallet and has received a DID.
+* The delegator has the required signatory rights or a PoA Credential with the required rights.
+* The delegatee has been added to the Organisation Wallet and has received a DID.
 
 ## 6.3 Workflow
 
@@ -534,56 +536,50 @@ sequenceDiagram
   autonumber
   title Issue Power of Attorney Credential
 
-  participant OW as Enterprise Wallet
-  actor DelegatingUser as Delegating User
+  participant OW as Organisational Wallet
+  actor DelegatingUser as Delegator
 
-  DelegatingUser -) OW: Requests authorisation of authorized user
-  OW ->> OW: Create and store POA-Credential
+  DelegatingUser -) OW: Requests authorisation of authorised user
+  OW ->> OW: Create and store PoA Credential
 ```
 
 ## 6.4 Steps
 
-1. The Delegating User instructs the Organisation Wallet to authorize another user.
-2. The POA Credential is created and stored in the workspace of the Authorised User.
+1. The Delegating User instructs the Organisation Wallet to authorise another user.
+2. The PoA Credential is created and stored in the workspace of the delegatee.
     
-    POA Credential:
+    PoA Credential:
     ```json
     {
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
-        "https://oid.spherity.com/contexts/cc/v1.jsonld",
-        "https://oid.spherity.com/contexts/poa/v1.jsonld"
+        "https://oid.spherity.com/contexts/cc/v1",
+        "https://oid.spherity.com/contexts/poa/v1"
       ],
       "type": [
         "VerifiableCredential",
         "ChainedCredential",
         "PowerOfAttorneyCredential"
       ],
-      "issuer": "did:key:...", // did of delegating user who asserts the delegated right for the authorized user
+      "issuer": "did:key:...", // DID of delegator asserting the rights for the delegatee
       "validFrom": "2024-07-30T10:20:55.189Z",
       "validUntil": "2034-07-30T10:20:55.188Z",
       "credentialSubject": {
+        "id": "did:key:...", // DID of delegatee
+        "type": "PowerOfAttorney",
         "dateOfBirth": "1970-01-01",
         "familyName": "Mustermann",
         "givenName": "Max",
-        "id": "did:key:...", // did of authorized user
         "proxiedPermissions": [ // delegated rights
           "opening a bank account"
-        ],
-        "type": "PowerOfAttorney"
-      },
-      "proof": {
-        "created": "2024-07-30T10:20:55Z",
-        "cryptosuite": "ecdsa-sd-2023",
-        "proofPurpose": "assertionMethod",
-        "proofValue": "u2V0AhVh..."
+        ]
       },
       "provenanceProof": {
         "@context": [
           "https://www.w3.org/ns/credentials/v2",
           "https://oid.spherity.com/contexts/oid/v1.jsonld"
         ],
-        "issuer": "did:key:...", // did of EAA-Provider who asserts the signatory rights of the delegating user
+        "issuer": "did:key:...", // DID of EAA Provider who asserts the signatory rights of the delegator
         "type": [
           "VerifiableCredential",
           "LegalEntityCertificate"
@@ -591,21 +587,21 @@ sequenceDiagram
         "validFrom": "2024-07-30T10:15:32.859Z",
         "validUntil": "2034-07-30T10:15:32.858Z",
         "credentialSubject": {
+          "id": "did:key:...", // DID of Organisation 
+          "type": [
+            "LegalPersonId",
+            "LegalPersonBaseData",
+            "LegalPerson"
+          ],
           "companyIdentifier": "urn:mdms:12345678",
           "companyName": "Flower Power AG",
           "functionary": { // signatory rights
             "authorizationExtent": "full",
             "isAuthorizedRepresentative": true,
             "isExclusionOfParagraph181": false,
-            "legalEntityId": "did:key:...", // did of delegating user
+            "legalEntityId": "did:key:...", // DID of delegator
             "role": "CEO"
-          },
-          "id": "did:key:...", // did of organisation 
-          "type": [
-            "LegalPersonId",
-            "LegalPersonBaseData",
-            "LegalPerson"
-          ]
+          }
         },
         "proof": {
           "created": "2024-07-30T10:15:32Z",
@@ -613,39 +609,47 @@ sequenceDiagram
           "proofPurpose": "assertionMethod",
           "proofValue": "u2V0BhVh...",
           "type": "DataIntegrityProof",
-          "verificationMethod": "did:key:..." // key of EAA-Provider
+          "verificationMethod": "did:key:..." // DID of EAA Provider
         }
+      },
+      "proof": {
+        "created": "2024-07-30T10:20:55Z",
+        "cryptosuite": "ecdsa-sd-2023",
+        "proofPurpose": "assertionMethod",
+        "proofValue": "u2V0AhVh...",
+        "type": "DataIntegrityProof",
+        "verificationMethod": "did:key:..." // DID of delegator
       }
     }
     ```
    
-In this example the followng JSON-LD contexts are used:
+This example uses the following JSON-LD contexts:
 
-* The context `https://oid.spherity.com/cc` extends the credential by the property `provenanceProof`. The credential hold in the property `provenanceProof` proofs the authority of the credential issuer. Trust chains can be established by recursive embedding POA credentials, e.g.:
+* The chained credential context `https://oid.spherity.com/cc` extends the credential by the property `provenanceProof`. The credential presented in the `provenanceProof` property proofs the authority of the credential issuer. Trust chains can be established by recursively embedding PoA credentials, e.g.:
 
-    `EAAP <--OrganisationCredential-- Functionary <--POA-- Employee A <--POA-- Employ B`
+    `EAAP <--OrganisationCredential-- Functionary <--PoA-- Employee A <--PoA-- Employee B`
     
-    The trust chain always ends at the EAA-Provider that has issued the organisation credential. In order to delegate authority a organisation credential (first delegation in chain) or a POA-credential (subsequent delegation is chain) is embedded into a POA-credential using the new term `provenanceProof`.     
+    The trust chain always terminates at the EAA Provider that has issued the Organisational Credential. In order to delegate authority, an Organisation Credential (first delegation in chain) or a PoA Credential (subsequent delegation is chain) is embedded into a PoA Credential using the new term `provenanceProof`.     
     
-* The context `https://oid.spherity.com/poa` defines the semantic of the terms in the credential subject of the power of attorney credential. The example shows a very simple authorization. By using other contexts more comprehensive delegations of authorization can be expressed, e.g. counter signatures, multi signatures, 1-of-n-signatures, m-of-n-signatures, etc.   
+* The context `https://oid.spherity.com/poa` defines the semantics of the terms in the credential subject of the PoA Credential. The example shows simple authorization. Other contexts can be used to express more extensive delegations of authorisation, e.g. counter-signatures, multi-signatures, 1-of-n-signatures, m-of-n-signatures, etc.
 
-In the above shown POA-Credential an organisation credential is embedded into the POA-Credential to proof the signatory rights of the delegating user. Please note that only the required information to proof the signatory rights are disclosed in the embedded organisation credential. The delegated rights of the authorized user are then asserted by the delegating user by providing the assertion proof of the POA-Credential.
+In the PoA Credential shown above, an Organisational Credential is embedded in the PoA Credential to prove the delegator's signatory rights. Please note that only the required information to prove the signatory rights are disclosed in the embedded Organisational Credential. The delegated rights of the delegatee are then asserted by the delegator by providing the assertion proof of the PoA Credential.
 
 ## 6.5 Result
 
-- The employee has received an PoA Credential that is stored in the Organisation Wallet and can be used for business partner presentations.
+- The employee has received a PoA Credential that is stored in the Organisational Wallet and can be used for presentations to Relying Parties.
 
 # 7 Issue organisation Credential
 
 ## 7.1 Description
 
-The Organisation Wallet stores Organisation Credentials. Credentials contain claims about the enterprise which are asserted by a trusted issuer. By presenting this claims to business partners, the business partners can verify the authenticity of the claims if they trust the issuer. Before an enterprise can present credentials it has to request credentials from issuers.
-Credentials can be requested by any user of the Organisation Wallet with specific rights. The user proofs his rights against the issuer by presenting an Natural Person Credential (signatory rights) or a POA-Credential (delegated rights). The issuer looks up the data of the organisation, verifies if the requesting user is authorized to request the Organisation Credentials and submits the credentials if the requesting user is authorized.   
+The Organisational Wallet stores Organisational Credentials. Credentials contain claims about the organisation which are asserted by a trusted EAA Provider. By presenting these claims to Relying Parties, they can verify the authenticity of the claims if they trust the EAA Provider. Before an organisation can present credentials, it has to request credentials from EAA Providers.
+Credentials can be requested by any user of the Organisation Wallet having specific rights. Users prove their entitlement to the EAA Provider by presenting a Natural Person Credential (signatory rights) or a PoA Credential (delegated rights). The EAA provider looks up the organisation's details, verifies that the requesting user is authorised to request the organisational credentials, and submits the credentials if the requesting user is authorised.
 
 ## 7.2 Prerequisites
 
-* The company is registered at the EAA-Provider.
-* The user has the rights to request Organisation Credential either by signatories rights or by power of attorney
+* The company is registered at the EAA Provider.
+* The user has the rights to request Organisational Credentials either by signatories rights or by power of attorney
 
 ## 7.3 Workflow
 
@@ -654,126 +658,126 @@ sequenceDiagram
   autonumber
 
   participant User as User
-  participant OrgWallet as Organisation Wallet
-  participant EAAP as EAA-Provider
+  participant OrgWallet as Organisational Wallet
+  participant EAAP as EAA Provider
 
-  User->>OrgWallet: Instructs to request Organisation Credentials
+  User->>OrgWallet: Instruct to request Organisational Credentials
   OrgWallet->>EAAP: Propose Credential
   EAAP->>OrgWallet: Offer Credential with Manifest
-  OrgWallet->>EAAP: Request for Organisation Credentials with<br>Natural Person Credential or POA Credential 
+  OrgWallet->>EAAP: Request for Organisation Credentials with<br>Natural Person Credential or PoA Credential 
   EAAP->>EAAP: Check Permissions
-  EAAP->>EAAP: Create Enterprise Credential
-  EAAP-)OrgWallet: Submit Enterprise Credential
+  EAAP->>EAAP: Create Organisational Credential
+  EAAP-)OrgWallet: Submit Organisational Credential
   OrgWallet-)EAAP: Close connection with Acknowledgement
-  OrgWallet->>OrgWallet: Store Enterprise Credential
+  OrgWallet->>OrgWallet: Store Organisational Credential
 ```
 
 ## 6.3 Steps
 
-1. The user instructs the wallet to requests the Organisation Credentials
+1. The user instructs the orgaisational wallet to request Organisational Credentials
 2. The Organisational Wallet triggers the credential issuing process by sending a `Propose Credential` message. The request establishes a new DIDComm connection between the EAA Provider and the Organisational Wallet. The DIDComm out of band invitation is pre-configured in the wallet.
 
-  Pre-configured invite:
-   ```json
-   {
-     "type": "https://didcomm.org/out-of-band/2.0/invitation",
-     "id": "f137e0db-db7b-4776-9530-83c808a34a42",
-     "from": "did:peer:2...", // peer DID of EAA Provider
-     "body": {
-       "goal-code": "issue organisational credential",
-       "accept": ["didcomm/v2"]
-     }
-   }
-   ```
-  ***_NOTE_:***
-  If the invitation is unknown, it needs to be received out of band (QR-Code, deep-link, email, ...).
+    Pre-configured invite:
+    ```json
+    {
+      "type": "https://didcomm.org/out-of-band/2.0/invitation",
+      "id": "f137e0db-db7b-4776-9530-83c808a34a42",
+      "from": "did:peer:2...", // peer DID of EAA Provider
+      "body": {
+        "goal-code": "issue organisational credential",
+        "accept": ["didcomm/v2"]
+      }
+    }
+    ```
+    ***_NOTE_:***
+    If the invitation is unknown, it needs to be received out of band (QR-Code, deep-link, email, ...).
 
-  `Propose Credential` message:
-   ```json
-   {
-     "type": "https://didcomm.org/issue-credential/3.0/propose-credential",
-     "id": "7f62f655-9cac-4728-854a-775ba6944593",
-     "pthid": "f137e0db-db7b-4776-9530-83c808a34a42", // invite ID
-     "from": "did:peer:2...", // peer DID of Organisational Wallet
-     "to": "did:peer:2..." // peer DID of EAA Provider
-   }
-   ```
+    `Propose Credential` message:
+    ```json
+    {
+      "type": "https://didcomm.org/issue-credential/3.0/propose-credential",
+      "id": "7f62f655-9cac-4728-854a-775ba6944593",
+      "pthid": "f137e0db-db7b-4776-9530-83c808a34a42", // invite ID
+      "from": "did:peer:2...", // peer DID of Organisational Wallet
+      "to": "did:peer:2..." // peer DID of EAA Provider
+    }
+    ```
 
-   3. The EAA Provider sends a `Offer Credential` message to the Organisational Wallet that includes a `Credential Manifest`. The manifest describes the credentials being offered, in this case Organisational Credentials. Organisational credentials are only issued to Natural Persons which have corresponding signatory rights or Power of Attorney. Therefore, the manifest of the EAA Provider also requests the presentation of an Natural Person Credential or a PoA-Credential to prove the rights to request the organisational credentials.
+3. The EAA Provider sends an `Offer Credential` message to the Organisational Wallet that includes a `Credential Manifest`. The manifest describes the credentials being offered, in this case Organisational Credentials. Organisational Credentials are only issued to Natural Persons which have corresponding signatory rights or Power of Attorney. Therefore, the manifest of the EAA Provider also requests the presentation of an Natural Person Credential or a PoA-Credential to prove the rights to request the organisational credentials.
 
-      `Offer Credential` message:
-       ```json
-       {
-         "type": "https://didcomm.org/issue-credential/3.0/offer-credential",
-         "id": "c6686159-ef49-45b2-938f-51818da14723",
-         "thid": "7f62f655-9cac-4728-854a-775ba6944593",
-         "from": "did:peer:2...", // peer DID of EAA Provider
-         "to": "did:peer:2...", // peer DID of Organisational Wallet
-         "body": {},
-         "attachments": [
-           {
-             "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
-             "data": {
-               "json": {
-                 "options":{
-                   "challenge":"508adef4-b8e0-4edf-a53d-a260371c1423",
-                   "domain":"9rf25a28rs96"
-                 },
-                 "credential_manifest": {
-                   "id": "075c7ccf-db02-42fd-bedb-d9fc369438c4",
-                   "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
-                   "issuer": {
-                     "id": "did:key:...", // DID of EAA Provider
-                     "name": "Bundesanzeiger Verlag"
-                   },
-                   "output_descriptors": [
-                     {
-                       "id": "LegalPersonCredential",
-                       "schema": "https://oid.spherity.com/contexts/oid/v1.jsonld"
-                     }
-                   ],
-                   "presentation_definition": {
-                     "id": "8246867e-fdce-48de-a825-9d84ec16c6c9",
-                     "input_descriptors": [
-                       {
-                         "id:": "NaturalPersonCredentialOrPoACredential",
-                         "frame": {
-                           "@context": [
-                             "https://www.w3.org/ns/credentials/v2",
-                             "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
-                           ],
-                           "type": [
-                             "VerifiableCredential",
-                             "LegalEntityCertificate",
-                             "PowerOfAttorneyACertificate"
-                           ],
-                           "credentialSubject": {
-                             "@explicit": true,
-                             "type": [
-                               "NaturalPerson",
-                               "PowerOfAttorney"
-                             ],
-                             "id": {},
-                             "companyName": {},
-                             "euid": {},
-                             "dateOfBirth": {},
-                             "familyName": {},
-                             "givenName": {},
-                             "proxiedPermissions": {}
-                           } 
-                         }
-                       }
-                     ]
-                   }
-                 }
-               }
-             },
-             "format": "dif/credential-manifest/application@v1.0",
-             "media_type": "application/json"
-           }
-         ]
-       }
-       ```
+    `Offer Credential` message:
+      ```json
+      {
+        "type": "https://didcomm.org/issue-credential/3.0/offer-credential",
+        "id": "c6686159-ef49-45b2-938f-51818da14723",
+        "thid": "7f62f655-9cac-4728-854a-775ba6944593",
+        "from": "did:peer:2...", // peer DID of EAA Provider
+        "to": "did:peer:2...", // peer DID of Organisational Wallet
+        "body": {},
+        "attachments": [
+          {
+            "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+            "data": {
+              "json": {
+                "options":{
+                  "challenge":"508adef4-b8e0-4edf-a53d-a260371c1423",
+                  "domain":"9rf25a28rs96"
+                },
+                "credential_manifest": {
+                  "id": "075c7ccf-db02-42fd-bedb-d9fc369438c4",
+                  "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
+                  "issuer": {
+                    "id": "did:key:...", // DID of EAA Provider
+                    "name": "Bundesanzeiger Verlag"
+                  },
+                  "output_descriptors": [
+                    {
+                      "id": "LegalPersonCredential",
+                      "schema": "https://oid.spherity.com/contexts/oid/v1"
+                    }
+                  ],
+                  "presentation_definition": {
+                    "id": "8246867e-fdce-48de-a825-9d84ec16c6c9",
+                    "input_descriptors": [
+                      {
+                        "id:": "NaturalPersonCredentialOrPoACredential",
+                        "frame": {
+                          "@context": [
+                            "https://www.w3.org/ns/credentials/v2",
+                            "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
+                          ],
+                          "type": [
+                            "VerifiableCredential",
+                            "LegalEntityCertificate",
+                            "PowerOfAttorneyACertificate"
+                          ],
+                          "credentialSubject": {
+                            "@explicit": true,
+                            "type": [
+                              "NaturalPerson",
+                              "PowerOfAttorney"
+                            ],
+                            "id": {},
+                            "companyName": {},
+                            "euid": {},
+                            "dateOfBirth": {},
+                            "familyName": {},
+                            "givenName": {},
+                            "proxiedPermissions": {}
+                          } 
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "format": "dif/credential-manifest/application@v1.0",
+            "media_type": "application/json"
+          }
+        ]
+      }
+      ```
 
 4. The Organisational Wallet requests the Organsational Credentials from the EAA Provider.
 
@@ -807,7 +811,7 @@ sequenceDiagram
                   }
                 },
                 "applicant": "did:key:...", // Natural Person DID
-                "manifest_id": "075c7ccf-db02-42fd-bedb-d9fc369438c4" // ID of pre-configured manifest
+                "manifest_id": "075c7ccf-db02-42fd-bedb-d9fc369438c4" // ID of manifest
               },
               "presentation_submission":{
                 "id":"2e161b2c-606b-416f-b04f-7f06edac55a1",
@@ -898,7 +902,7 @@ sequenceDiagram
                 "descriptor_map": [
                   {
                     "format": "ldp_vc",
-                    "id": "Enterprise Credential",
+                    "id": "Organisational Credential",
                     "path": "$.verifiableCredential[0]"
                   }
                 ]
@@ -1215,7 +1219,7 @@ sequenceDiagram
 
 The enterprise can use Organisation Credentials to prove certain claims about legal entities. In addition to proving the claims, the presenter also authenticates to the verifier using their DID. Users with signatory rights can proof their rights just by presenting the Organisation Credentials. Users without signatory must present a Power of Attorney Credential together with the Organisation Credential.
 The credential chain within PoA Credential provides the trust. The starting point (trust anchor) must be a Legal Person Credential defining the signatory rights.
-Organisation Credentials are held by an Enterprise, i.e. by a group of persons. The Organisation Credentials are shared by the users of the Organisation Wallet. Any user can present the Organisation Credentials.
+Organisation Credentials are held by an organisation, i.e. by a group of persons. The Organisation Credentials are shared by the users of the Organisation Wallet. Any user can present the Organisation Credentials.
 
 ## 8.2 Prerequisites
 
@@ -1239,7 +1243,7 @@ sequenceDiagram
   ServiceProvider->>OrgWallet: Requests Proof
   OrgWallet->>User: Shows requested claims
   User->>OrgWallet: Confirms presentations of credentials
-  OrgWallet->>ServiceProvider: Present Enterprise Credentials and Natural Person Credential or POA Credential
+  OrgWallet->>ServiceProvider: Present Organisational Credentials and Natural Person Credential or PoA Credential
   ServiceProvider->>ServiceProvider: Check Permissions
   ServiceProvider->>OrgWallet: Acknowledge with closing DIDComm-Connection
   ServiceProvider->>OrgWallet: Allow access to request service
@@ -1278,7 +1282,7 @@ The presentation is sent out of band, e.g. by a deep link.
 
 4. The Wallet shows the claims to the user.
 5. The user confirms the presentation of the requested claims.
-6. The wallet presents the Organisation Credentials. If the requester doesn't have signatory rights together with the POA-Credential proofing the rights.
+6. The wallet presents the Organisation Credentials. If the requester doesn't have signatory rights together with the PoA Credential proofing the rights.
 
 ```json
 {
