@@ -272,7 +272,7 @@ sequenceDiagram
                 "output_descriptors": [
                   {
                     "id": "NaturalPersonCredential",
-                    "schema": "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                    "schema": "https://oid.spherity.com/contexts/oid/v1"
                   }
                 ],
                 "presentation_definition": {
@@ -283,7 +283,7 @@ sequenceDiagram
                       "frame": {
                         "@context": [
                           "https://www.w3.org/ns/credentials/v2",
-                          "https://spherity.github.io/oid/credentials/v1/schema.jsonld"
+                          "https://oid.spherity.com/contexts/oid/v1"
                         ],
                         "type": [
                           "VerifiableCredential",
@@ -364,7 +364,7 @@ sequenceDiagram
                 {
                   "@context": [
                     "https://www.w3.org/ns/credentials/v2",
-                    "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                    "https://oid.spherity.com/contexts/oid/v1"
                   ],
                   "type": [
                     "VerifiableCredential",
@@ -462,7 +462,7 @@ sequenceDiagram
                 {
                   "@context": [
                     "https://www.w3.org/ns/credentials/v2",
-                    "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                    "https://oid.spherity.com/contexts/oid/v1"
                   ],
                   "type": [
                     "VerifiableCredential",
@@ -707,7 +707,7 @@ sequenceDiagram
                 {
                   "@context": [
                     "https://www.w3.org/ns/credentials/v2",
-                    "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                    "https://oid.spherity.com/contexts/oid/v1"
                   ],
                   "type": [
                     "VerifiableCredential",
@@ -807,7 +807,7 @@ sequenceDiagram
                 {
                   "@context": [
                     "https://www.w3.org/ns/credentials/v2",
-                    "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                    "https://oid.spherity.com/contexts/oid/v1"
                   ],
                   "type": [
                     "VerifiableCredential",
@@ -1171,7 +1171,7 @@ sequenceDiagram
       "provenanceProof": {
         "@context": [
           "https://www.w3.org/ns/credentials/v2",
-          "https://oid.spherity.com/contexts/oid/v1.jsonld"
+          "https://oid.spherity.com/contexts/oid/v1"
         ],
         "issuer": "did:key:...", // DID of EAA Provider who asserts the signatory rights of the delegator
         "type": [
@@ -1352,7 +1352,7 @@ The presentation is sent out of band, e.g. by a deep link.
             {
               "@context": [
                 "https://www.w3.org/ns/credentials/v2",
-                "https://oid.spherity.com/contexts/oid/v1.jsonld"
+                "https://oid.spherity.com/contexts/oid/v1"
               ],
               "type": [
                 "VerifiableCredential",
