@@ -2,42 +2,12 @@
 
 **Authors:** 
 * Mr Ronald Koenig (Spherity, Germany)
-* Mr Ricky Thiermann  (Spherity, Germany)
 * Mr Martin Westerkamp  (Spherity, Germany)
 
 **Reviewers:** 
 * ???
 
 **Status:** Ready for review
-
-notes:
-* exchange of organisational credentials - issue and present
-* organisational credentials are credentials about legal entities and their relationships
-* legal entities are legal persons (companies) or natural persons (humans related to the company - employee, shareholder, ultimate beneficiary owners, ...)
-* enterprise wallets holds organisational credentials and are operated by the company
-  * used by a group a persons (employees of the company)
-  * creates and holds identity for every user (DID)
-  * company is liable for misuse of issued credentials
-  * internal role model (visibility of credentials and claims)
-  * running 24/7
-* complex organisational credentials  
-* signatory rights based on organisational credentials
-* delegation of rights based on power of attorney credentials
-
-structure:
-* summary
-* motivation
-* trust model
-  * DIDs
-  * trust list (issuer, verifier)
-  * credentials and holder binding
-  * signatory rights
-  * power of attorney
-* issue natural person credential
-* issue organisational credential
-* issue power of attorney credential
-* present organisational credentials
-
 
 # 1	Summary
 
