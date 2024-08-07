@@ -259,8 +259,8 @@ sequenceDiagram
           "data": {
             "json": {
               "options":{
-                "challenge":"508adef4-b8e0-4edf-a53d-a260371c1423",
-                "domain":"9rf25a28rs96"
+                "challenge":"038adef4-b8e0-4edf-a53d-a260371c1956",
+                "domain":"7rf25a28rs23"
               },
               "credential_manifest": {
                 "id": "b72c7ccf-db02-42fd-bedb-d9fc369431c3",
@@ -332,6 +332,10 @@ sequenceDiagram
                 "https://identity.foundation/credential-manifest/application/v1"
               ],
               "id": "c407be9a-6a17-4577-91c7-ed327c8fa8ea",
+              "type": [
+                "VerifiablePresentation",
+                "CredentialApplication"
+              ]
               "credential_application": {
                 "id": "323963b8-c087-4e70-afbb-11fba91e67a2",
                 "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
@@ -385,10 +389,16 @@ sequenceDiagram
                   }
                 }
               ],
-              "type": [
-                "VerifiablePresentation",
-                "CredentialApplication"
-              ]
+              "proof": {
+                "type": "DataIntegrityProof",
+                "created": "2024-07-30T20:26:37Z",
+                "verificationMethod": "did:key:...",
+                "cryptosuite": "ecdsa-sd-2023",
+                "proofPurpose": "authentication",
+                "challenge": "038adef4-b8e0-4edf-a53d-a260371c1956",
+                "domain": "7rf25a28rs23",
+                "proofValue": "u2V0AhVh..."
+              }
             }
           },
           "format": "dif/credential-manifest/application@v1.0",
@@ -665,6 +675,10 @@ sequenceDiagram
                 "https://identity.foundation/credential-manifest/application/v1"
               ],
               "id": "c407be9a-6a17-4577-91c7-ed327c8fa8ea",
+              "type": [
+                "VerifiablePresentation",
+                "CredentialApplication"
+              ],
               "credential_application": {
                 "id": "888963b8-c087-4e70-afbb-11fba91e66b3",
                 "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
@@ -725,10 +739,16 @@ sequenceDiagram
                   }
                 }
               ],
-              "type": [
-                "VerifiablePresentation",
-                "CredentialApplication"
-              ]
+              "proof": {
+                "type": "DataIntegrityProof",
+                "created": "2024-07-30T20:26:37Z",
+                "verificationMethod": "did:key:...",
+                "cryptosuite": "ecdsa-sd-2023",
+                "proofPurpose": "authentication",
+                "challenge": "508adef4-b8e0-4edf-a53d-a260371c1423",
+                "domain": "4jt78h47fh47",
+                "proofValue": "u2V0AhVh..."
+              }
             }
           },
           "format": "dif/credential-manifest/application@v1.0",
