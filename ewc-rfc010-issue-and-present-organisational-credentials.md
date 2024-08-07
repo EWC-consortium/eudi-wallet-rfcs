@@ -260,6 +260,8 @@ sequenceDiagram
       "attachments": [
         {
           "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+          "format": "dif/credential-manifest/application@v1.0",
+          "media_type": "application/json",
           "data": {
             "json": {
               "options":{
@@ -307,9 +309,7 @@ sequenceDiagram
                 }
               }
             }
-          },
-          "format": "dif/credential-manifest/application@v1.0",
-          "media_type": "application/json"
+          }
         }
       ]
     }
@@ -329,6 +329,8 @@ sequenceDiagram
       "attachments": [
         {
           "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+          "format": "dif/credential-manifest/application@v1.0",
+          "media_type": "application/json",
           "data": {
             "json": {
               "@context": [
@@ -404,9 +406,7 @@ sequenceDiagram
                 "proofValue": "u2V0AhVh..."
               }
             }
-          },
-          "format": "dif/credential-manifest/application@v1.0",
-          "media_type": "application/json"
+          }
         }
       ]
     }
@@ -433,14 +433,18 @@ sequenceDiagram
       "body": {},
       "attachments": [
         {
-          "format": "dif/credential-manifest/fulfillment@v1.0",
           "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+          "format": "dif/credential-manifest/fulfillment@v1.0",
           "media_type": "application/json",
           "data": {
             "json": {
               "@context": [
                 "https://www.w3.org/ns/credentials/v2",
                 "https://identity.foundation/credential-manifest/response/v1"
+              ],
+               "type": [
+                "CredentialResponse",
+                "VerifiablePresentation"
               ],
               "credential_response": {
                 "id": "fb61b375-0b0d-4715-ab2d-fe6b15874e64",
@@ -458,10 +462,6 @@ sequenceDiagram
                   ]
                 }
               },
-              "type": [
-                "CredentialResponse",
-                "VerifiablePresentation"
-              ],
               "verifiableCredential": [
                 {
                   "@context": [
@@ -476,8 +476,8 @@ sequenceDiagram
                   "validFrom": "2024-07-30T10:11:22.985Z",
                   "validUntil": "2034-07-30T10:11:22.985Z",
                   "credentialSubject": {
-                    "type": "NaturalPerson",
                     "id": "did:key:...", // Natural Person DID
+                    "type": "NaturalPerson",
                     "birthDate": "1970-01-01",
                     "domicile": {
                       "addressCountry": "Germany",
@@ -603,6 +603,8 @@ sequenceDiagram
         "attachments": [
           {
             "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+            "format": "dif/credential-manifest/application@v1.0",
+            "media_type": "application/json",
             "data": {
               "json": {
                 "options":{
@@ -650,9 +652,7 @@ sequenceDiagram
                   }
                 }
               }
-            },
-            "format": "dif/credential-manifest/application@v1.0",
-            "media_type": "application/json"
+            }
           }
         ]
       }
@@ -672,6 +672,8 @@ sequenceDiagram
       "attachments": [
         {
           "id": "e00e11d4-906d-4c88-ba72-7c66c7113a78",
+          "format": "dif/credential-manifest/application@v1.0",
+          "media_type": "application/json",
           "data": {
             "json": {
               "@context": [
@@ -721,8 +723,8 @@ sequenceDiagram
                   "validFrom": "2024-07-30T10:11:22.985Z",
                   "validUntil": "2034-07-30T10:11:22.985Z",
                   "credentialSubject": {
-                    "type": "NaturalPerson",
                     "id": "did:key:...", // Natural Person DID
+                    "type": "NaturalPerson",
                     "birthDate": "1970-01-01",
                     "domicile": {
                       "addressCountry": "Germany",
@@ -754,9 +756,7 @@ sequenceDiagram
                 "proofValue": "u2V0AhVh..."
               }
             }
-          },
-          "format": "dif/credential-manifest/application@v1.0",
-          "media_type": "application/json"
+          }
         }
       ]
     }
@@ -787,6 +787,10 @@ sequenceDiagram
                 "https://www.w3.org/ns/credentials/v2",
                 "https://identity.foundation/credential-manifest/fulfillment/v1"
               ],
+              "type": [
+                "CredentialResponse",
+                "VerifiablePresentation"
+              ],
               "credential_response": {
                 "id": "5631b375-0b0d-4715-ab2d-fe6b15874a49",
                 "spec_version": "https://identity.foundation/credential-manifest/spec/v1.0.0/",
@@ -803,10 +807,6 @@ sequenceDiagram
                   ]
                 }
               },
-              "type": [
-                "CredentialResponse",
-                "VerifiablePresentation"
-              ],
               "verifiableCredential": [
                 {
                   "@context": [
@@ -1277,23 +1277,23 @@ sequenceDiagram
 
 
 1. The Relying Party sends an invitation to the Wallet to request proof of rights to access the specific service.
-```json
-   {
-     "type": "https://didcomm.org/out-of-band/2.0/invitation",
-     "id": "f137e0db-db7b-4776-9530-83c808a34a42",
-     "from": "did:peer:2...", // peer DID of Relying Party
-     "body": {
-       "goal-code": "present proof",
-       "accept": ["didcomm/v2"]
-     }
-   }
+    ```json
+      {
+        "type": "https://didcomm.org/out-of-band/2.0/invitation",
+        "id": "f137e0db-db7b-4776-9530-83c808a34a42",
+        "from": "did:peer:2...", // peer DID of Relying Party
+        "body": {
+          "goal-code": "present proof",
+          "accept": ["didcomm/v2"]
+        }
+      }
    ```
-***_NOTE_:***
-The presentation is sent out of band, e.g. by a deep link.
+    ***_NOTE_:***
+    The presentation is sent out of band, e.g. by a deep link.
 
 2. The wallet proposes to send a presentation. The message establishes the DIDComm connection.
 
-`Propose Credential` message:
+    `Propose Credential` message:
    ```json
    {
      "type": "https://didcomm.org/issue-credential/3.0/propose-presentation",
@@ -1308,335 +1308,336 @@ The presentation is sent out of band, e.g. by a deep link.
 5. The user confirms the presentation of the requested claims.
 6. The wallet presents the Organisation Credentials. If the requester doesn't have signatory rights together with the PoA Credential proofing the rights.
 
-```json
-{
-  "type": "https://didcomm.org/present-proof/3.0/presentation",
-  "id": "f1ca8245-ab2d-4d9c-8d7d-94bf310314ef",
-  "thid": "4f62f655-9cac-4728-854a-775ba694464a",
-  "from": "did:peer:2...", // peer DID of Organisational Wallet
-  "to": "did:peer:2..." // peer DID of Relying Party
-  "body": {},
-  "attachments": [
+    `Presentation` message:
+    ```json
     {
-      "id": "2a3f1c4c-623c-44e6-b159-179048c51260",
-      "media_type": "application/ld+json",
-      "format": "dif/presentation-exchange/submission@v1.0",
-      "data": {
-        "json": {
-          "@context": [
-            "https://www.w3.org/ns/credentials/v2",
-            "https://identity.foundation/presentation-exchange/submission/v1"
-          ],
-          "type": [
-            "VerifiablePresentation",
-            "PresentationSubmission"
-          ],
-          "presentation_submission": {
-            "id": "1d257c50-454f-4c96-a273-c5368e01fe63",
-            "definition_id": "32f54163-7166-48f1-93d8-ff217bdb0654",
-            "descriptor_map": [
-              {
-                "id": "LegalEntityCredentials",
-                "format": "ldp_vp",
-                "path": "$.verifiableCredential[0]"
-              }
-            ]
-          },
-          "proof": {
-            "type": "DataIntegrityProof",
-            "created": "2024-07-25T07:26:37Z",
-            "verificationMethod": "did:key:...",
-            "cryptosuite": "ecdsa-sd-2023",
-            "proofPurpose": "authentication",
-            "challenge": "31abea30-be5f-4ab2-99ae-6b7a0208ac76",
-            "domain": "4jt78h47fh47",
-            "proofValue": "u2V0AhVh..."
-          },
-          "verifiableCredential": [
-            {
+      "type": "https://didcomm.org/present-proof/3.0/presentation",
+      "id": "f1ca8245-ab2d-4d9c-8d7d-94bf310314ef",
+      "thid": "4f62f655-9cac-4728-854a-775ba694464a",
+      "from": "did:peer:2...", // peer DID of Organisational Wallet
+      "to": "did:peer:2..." // peer DID of Relying Party
+      "body": {},
+      "attachments": [
+        {
+          "id": "2a3f1c4c-623c-44e6-b159-179048c51260",
+          "media_type": "application/ld+json",
+          "format": "dif/presentation-exchange/submission@v1.0",
+          "data": {
+            "json": {
               "@context": [
                 "https://www.w3.org/ns/credentials/v2",
-                "https://oid.spherity.com/contexts/oid/v1"
+                "https://identity.foundation/presentation-exchange/submission/v1"
               ],
               "type": [
-                "VerifiableCredential",
-                "LegalEntityCertificate"
+                "VerifiablePresentation",
+                "PresentationSubmission"
               ],
-              "issuer": "did:key:zDnaexEHa3xyCcG1pNCj65VPcbrYrrxVfxMW2qCsDN3XzqzxP",
-              "validFrom": "2024-07-30T10:15:32.859Z",
-              "validUntil": "2034-07-30T10:15:32.858Z",
-              "credentialSubject": {
-                "address": {
-                  "addressCountry": "Germany",
-                  "addressLocality": "Berlin",
-                  "postalCode": "10119"
-                },
-                "businessObject": "Trading Company",
-                "businessYear": {
-                  "balance": {
-                    "amount": "399399",
-                    "currency": "EUR",
-                    "type": "Balance"
-                  },
-                  "currency": "EUR",
-                  "date": "2024-01-01",
-                  "employeeCount": "39",
-                  "revenue": "2933"
-                },
-                "companyIdentifier": "urn:mdms:12345678",
-                "companyName": "Flower Power AG",
-                "directParentCompany": "did:key:fictive-7",
-                "ekrn": "3333",
-                "euid": "ANY EUID",
-                "evidence": {
-                  "source": "Transparency register",
-                  "type": "Evidence",
-                  "verificationDate": "2014-01-01",
-                  "verifiedField": [
-                    "CEO",
-                    "CTO"
-                  ]
-                },
-                "exchange": {
-                  "country": "Germany",
-                  "marketIdentificationCode": "AA",
-                  "name": "Boerse Stuttgart",
-                  "tickerSymbol": "BB"
-                },
-                "functionary": {
-                  "authorizationExtent": "full",
-                  "isAuthorizedRepresentative": true,
-                  "isExclusionOfParagraph181": false,
-                  "legalEntityId": "did:key:zDnaeVXmpeF4fafnTY44Fba4yCUMgxhPf85XEoajZbsBxPnEC",
-                  "role": "CEO"
-                },
-                "generalPartner": {
-                  "legalEntityId": "did:key:fictive-6",
-                  "share": {
-                    "absolute": {
-                      "amount": "399399",
-                      "currency": "EUR",
-                      "type": "Balance"
-                    },
-                    "absoluteInEur": {
-                      "amount": "399399",
-                      "currency": "EUR",
-                      "type": "Balance"
-                    },
-                    "isDirectShare": true,
-                    "relative": "20",
-                    "type": "Share"
-                  },
-                  "type": "Shareholder"
-                },
-                "handoverDescription": "no flag",
-                "handoverFlag": false,
-                "id": "did:key:zDnaedjxqnoS2jK7RsNmRgbVNGsGnj7zSr74Y71NAMrAPZa6Q",
-                "insolvencyStatus": "none",
-                "isFoundation": false,
-                "isin": "1234567890",
-                "isNfrdObligated": false,
-                "isTrust": false,
-                "legalForm": "GmbH",
-                "lei": "ABC988",
-                "leiNextIssuance": "2027-01-10",
-                "leiStatus": "active",
-                "liquidationStatus": "none",
-                "nace020": {
-                  "code": "IT",
-                  "industryDescription": "Tech Int. Trade",
-                  "type": "Industry"
-                },
-                "previousName": [
-                  "AL",
-                  "DI"
-                ],
-                "registerIdentification": {
-                  "companyId": "ACDC",
-                  "companyIdCountryCode": "DE",
-                  "registerLocation": "Berlin, Moabit",
-                  "registerNumber": "123AVB",
-                  "registerType": "ABC123",
-                  "registerTypeDescription": "Amtsgericht Tiergarten"
-                },
-                "registrationDate": "2010-01-01",
-                "regulator": {
-                  "description": "Int. Trade",
-                  "name": "BaFin",
-                  "regulatorId": "DeBa"
-                },
-                "shareholder": {
-                  "generalPartner": {
-                    "legalEntityId": "did:key:fictive-5",
-                    "share": {
-                      "absolute": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "absoluteInEur": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "isDirectShare": true,
-                      "relative": "20",
-                      "type": "Share"
-                    },
-                    "type": "Shareholder"
-                  },
-                  "handover": false,
-                  "handoverDescription": "none",
-                  "legalEntityId": "did:key:fictive-4",
-                  "share": {
-                    "absolute": {
-                      "amount": "399399",
-                      "currency": "EUR",
-                      "type": "Balance"
-                    },
-                    "absoluteInEur": {
-                      "amount": "399399",
-                      "currency": "EUR",
-                      "type": "Balance"
-                    },
-                    "isDirectShare": true,
-                    "relative": "20",
-                    "type": "Share"
-                  },
-                  "shareholder": {
-                    "legalEntityId": "did:key:fictive-5",
-                    "share": {
-                      "absolute": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "absoluteInEur": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "isDirectShare": true,
-                      "relative": "20",
-                      "type": "Share"
-                    },
-                    "type": "Shareholder"
-                  },
-                  "type": [
-                    "Shareholder",
-                    "ShareholderLegalPerson"
-                  ],
-                  "votingRightsRelative": "20"
-                },
-                "status": "active",
-                "type": [
-                  "LegalPersonId",
-                  "LegalPersonBaseData",
-                  "LegalPerson"
-                ],
-                "ultimateBeneficiaryOwner": {
-                  "capital": {
-                    "share": {
-                      "absolute": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "absoluteInEur": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "isDirectShare": true,
-                      "relative": "20",
-                      "type": "Share"
-                    },
-                    "shareRelativeDirect": "20",
-                    "votingRightsRelativeDirect": "20"
-                  },
-                  "fictitious": {
-                    "share": {
-                      "absolute": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "absoluteInEur": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "isDirectShare": true,
-                      "relative": "20",
-                      "type": "Share"
-                    },
-                    "shareRelativeDirect": "20",
-                    "votingRightsRelativeDirect": "20"
-                  },
-                  "naturalPersonId": "did:key:fictive-2",
-                  "otherControl": {
-                    "share": {
-                      "absolute": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "absoluteInEur": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "isDirectShare": true,
-                      "relative": "20",
-                      "type": "Share"
-                    },
-                    "shareRelativeDirect": "20",
-                    "votingRightsRelativeDirect": "20"
-                  },
-                  "votingRights": {
-                    "otherControlReason": "20",
-                    "share": {
-                      "absolute": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "absoluteInEur": {
-                        "amount": "399399",
-                        "currency": "EUR",
-                        "type": "Balance"
-                      },
-                      "isDirectShare": true,
-                      "relative": "20",
-                      "type": "Share"
-                    },
-                    "shareRelativeDirect": "20",
-                    "votingRightsRelative": "20",
-                    "votingRightsRelativeDirect": "20"
+              "presentation_submission": {
+                "id": "1d257c50-454f-4c96-a273-c5368e01fe63",
+                "definition_id": "32f54163-7166-48f1-93d8-ff217bdb0654",
+                "descriptor_map": [
+                  {
+                    "id": "LegalEntityCredentials",
+                    "format": "ldp_vp",
+                    "path": "$.verifiableCredential[0]"
                   }
-                },
-                "ultimateParentCompany": "did:key:fictive-8",
-                "vatId": "22222ABC",
-                "wz2008": {
-                  "code": "IT",
-                  "industryDescription": "Tech Int. Trade",
-                  "type": "Industry"
-                }
+                ]
               },
               "proof": {
-                "created": "2024-07-30T10:15:32Z",
+                "type": "DataIntegrityProof",
+                "created": "2024-07-25T07:26:37Z",
+                "verificationMethod": "did:key:...",
                 "cryptosuite": "ecdsa-sd-2023",
-                "proofPurpose": "assertionMethod",
+                "proofPurpose": "authentication",
+                "challenge": "31abea30-be5f-4ab2-99ae-6b7a0208ac76",
+                "domain": "4jt78h47fh47",
                 "proofValue": "u2V0AhVh..."
-              }
+              },
+              "verifiableCredential": [
+                {
+                  "@context": [
+                    "https://www.w3.org/ns/credentials/v2",
+                    "https://oid.spherity.com/contexts/oid/v1"
+                  ],
+                  "type": [
+                    "VerifiableCredential",
+                    "LegalEntityCertificate"
+                  ],
+                  "issuer": "did:key:...", // DID of EAA Provider
+                  "validFrom": "2024-07-30T10:15:32.859Z",
+                  "validUntil": "2034-07-30T10:15:32.858Z",
+                  "credentialSubject": {
+                    "id": "did:key:...", // Organisational DID
+                    "type": [
+                      "LegalPersonId",
+                      "LegalPersonBaseData",
+                      "LegalPerson"
+                    ],
+                    "address": {
+                      "addressCountry": "Germany",
+                      "addressLocality": "Berlin",
+                      "postalCode": "10119"
+                    },
+                    "businessObject": "Trading Company",
+                    "businessYear": {
+                      "balance": {
+                        "amount": "399399",
+                        "currency": "EUR",
+                        "type": "Balance"
+                      },
+                      "currency": "EUR",
+                      "date": "2024-01-01",
+                      "employeeCount": "39",
+                      "revenue": "2933"
+                    },
+                    "companyIdentifier": "urn:mdms:12345678",
+                    "companyName": "Flower Power AG",
+                    "directParentCompany": "did:key:fictive-7",
+                    "ekrn": "3333",
+                    "euid": "ANY EUID",
+                    "evidence": {
+                      "source": "Transparency register",
+                      "type": "Evidence",
+                      "verificationDate": "2014-01-01",
+                      "verifiedField": [
+                        "CEO",
+                        "CTO"
+                      ]
+                    },
+                    "exchange": {
+                      "country": "Germany",
+                      "marketIdentificationCode": "AA",
+                      "name": "Boerse Stuttgart",
+                      "tickerSymbol": "BB"
+                    },
+                    "functionary": {
+                      "authorizationExtent": "full",
+                      "isAuthorizedRepresentative": true,
+                      "isExclusionOfParagraph181": false,
+                      "legalEntityId": "did:key:...", // DID of Natural Person
+                      "role": "CEO"
+                    },
+                    "generalPartner": {
+                      "legalEntityId": "did:key:fictive-6",
+                      "share": {
+                        "absolute": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "absoluteInEur": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "isDirectShare": true,
+                        "relative": "20",
+                        "type": "Share"
+                      },
+                      "type": "Shareholder"
+                    },
+                    "handoverDescription": "no flag",
+                    "handoverFlag": false,
+                    "insolvencyStatus": "none",
+                    "isFoundation": false,
+                    "isin": "1234567890",
+                    "isNfrdObligated": false,
+                    "isTrust": false,
+                    "legalForm": "GmbH",
+                    "lei": "ABC988",
+                    "leiNextIssuance": "2027-01-10",
+                    "leiStatus": "active",
+                    "liquidationStatus": "none",
+                    "nace020": {
+                      "code": "IT",
+                      "industryDescription": "Tech Int. Trade",
+                      "type": "Industry"
+                    },
+                    "previousName": [
+                      "AL",
+                      "DI"
+                    ],
+                    "registerIdentification": {
+                      "companyId": "ACDC",
+                      "companyIdCountryCode": "DE",
+                      "registerLocation": "Berlin, Moabit",
+                      "registerNumber": "123AVB",
+                      "registerType": "ABC123",
+                      "registerTypeDescription": "Amtsgericht Tiergarten"
+                    },
+                    "registrationDate": "2010-01-01",
+                    "regulator": {
+                      "description": "Int. Trade",
+                      "name": "BaFin",
+                      "regulatorId": "DeBa"
+                    },
+                    "shareholder": {
+                      "generalPartner": {
+                        "legalEntityId": "did:key:fictive-5",
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "type": "Shareholder"
+                      },
+                      "handover": false,
+                      "handoverDescription": "none",
+                      "legalEntityId": "did:key:fictive-4",
+                      "share": {
+                        "absolute": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "absoluteInEur": {
+                          "amount": "399399",
+                          "currency": "EUR",
+                          "type": "Balance"
+                        },
+                        "isDirectShare": true,
+                        "relative": "20",
+                        "type": "Share"
+                      },
+                      "shareholder": {
+                        "legalEntityId": "did:key:fictive-5",
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "type": "Shareholder"
+                      },
+                      "type": [
+                        "Shareholder",
+                        "ShareholderLegalPerson"
+                      ],
+                      "votingRightsRelative": "20"
+                    },
+                    "status": "active",
+                    "ultimateBeneficiaryOwner": {
+                      "capital": {
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelativeDirect": "20"
+                      },
+                      "fictitious": {
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelativeDirect": "20"
+                      },
+                      "naturalPersonId": "did:key:fictive-2",
+                      "otherControl": {
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelativeDirect": "20"
+                      },
+                      "votingRights": {
+                        "otherControlReason": "20",
+                        "share": {
+                          "absolute": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "absoluteInEur": {
+                            "amount": "399399",
+                            "currency": "EUR",
+                            "type": "Balance"
+                          },
+                          "isDirectShare": true,
+                          "relative": "20",
+                          "type": "Share"
+                        },
+                        "shareRelativeDirect": "20",
+                        "votingRightsRelative": "20",
+                        "votingRightsRelativeDirect": "20"
+                      }
+                    },
+                    "ultimateParentCompany": "did:key:fictive-8",
+                    "vatId": "22222ABC",
+                    "wz2008": {
+                      "code": "IT",
+                      "industryDescription": "Tech Int. Trade",
+                      "type": "Industry"
+                    }
+                  },
+                  "proof": {
+                    "created": "2024-07-30T10:15:32Z",
+                    "cryptosuite": "ecdsa-sd-2023",
+                    "proofPurpose": "assertionMethod",
+                    "proofValue": "u2V0AhVh..."
+                  }
+                }
+              ]
             }
-          ]
+          }
         }
-      }
+      ]
     }
-  ]
-}
-```
+    ```
 
 7. Service Provider checks permissions by verifying the signatory rights of the requester in the Organisation credential or the PoA Credential.
 8. Service Provider acknowledges the reception of the proof and closes the DIDcomm connection.
