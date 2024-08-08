@@ -474,7 +474,7 @@ sequenceDiagram
     }
     ```
 
-7. The Organisational Wallet acknowledges the reception of the credential and closes the connection.
+7. The Organisational Wallet acknowledges the reception of the credential and closes the thread.
 
     `Acknowledgement` message:
     ```json
@@ -523,7 +523,7 @@ sequenceDiagram
   EAAP->>EAAP: Check Permissions
   EAAP->>EAAP: Create Organisational Credential
   EAAP-)OrgWallet: Submit Organisational Credential
-  OrgWallet-)EAAP: Close connection with Acknowledgement
+  OrgWallet-)EAAP: Close thread with Acknowledgement
   OrgWallet->>OrgWallet: Store Organisational Credential
 ```
 
@@ -1062,7 +1062,7 @@ sequenceDiagram
     }
     ```
 
-9. The Organisational Wallet acknowledges the reception of the credential and closes the DIDComm connection.
+9. The Organisational Wallet acknowledges the reception of the credential and closes the thread.
     ```json
     {
       "type": "https://didcomm.org/present-proof/3.0/ack",
@@ -1670,7 +1670,7 @@ sequenceDiagram
     ```
 
 7. The Relying Party checks the permissions by verifying the signatory rights of the requester in the Organisational Credential or the PoA Credential.
-8. The Relying Party acknowledges the reception of the proof and closes the DIDcomm connection.
+8. The Relying Party acknowledges the reception of the proof and closes the thread.
 9. The Relying Party gives access to the requested service (e.g. opening a Bank account).
 
 ### Result
