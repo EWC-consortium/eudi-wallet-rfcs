@@ -1231,10 +1231,10 @@ sequenceDiagram
 
   ServiceProvider->>OrgWallet: Invite
   OrgWallet->>ServiceProvider: Propose Presentation
-  ServiceProvider->>OrgWallet: Request Proof
+  ServiceProvider->>OrgWallet: Request Presentation
   OrgWallet->>User: Show requested claims
   User->>OrgWallet: Confirm presentations of credentials
-  OrgWallet->>ServiceProvider: Present Organisational Credentials and Natural Person Credential or PoA Credential
+  OrgWallet->>ServiceProvider: Present Organisational Credentials and optionally PoA Credential
   ServiceProvider->>ServiceProvider: Check Permissions
   ServiceProvider->>OrgWallet: Acknowledge with closing DIDComm-Connection
   ServiceProvider->>OrgWallet: Allow access to request service
@@ -1270,6 +1270,67 @@ sequenceDiagram
      "to": "did:peer:2..." // peer DID of Relying Party
    }
    ```
+3. The Relying Party requests the presentation of an Organisational Credential along with a Natural Person or Power of Attorney Credential
+
+    `Request Presentation` message:
+    ```json
+    {
+      "type": "https://didcomm.org/present-proof/3.0/request-presentation",
+      "id": "0ac534c8-98ed-4fe3-8a41-3600775e1e92",
+      "thid": "4f62f655-9cac-4728-854a-775ba694464a",
+      "from": "did:peer:2...", // peer DID of Relying Party
+      "to": "did:peer:2..." // peer DID of Organisational Wallet
+      "body": {},
+      "attachments": [
+        {
+          "id": "ed7d9b1f-9eed-4bde-b81c-3aa7485cf947",
+          "media_type": "application/json",
+          "format": "dif/presentation-exchange/definitions@v1.0",
+          "data": {
+            "json": {
+              "options": {
+                "challenge": "31abea30-be5f-4ab2-99ae-6b7a0208ac76",
+                "domain": "3et78h47fh48"
+              },
+              "presentation_definition": {
+                "id": "f2346867e-fdce-48de-a825-9d84ec16c6a2",
+                "input_descriptors": [
+                  {
+                    "id": "LegalEntityCredentials",
+                    "constraints": {
+                      "fields": [
+                        {
+                          "path": ["$.type"],
+                          "filter": {
+                            "type": "array",
+                            "contains": {
+                              "type": "string",
+                              "pattern": "LegalEntityCertificate"
+                            }
+                          }
+                        },
+                        {
+                          "path": ["$.type"],
+                          "optional": true,
+                          "filter": {
+                            "type": "array",
+                            "contains": {
+                              "type": "string",
+                              "pattern": "PowerOfAttorneyCertificate"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+    ```
 
 4. The Wallet shows the claims to the user.
 5. The user confirms the presentation of the requested claims.
@@ -1317,7 +1378,7 @@ sequenceDiagram
                 "cryptosuite": "ecdsa-sd-2023",
                 "proofPurpose": "authentication",
                 "challenge": "31abea30-be5f-4ab2-99ae-6b7a0208ac76",
-                "domain": "4jt78h47fh47",
+                "domain": "3et78h47fh48",
                 "proofValue": "u2V0AhVh..."
               },
               "verifiableCredential": [
