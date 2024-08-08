@@ -594,27 +594,25 @@ sequenceDiagram
                     }
                   ],
                   "presentation_definition": {
-                    "id": "8246867e-fdce-48de-a825-9d84ec16c6c9",
+                    "id": "f8246867e-fdce-48de-a825-9d84ec16c6c9",
                     "input_descriptors": [
                       {
-                        "id:": "NaturalPersonCredential",
-                        "frame": {
-                          "@context": [
-                            "https://www.w3.org/ns/credentials/v2",
-                            "https://oid.spherity.com/contexts/oid/v1"
-                          ],
-                          "type": [
-                            "VerifiableCredential",
-                            "LegalEntityCertificate"
-                          ],
-                          "credentialSubject": {
-                            "@explicit": true,
-                            "type": "NaturalPerson",
-                            "id": {},
-                            "dateOfBirth": {},
-                            "familyName": {},
-                            "givenName": {}
-                          } 
+                        "id": "NaturalPersonCredential",
+                        "constraints": {
+                          "fields": [
+                            {
+                              "path": [
+                                "$.type"
+                              ],
+                              "filter": {
+                                "type": "array",
+                                "contains": {
+                                  "type": "string",
+                                  "pattern": "NaturalPerson"
+                                }
+                              }
+                            }
+                          ]
                         }
                       }
                     ]
