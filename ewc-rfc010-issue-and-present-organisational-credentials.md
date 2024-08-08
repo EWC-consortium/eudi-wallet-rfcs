@@ -1119,6 +1119,7 @@ sequenceDiagram
       "@context": [
         "https://www.w3.org/ns/credentials/v2",
         "https://oid.spherity.com/contexts/cc/v1",
+        "https://oid.spherity.com/contexts/oid/v1",
         "https://oid.spherity.com/contexts/poa/v1"
       ],
       "type": [
@@ -1130,9 +1131,9 @@ sequenceDiagram
       "validFrom": "2024-07-30T10:20:55.189Z",
       "validUntil": "2034-07-30T10:20:55.188Z",
       "credentialSubject": {
-        "id": "did:key:...", // DID of delegatee
-        "type": "PowerOfAttorney",
-        "dateOfBirth": "1970-01-01",
+        "type": ["PowerOfAttorney", "NaturalPerson"],
+        "legalEntityId": "did:key:...", // DID of delegatee
+        "birthDate": "1970-01-01",
         "familyName": "Mustermann",
         "givenName": "Max",
         "proxiedPermissions": [ // delegated rights
