@@ -5,7 +5,6 @@
 * Mr Martin Westerkamp  (Spherity, Germany)
 
 **Reviewers:** 
-* ???
 
 **Status:** Ready for review
 
@@ -75,10 +74,11 @@ As a result, the wallet can verify the authenticity of the Relying Party before 
 ## 3.3 Credentials and Holder Binding
 
 Organisational Credentials are expected to have a high degree of complexity and interdependency.
-The W3C Credential Format [2] uses JSON-LD to express complex semantics in a concise but specific way.
+The W3C Credential Format [2] uses JSON-LD to express complex semantics in a concise but specific way and is one of the credential formats suggested within the ARF [3, [Appendix 2.3.12](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/0744496a81fcdf98343893d64be471a42dfedfba/docs/annexes/annex-2/annex-2-high-level-requirements.md#a2312-topic-12---attestation-rulebooks)] and agreed upon within the EWC [6].
 JSON-LD enables semantic interoperability by using schemas agreed upon by the participants.
 As a result, existing vocabularies such as the SEMIC Core Vocabularies [5] can be reused to ensure cross-border interoperability.
-In addition, W3C Verifiable Credentials provide cryptographic flexibility so that we can take advantage of established signature schemes such as ECDSA-SD, while retaining the flexibility to use modern schemes such as BBS.
+In addition, W3C Verifiable Credentials provide cryptographic agility so that we can take advantage of established signature schemes such as ECDSA-SD, while retaining the flexibility to use modern schemes such as BBS and Post Quantum Crypto (PCQ).
+Crypto agility and PCQ are very important for critical infrastructure domains such as energy.
 
 Verifiable Credentials contain claims about legal or natural persons and are requested, stored, and presented using the Organisational Wallet.
 An Organisational Credential is bound to a legal person by its DID.
@@ -177,7 +177,7 @@ sequenceDiagram
   EAAP->>OrgWallet: Offer Credential (manifest)
   OrgWallet->>EAAP: Request Credential
 
-  Note over User, EAAP: Authentication of user
+  Note over User, EAAP: Identity proofing of user
 
   EAAP-)EAAP: Store PID Information and Natural Person DID
   EAAP-)OrgWallet: Issue Credential (Natural Person Credential)
@@ -1682,8 +1682,9 @@ sequenceDiagram
 # 9	References
 
 
-1. Decentralized Identity Foundation (DIF) (2023), Wallet And Credential Interactions (WACI) DIDComm Interop Profile, Available at: https://identity.foundation/waci-didcomm/ (Accessed at: July 9, 2024).
-2. World Wide Web Consortium (W3C) (2024), Verifiable Credentials Data Model v2.0, Available at: https://www.w3.org/TR/vc-data-model-2.0/ (Accessed at: July 9, 2024).
-3. European Commission (2023), The European Digital Identity Wallet Architecture and Reference Framework (2024-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
-4. Decentralized Identity Foundation (DIF) (2023), Credential Manifest, Available at: https://identity.foundation/credential-manifest (Accessed at: July 15, 2024).
+1. Decentralized Identity Foundation (DIF) (2023), Wallet And Credential Interactions (WACI) DIDComm Interop Profile, Available at: https://identity.foundation/waci-didcomm/ (Accessed at: July 9, 2024)
+2. World Wide Web Consortium (W3C) (2024), Verifiable Credentials Data Model v2.0, Available at: https://www.w3.org/TR/vc-data-model-2.0/ (Accessed at: July 9, 2024)
+3. European Commission (2024), The European Digital Identity Wallet Architecture and Reference Framework (2024-04, v1.4.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/tree/v1.4.0](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/tree/v1.4.0) (Accessed: Aug 9, 2024)
+4. Decentralized Identity Foundation (DIF) (2023), Credential Manifest, Available at: https://identity.foundation/credential-manifest (Accessed at: July 15, 2024)
 5. European Commission (2024), ISA² - Interoperability solutions for public administrations, businesses and citizens - Core Vocabularies, Available at: https://ec.europa.eu/isa2/solutions/core-vocabularies_en/ (Accessed: July 31, 2024)
+6. EU Digital Identity Wallet Consortium (EWC) (2024), EWC Supported Formats, Available at: https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv (Accessed at: June 1, 2024)
