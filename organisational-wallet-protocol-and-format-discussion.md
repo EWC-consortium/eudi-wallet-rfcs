@@ -10,7 +10,7 @@
 Organizational EUDI Wallets, also known as Legal Person Wallets, are digital wallets designed specifically for organizations, including companies, NGOs, and government entities. These wallets serve as digital counterparts to traditional organizational credentials, facilitating secure, efficient, and automated processing and exchange of credentials within and across organizations. Unlike Citizen Wallets, which are intended for individuals to manage their personal credentials and interact with services, Organizational Wallets are tailored to meet the unique needs of legal entities in various industry sectors. As a result, protocols and formats are required to meet these specific requirements, as presented in [EWC RFC010: Issue and Present Organisational Credentials](https://github.com/spherity/eudi-wallet-rfcs/blob/rfc-010/ewc-rfc010-issue-and-present-organisational-credentials.md).
 
 In the following we will describe the different requirements of Citizen and Organizational Wallets, discuss candidate protocols and formats, and propose a selection based on the requirements.
-We will also briefly mention the preferred credential format and protocol technology choises of the *US Department of Homeland Security (DHS)* as an important reference and benchmark for decisions regarding the EUDI wallet for organizational use cases. 
+We will also briefly mention the U.S. Department of Homeland Security's (DHS) preferred credential format and protocol technology choices as an important reference and benchmark for decisions regarding the EUDI wallet for organizational use cases.
 
 ### 1.1 Context
 
