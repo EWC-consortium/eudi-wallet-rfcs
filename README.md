@@ -34,6 +34,16 @@ Each wallet needs to follow the EWC RFC and perform compliance tests against the
 
 ## Current RFCs
 
+### Approved RFCs
+
+These are the approved RFCs identified to be specified towards wallet providers, producing reference codes and the EWC Interoperability Test Bed (ITB). The supported verifiable credentials and presentations are specified in the [EWC supported format csv file](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
+
+| **RFC #** | **RFC Title**                                                                                                                                                           |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RFC-001   | [Issue Verifiable Credentials Workflow](ewc-rfc001-issue-verifiable-credential.md)                         |
+| RFC-002   | [Present Verifiable Credentials Workflow](ewc-rfc002-present-verifiable-credentials.md)                    |
+| RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
+
 ### Candidate RFCs (Work in progress)
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
@@ -47,16 +57,6 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-007   | Payment Wallet Intance Attestation                                                             |
 | RFC-008   | Strong Customer Authentication                                                                 |
 | RFC-009   | Payment Transaction                                                                            |
-
-### Approved RFCs
-
-These are the approved RFCs identified to be specified towards wallet providers, producing reference codes and the EWC Interoperability Test Bed (ITB). The supported verifiable credentials and presentations are specified in the [EWC supported format csv file](/ewc-supported-formats.csv).
-
-| **RFC #** | **RFC Title**                                                                                                                                                           |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| RFC-001   | [Issue Verifiable Credentials Workflow](/ewc-rfc001-issue-verifiable-credential.md)                         |
-| RFC-002   | [Present Verifiable Credentials Workflow](/ewc-rfc002-present-verifiable-credentials.md)                    |
-| RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](/ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
 
 ## EWC Wallets (ITB - Compliant)
 
