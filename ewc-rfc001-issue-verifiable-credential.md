@@ -211,10 +211,10 @@ The following options are available for different grant types:
 
 For `urn:ietf:params:oauth:grant-type:pre-authorized_code`:
 
-| Field                               | Description                                                                                                                                                                                                                                                                                       |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **pre-authorized_code**             | REQUIRED. The code representing the Credential Issuer's authorisation for the Wallet to obtain Credentials of a certain type. This code MUST be short-lived and single-use. It MUST be included in the subsequent Token Request.                                                                  |
-| **tx_code**                         | OPTIONAL. Object specifying whether the Authorization Server expects presentation of a Transaction Code by the End-User along with the Token Request. Intended to bind the Pre-Authorized Code to a certain transaction to prevent replay. If required, it MUST be sent in the tx_code parameter. 
+| Field                   | Description                                                                                                                                                                                                                                                                                       |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **pre-authorized_code** | REQUIRED. The code representing the Credential Issuer's authorisation for the Wallet to obtain Credentials of a certain type. This code MUST be short-lived and single-use. It MUST be included in the subsequent Token Request.                                                                  |
+| **tx_code**             | OPTIONAL. Object specifying whether the Authorization Server expects presentation of a Transaction Code by the End-User along with the Token Request. Intended to bind the Pre-Authorized Code to a certain transaction to prevent replay. If required, it MUST be sent in the tx_code parameter. |
 
 Read more [here](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html#section-4.1.1).
 
@@ -266,7 +266,7 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
       "cryptographic_binding_methods_supported": [
         "jwk"
       ],
-      "cryptographic_suites_supported": [
+      "credential_signing_alg_values_supported": [
         "ES256"
       ],
       "display": [
