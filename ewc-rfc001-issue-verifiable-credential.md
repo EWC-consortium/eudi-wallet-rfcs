@@ -913,7 +913,6 @@ The In-time flow indicates that the credential is available immediately and the 
 
 ```json
 {
-  "format": "vc+sd-jwt",
   "credential": "eyJ0eXAiOi...F0YluuK2Cog",
   "c_nonce": "fGFF7UkhLa",
   "c_nonce_expires_in": 86400
@@ -943,11 +942,11 @@ Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
 ```
 
 >[Note]
-> If the response contains `acceptance_token` field, then it can be understood the credential is not available now and should be later available through the deferred credential endpoint. An example response is as given below:
+> If the response contains `transaction_id` field, then it can be understood the credential is not available now and should be later available through the deferred credential endpoint. An example response is as given below:
 
 ```json
 {
-  "acceptance_token": "eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ",
+  "transaction_id": "eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ",
   "c_nonce": "wlbQc6pCJp",
   "c_nonce_expires_in": 86400
 }
