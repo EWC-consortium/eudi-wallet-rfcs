@@ -135,35 +135,6 @@ Once the `credential_offer_uri` query param is resolved, the response can be eit
 }
 ```
 
-> [!NOTE]
-> In order to support all EBSI conformant wallets, the following format for the response is also valid, but not **mandatory** to be supported:
-
-```json
-{
-  "credential_issuer": "https://server.example.com",
-  "credentials": [
-    {
-      "format": "jwt_vc_json",
-      "types": [
-        "VerifiableCredential",
-        "VerifiableAttestation",
-        "VerifiablePortableDocumentA1"
-      ],
-      "trust_framework": {
-        "name": "ewc-issuer-trust-list",
-        "type": "Accreditation",
-        "uri": "TIR link towards accreditation"
-      }
-    }
-  ],
-   "grants": {
-        "authorization_code": {
-            "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
-        }
-    }
-}
-```
-
 The holder wallet retrieves the JSON and processes it using the credential format identifier. The supported credential format identifiers for this are listed in the context of EWC LSPs, which can be found [here](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
 For pre-authorised flow with a transaction code, the credential response is as given:
@@ -307,114 +278,31 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 }
 ```
 
-> [!NOTE]
-> In order to support all EBSI conformant wallets, the following format for the response is also valid, but not **mandatory** to be supported:
-
-```json
-{
-  "credential_issuer": "https://server.example.com",
-  "authorization_server": "https://server.example.com",
-  "credential_endpoint": "https://server.example.com/credential",
-  "deferred_credential_endpoint": "https://server.example.com/credential_deferred",
-  "display": {
-    "name": "Issuer",
-    "location": "Belgium",
-    "locale": "en-GB",
-    "description": "For queries about how we are managing your data please contact the Data Protection Officer."
-  },
-  "credentials_supported": [
-    {
-      "format": "jwt_vc",
-      "types": [
-        "VerifiableCredential",
-        "VerifiableAttestation",
-        "VerifiablePortableDocumentA1"
-      ],
-      "trust_framework": {
-        "name": "ebsi",
-        "type": "Accreditation",
-        "uri": "TIR link towards accreditation"
-      },
-      "display": [
-        {
-          "name": "Portable Document A1",
-          "locale": "en-GB"
-        }
-      ]
-    }
-  ]
-}
-```
-
-Once the well-known endpoint for **authorisation server** configuration is resolved, the response is as given below:
+Once the well-known endpoint for authorisation server configuration is resolved, the response is as given below:
 
 ```json
 {
   "issuer": "https://server.example.com",
   "authorization_endpoint": "https://server.example.com/authorize",
+  "pushed_authorization_request_endpoint": "https://server.example.com/par",
+  "require_pushed_authorization_requests": true,
   "token_endpoint": "https://server.example.com/token",
-  "jwks_uri": "https://server.example.com/jwks",
-  "scopes_supported": [
-    "openid"
-  ],
+  "jwks_uri": "https://server.example.com/.well-known/jwks.json",
   "response_types_supported": [
+    "code",
     "vp_token",
     "id_token"
   ],
-  "response_modes_supported": [
-    "query"
-  ],
-  "grant_types_supported": [
-    "authorization_code"
-  ],
   "subject_types_supported": [
-    "public"
+    "public",
+    "pairwise"
   ],
   "id_token_signing_alg_values_supported": [
     "ES256"
-  ],
-  "request_object_signing_alg_values_supported": [
-    "ES256"
-  ],
-  "request_parameter_supported": true,
-  "request_uri_parameter_supported": true,
-  "token_endpoint_auth_methods_supported": [
-    "private_key_jwt"
-  ],
-  "request_authentication_methods_supported": {
-    "authorization_endpoint": [
-      "request_object"
-    ]
-  },
-  "vp_formats_supported": {
-    "jwt_vp": {
-      "alg_values_supported": [
-        "ES256"
-      ]
-    },
-    "jwt_vc": {
-      "alg_values_supported": [
-        "ES256"
-      ]
-    }
-  },
-  "subject_syntax_types_supported": [
-    "did:key:jwk_jcs-pub",
-    "did:ebsi:v1",
-    "did:ebsi:v2"
-  ],
-  "subject_trust_frameworks_supported": [
-    "ebsi",
-    "ewc-issuer-trust-list"
-  ],
-  "id_token_types_supported": [
-    "subject_signed_id_token",
-    "attester_signed_id_token"
   ]
 }
-```
 
-Currently, we retain the trust framework specified by EBSI. Subsequently, we will specify an additional RFC defining the EWC trusted issuer list. 
+```
 
 ## 3.5 Authorisation request
 
@@ -491,24 +379,6 @@ The query params for the authorisation request with `authorization_details` are 
           "vct": "VerifiablePortableDocumentA1"
       }
   ]
-  ```
-
-   > [!NOTE]
-   > You may also use the earlier version as supported by EBSI.
-
-   ```json
-   {
-    "format": "jwt_vc",
-    "locations": [
-      "https://issuer.example.com"
-    ],
-    "type": "openid_credential",
-    "types": [
-      "VerifiableCredential",
-      "VerifiableAttestation",
-      "VerifiablePortableDocumentA1"
-    ]
-  }
   ```
    </td>
   </tr>
@@ -627,7 +497,7 @@ The credential issuer can **optionally** request additional details to authentic
 
 ```http
 HTTP/1.1 302 Found
-Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock&redirect_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Fdirect_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Frequest_uri%2F111d2819-9ab7-4959-83e5-f414c57fdc27
+Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https://example.server.com&redirect_uri=https://example.server.com/direct_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https://example.server.com/request_uri
 ```
 
 Query params for the authorisation response are given below:
@@ -879,28 +749,6 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 ```
 
 If specified, you can request specific fields to be included in the issued credential. If its not specified, all fields in the credential is included.
-
-> [!NOTE]
-> In order to support all EBSI conformant wallets, the following format for the request is also valid, but not **mandatory** to be supported:
-
-```http
-POST /credential
-Content-Type: application/json
-Authorization: Bearer eyJ0eXAi...KTjcrDMg
-
-{
-  "format": "jwt_vc_json",
-  "proof": {
-    "jwt": "eyJraWQiOiJkaWQ6a2...su7UFClz9NQnw",
-    "proof_type": "jwt"
-  },
-  "types": [
-    "VerifiableCredential",
-    "VerifiableAttestation",
-    "VerifiablePortableDocumentA1"
-  ]
-}
-```
 
 ## 3.10 Credential response
 
