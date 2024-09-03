@@ -303,7 +303,8 @@ Once the well-known endpoint for authorisation server configuration is resolved,
   ],
   "id_token_signing_alg_values_supported": [
     "ES256"
-  ]
+  ],
+  "pre-authorized_grant_anonymous_access_supported": true
 }
 
 ```
