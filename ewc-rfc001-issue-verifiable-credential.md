@@ -64,10 +64,38 @@ The EWC LSP must align with the standard protocol for issuing credentials. This 
 The credential issuance can be an authorisation flow or a pre-authorised one. These are depicted in the following diagrams, the assumption is that credential offer is obtained by holder wallet prior to discovery using same device (i.e. clicking on a link) or cross device (i.e scanning a QR code) flows.
 
 ```mermaid
-  sequenceDiagram
+sequenceDiagram
+  autonumber
+  participant I as Individual using EUDI Wallet
+  participant O as Organisational Wallet (Issuer)
+  
+  O->>I: GET: Credential Offer
+  Note over I,O: Discovery issuer capabilities
+  I->>O: GET: /.well-known/openid-credential-issuer
+  O-->>I: OpenID credential issuer configuration
+  I->>O: GET: /.well-known/oauth-authorization-server
+  O-->>I: OAuth authorisation server metadata
+
+  Note over I,O: Authenticate and Authorise
+  I->>O: Authorisation request
+  O-->>I: Authorisation response
+  I->>O: Token request
+  O-->>I: Token response
+
+  Note over I,O: Issue credential
+  I->>O: POST: Credential request with token
+  O-->>I: Credential response with acceptance token
+```
+Figure 1: Issuance using Authorisation Code Flow based on [1]
+
+```mermaid
+sequenceDiagram
+    autonumber
     participant I as Individual using EUDI Wallet
     participant O as Organisational Wallet (Issuer)
 
+    O->>I: GET: Credential Offer
+    
     Note over I,O: Discovery issuer capabilities
     I->>O: GET: /.well-known/openid-credential-issuer
     O-->>I: OpenID credential issuer configuration
@@ -75,35 +103,12 @@ The credential issuance can be an authorisation flow or a pre-authorised one. Th
     O-->>I: OAuth authorisation server metadata
 
     Note over I,O: Authenticate and Authorise
-    I->>O: Authorisation request
-    O-->>I: Authorisation response
-    I->>O: Token request
+    I->>O: POST: Pre-authorised token request with transaction code
     O-->>I: Token response
 
     Note over I,O: Issue credential
     I->>O: POST: Credential request with token
     O-->>I: Credential response with acceptance token
-```
-Figure 1: Issuance using Authorisation Code Flow based on [1]
-
-```mermaid
-  sequenceDiagram
-      participant I as Individual using EUDI Wallet
-      participant O as Organisational Wallet (Issuer)
-      
-      Note over I,O: Discovery issuer capabilities
-      I->>O: GET: /.well-known/openid-credential-issuer
-      O-->>I: OpenID credential issuer configuration
-      I->>O: GET: /.well-known/oauth-authorization-server
-      O-->>I: OAuth authorisation server metadata
-
-      Note over I,O: Authenticate and Authorise
-      I->>O: POST: Pre-authorised token request with PIN
-      O-->>I: Token response
-
-      Note over I,O: Issue credential
-      I->>O: POST: Credential request with token
-      O-->>I: Credential response with acceptance token
 ```
 Figure 2: Issuance using Pre-Authorisation Code Flow based on [1]
 
@@ -121,6 +126,8 @@ Here, the `credential_offer_uri` query param contains the URL in which the crede
 
 Once the `credential_offer_uri` query param is resolved, the response can be either of the following formats. 
 
+For authorised code flow, the credential offer response is as given:
+
 ```json
 {
     "credential_issuer": "https://server.example.com",
@@ -135,9 +142,7 @@ Once the `credential_offer_uri` query param is resolved, the response can be eit
 }
 ```
 
-The holder wallet retrieves the JSON and processes it using the credential format identifier. The supported credential format identifiers for this are listed in the context of EWC LSPs, which can be found [here](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
-
-For pre-authorised flow with a transaction code, the credential response is as given:
+For pre-authorised flow with a transaction code, the credential offer response is as given:
 
 ```json
 {
@@ -279,8 +284,9 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 ```
 
 > [!NOTE]
-> The credential configuration fields and their values change based on the supported credential formats 1) mso_mdoc 2) jwt_vc_json 3) vc+sd-jwt
+> The `credential_configurations_supported` field and it's values change based on the supported credential formats 1) `mso_mdoc` 2) `jwt_vc_json` 3) `vc+sd-jwt`
 > It is important to consult the relevant documentation for each format to ensure that all required fields and values are correctly configured.
+> The supported credential format identifiers in the context of EWC LSPs, can be found [here](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
 Once the well-known endpoint for authorisation server configuration is resolved, the response is as given below:
 
@@ -313,16 +319,14 @@ Once the well-known endpoint for authorisation server configuration is resolved,
 
 There are two possible ways to request the issuance of a specific Credential type in an Authorization Request. One way is to use the `authorization_details` request parameter with one or more authorization details objects of type `openid_credential`. The other method is through the use of `scope`.
 
-  > [!NOTE]
-   > HAIP[6] chapter 4.2 mandatorily requires Pushed Authorisation Request as per [7]
+> [!NOTE]
+> HAIP[6] chapter 4.2 mandatorily requires Pushed Authorisation Request as per [7]
 
 ### 3.5.1 Using `authorization_details`
 
 The authorisation request is to grant access to the credential endpoint. Below is an example of such a request:
 
 ```http
-GET https://my-issuer.rocks/auth/authorize?
-
 GET /authorize?
   response_type=code
   &client_id=s6BhdRkqt3
@@ -338,27 +342,34 @@ The query params for the authorisation request with `authorization_details` are 
 
 <table>
   <tr>
-   <td><code>response_type</code>
-   </td>
-   <td>The value must be ‘code’
-   </td>
+    <td>
+      <code>response_type</code>
+    </td>
+    <td>REQUIRED. The value must be "code" to request an authorization code. </td>
   </tr>
   <tr>
-   <td><code>state</code>
-   </td>
-   <td>The client uses an opaque value to maintain the state between the request and callback.
-   </td>
+    <td>
+      <code>client_id</code>
+    </td>
+    <td>REQUIRED. The identifier for the client making the request. </td>
   </tr>
   <tr>
-   <td><code>client_id</code>
-   </td>
-   <td>Decentralised identifier
-   </td>
+    <td>
+      <code>code_challenge</code>
+    </td>
+    <td>REQUIRED. The code challenge used for Proof Key for Code Exchange (PKCE) as specified in OAuth 2.0 for Public Clients [5] </td>
   </tr>
   <tr>
-   <td><code>authorization_details</code>
-   </td>
-   <td>As specified in OAuth 2.0 Rich Authorization Requests specification to specify fine-grained access [4]. 
+    <td>
+      <code>code_challenge_method</code>
+    </td>
+    <td>OPTIONAL. The method used to transform the code verifier. Defaults to "plain" if not present. Possible values are "S256" or "plain", as defined in PKCE for OAuth 2.0. </td>
+  </tr>
+  <tr>
+    <td>
+      <code>authorization_details</code>
+    </td>
+    <td>OPTIONAL. Provides fine-grained access details as specified in the OAuth 2.0 Rich Authorization Requests specification. The `authorization_details` parameter, as defined in Section 2 of [RFC9396], should be used to convey the specifics of the Credentials the Wallet intends to obtain. This specification introduces a new authorization details type, `openid_credential`. [4]. 
    
    An example of W3C VC credential format is as given below:
 
@@ -388,34 +399,16 @@ The query params for the authorisation request with `authorization_details` are 
    </td>
   </tr>
   <tr>
-   <td><code>redirect_uri</code>
-   </td>
-   <td>For redirection of the response
-   </td>
+    <td>
+      <code>redirect_uri</code>
+    </td>
+    <td>OPTIONAL. The redirection endpoint where the authorization server will send the user-agent after authorization is complete. </td>
   </tr>
   <tr>
-   <td><code>code_challenge</code>
-   </td>
-   <td>As specified in PKCE for OAuth Public Client specification [5]
-   </td>
-  </tr>
-  <tr>
-   <td><code>code_challenge_method</code>
-   </td>
-   <td>As specified in PKCE for OAuth Public Client specification
-   </td>
-  </tr>
-  <tr>
-   <td><code>client_metadata</code>
-   </td>
-   <td>Holder wallets are non-reachable and can utilise this field in the Authorisation Request to deliver configuration
-   </td>
-  </tr>
-  <tr>
-   <td><code>issuer_state</code>
-   </td>
-   <td>If present in the credential offer
-   </td>
+    <td>
+      <code>issuer_state</code>
+    </td>
+    <td>OPTIONAL. A string value representing a specific processing context at the Credential Issuer. This value is usually provided in a Credential Offer from the Credential Issuer to the Wallet and is used to pass the issuer_state value back to the Credential Issuer. </td>
   </tr>
 </table>
 
@@ -425,8 +418,6 @@ Below is an example of such a request using `scope` parameter. Here, the wallet 
 
 ```http
 GET https://my-issuer.rocks/auth/authorize?
-
-GET /authorize?
   response_type=code
   &scope=VerifiablePortableDocumentA1
   &resource=https%3A%2F%2Fcredential-issuer.example.com
@@ -441,58 +432,46 @@ The query params for the authorisation request with `scope` are as described bel
 
 <table>
   <tr>
-  <td><code>response_type</code>
-  </td>
-  <td>The value must be ‘code’
-  </td>
+    <td>
+      <code>response_type</code>
+    </td>
+    <td>REQUIRED. The value must be "code" to request an authorization code. </td>
   </tr>
   <tr>
-  <td><code>scope</code>
-  </td>
-  <td>A JSON string that identifies the scope value supported by the Credential Issuer for a particular Credential. The value can be consistent across multiple credential configuration objects. The Authorization Server must uniquely identify the Credential Issuer based on the scope value. The Wallet can use this value in the Authorization Request. Scope values in this Credential Issuer metadata may overlap with those in the scopes_supported parameter of the Authorization Server.
-  </td>
+    <td>
+      <code>scope</code>
+    </td>
+    <td>A JSON string that identifies the scope value supported by the Credential Issuer for a particular Credential. The value can be consistent across multiple credential configuration objects. The Authorization Server must uniquely identify the Credential Issuer based on the scope value. The Wallet can use this value in the Authorization Request. Scope values in this Credential Issuer metadata may overlap with those in the scopes_supported parameter of the Authorization Server. </td>
   </tr>
   <tr>
-  <td><code>state</code>
-  </td>
-  <td>The client uses an opaque value to maintain the state between the request and callback.
-  </td>
+    <td>
+      <code>client_id</code>
+    </td>
+    <td>REQUIRED. The identifier for the client making the request. </td>
   </tr>
   <tr>
-  <td><code>client_id</code>
-  </td>
-  <td>Decentralised identifier
-  </td>
+    <td>
+      <code>redirect_uri</code>
+    </td>
+    <td>OPTIONAL. The redirection endpoint where the authorization server will send the user-agent after authorization is complete. </td>
   </tr>
   <tr>
-  <td><code>redirect_uri</code>
-  </td>
-  <td>For redirection of the response
-  </td>
+    <td>
+      <code>code_challenge</code>
+    </td>
+    <td>REQUIRED. The code challenge used for Proof Key for Code Exchange (PKCE) as specified in OAuth 2.0 for Public Clients [5] </td>
   </tr>
   <tr>
-  <td><code>code_challenge</code>
-  </td>
-  <td>As specified in PKCE for OAuth Public Client specification [5]
-  </td>
+    <td>
+      <code>code_challenge_method</code>
+    </td>
+    <td>OPTIONAL. The method used to transform the code verifier. Defaults to "plain" if not present. Possible values are "S256" or "plain", as defined in PKCE for OAuth 2.0. </td>
   </tr>
   <tr>
-  <td><code>code_challenge_method</code>
-  </td>
-  <td>As specified in PKCE for OAuth Public Client specification
-  </td>
-  </tr>
-  <tr>
-  <td><code>client_metadata</code>
-  </td>
-  <td>Holder wallets are non-reachable and can utilise this field in the Authorisation Request to deliver configuration
-  </td>
-  </tr>
-  <tr>
-  <td><code>issuer_state</code>
-  </td>
-  <td>If present in the credential offer
-  </td>
+    <td>
+      <code>issuer_state</code>
+    </td>
+    <td>OPTIONAL. A string value representing a specific processing context at the Credential Issuer. This value is usually provided in a Credential Offer from the Credential Issuer to the Wallet and is used to pass the issuer_state value back to the Credential Issuer. </td>
   </tr>
 </table>
 
