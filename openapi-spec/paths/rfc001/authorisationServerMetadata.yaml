@@ -1,0 +1,13 @@
+summary: Authorisation Server Metadata
+description: The Authorization server metadata contain metadata describing authorisation server configuration.
+operationId: authorisationServerMetadata
+responses:
+  "200":
+    description: ""
+    content:
+      application/json:
+        schema:
+          $ref: "../../definitions/rfc001/authorisationServerMetadata.yaml"
+
+tags:
+  - "EWC RFC001: Issue Verifiable Credential"

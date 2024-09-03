@@ -1,0 +1,40 @@
+type: object
+title: "Pre-authorised code grant"
+properties:
+  urn:ietf:params:oauth:grant-type:pre-authorized_code:
+    description: "Pre-authorised code grant"
+    type: object
+    properties:
+      pre-authorized_code:
+        type: string
+        description: >
+          "REQUIRED. The code representing the Credential Issuer's authorization for the Wallet to obtain Credentials of a certain type. 
+          This code MUST be short lived and single use. If the Wallet decides to use the Pre-Authorized Code Flow, this parameter value MUST be included in the subsequent Token Request with the Pre-Authorized Code Flow."
+      tx_code:
+        type: object
+        description: >
+          "OPTIONAL. Object specifying whether the Authorization Server expects presentation of a Transaction Code by the End-User along with the Token Request in a Pre-Authorized Code Flow. 
+          If the Authorization Server does not expect a Transaction Code, this object is absent; this is the default. 
+          The Transaction Code is intended to bind the Pre-Authorized Code to a certain transaction to prevent replay of this code by an attacker that, for example, scanned the QR code while standing behind the legitimate End-User. 
+          It is RECOMMENDED to send the Transaction Code via a separate channel. If the Wallet decides to use the Pre-Authorized Code Flow, the Transaction Code value MUST be sent in the tx_code parameter with the respective Token Request. 
+          If no length or description is given, this object may be empty, indicating that a Transaction Code is required."
+        properties:
+          input_mode:
+            type: string
+            description: >
+              "OPTIONAL. String specifying the input character set. 
+              Possible values are numeric (only digits) and text (any characters). 
+              The default is numeric."
+          length:
+            type: integer
+            description: >
+              "OPTIONAL. Integer specifying the length of the Transaction Code. 
+              This helps the Wallet to render the input screen and improve the user experience."
+          description:
+            type: string
+            description: >
+              "OPTIONAL. String containing guidance for the Holder of the Wallet on how to obtain the Transaction Code, e.g., describing over which communication channel it is delivered. 
+              The Wallet is RECOMMENDED to display this description next to the Transaction Code input screen to improve the user experience. 
+              The length of the string MUST NOT exceed 300 characters. The description does not support internationalization, however the Issuer MAY detect the Holder's language by previous communication or an HTTP Accept-Language header within an HTTP GET request for a Credential Offer URI."
+required:
+  - urn:ietf:params:oauth:grant-type:pre-authorized_code

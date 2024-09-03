@@ -1,0 +1,39 @@
+type: object
+properties:
+  definition_id:
+    type: string
+  descriptor_map:
+    type: array
+    items:
+      type: object
+      properties:
+        format:
+          type: string
+        id:
+          type: string
+        path:
+          type: string
+        path_nested:
+          type: object
+          properties:
+            format:
+              type: string
+            id:
+              type: string
+            path:
+              type: string
+          required:
+            - format
+            - id
+            - path
+      required:
+        - format
+        - id
+        - path
+        - path_nested
+  id:
+    type: string
+required:
+  - definition_id
+  - descriptor_map
+  - id

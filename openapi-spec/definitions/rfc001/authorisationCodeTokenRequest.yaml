@@ -1,0 +1,23 @@
+type: object
+title: Token Request (for authorisation code grant)
+properties:
+  grant_type:
+    type: string
+    description: |
+      The type of the grant being used. For example, 'authorization_code' indicates that the authorization code grant type is being used.
+    example: "authorization_code"
+  code:
+    type: string
+    description: |
+      The authorization code received from the authorization server in response to the authorization request. This code is used to obtain an access token from the token endpoint.
+  code_verifier:
+    type: string
+    description: |
+      The code verifier used in Proof Key for Code Exchange (PKCE). This is included in the token request to validate the code challenge that was used in the initial authorization request.
+  redirect_uri:
+    type: string
+    description: |
+      The redirect URI used in the authorization request. It must match the redirect URI used during the authorization request to ensure consistency and prevent attacks.
+required:
+  - grant_type
+  - code

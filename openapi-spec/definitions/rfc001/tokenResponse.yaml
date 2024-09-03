@@ -1,0 +1,56 @@
+type: object
+title: "Token Response"
+properties:
+  access_token:
+    type: string
+    description: |
+      The access token issued by the authorization server. This token is used to access protected resources.
+    example: "eyJhbGciOiJSUzI1NiIsInR5cCI6Ikp..sHQ"
+  token_type:
+    type: string
+    description: |
+      The type of the token issued. Typically this is "bearer".
+    example: "bearer"
+  expires_in:
+    type: integer
+    description: |
+      The lifetime in seconds of the access token. After this time, the token will expire and a new one must be requested.
+    example: 86400
+  c_nonce:
+    type: string
+    description: |
+      OPTIONAL. A nonce used when creating proof of possession of the key proof. This nonce must be used for subsequent requests until a fresh nonce is provided by the Credential Issuer.
+    example: "tZignsnFbp"
+  c_nonce_expires_in:
+    type: integer
+    description: |
+      OPTIONAL. The lifetime in seconds of the `c_nonce`. After this time, the `c_nonce` will expire.
+    example: 86400
+  authorization_details:
+    type: array
+    items:
+      type: object
+      properties:
+        type:
+          type: string
+          description: |
+            REQUIRED. The type of authorization details. Must be "openid_credential" when used to request issuance of a specific Credential type.
+          example: "openid_credential"
+        credential_configuration_id:
+          type: string
+          description: |
+            REQUIRED when `authorization_details` is used. The identifier for the Credential configuration.
+          example: "UniversityDegreeCredential"
+        credential_identifiers:
+          type: array
+          items:
+            type: string
+          description: |
+            OPTIONAL. An array of strings, each uniquely identifying a Credential that can be issued using the Access Token. These Credentials correspond to the same entry in the `credential_configurations_supported` Credential Issuer metadata but may contain different claims or subsets of claims.
+          example:
+            - "CivilEngineeringDegree-2023"
+            - "ElectricalEngineeringDegree-2023"
+required:
+  - access_token
+  - token_type
+  - expires_in

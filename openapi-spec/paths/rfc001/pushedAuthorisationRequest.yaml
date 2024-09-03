@@ -1,0 +1,67 @@
+tags:
+  - "EWC RFC001: Issue Verifiable Credential"
+summary: Pushed Authorization Request
+description: |
+  A Pushed Authorization Request (PAR) allows a client to submit its authorization request parameters to the authorization server in advance, providing a PAR endpoint that stores these parameters and returns a request URI. The client then uses this URI in its authorization request to the authorization endpoint. This method enhances security by avoiding the exposure of sensitive parameters in the URL.
+
+operationId: pushedAuthorizationRequest
+requestBody:
+  content:
+    application/x-www-form-urlencoded:
+      schema:
+        type: object
+        properties:
+          response_type:
+            type: string
+            description: |
+              REQUIRED. The value must be "code" to request an authorization code.
+          client_id:
+            type: string
+            description: |
+              REQUIRED. The identifier for the client making the request.
+          code_challenge:
+            type: string
+            description: |
+              REQUIRED. The code challenge used for Proof Key for Code Exchange (PKCE) as specified in OAuth 2.0 for Public Clients.
+          code_challenge_method:
+            type: string
+            description: |
+              OPTIONAL. The method used to transform the code verifier. Defaults to "plain" if not present. Possible values are "S256" or "plain", as defined in PKCE for OAuth 2.0.
+          authorization_details:
+            type: string
+            description: |
+              OPTIONAL. Provides fine-grained access details as specified in the OAuth 2.0 Rich Authorization Requests specification. The `authorization_details` parameter, as defined in Section 2 of [RFC9396], should be used to convey the specifics of the Credentials the Wallet intends to obtain. This specification introduces a new authorization details type, `openid_credential`.
+          redirect_uri:
+            type: string
+            description: |
+              OPTIONAL. The redirection endpoint where the authorization server will send the user-agent after authorization is complete.
+          scope:
+            type: string
+            description: |
+              OPTIONAL. Defines the scope of the Credential request. If the Wallet is unsure of the scope value, it can discover it using the 'scope' parameter from the Credential Issuer's metadata. This parameter assists in identifying the appropriate Credential configuration based on the Credential Offer or other parameters from the Credential Issuer.
+          issuer_state:
+            type: string
+            description: |
+              OPTIONAL. A string value representing a specific processing context at the Credential Issuer. This value is usually provided in a Credential Offer from the Credential Issuer to the Wallet and is used to pass the issuer_state value back to the Credential Issuer.
+        required:
+          - response_type
+          - client_id
+          - code_challenge
+          - code_challenge_method
+  required: true
+responses:
+  "201":
+    description: Pushed Authorization Request Created
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            request_uri:
+              type: string
+              description: |
+                The URI that can be used in an authorization request to reference the parameters submitted in the PAR request.
+            expires_in:
+              type: integer
+              description: |
+                The lifetime in seconds of the request_uri. After this time, the request_uri will no longer be valid.

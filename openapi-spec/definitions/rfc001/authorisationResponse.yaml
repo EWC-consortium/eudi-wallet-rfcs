@@ -1,0 +1,27 @@
+title: Authorisation response
+type: object
+properties:
+  state:
+    type: string
+    description: The client uses an opaque value to maintain the state between the request and callback.
+  client_id:
+    type: string
+    description: Decentralised identifier
+  redirect_uri:
+    type: string
+    description: For redirection of the response
+  response_type:
+    type: string
+    description: The value must be 'id_token' if the issuer requests DID authentication.
+  response_mode:
+    type: string
+    description: The value must be 'direct_post'
+  scope:
+    type: string
+    description: The value must be 'openid'
+  nonce:
+    type: string
+    description: A value used to associate a client session with an ID token and to mitigate replay attacks.
+  request_uri:
+    type: string
+    description: The authorisation server's private key signed the request.

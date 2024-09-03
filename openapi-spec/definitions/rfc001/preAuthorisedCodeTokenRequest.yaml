@@ -1,0 +1,20 @@
+type: object
+title: Token Request (for pre-authorised code grant)
+properties:
+  grant_type:
+    type: string
+    description: |
+      The type of grant being used. For pre-authorized code flow, this must be set to 'urn:ietf:params:oauth:grant-type:pre-authorized_code'.
+    example: "urn:ietf:params:oauth:grant-type:pre-authorized_code"
+  pre-authorized_code:
+    type: string
+    description: |
+      The pre-authorized code issued by the authorization server. This code is used to request an access token.
+  tx_code:
+    type: string
+    description: |
+      A transaction code that helps identify and correlate the request with the original authorization transaction.
+required:
+  - grant_type
+  - pre-authorized_code
+  - tx_code
