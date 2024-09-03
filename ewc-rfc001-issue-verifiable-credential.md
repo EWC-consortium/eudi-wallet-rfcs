@@ -278,6 +278,10 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 }
 ```
 
+> [!NOTE]
+> The credential configuration fields and their values change based on the supported credential formats 1) mso_mdoc 2) jwt_vc_json 3) vc+sd-jwt
+> It is important to consult the relevant documentation for each format to ensure that all required fields and values are correctly configured.
+
 Once the well-known endpoint for authorisation server configuration is resolved, the response is as given below:
 
 ```json
