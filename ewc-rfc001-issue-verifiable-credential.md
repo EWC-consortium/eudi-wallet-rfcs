@@ -772,7 +772,7 @@ Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
 }
 ```
 
->[Note]
+> [!NOTE]
 > If the response contains `transaction_id` field, then it can be understood the credential is not available now and should be later available through the deferred credential endpoint. An example response is as given below:
 
 ```json
