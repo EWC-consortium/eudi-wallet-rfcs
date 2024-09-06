@@ -172,10 +172,10 @@ Not included in the diagram is the revocation information that must be published
 3. Authorization request. The PID provider wallet requests the Client wallet for WIA, WTE, PID using the endpoint either submitted by the natural person in the first step or by information in the redirect url if the LPID process started in a wallet application with a redirect. 
 4. Authorization response. Client wallet returns presentations of WTE, WIA, (PID).
 5. Authorization request. Client wallet requests WIA and PID from PID provider wallet.
-6. Authorization response. PID provider wallet returs presentations of PID and WIA.
-7. PID provider wallet requests information from VDR for verifiacation and validation.
+6. Authorization response. PID provider wallet returns presentations of PID and WIA.
+7. PID provider wallet requests information from VDR for verification and validation.
 8. VDR returns requested information.
-9. Client wallet requests information from VDR for verifiacation and validation.
+9. Client wallet requests information from VDR for verification and validation.
 10. VDR returns requested information.
 11. PID provider wallet verifies and validates presentations and issuer of WTE and WIA (and PID).
 12. Client wallet verifies and validates presentations and issuer of WIA and LPID.
@@ -317,52 +317,6 @@ Upon resolving the well-known endpoints, the **identity provider** responds with
 
 ```
 
-> [!NOTE]
-> In order to support all EBSI conformant wallets, the following format for the response is also valid, but **optional** to be supported:
-
-```json
-{
-  "credential_issuer": "https://identity-provider.gov",
-  "authorization_server": "https://identity-provider.gov",
-  "credential_endpoint": "https://identity-provider.gov/credential",
-  "deferred_credential_endpoint": "https://identity-provider.gov/credential_deferred",
-  "display": {
-    "name": "Government Identity Provider",
-    "location": "Country",
-    "locale": "en-GB",
-    "cover": {
-      "url": "https://identity-provider.gov/cover.jpeg",
-      "alt_text": "Government Identity Provider"
-    },
-    "logo": {
-      "url": "https://identity-provider.gov/logo.jpg",
-      "alt_text": "Government Identity Provider"
-    },
-    "description": "For inquiries about how we manage your personal identification data, please contact our Data Protection Officer."
-  },
-  "credentials_supported": [
-    {
-      "format": "jwt_vc",
-      "types": [
-        "VerifiableCredential",
-        "PersonIdentificationData"
-      ],
-      "trust_framework": {
-        "name": "ewc-issuer-trust-list",
-        "type": "Accreditation",
-        "uri": "Link to the trust framework accreditation"
-      },
-      "display": [
-        {
-          "name": "Person Identification Data",
-          "locale": "en-GB"
-        }
-      ]
-    }
-  ]
-}
-```
-
 Once the well-known endpoint for **authorisation server** configuration is resolved, the response is as given below:
 
 ```json
@@ -430,8 +384,6 @@ Once the well-known endpoint for **authorisation server** configuration is resol
   ]
 }
 ```
-Currently, we retain the trust framework specified by EBSI. Subsequently, we will specify an additional RFC defining the EWC trusted issuer list. 
-
 ## 5.3	Credential offer
 
 For LPID credential issuance, the member state LPID issuer will adopt RFC001 for credential offer pre-authorised code flow, using the credential_offer_uri parameter as shown below:
@@ -452,34 +404,6 @@ On resolving the `credential_offer_uri` query parameter, the issuer responds wit
   "credential_issuer": "https://identity-provider.gov",
   "credentials": [
     "PersonIdentificationData"
-  ],
-  "grants": {
-    "authorization_code": {
-      "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
-    }
-  }
-}
-```
-
-> [!NOTE]
-> To ensure compatibility with all wallets conforming to the European Blockchain Services Infrastructure (EBSI) standards, the following response format is also valid but **optional** to support:
-
-```json
-{
-  "credential_issuer": "https://identity-provider.gov",
-  "credentials": [
-    {
-      "format": "jwt_vc",
-      "types": [
-        "VerifiableCredential",
-        "PersonIdentificationData"
-      ],
-      "trust_framework": {
-        "name": "ewc-issuer-trust-list",
-        "type": "Accreditation",
-        "uri": "Link to the trust framework accreditation"
-      }
-    }
   ],
   "grants": {
     "authorization_code": {
@@ -541,7 +465,7 @@ GET https://identity-provider.gov/auth/authorize?
 Host: https://identity-provider.gov
 ```
 
-Query params for the authorisation request are given below:
+Query parameters for the authorisation request are given below:
 
 <table>
   <tr>
@@ -571,40 +495,7 @@ Query params for the authorisation request are given below:
   <tr>
    <td><code>authorization_details</code>
    </td>
-   <td>As specified in OAuth 2.0 Rich Authorization Requests specification to specify fine-grained access [4]. An example is as given below:
-
-   ```json
-   {
-      "type": "openid_credential",
-      "locations": [
-         "https://credential-issuer.example.com"
-      ],
-      "format": "jwt_vc_json",
-      "credential_definition": {
-         "type": [
-            "VerifiableCredential",
-            "PersonIdentificationData"
-         ]
-      }
-   }
-   ```
-   > [!NOTE]
-   > You may also use the earlier version as supported by EBSI.
-
-   ```json
-   {
-    "format": "jwt_vc",
-    "locations": [
-      "https://issuer.example.com"
-    ],
-    "type": "openid_credential",
-    "types": [
-      "VerifiableCredential",
-      "VerifiableAttestation",
-      "PersonIdentificationData"
-    ]
-  }
-  ```
+   <td>
    </td>
   </tr>
   <tr>
@@ -848,28 +739,6 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 This request specifies the format and type of credential being requested, along with a JWT proof of the holder’s identity.
 
-> [!NOTE]
-> To support all EBSI conformant wallets, the format for the request can **optionally** include specifications relevant to EBSI standards but adapting to PID-specific credential types.
-
-```http
-POST /credential
-Content-Type: application/json
-Authorization: Bearer eyJ0eXAi...KTjcrDMg
-
-{
-  "format": "jwt_vc_json",
-  "proof": {
-    "jwt": "eyJraWQiOiJkaWQ6a2...su7UFClz9NQnw",
-    "proof_type": "jwt"
-  },
-  "types": [
-    "VerifiableCredential",
-    "VerifiableAttestation",
-    "PersonIdentificationData"
-  ]
-}
-```
-
 ## 5.10 Credential response
 
 The issuance of LPID credentials may proceed directly or be deferred, contingent on the issuer's readiness to issue the credential immediately or require additional processing time.
@@ -910,133 +779,141 @@ The holder can later use the acceptance_token to request the credential once it'
 
 ### 5.10.3 LPID Schema
 
-The LPID attributes: legal name, EUID
+The following specifications for the LPID are agreed  upon by all business registers in the pilot of the EWC and will constitute the basis for a common LPID schema during the pilot. All LPID attributes are mandatory. If any LPID metadata is not mandatory, it is clearly indicated.
+
+> NOTE: The LPID attestation is atomic, i.e. selective disclosure SHALL not be done. This is because the LPID only has two mandatory attributes, both of which are necessary for end users to understand with which legal person they communicate. 
+
+Encoding format:
+
+The attributes are encoded with JSON as specified in RFC 8259[9]
+* string - JSON string
+* number - JSON string
+* date-time - JSON string with a date-time as specified in RFC3339 [10]
+* full-date - JSON string with a full-date string as specified in RFC3339 [10]
+
+#### 5.10.3.1 LPID attributes specification
 
 <table>
-  <tr>
-   	<td><strong>Attribute</strong></td>
-   	<td><strong>Data element identifier</strong></td>
-	<td><strong>Definition</strong></td>
-	<td><strong>Presence (Mandatory/Optional)</strong></td>
-   	<td><strong>Proposition</strong></td>
+  <tr>   	
+   	<th>Attribute identifier</th>
+	  <th>Definition</th>
+	  <th>Attribute identifier	Definition	Comment and example</th>
+   	<th>Encoding format</th>
   </tr>
   <tr>
-   	<td>LegalPersonIdentifier</td>
-   	<td>legal_person_identifier</td>
-	<td>Unique id for legal persons</td>
-	<td>M</td>
-	<td>EUID*</td>
+   	<td>legal_person_id</td>
+   	<td>Unique id for organisations in EUID structure (see example).</td>
+  	<td>
+      <p>The EUID is an existing unique id for legal persons, regulated in COMMISSION IMPLEMENTING REGULATION (EU) 2015/884 and later replaced with COMMISSION IMPLEMENTING REGULATION (EU) 2021/1042 section 9, and is defined as this technical structure:</p>
+      <code>&lt;Country code&gt;&lt;Business register code&gt;.&lt;Domestic registration number&gt;_&lt;optional validation character&gt;</code>
+      <p>Examples:</p>
+      <p><code>SEBOLREG.5560678965</code> – EUID for a Swedish legal person registered at Bolagsverket</p>
+      <p><code>ESRMC.5789255_X</code> – EUID for a Spanish legal person registered at Registro Mercantil Central </p>
+    </td>
+  	<td>string</td>
   </tr>
   <tr>
-   	<td>LegalPersonName</td>
    	<td>legal_person_name</td>
-	<td>Name of the legal person</td>
-	<td>M</td>
-	<td>One statutory name</td>
+   	<td>Official current legal person name(s) as registered in the business register</td>
+	  <td>Can be several names in some countries. 
+      Ex: Royal Ravintolat Oy, Pizzeria Luca (same legal person id, two officially registered names).
+    </td>
+	  <td>string</td>
   </tr>
 </table>
 
-*EUID technical structure:
 
-\<country code\>\<business register code\>.\<domestic registration number\>_\<optional validation character\>
-
-Example from Bolagsverket: SEBOLREG.5560678965
-
-THE LPID metadata: .....
+#### 5.10.3.2 LPID metadata specification
 
 <table>
-  <tr>
-   	<td><strong>Attribute</strong></td>
-   	<td><strong>Data element identifier</strong></td>
-	<td><strong>Definition</strong></td>
-	<td><strong>Presence (Mandatory/Optional)</strong></td>
-   	<td><strong>Comments</strong></td>
+  <tr>   	
+   	<th>Attribute identifier</th>
+	  <th>Definition</th>
+	  <th>Attribute identifier	Definition	Comment and example</th>
+   	<th>Encoding format</th>
   </tr>
   <tr>
-   	<td>Issuer Name</td>
-   	<td>issuer_name</td>
-	<td>Name of the issuer derived from the MS that has issued the LPID.</td>
-	<td>M</td>
-	<td>E.g. Bolagsverket</td>
+   	<td>issuing_authority</td>
+   	<td>Name of the administrative authority that has issued this LPID instance, or the ISO 3166 Alpha-2 country code of the respective Member State if there is no separate authority authorized to issue LPIDs. </td>
+	  <td>Ex: Bolagsverket</td>
+	  <td>string</td>
   </tr>
   <tr>
-   	<td>Issuer id</td>
-   	<td>issuer_id</td>
-	<td>Id of the issuer</td>
-	<td>M</td>
-	<td>EUID of issuer or did</td>
+   	<td>issuing_authority_id</td>
+   	<td>EUDI of the issuing authority</td>
+	  <td>Ex: SEBOLREG.5560678965</td>
+	  <td>string</td>
   </tr>
   <tr>
-   	<td>Issuer trusted list/VDR</td>
-   	<td>TBD</td>
-	<td>Location for verification information of issuer.</td>
-	<td>M</td>
-	<td></td>
-  </tr>
-  <tr>
-   	<td>Issuing country</td>
    	<td>issuing_country</td>
-	<td>Alpha-2 country code as defined in ISO 3166-1 of the issuing country or territory.</td>
-	<td>M</td>
-	<td></td>
+   	<td>Alpha-2 country code, as defined in ISO 3166-1, of the PID Provider’s country or territory.</td>
+	  <td>Ex: SE</td>
+	  <td>string</td>
   </tr>
   <tr>
-   	<td>Issuing date</td>
+   	<td>issuing_jurisdiction</td>
+   	<td>Country subdivision code of the jurisdiction that issued the PID, as defined in ISO 3166-2:2020, Clause 8. The first part of the code SHALL be the same as the value for issuing_country.</td>
+	  <td></td>
+	  <td>string</td>
+  </tr>
+  <tr>
    	<td>issuance_date</td>
-	<td>Date and time when the LPID was issued.</td>
-	<td>M</td>
-	<td></td>
+   	<td>Date (and possibly time) when the PID was issued.</td>
+	  <td></td>
+	  <td>date-time or full-date</td>
   </tr>
   <tr>
-   	<td>Date of expiration</td>
    	<td>expiry_date</td>
-	<td>Date and time when the LPID expires.</td>
-	<td>M</td>
-	<td></td>
+   	<td>Date (and possibly time) when the PID will expire</td>
+	  <td></td>
+	  <td>date-time or full-date</td>
   </tr>
   <tr>
-   	<td>Schema id</td>
-   	<td>TBD</td>
-	<td>Id of the schema the LPID is based on.</td>
-	<td>M</td>
-	<td></td>
+   	<td>schema_id</td>
+   	<td>ID to find information about the structure of the LPID</td>
+	  <td></td>
+	  <td>string</td>
   </tr>
   <tr>
-   	<td>Schema version</td>
-   	<td>TBD</td>
-	<td>The version of the schema the LPID is based on.</td>
-	<td>M</td>
-	<td></td>
+   	<td>schema_version</td>
+   	<td>Information about the version of a schema used for validation of the LPID</td>
+	  <td></td>
+	  <td>number</td>
   </tr>
   <tr>
-   	<td>Schema location</td>
-   	<td>TBD</td>
-	<td>The location for schema verification information.</td>
-	<td>M</td>
-	<td></td>
+   	<td>schema_location</td>
+   	<td>Location to access schema for LPID</td>
+	  <td></td>
+	  <td>string</td>
   </tr>
-<tr>
-   	<td>Revocation id</td>
-   	<td>TBD</td>
-	<td>Information used for validation of LPID.</td>
-	<td>M</td>
-	<td></td>
+  <tr>
+   	<td>revocation_id</td>
+   	<td>Unique index in the revocation list</td>
+	  <td></td>
+	  <td>string</td>
   </tr>
-	<tr>
-   	<td>Revocation list location</td>
-   	<td>TBD</td>
-	<td>The location for revocation information for the LPID.</td>
-	<td>M</td>
-	<td></td>
+  <tr>
+   	<td>revocation_location </td>
+   	<td>Location to access revocation information</td>
+	  <td></td>
+	  <td>string</td>
   </tr>
-	<tr>
-   	<td>Authentic source</td>
-   	<td>TBD</td>
-	<td>The authentic source for the attributes in the LPID.</td>
-	<td>M</td>
-	<td></td>
+  <tr>
+   	<td>authentic_source_id</td>
+   	<td>EUID for the public sector body or private entity responsible for an authentic source that is a repository or system, considered to be the primary source of information or recognized as authentic in national law. </td>
+	  <td><p>Can be different from issuing_authority.</p>
+      <strong>Optional</strong>
+    </td>
+	  <td>string</td>
+  </tr>
+  <tr>
+   	<td>authentic_source_name</td>
+   	<td>Name of the public sector body or private entity responsible for an authentic source that is a repository or system, considered to be the primary source of information or recognized as authentic in national law. </td>
+	  <td><strong>Optional</strong></td>
+	  <td>string</td>
   </tr>
 </table>
+
 
 Schema
 
@@ -1226,7 +1103,10 @@ The table below summarises the success/error responses that can be used:
 
 Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-wallet-rfcs?tab=readme-ov-file#implementers).
 
-# 8.0	Reference
+# 8.0 Security
+TDB.
+
+# 9.0	Reference
 
 1. OpenID Foundation (2023), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html]) (Published: February 8, 2024).
 2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2024-04, v1.3.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: May 14, 2024).
@@ -1236,6 +1116,8 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 6. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 00, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
 7. Definition of wallet solution, [https://github.com/malinnorlander/eudi-wallet-rfcs/blob/main/images/Concept%20model.png], as defined in EWC.
 8. eIDAS2, add online resource.
+9. The JavaScript Object Notation (JSON) Data Interchange Format [https://datatracker.ietf.org/doc/html/rfc8259](https://datatracker.ietf.org/doc/html/rfc8259)
+10. Date and Time on the Internet: Timestamps [https://www.rfc-editor.org/rfc/rfc3339](https://www.rfc-editor.org/rfc/rfc3339)
 
 # Appendix A: Public key resolution
 
