@@ -814,9 +814,9 @@ The attributes are encoded with JSON as specified in RFC 8259[9]
   </tr>
   <tr>
    	<td>legal_person_name</td>
-   	<td>Official current legal person name(s) as registered in the business register</td>
-	  <td>Can be several names in some countries. 
-      Ex: Royal Ravintolat Oy, Pizzeria Luca (same legal person id, two officially registered names).
+   	<td>Official current legal person name as registered in the business register.</td>
+	  <td>
+      Ex: Royal Ravintolat Oy.
     </td>
 	  <td>string</td>
   </tr>
