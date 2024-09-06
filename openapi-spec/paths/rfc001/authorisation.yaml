@@ -1,0 +1,72 @@
+tags:
+  - "EWC RFC001: Issue Verifiable Credential"
+summary: Authorization Request
+description: |
+  An Authorization Request is an OAuth 2.0 Authorization Request as defined in Section 4.1.1 of [RFC6749]. This request seeks to obtain authorization to access the Credential Endpoint.
+operationId: authorizationRequest
+parameters:
+  - name: response_type
+    in: query
+    required: true
+    schema:
+      type: string
+    description: |
+      REQUIRED. The value must be "code" to request an authorization code.
+  - name: client_id
+    in: query
+    required: true
+    schema:
+      type: string
+    description: |
+      REQUIRED. The identifier for the client making the request.
+  - name: code_challenge
+    in: query
+    required: true
+    schema:
+      type: string
+    description: |
+      REQUIRED. The code challenge used for Proof Key for Code Exchange (PKCE) as specified in OAuth 2.0 for Public Clients.
+  - name: code_challenge_method
+    in: query
+    required: true
+    schema:
+      type: string
+    description: |
+      OPTIONAL. The method used to transform the code verifier. Defaults to "plain" if not present. Possible values are "S256" or "plain", as defined in PKCE for OAuth 2.0.
+  - name: authorization_details
+    in: query
+    required: false
+    schema:
+      type: string
+    description: |
+      OPTIONAL. Provides fine-grained access details as specified in the OAuth 2.0 Rich Authorization Requests specification. The `authorization_details` parameter, as defined in Section 2 of [RFC9396], should be used to convey the specifics of the Credentials the Wallet intends to obtain. This specification introduces a new authorization details type, `openid_credential`.
+  - name: redirect_uri
+    in: query
+    required: false
+    schema:
+      type: string
+    description: |
+      OPTIONAL. The redirection endpoint where the authorization server will send the user-agent after authorization is complete.
+  - name: scope
+    in: query
+    required: false
+    schema:
+      type: string
+    description: |
+      OPTIONAL. Defines the scope of the Credential request. If the Wallet is unsure of the scope value, it can discover it using the 'scope' parameter from the Credential Issuer's metadata. This parameter assists in identifying the appropriate Credential configuration based on the Credential Offer or other parameters from the Credential Issuer.
+  - name: issuer_state
+    in: query
+    required: false
+    schema:
+      type: string
+    description: |
+      OPTIONAL. A string value representing a specific processing context at the Credential Issuer. This value is usually provided in a Credential Offer from the Credential Issuer to the Wallet and is used to pass the issuer_state value back to the Credential Issuer.
+responses:
+  "302":
+    description: Authorization Response
+    headers:
+      Location:
+        schema:
+          type: string
+        description: |
+          The URL to which the user-agent will be redirected after successful authorization. This URL contains the authorization code and any additional parameters as specified in the OAuth 2.0 Authorization framework.

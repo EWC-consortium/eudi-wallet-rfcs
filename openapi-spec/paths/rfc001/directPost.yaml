@@ -1,0 +1,21 @@
+tags:
+  - "EWC RFC001: Issue Verifiable Credential"
+summary: Direct post
+requestBody:
+  required: true
+  content:
+    application/x-www-form-urlencoded:
+      schema:
+        type: object
+        properties:
+          id_token:
+            type: string
+            description: The id_token signed by the DID
+responses:
+  "302":
+    description: Direct Post response
+    headers:
+      Location:
+        schema:
+          type: string
+          description: The URL to redirect to after processing the request

@@ -1,0 +1,39 @@
+title: Token Error Response
+type: object
+properties:
+  error:
+    type: string
+    description: >
+      REQUIRED. Error code indicating the type of error that occurred.
+    enum:
+      - invalid_request
+      - invalid_grant
+      - invalid_client
+      - authorization_pending
+      - slow_down
+  error_description:
+    type: string
+    description: >
+      OPTIONAL. Human-readable ASCII text providing additional information 
+      about the error.
+  authorization_pending:
+    type: object
+    description: >
+      OPTIONAL. Detailed description for authorization_pending errors.
+    properties:
+      interval:
+        type: integer
+        description: >
+          OPTIONAL. The minimum amount of time in seconds that the Wallet 
+          needs to wait before sending a new request. Default value is 5 if not provided.
+  slow_down:
+    type: object
+    description: >
+      OPTIONAL. Detailed description for slow_down errors.
+    properties:
+      interval_increase:
+        type: integer
+        description: >
+          OPTIONAL. The amount of time in seconds by which to increase the polling interval.
+required:
+  - error

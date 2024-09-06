@@ -1,5 +1,3 @@
-# eudi-wallet-rfcs
-
 <h1 align="center">
     EWC - EUDI Wallet Request for Comments (RFCs) 
 </h1>
@@ -42,9 +40,9 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 | **RFC #** | **RFC Title**                                                                                                                                                           |
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| RFC-001   | [Issue Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md)                         |
-| RFC-002   | [Present Verifiable Credentials Workflow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md)                    |
-| RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
+| RFC-001   | [Issue Verifiable Credentials Workflow](ewc-rfc001-issue-verifiable-credential.md)                         |
+| RFC-002   | [Present Verifiable Credentials Workflow](ewc-rfc002-present-verifiable-credentials.md)                    |
+| RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
 
 ### Candidate RFCs (Work in progress)
 

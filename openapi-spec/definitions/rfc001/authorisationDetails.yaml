@@ -1,0 +1,25 @@
+title: Authorisation Details
+type: object
+properties:
+  type:
+    type: string
+  locations:
+    type: array
+    items:
+      type: string
+  format:
+    type: string
+  credential_definition:
+    type: object
+    properties:
+      type:
+        type: array
+        items:
+          type: string
+    required:
+      - type
+required:
+  - type
+  - locations
+  - format
+  - credential_definition

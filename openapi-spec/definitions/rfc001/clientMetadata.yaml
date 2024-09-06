@@ -1,0 +1,37 @@
+title: Client Meta Data
+type: object
+properties:
+  vp_formats_supported:
+    type: object
+    properties:
+      jwt_vp:
+        type: object
+        properties:
+          alg:
+            type: array
+            items:
+              type: string
+        required:
+          - alg
+      jwt_vc:
+        type: object
+        properties:
+          alg:
+            type: array
+            items:
+              type: string
+        required:
+          - alg
+    required:
+      - jwt_vp
+      - jwt_vc
+  response_types_supported:
+    type: array
+    items:
+      type: string
+  authorization_endpoint:
+    type: string
+required:
+  - vp_formats_supported
+  - response_types_supported
+  - authorization_endpoint

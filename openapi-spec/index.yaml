@@ -1,0 +1,86 @@
+components:
+  schemas:
+    CredentialOffer:
+      $ref: "./definitions/rfc001/credentialOffer.yaml"
+    AuthorisationCodeGrant:
+      $ref: "./definitions/rfc001/authorisationCodeGrant.yaml"
+    PreAuthorisedCodeGrant:
+      $ref: "./definitions/rfc001/preAuthorisedCodeGrant.yaml"
+    CredentialIssuerMetadata:
+      $ref: "./definitions/rfc001/credentialIssuerMetadata.yaml"
+    JwtVcJsonCredentialConfiguration:
+      $ref: "./definitions/rfc001/jwtVcJsonCredentialConfiguration.yaml"
+    IetfSdJwtVcCredentialConfiguration:
+      $ref: "./definitions/rfc001/ietfSdJwtVcCredentialConfiguration.yaml"
+    MsoMdocCredentialConfiguration:
+      $ref: "./definitions/rfc001/msoMdocCredentialConfiguration.yaml"
+    AuthorisationServerMetadata:
+      $ref: "./definitions/rfc001/authorisationServerMetadata.yaml"
+    AuthorisationResponse:
+      $ref: "./definitions/rfc001/authorisationResponse.yaml"
+    AuthorisationDetails:
+      $ref: "./definitions/rfc001/authorisationDetails.yaml"
+    AuthorisationCodeTokenRequest:
+      $ref: "./definitions/rfc001/authorisationCodeGrant.yaml"
+    PreAuthorisedCodeTokenRequest:
+      $ref: "./definitions/rfc001/preAuthorisedCodeTokenRequest.yaml"
+    TokenResponse:
+      $ref: "./definitions/rfc001/tokenResponse.yaml"
+    TokenErrorResponse:
+      $ref: "./definitions/rfc001/tokenErrorResponse.yaml"
+    CredentialRequest:
+      $ref: "./definitions/rfc001/credentialRequest.yaml"
+    InTimeCredentialResponse:
+      $ref: "./definitions/rfc001/inTimeCredentialResponse.yaml"
+    InTimeCredentialErrorResponse:
+      $ref: "./definitions/rfc001/inTimeCredentialErrorResponse.yaml"
+    DeferredCredentialRequest:
+      $ref: "./definitions/rfc001/deferredCredentialRequest.yaml"
+    DeferredCredentialResponse:
+      $ref: "./definitions/rfc001/deferredCredentialResponse.yaml"
+    DeferredCredentialErrorResponse:
+      $ref: "./definitions/rfc001/deferredCredentialErrorResponse.yaml"
+info:
+  contact:
+    name: EWC
+    url: https://eudiwalletconsortium.org/
+  description: The EWC APIs are defined to be used across all wallet providers within EWC according the [EWC RFCs](https://github.com/EWC-consortium/eudi-wallet-rfcs).
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  title: EWC APIs
+  version: 2024.3.1
+openapi: 3.1.0
+servers:
+  - description: Example server
+    url: https://example.com
+tags:
+  - description: "This consists of endpoints for EWC RFC001: Issue Verifiable Credential"
+    name: "EWC RFC001: Issue Verifiable Credential"
+  - description: "This consists of endpoints for EWC RFC002: Present Verifiable Credential"
+    name: "EWC RFC002: Present Verifiable Credential"
+paths:
+  /rfc001/credential_offer:
+    get:
+      $ref: ./paths/rfc001/credentialOffer.yaml
+  /rfc001/.well-known/openid-credential-issuer:
+    get:
+      $ref: ./paths/rfc001/credentialIssuerMetadata.yaml
+  /rfc001/.well-known/oauth-authorization-server:
+    get:
+      $ref: ./paths/rfc001/authorisationServerMetadata.yaml
+  /rfc001/authorize:
+    get:
+      $ref: ./paths/rfc001/authorisation.yaml
+  /rfc001/par:
+    post:
+      $ref: ./paths/rfc001/pushedAuthorisationRequest.yaml
+  /rfc001/token:
+    post:
+      $ref: ./paths/rfc001/token.yaml
+  /rfc001/credential:
+    post:
+      $ref: ./paths/rfc001/credential.yaml
+  /rfc001/deferred_credential:
+    post:
+      $ref: ./paths/rfc001/deferredCredential.yaml
