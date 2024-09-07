@@ -54,7 +54,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-004   | Individual Wallet Instance Attestation                                                         |
 | RFC-005   | [Issue Legal Person Identification Data](ewc-rfc005-issue-legal-person-identification-data.md) |
 | RFC-006   | Organisational Wallet Instance Attestation                                                     |
-| RFC-007   | Payment Wallet Intance Attestation                                                             |
+| RFC-007   | Payment Wallet Instance Attestation                                                             |
 | RFC-008   | Strong Customer Authentication                                                                 |
 | RFC-009   | Payment Transaction                                                                            |
 
