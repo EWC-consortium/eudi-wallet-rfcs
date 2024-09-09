@@ -16,6 +16,7 @@
 * Mr. Edward Curran (Lissi ID, Germany)
 * Mr. Björn Astrom (BankID, Sweden)
 * Mr. Björn Molin (DIGG, Sweden)
+* Mr. Pär W (BankID, Sweden)
 
 **Status:**
 Current: Draft 13 alignment
