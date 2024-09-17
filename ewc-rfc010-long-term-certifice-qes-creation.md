@@ -2,7 +2,11 @@
 
 ## 1.0 Summary:
 
-This Specification defines the procedures for using the EUDI wallet to digitally sign a document, using Long-Term certificates. It specifies a new protocol for executing digital signing, that will ensure successful communication and interoperability with the EUDI wallet and the Signing Signing Service Providers, as per the ARF specification.
+This Specification defines the procedures for using the EUDI wallet to digitally sign a document, using Long-Term certificates. It specifies a new protocol for executing digital signing, that will ensure successful communication and interoperability with the EUDI wallet, Signing Service Providers, and will support multiple Remote QES Services as per the ARF specification.
+
+### Authors:
+
+- Mr. Kyriakos Giannakis (Intesi Group, Italy)
 
 ## 2.0: Motivation:
 
