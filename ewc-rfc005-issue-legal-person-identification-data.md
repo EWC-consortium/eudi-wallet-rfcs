@@ -1,4 +1,4 @@
-# EWC RFC005: Issue Legal Person Identification Data (LPID) - v0.4
+# EWC RFC005: Issue Legal Person Identification Data (LPID) - v0.6
 
 **Authors:** 
 * Mrs Malin Norlander (Bolagsverket, Sweden)
@@ -205,8 +205,8 @@ ALT - Client wallet is Valid
 
 23. Client wallet requests LPID credential, including access token, from PID Provider wallet.
 24. PID provider wallet creates LPID.
-25. PID provider wallet encrypts LPID.
-26. PID provider wallet  seals LPID.
+25. PID provider wallet  seals LPID.
+26. PID provider wallet encrypts LPID.
 27. PID provider wallet sends LPID to Client wallet.
 28. Client wallet accepts LPID and stores it.
 29. Client wallet sends ACK to PID provider wallet.
@@ -1103,12 +1103,12 @@ The table below summarises the success/error responses that can be used:
   </tr>
 </table>
 
-# 7.0	Implementers
+# 7.0 Security
+TDB.
+
+# 8.0	Implementers
 
 Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-wallet-rfcs?tab=readme-ov-file#implementers).
-
-# 8.0 Security
-TDB.
 
 # 9.0	Reference
 
