@@ -48,7 +48,7 @@ The picture below shows a generic outline of the LPID issuance process, the actu
 Start: Natural person visists PID providers eService for LPID issuance
 1. The natural person authenticates using LoA High (any LoA High certified method). (Not done during pilot as there is no LoA High available yet.)
 2. PID provider verifies the natural person credentials.
-3. The natural person signs and submits the application for an LPID. (signing using existing methods)
+3. The natural person signs and submits the application for an LPID. (signing using existing methods). Optional.
 4. PID provider verifies the signature of the natural person.
 5. PID provider verifies the powers of the natural person to represent the legal person for which the LPID is requested (according to assumptions as national regulation isn’t in place yet).
 6. PID provider verifies the status of the legal person (according to assumptions as national regulation isn’t in place yet).
