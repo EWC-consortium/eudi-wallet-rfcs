@@ -17,7 +17,7 @@ This specification implements the OID4VCI workflow for issuing Legal Person Iden
 
 # 2.0	Motivation
 
-The EWC LSP must align with the standard protocol for issuing LPID from trusted and accredited sources. This uniform approach serves as the foundation for enabling interoperability between PID providers and wallet holders throughout the EWC ecosystem. This RFC assumes that users are familiar with the chosen EWC protocols and standards, and can reference the original specifications when required. 
+The EWC LSP must align with the standard protocol, OID4VCI, for issuing LPID from trusted and accredited sources. This uniform approach serves as the foundation for enabling interoperability between PID providers and wallet holders throughout the EWC ecosystem. This RFC assumes that users are familiar with the chosen EWC protocols and standards, and can reference the original specifications when required. 
 
 # 3.0 LPID Issuance Process
 
