@@ -29,7 +29,7 @@ The LPID issuance process is implemented by PID providers according to national 
 
 3. **Signing:** The natural person requesting a LPID might have to sign the LPID application. This step is **optional** and only applies if regulated in national law.
 
-4. **Status:** The status of the legal person must be verified. These states are not yet regulated, but at the very least, the legal person for which an LPID is requested must be registered at a business register.
+4. **Status:** The status of the legal person must be verified. These states are not yet regulated, but at the very least, the legal person for which an LPID is requested must be registered in an authetic source, such as a business register.
 
 The issuance process can either start in:
 1. a wallet application, the grahical user interface of the wallet *or*
