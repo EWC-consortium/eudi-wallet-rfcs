@@ -253,6 +253,7 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
           "text_color": "#FFFFFF"
         }
       ],
+      "vct": "VerifiablePortableDocumentA1",
       "claims": {
         "given_name": {
           "display": [
