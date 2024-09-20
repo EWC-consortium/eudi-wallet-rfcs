@@ -1291,9 +1291,9 @@ The credential can be issued, either directly into the organization's wallet or 
 
 Example of credential issued according to the SD-JWT-VC profile
 
-``` json
+```
 {
-  ...tbd...
+   ... tbd ...
 }
 ```
 
