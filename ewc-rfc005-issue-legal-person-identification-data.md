@@ -1049,6 +1049,136 @@ Schema as JSON-schema[11]
   }
 }
 ```
+### 5.10.4 LPID Credential Issuer Discovery Response (SD-JWT VC Credential format profile)
+
+The LPID attestation defined according to the IETF SD-JWT VC Credential format profile[1]. This definition is made available in the credential issuers metadata under the ```credential_configurations_supported``` attribute.
+The credential can be issued, either directly into the organization's wallet or as a QR code for mobile wallets.
+
+```json
+{
+  "credential_configurations_supported": {
+    "EWC_LPID_Attestation": {
+      "format": "vc+sd-jwt",
+      "vct": "EWC_LPID_Attestation",
+      "claims": {
+        "legal_person_id": {
+          "display": [
+            {
+              "name": "The EUID of the company",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "legal_person_name": {
+          "display": [
+            {
+              "name": "The name of the company",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "issuer_name": {
+          "display": [
+            {
+              "name": "Name of issuer from the MS that issued the ODI instance",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "issuer_id": {
+          "display": [
+            {
+              "name": "Id of the issuing authority. (Business register identifier for BRIS)",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "issuer_country": {
+          "display": [
+            {
+              "name": "Alpha-2 country code, as defined in ISO 3166-1, of the issuing country",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "issuance_date": {
+          "display": [
+            {
+              "name": "Date and possibly time of issuance",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "expire_date": {
+          "display": [
+            {
+              "name": "Date and possibly time of expiration",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "authentic_source_id": {
+          "display": [
+            {
+              "name": "Source of the issuing (Business register identifier for BRIS, HRB, etc)",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "authentic_source_name": {
+          "display": [
+            {
+              "name": "Name of issuer from the MS that issued the instance",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "credential_status": {
+          "display": [
+            {
+              "name": "Defines suspension and/or revocation details for the issued credential",
+              "locale": "en-GB"
+            }
+          ]
+        },
+        "credential_schema": {
+          "display": [
+            {
+              "name": "One or more schemas that validate the Verifiable Credential.",
+              "locale": "en-GB"
+            }
+          ]
+        }
+      },
+      "display": [
+        {
+          "name": "LPID attestation",
+          "locale": "en-GB",
+          "logo": {
+            "url": "https://identity-provider.gov/cover.jpeg",
+            "alt_text": "Government Identity Provider"
+          },
+          "background_color": "#12107c",
+          "text_color": "#FFFFFF"
+        }
+      ]
+    }
+  }
+}
+
+```
+
+### 5.10.5 LPID SD-JWT-VC Profile Example
+
+Example of credential issued according to the SD-JWT-VC profile
+
+```
+{
+   ... tbd ...
+}
+```
+
+
 ## 5.11 Issuer Authorization Verification
 
 During this process, the wallet queries the Trust Anchor to ascertain the issuer's trust status, thereby affirming that the issuer has been vetted and is compliant with established standards and regulations governing LPID. It ensures that only entities with verified trustworthiness can issue LPID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
