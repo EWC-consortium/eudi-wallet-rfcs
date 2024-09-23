@@ -482,7 +482,7 @@ The query params for the authorisation request with `scope` are as described bel
 
 ## 3.6 Authorisation response
 
-The credential issuer can **optionally** request additional details to authenticate the client e.g. DID authentication. In this case, the authorisation response will contain a `response_type` parameter with the value `direct_post`. A sample response is as given:
+The credential issuer can **optionally** request additional details to authenticate the client e.g. DID authentication. In this case, the authorisation response will contain a `response_mode` parameter with the value `direct_post`. A sample response is as given:
 
 ```http
 HTTP/1.1 302 Found
@@ -537,7 +537,7 @@ Query params for the authorisation response are given below:
   <tr>
    <td><code>request_uri</code>
    </td>
-   <td>The authorisation server’s private key signed the request.
+   <td>This is intended for scenarios where the authorization request is large. The URI can be used by the holder to retrieve the authorization request.
    </td>
   </tr>
 </table>
