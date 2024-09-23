@@ -57,6 +57,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-007   | Payment Wallet Instance Attestation                                                             |
 | RFC-008   | Strong Customer Authentication                                                                 |
 | RFC-009   | Payment Transaction                                                                            |
+| RFC-010   | [Synchronous Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)                                                                        |
 
 ## EWC Wallets (ITB - Compliant)
 
