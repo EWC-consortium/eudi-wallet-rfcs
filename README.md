@@ -38,34 +38,36 @@ Each wallet needs to follow the EWC RFC and perform compliance tests against the
 
 These are the approved RFCs identified to be specified towards wallet providers, producing reference codes and the EWC Interoperability Test Bed (ITB). The supported verifiable credentials and presentations are specified in the [EWC supported format csv file](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
-| **RFC #** | **RFC Title**                                                                                                                                                           |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| RFC-001   | [Issue Verifiable Credentials Workflow](ewc-rfc001-issue-verifiable-credential.md)                         |
-| RFC-002   | [Present Verifiable Credentials Workflow](ewc-rfc002-present-verifiable-credentials.md)                    |
-| RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
+| **RFC #** | **RFC Title**                                                                                                |
+| --------- | ------------------------------------------------------------------------------------------------------------ |
+| RFC-001   | [Issue Verifiable Credentials Workflow - v2.0](ewc-rfc001-issue-verifiable-credential.md)                    |
+| RFC-002   | [Present Verifiable Credentials Workflow - v1.0](ewc-rfc002-present-verifiable-credentials.md)               |
+| RFC-005   | [Issue Legal Person Identification Data (LPID) - v1.0](ewc-rfc005-issue-legal-person-identification-data.md) |
+| RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md)   |
 
 ### Candidate RFCs (Work in progress)
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
 
-| **RFC #** | **RFC Title**                                                                                  |
-| --------- | ---------------------------------------------------------------------------------------------- |
-| RFC-003   | [Issue Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md)    |
-| RFC-004   | Individual Wallet Instance Attestation                                                         |
-| RFC-005   | [Issue Legal Person Identification Data](ewc-rfc005-issue-legal-person-identification-data.md) |
-| RFC-006   | Organisational Wallet Instance Attestation                                                     |
-| RFC-007   | Payment Wallet Instance Attestation                                                             |
-| RFC-008   | Strong Customer Authentication                                                                 |
-| RFC-009   | Payment Transaction                                                                            |
+| **RFC #** | **RFC Title**                                                                               |
+| --------- | ------------------------------------------------------------------------------------------- |
+| RFC-003   | [Issue Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md) |
+| RFC-004   | Individual Wallet Instance Attestation                                                      |
+| RFC-006   | Organisational Wallet Instance Attestation                                                  |
+| RFC-007   | Payment Wallet Instance Attestation                                                         |
+| RFC-008   | Strong Customer Authentication                                                              |
+| RFC-009   | Payment Transaction                                                                         |
 
-## EWC Wallets (ITB - Compliant)
+## EWC Wallets (ITB - Compliant to EWC release 1.0)
+
+NOTE: This is compliant wallet to EWC release 1.0. The next one, release 2.0, is planned for 30-September.
 
 ### Holder Wallets for Individuals
 
-| Wallet                | Link                                                                                                                                         | Holder | Issuer | Verifier |
-| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
-| iGrant.io Data Wallet | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                              |   ✅    |   ✅    |    ✅     |
-| Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)     |   ✅    |        |          |
+| Wallet                | Link                                                                                                                                                 | Holder | Issuer | Verifier |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
+| iGrant.io Data Wallet | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                                      |   ✅    |   ✅    |    ✅     |
+| Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)             |   ✅    |        |          |
 | ValidatedID           | [iOS](https://apps.apple.com/us/app/id-wallet-lsp/id6504026408), [Android](https://play.google.com/store/apps/details?id=com.vididentity.wallet.lsp) |   ✅    |   ✅    |    ✅     |
 
 ### Organisation Wallets for Issuers and Verifiers
@@ -89,11 +91,11 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 
 | Wallet                          | Link                                                                    | Issuer | Verifier |
 | ------------------------------- | ----------------------------------------------------------------------- | :----: | :------: |
-| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |    ✅    |
-| DVV Wallet                      |                                                                         |   ✅    |    ✅    |
-| UAegean (Cyclades Fast Ferries) |                                                                         |   ✅    |    ✅    |
-| E-Group                         |                                                                         |   ✅    |    ✅    |
-| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |   ✅    |    ✅    |
+| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |    ✅     |
+| DVV Wallet                      |                                                                         |   ✅    |    ✅     |
+| UAegean (Cyclades Fast Ferries) |                                                                         |   ✅    |    ✅     |
+| E-Group                         |                                                                         |   ✅    |    ✅     |
+| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |   ✅    |    ✅     |
 
 ## Funding
 
