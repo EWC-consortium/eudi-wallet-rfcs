@@ -224,7 +224,9 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 ```json
 {
   "credential_issuer": "https://server.example.com",
-  "authorization_server": "https://server.example.com",
+  "authorization_servers": [
+    "https://server.example.com"
+  ],
   "credential_endpoint": "https://server.example.com/credential",
   "deferred_credential_endpoint": "https://server.example.com/credential_deferred",
   "display": [
