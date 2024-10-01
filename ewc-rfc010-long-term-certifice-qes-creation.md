@@ -16,6 +16,7 @@ The primary motivation for this specification is to establish a standardized pro
 
 - Jul. 19 2024: Initialization of authoring process. Initial draft.
 - Sep. 10 2024: Addition of multiple RQES service support through RQES Access VC concept. Further Enrichment of RFC.
+- Oct 1 2024: Addition of RQESAC token example. Misc corrections.
 
 ## 3.0 The Signing Architecture:
 
@@ -89,19 +90,28 @@ The Signing Service Provider must then query the user's preferred RQES to reques
 
 Remote QES services shall adhere to the [CSC (Cloud Signature Consortium)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) specifications that are also the basis for the JSON part of the ETSI TS 119 432 standard on protocols for remote digital signature creation.
 
+The Signing Service Provider must query the RQES service using the `rqes_provider.api` parameter to acquire information about the service and its supported authentication methods.
+
 > TBA: CSC API Calls to get credentials.
+
+> TBA: Decide on best practices regarding Service Authentication
 
 ## 3.1.2 Signing Request URI:
 
-The signing process is initiated by the user either clicking a link or scanning a QR code with a “Signature Request” URI, provided by the Signing Service Provider, after acquiring the available credentials of the user. The process involves the Signature Request endpoint, responsible for transmitting the Signature Metadata to the Wallet.
+After service authentication and authorization, the Signing Service Provider can form the "Signature Request" URIs (SRU), responsible for **initiation of the signing process**.
+
+Each SRU contains a reference to the Signing Service Provider's **Signature Metadata Endpoint** with a token, authenticating the user and their credential. Each token MUST be bound to the user's profile and ONE specific credential of the user,
+obtained through the CSC compatible endpoints `credentials/list` and `credentials/info`.
+
+A one-time-use, secret token is embedded in the URL, to authenticate the user and to bind the signature to the user and their credential. Signing services should keep track of these tokens and delete them after some time being unused. This token should not have any other purpose and must be kept secret from other users.
+
+The signing process is initiated by the user either clicking a link or scanning a QR code with a SRU, provided by the Signing Service Provider, after acquiring the available credentials of the user.
 
 Sample Signature Request URI:
 
 ```
 eudi-sig-request://?signature_url=https://signing_server_url/signing?token=<signature_access_token>
 ```
-
-A one-time-use, secret token is embedded in the URL, to authenticate the user and to bind the signature to the user and their credential. Signing services should keep track of these tokens and delete them after some time being unused. This token should not have any other purpose and must be kept secret from other users.
 
 ## 3.1.3 Signing Metadata:
 
@@ -127,6 +137,7 @@ GET https://signing_server_url/signing?token=<signature_access_token>
    },
    "signature_request_metadata": {
       "created_at": "2024-07-18T15:13:56Z",
+      "expires_at": "2024-07-18T15:25:56Z",
       "reason": "Please sign this NDA to gain demo access to IG Sign",
       "signing_alg": "RS256",
       "hashing_alg": "SHA-256"
@@ -155,7 +166,15 @@ The EUDI Wallet app can use the attributes of the response to provide a WYSIWYS 
 
 ## 3.2 Phase 2: Signature Approval & SSP to RQES communication
 
+### 3.2.1: Signature Approval
+
 TBA
+
+### 3.2.2: Signature Service Provider to RQES Communication to Finalize Signing
+
+TBA
+
+> Author's note: Should be kept vague as to allow different handling of documents for different providers.
 
 ## 3.3 Phase 3: Signature Confirmation and Final Document Retrieval and Storage
 
@@ -163,4 +182,25 @@ TBA
 
 ## Annex 1: RQES Access Credential Schema and Example
 
-TBA
+### Example:
+
+```json
+{
+  "id": "76b0184c-ac8e-4484-a9e1-9f0a0d68fe0b",
+  "holder_name": "Kyriakos Giannakis",
+  "rqes_provider": {
+    "api": "https://services.test4mind.com/csc/v1/",
+    "title": "Intesi Group SPA",
+    "location": "Milan, IT"
+  },
+  "service_auth": {
+    "grant": "client_credentials",
+    "client_id": "...",
+    "client_secret": "..."
+  }
+}
+```
+
+### Schema:
+
+TBD
