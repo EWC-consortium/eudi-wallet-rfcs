@@ -16,7 +16,7 @@ The primary motivation for this specification is to establish a standardized pro
 
 - Jul. 19 2024: Initialization of authoring process. Initial draft.
 - Sep. 10 2024: Addition of multiple RQES service support through RQES Access VC concept. Further Enrichment of RFC.
-- Oct 1 2024: Addition of RQESAC token example. Misc corrections.
+- Oct 1 2024: Addition of SSP discovery endpoint. Addition of RQESAC token example. Misc corrections.
 
 ## 3.0 The Signing Architecture:
 
@@ -78,8 +78,11 @@ Figure 1: Signing Procedure diagram.
     EUDI Wallet->>Signing Service: Signature Authorized.
 ```
 
+### 3.1.1: Signing Service Provider Discovery Endpoint
 
-### 3.1.1: User Authentication & Multiple RQES Service Support
+TBA
+
+### 3.1.2: User Authentication & Multiple RQES Service Support
 
 The user is authenticated through a Presentation Request requesting 2 credentials:
 
@@ -96,7 +99,7 @@ The Signing Service Provider must query the RQES service using the `rqes_provide
 
 > TBA: Decide on best practices regarding Service Authentication
 
-## 3.1.2 Signing Request URI:
+## 3.1.3 Signing Request URI:
 
 After service authentication and authorization, the Signing Service Provider can form the "Signature Request" URIs (SRU), responsible for **initiation of the signing process**.
 
@@ -113,7 +116,7 @@ Sample Signature Request URI:
 eudi-sig-request://?signature_url=https://signing_server_url/signing?token=<signature_access_token>
 ```
 
-## 3.1.3 Signing Metadata:
+## 3.1.4 Signing Metadata:
 
 The EUDI Wallet executes the following GET request to obtain the metadata about the signature and to draw the final preview and approval UI, to show the user.
 
