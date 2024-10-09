@@ -165,6 +165,15 @@ For an Issuer service to become integrated for testing with the EWC Operational 
     "sessionId": "123"
   }
 
+  Response:
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+  {
+    "status": "success",
+    "reason": "ok",
+    "sessionId": "123"
+  }
+
   Error Response:
   HTTP/1.1 500 Internal Server Error
   Content-Type: application/json
@@ -220,7 +229,17 @@ For a Verifier service to become integrated for testing with the EWC Operational
     "status": "pending",
     "reason": "ok",
     "sessionId": "123",
-    "attributes": {"name":"test1","surname":"test2"}
+    "attributes": ""
+  }
+
+  Response:
+  HTTP/1.1 200 OK
+  Content-Type: application/json
+  {
+    "status": "success",
+      "reason": "ok",
+      "sessionId": "123",
+      "attributes": {"name":"test1","surname":"test2"}
   }
 
   Error Response:
