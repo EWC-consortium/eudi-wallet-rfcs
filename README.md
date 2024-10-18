@@ -12,9 +12,11 @@
   <a href="#about">About</a> •
   <a href="#contributing">Contributing</a> •
   <a href="#approved-rfcs">Approved RFCs</a> •
-  <a href="#implementors">Implementors</a> •
+  <a href="#ewc-wallet-implementers-itb---compliant-to-ewc-release-20">Implementers</a> •
   <a href="#licensing">Licensing</a>
 </p>
+
+#ewc-wallets-implementers-itb---compliant-to-ewc-release-20
 
 ## About
 
@@ -29,7 +31,7 @@ Feel free to improve the plugin and send us a pull request. If you find any prob
 RFCs go through this process towards the Large Scale Pilots (LSPs):
 
 ![image](https://github.com/EWC-consortium/eudi-wallet-rfcs/assets/455274/2113d6b6-1398-4004-8054-2a91551ef437)
- 
+
 Each wallet needs to follow the EWC RFC and perform compliance tests against the EWC Interoperability Test Bed (ITB) to be interoperable with other wallets within EWC. Kindly use the #wallet-support in [EWC slack for support](https://eudigitaliden-gax7504.slack.com/archives/C063LNT4L4R).
 
 ## Current RFCs
@@ -58,9 +60,37 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-008   | Strong Customer Authentication                                                              |
 | RFC-009   | Payment Transaction                                                                         |
 
-## EWC Wallets (ITB - Compliant to EWC release 1.0)
+## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
 
-NOTE: This is compliant wallet to EWC release 1.0. The next one, release 2.0, is planned for 30-September.
+NOTE: The wallets scheduled to be compliant with EWC release 2.0 based on the survey concluded on 15 October 2024 are as given:
+
+### Individual Wallets
+
+Date of availability: 15 October 2024
+
+| Wallet                | Link                                                                                                                                                 | Holder | Issuer | Verifier |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
+| iGrant.io Data Wallet | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                                      |   ✅    |   ✅    |    ✅     |
+| Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)             |   ✅    |        |          |
+| ValidatedID           | [iOS](https://apps.apple.com/us/app/id-wallet-lsp/id6504026408), [Android](https://play.google.com/store/apps/details?id=com.vididentity.wallet.lsp) |   ✅    |   ✅    |    ✅     |
+| Digidentity\*         | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity)                              |   ✅    |        |          |
+
+\*) Available only by 15 November 2024
+
+### Organisation Wallets (Holder, Issuers and Verifiers)
+
+Date of availability: 15 November 2024
+
+| Wallet                        | Link                                                                 | Holder | Issuer | Verifier |
+| ----------------------------- | -------------------------------------------------------------------- | :----: | :----: | :------: |
+| iGrant.io Organisation Wallet | [https://demo-business.igrant.io/](https://demo-business.igrant.io/) |   ✅    |   ✅    |    ✅     |
+| Archipels                     | Link to be provided                                                  |        |   ✅    |    ✅     |
+| ValidatedID                   | Link to be provided                                                  |        |   ✅    |    ✅     |
+| Mini Suomi (Vero, Finland)    | Link to be provided                                                  |        |   ✅    |    ✅     |
+
+## EWC Wallet Implementers (ITB - Compliant to EWC release 1.0)
+
+NOTE: These were the wallets compliant with EWC release 1.0.
 
 ### Holder Wallets for Individuals
 
@@ -70,32 +100,18 @@ NOTE: This is compliant wallet to EWC release 1.0. The next one, release 2.0, is
 | Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)             |   ✅    |        |          |
 | ValidatedID           | [iOS](https://apps.apple.com/us/app/id-wallet-lsp/id6504026408), [Android](https://play.google.com/store/apps/details?id=com.vididentity.wallet.lsp) |   ✅    |   ✅    |    ✅     |
 
-### Organisation Wallets for Issuers and Verifiers
+### Organisation Wallets (Holder, Issuers and Verifiers)
 
-| Wallet                        | Link                                                         | Issuer | Verifier |
-| ----------------------------- | ------------------------------------------------------------ | :----: | :------: |
-| iGrant.io Organisation Wallet | [demo-business.igrant.io/](https://demo-business.igrant.io/) |   ✅    |    ✅     |
-| Lissi ID-Wallet Connector     | [lissi.id](https://lissi.id)                                 |   ✅    |    ✅     |
-| ValidatedID                   |                                                              |   ✅    |    ✅     |
-
-## Planned EWC Wallets
-
-### Holder Wallets for Individuals
-
-| Wallet      | Link                                                                                                                    | Holder | Issuer | Verifier |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
-| Digidentity | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity) |   ✅    |   ✅    |    ✅     |
-| DVV Wallet  |                                                                                                                         |   ✅    |   ✅    |    ✅     |
-
-### Organisation Wallets for Issuers and Verifiers
-
-| Wallet                          | Link                                                                    | Issuer | Verifier |
-| ------------------------------- | ----------------------------------------------------------------------- | :----: | :------: |
-| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |    ✅     |
-| DVV Wallet                      |                                                                         |   ✅    |    ✅     |
-| UAegean (Cyclades Fast Ferries) |                                                                         |   ✅    |    ✅     |
-| E-Group                         |                                                                         |   ✅    |    ✅     |
-| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |   ✅    |    ✅     |
+| Wallet                          | Link                                                                    | Holder | Issuer | Verifier |
+| ------------------------------- | ----------------------------------------------------------------------- | :----: | :----: | :------: |
+| iGrant.io Organisation Wallet   | [demo-business.igrant.io/](https://demo-business.igrant.io/)            |   ✅    |   ✅    |    ✅     |
+| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                            |   ✅    |   ✅    |    ✅     |
+| ValidatedID                     |                                                                         |   ✅    |   ✅    |    ✅     |
+| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |   ✅    |    ✅     |
+| DVV Wallet                      |                                                                         |        |   ✅    |    ✅     |
+| UAegean (Cyclades Fast Ferries) |                                                                         |        |   ✅    |    ✅     |
+| E-Group                         |                                                                         |        |   ✅    |    ✅     |
+| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |        |   ✅    |    ✅     |
 
 ## Funding
 
@@ -105,6 +121,6 @@ The project is co-funded by the European Union. However, the views and opinions 
 
 ## Licensing
 
-Licensed under the Apache 2.0 License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. The IP is handled as part of the EWC IP agreement. 
+Licensed under the Apache 2.0 License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. The IP is handled as part of the EWC IP agreement. Please note that some of the RFCs (Like payments) are not based on Apache 2.0 license.
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the LICENSE for the specific language governing permissions and limitations under the License.
