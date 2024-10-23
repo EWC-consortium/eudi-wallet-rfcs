@@ -1,4 +1,4 @@
-# EWC RFC100: Interoperability Profile Towards ITB - v1.0
+# EWC RFC100: Interoperability Profile Towards ITB - v2.0
 
 **Authors:**
 
