@@ -16,8 +16,6 @@
   <a href="#licensing">Licensing</a>
 </p>
 
-#ewc-wallets-implementers-itb---compliant-to-ewc-release-20
-
 ## About
 
 This repository is created to align the implementation of digital wallets across the EWC LSP consortium wallet providers. This also ensures all wallet providers can self-test and sign off against the EWC Interoperability Test Bed (ITB).
@@ -45,7 +43,7 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | RFC-001   | [Issue Verifiable Credentials Workflow - v2.0](ewc-rfc001-issue-verifiable-credential.md)                    |
 | RFC-002   | [Present Verifiable Credentials Workflow - v1.0](ewc-rfc002-present-verifiable-credentials.md)               |
 | RFC-005   | [Issue Legal Person Identification Data (LPID) - v1.0](ewc-rfc005-issue-legal-person-identification-data.md) |
-| RFC-007   | [Payment Wallet Attestation - v1.0](payment-rfcs/ewc-rfc007-payment-wallet-attestation.md)                   |
+| RFC-007   | [Payment Wallet Attestation - v1.0](Coming soon)                                                             |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v1.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md)   |
 
 ### Candidate RFCs (Work in progress)
