@@ -23,7 +23,7 @@
 
 **Table of Contents**
 
-- [EWC RFC100: Interoperability Profile Towards ITB - v1.0](#ewc-rfc100-interoperability-profile-towards-itb---v10)
+- [EWC RFC100: Interoperability Profile Towards ITB - v2.0](#ewc-rfc100-interoperability-profile-towards-itb---v10)
 - [1.0 Summary](#10-summary)
   - [1.1 Background](#11-background)
   - [1.2 Introduction to ITB](#12-introduction-to-itb)
@@ -108,6 +108,8 @@ The messages sent from the Issuer and Verifier back to the Holder Wallet follow 
 ## 3.2 Interoperable Profile
 
 For a Holder Wallet to conform to the EWC Operational Testing Environment, the following RFCs MUST be followed [3] [4].
+
+Additionally, for Phase 2, support for sd-jwt is mandatory.
 
 # 4.0 Issuer Conformance
 
@@ -261,9 +263,9 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 
 2. European Commission’s DIGIT Interoperability Testbed [https://joinup.ec.europa.eu/collection/interoperability-test-bed-repository/solution/interoperability-test-bed](https://joinup.ec.europa.eu/collection/interoperability-test-bed-repository/solution/interoperability-test-bed)
 
-3. EWC RFC 001: Issue Verifiable Credential - v1.0 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md)
+3. EWC RFC 001: Issue Verifiable Credential - v2.0 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md)
 
-4. EWC RFC002: Present Verifiable Credentials - v1.0 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md)
+4. EWC RFC002: Present Verifiable Credentials - v2.0 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md)
 
 5. ITB [PDF report](docs/itb_report.pdf)
 6. ITB [XML report](docs/itb_repoort.xml)
