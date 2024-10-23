@@ -84,7 +84,7 @@ Date of availability: 15 November 2024
 | iGrant.io Organisation Wallet | [https://demo-business.igrant.io/](https://demo-business.igrant.io/) |   ✅    |   ✅    |    ✅     |
 | Archipels                     | Link to be provided                                                  |        |   ✅    |    ✅     |
 | ValidatedID                   | Link to be provided                                                  |        |   ✅    |    ✅     |
-| Mini Suomi (Vero, Finland)    | Link to be provided                                                  |        |   ✅    |    ✅     |
+| Mini Suomi (Vero, Finland)    | Link to be provided                                                  |   ✅    |   ✅    |    ✅     |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 1.0)
 
