@@ -43,7 +43,7 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | RFC-001   | [Issue Verifiable Credentials Workflow - v2.0](ewc-rfc001-issue-verifiable-credential.md)                    |
 | RFC-002   | [Present Verifiable Credentials Workflow - v1.0](ewc-rfc002-present-verifiable-credentials.md)               |
 | RFC-005   | [Issue Legal Person Identification Data (LPID) - v1.0](ewc-rfc005-issue-legal-person-identification-data.md) |
-| RFC-007   | [Payment Wallet Attestation - v1.0](Coming soon)                                                             |
+| RFC-007   | [Payment Wallet Attestation - v1.0](payment-rfcs/ewc-rfc007-payment-wallet-attestation.md)                   |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v2.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md)   |
 
 ### Candidate RFCs (Work in progress)
