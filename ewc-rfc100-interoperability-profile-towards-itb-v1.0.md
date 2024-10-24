@@ -243,9 +243,9 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
   "status": "success",
-    "reason": "ok",
-    "sessionId": "123",
-    "attributes": {"name":"test1","surname":"test2"}
+  "reason": "ok",
+  "sessionId": "123",
+  "attributes": {"name":"test1","surname":"test2"}
 }
 
 Error Response:
