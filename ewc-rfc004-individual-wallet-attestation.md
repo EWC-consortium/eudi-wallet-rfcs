@@ -1,4 +1,4 @@
-# EWC RFC004: Individual Wallet Attestation - v1.0
+# EWC RFC004: Individual Wallet Unit Attestation - v1.0
 
 **Authors:** 
 * Mr Sebastian Bickerle (Lissi GmbH, Germany)
@@ -15,7 +15,7 @@ Current: OAuth 2.0 Attestation-Based Client Authentication Draft 03 [[1](#60refe
 
 **Table of Contents**
 
-- [EWC RFC004: Individual Wallet Attestation - v1.0](#ewc-rfc004-individual-wallet-attestation---v10)
+- [EWC RFC004: Individual Wallet Unit Attestation - v1.0](#ewc-rfc004-individual-wallet-unit-attestation---v10)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Wallet Unit Attestation (WUA)](#30wallet-unit-attestation-wua)
