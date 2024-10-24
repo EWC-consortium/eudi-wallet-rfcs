@@ -11,22 +11,21 @@
 * Dr Nikos Triantafyllou (University of the Aegean, Greece)
 
 **Status:**
+
 Current: OAuth 2.0 Attestation-Based Client Authentication Draft 03 [[1](#60reference)]
 
 **Table of Contents**
-
 - [EWC RFC004: Individual Wallet Unit Attestation - v1.0](#ewc-rfc004-individual-wallet-unit-attestation---v10)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Wallet Unit Attestation (WUA)](#30wallet-unit-attestation-wua)
   - [3.1 Wallet Unit Attestation JWT](#31-wallet-unit-attestation-jwt)
-    - [3.2 Wallet Unit Attestation PoP JWT](#32-wallet-unit-attestation-pop-jwt)
+  - [3.2 Wallet Unit Attestation PoP JWT](#32-wallet-unit-attestation-pop-jwt)
 - [4.0	Messages](#40messages)
   - [4.1 Wallet Unit Attestation within OID4VCI](#41-wallet-unit-attestation-within-oid4vci)
-    - [4.1.2 Token Request](#412-token-request)
+    - [4.1.1 Token Request](#411-token-request)
 - [5.0	Implementers](#50implementers)
 - [6.0	References](#60references)
-
 
 # 1.0	Summary
 
@@ -88,7 +87,7 @@ This profile defines the following additional requirements for a Client Attestat
 7. The value of `attested_security_context` must be “https://eudiwalletconsortium.org/”
 8. The `cnf` claim must contain a Json Web Key (JWK) object `jwk` which must define the public key corresponding to the private key used for signing the WUA PoP JWT as defined in the following section.
 
-### 3.2 Wallet Unit Attestation PoP JWT
+## 3.2 Wallet Unit Attestation PoP JWT
 
 A WUA Proof of Possession JWT must be provided as defined by section 4.3 of Attestation-based Client Authentication[1].
 
@@ -109,10 +108,11 @@ See below the example payload:
 4. The value of `exp` must be set so that the WUA PoP JWT's maximum lifetime is no longer than 24 hours
 
 # 4.0	Messages
+
 ## 4.1 Wallet Unit Attestation within OID4VCI
 The following messages of RFC001[7] must be extended with the corresponding wallet attestations.
 
-### 4.1.2 Token Request
+### 4.1.1 Token Request
 Based on this profile and in conformance with HAIP section 4.3 [5] a wallet instance must send a WUA when sending the token request and use the same public key defined in the “cnf” claim of the WUA to create the Demonstrating Proof of Possession (DPoP) JWT [6]. The authorization server of the attestation provider must ensure that the JWK given in the header of the DPoP Proof JWT is equivalent to the JWK used within the `cnf` claim of the WUA JWT.
 
 
