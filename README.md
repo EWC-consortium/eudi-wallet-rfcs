@@ -82,6 +82,7 @@ Date of availability: 15 November 2024
 | Wallet                        | Link                                                                 | Holder | Issuer | Verifier |
 | ----------------------------- | -------------------------------------------------------------------- | :----: | :----: | :------: |
 | iGrant.io Organisation Wallet | [https://demo-business.igrant.io/](https://demo-business.igrant.io/) |   ✅    |   ✅    |    ✅     |
+| SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)           |   ✅    |   ✅    |    ✅     |
 | Archipels                     | Link to be provided                                                  |        |   ✅    |    ✅     |
 | ValidatedID                   | Link to be provided                                                  |        |   ✅    |    ✅     |
 | Mini Suomi (Vero, Finland)    | Link to be provided                                                  |   ✅    |   ✅    |    ✅     |

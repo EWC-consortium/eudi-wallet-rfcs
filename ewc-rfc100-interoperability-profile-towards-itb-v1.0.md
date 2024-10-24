@@ -170,6 +170,15 @@ Content-Type: application/json
   "sessionId": "123"
 }
 
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "status": "success",
+  "reason": "ok",
+  "sessionId": "123"
+}
+
 Error Response:
 HTTP/1.1 500 Internal Server Error
 Content-Type: application/json
@@ -224,6 +233,16 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 {
   "status": "pending",
+  "reason": "ok",
+  "sessionId": "123",
+  "attributes": ""
+}
+
+Response:
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  "status": "success",
   "reason": "ok",
   "sessionId": "123",
   "attributes": {"name":"test1","surname":"test2"}
