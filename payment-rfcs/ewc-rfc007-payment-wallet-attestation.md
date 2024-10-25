@@ -25,16 +25,16 @@ Published under a Creative Commons Attribution 4.0 International License
 - [4.0	Wallet initiated](#40wallet-initiated)
   - [4.1  Credential offer](#41--credential-offer)
   - [4.2	Credential offer response](#42credential-offer-response)
-  - [4.4	Discover response](#44discover-response)
-  - [4.5	Authorisation request (using PAR)](#45authorisation-request-using-par)
-  - [4.6 Opt: Presentation authorisation request](#46-opt-presentation-authorisation-request)
-  - [4.7 Opt: Presentation Authorisation Response](#47-opt-presentation-authorisation-response)
-  - [4.8 Opt: Direct post response](#48-opt-direct-post-response)
-  - [4.9	Authorisation  response](#49authorisation--response)
-  - [4.10	Token request](#410token-request)
-  - [4.11 Token response](#411-token-response)
-  - [4.12	Credential request](#412credential-request)
-  - [4.13 Credential response](#413-credential-response)
+  - [4.3	Discover response](#43discover-response)
+  - [4.4	Authorisation request (using PAR)](#44authorisation-request-using-par)
+  - [4.5 Opt: Presentation authorisation request](#45-opt-presentation-authorisation-request)
+  - [4.6 Opt: Presentation Authorisation Response](#46-opt-presentation-authorisation-response)
+  - [4.7 Opt: Direct post response](#47-opt-direct-post-response)
+  - [4.8	Authorisation  response](#48authorisation--response)
+  - [4.9	Token request](#49token-request)
+  - [4.10 Token response](#410-token-response)
+  - [4.11	Credential request](#411credential-request)
+  - [4.12 Credential response](#412-credential-response)
 - [5.0   PSP initiated](#50---psp-initiated)
   - [5.1 Presentation authorization request](#51-presentation-authorization-request)
   - [5.2 Presentation authorization response](#52-presentation-authorization-response)
@@ -142,11 +142,11 @@ Subsequently, the wallet requests the `/.well-known/oauth-authorization-server` 
 ```
 GET https://identity-provider.gov/.well-known/oauth-authorization-server
 ```
-## 4.4	Discover response
+## 4.3	Discover response
 
 Upon resolving the `.well-known` endpoints, the PSP responds with its configuration, tailored to support payment wallet attestation credential issuance. The response includes details about supported credentials endpoints for issuing and managing credentials. It also specifies the cryptographic methods and trust frameworks applicable for payment wallet attestation credentials, as per [4]. This discovery response, as defined in Chapter 3.4 of RFC 001 [2], also delineates the Verifiable Credential Type and Credential Definition, detailed further in Chapter 6 and Chapter 7 respectively.
 
-## 4.5	Authorisation request (using PAR)
+## 4.4	Authorisation request (using PAR)
 
 The authorisation request must be made using a [Pushed Authorization Request](https://datatracker.ietf.org/doc/html/rfc9126). This means that:
 
@@ -156,21 +156,21 @@ The authorisation request must be made using a [Pushed Authorization Request](ht
 
 The content of the authorization request to be pushed is defined in [RFC001](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md#35-authorisation-request). Note that this will be sent in the body of the Pushed Authorization Request, using the `application/x-www-form-urlencoded` format. Not as parameters in the authorization request.
 
-## 4.6 Opt: Presentation authorisation request
+## 4.5 Opt: Presentation authorisation request
 
 The PSP may use a verifiable presentation during authorisation for the issuance. In [OpenID 4 Verifiable Credential Issuance,](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html#name-binding-the-issued-credenti) this is known as a dynamic credential request. In the context of payment wallet attestation, it may be useful to authenticate the wallet holder.
 
-Steps 4.6, 4.7, and 4.8 describe how a presentation can be used to conclude the authorisation. Completing the presentation leads directly to the continuation of the issuance without the user having to leave the wallet. It is possible to perform any desired authentication method (e.g., a login form) before the presentation is initiated, or the presentation can be skipped entirely by proceeding directly to 4.9.
+Steps 4.5, 4.6, and 4.7 describe how a presentation can be used to conclude the authorisation. Completing the presentation leads directly to the continuation of the issuance without the user having to leave the wallet. It is possible to perform any desired authentication method (e.g., a login form) before the presentation is initiated, or the presentation can be skipped entirely by proceeding directly to 4.8.
 
 The presentation request should follow [RFC 002 Chapter 3.1](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md#31authorisation-request); the PSP can request any credentials they want here using a presentation definition. To perform wallet *holder *authentication, the PSP may later require that the issued payment wallet attestation is bound to the same key as one used by the holder during the presentation. For example, the PSP might request a PID and require that the payment wallet attestation is bound to the same key as the presented PID.
 
-## 4.7 Opt: Presentation Authorisation Response
+## 4.6 Opt: Presentation Authorisation Response
 
 The presentation response should follow [RFC 002 Chapter 3.2](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md#32authorisation-response)
 
-## 4.8 Opt: Direct post response
+## 4.7 Opt: Direct post response
 
-If the presentation was completed successfully, the PSP could proceed with the issuance by returning a response containing a redirect_uri where the URI is an authorisation response. The wallet should redirect itself to this URI and continue with the issuance flow from 4.10.
+If the presentation was completed successfully, the PSP could proceed with the issuance by returning a response containing a redirect_uri where the URI is an authorisation response. The wallet should redirect itself to this URI and continue with the issuance flow from 4.9.
 
 ```json
 {
@@ -186,7 +186,7 @@ To abort the issuance, the PSP should respond with an error response. The respon
 }
 ```
 
-## 4.9	Authorisation  response
+## 4.8	Authorisation  response
 
 A redirect to the redirect URI with a code query parameter containing the short-lived authorisation code. 
 
@@ -197,11 +197,11 @@ Location: https://wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 
 **Note:** The above can be deeplinked to the EUDI wallet as well. 
 
-## 4.10	Token request
+## 4.9	Token request
 
 This step will follow the [RFC001 Chapter 3.7.1 Authorization code flow](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md#372-pre-authorised-code-flow) [using RFC004 Individual Wallet Attestation (Chapter 3.1.2)](https://www.ietf.org/archive/id/draft-ietf-oauth-attestation-based-client-auth-02.html#name-client-authentication).
 
-## 4.11 Token response
+## 4.10 Token response
 
 This step will follow the [RFC001 Chapter 3.8](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md#38-token-response). The returned token should allow the user to be issued payment wallet attestations for all the accounts that they selected prior to this flow being initiated. The authorization_details parameter must be present in the token response body, it must contain an entry for the payment wallet attestation credential configuration, which includes credential_identifers, one for each desired payment wallet attestation. An example of the returned authorization details is provided below:
 
@@ -218,13 +218,13 @@ This step will follow the [RFC001 Chapter 3.8](https://github.com/EWC-consortium
 ]
 ```
 
-## 4.12	Credential request
+## 4.11	Credential request
 
-This step will follow the [RFC001 Chapter 3.9](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md#39-credential-request) using an in-time response, and using the `credential_identifier` parameter. The credential identifier values are obtained from the token response in 5.7. The wallet should make as many credential requests as needed to issue all the desired payment wallet attestations. \
+This step will follow the [RFC001 Chapter 3.9](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md#39-credential-request) using an in-time response, and using the `credential_identifier` parameter. The credential identifier values are obtained from the token response in 4.10. The wallet should make as many credential requests as needed to issue all the desired payment wallet attestations.
 
-For each credential, proof of possession of the `cnf` key used in the wallet attestation (from 4.5 and 4.10) must be included. Optionally, the key may also be required to be the same as one discovered during the presentation (if performed) so that the presentation can be used for wallet holder authentication.
+For each credential, proof of possession of the `cnf` key used in the wallet attestation (from 4.4 and 4.9) must be included. Optionally, the key may also be required to be the same as one discovered during the presentation (if performed) so that the presentation can be used for wallet holder authentication.
 
-## 4.13 Credential response
+## 4.12 Credential response
 
 This step will follow the [RFC001 Chapter 3.10](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md#310-credential-response).
 
