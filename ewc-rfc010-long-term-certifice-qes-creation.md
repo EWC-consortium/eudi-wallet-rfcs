@@ -339,7 +339,8 @@ series of steps is performed.
 #### 3.2.2.2: Credential Authorization
 
 Depending on the `auth/mode` attribute of the credential, the wallet will need to follow a specific flow to authorize the
-credential. 
+credential. The credential authorization will need to happen on the wallet, as the SSP cannot be trusted with the sensitive
+credentials of the user (eg. their PIN).
 
 ##### Authorization Code Flow (oauth2code):
 
