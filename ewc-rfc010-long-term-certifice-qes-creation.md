@@ -19,6 +19,7 @@ At present, there are no standardized procedures and interfaces for digitally pr
 - Sep. 10 2024: Addition of multiple RQES service support through RQES Access VC concept. Further Enrichment of RFC.
 - Oct 1 2024: Addition of SSP discovery endpoint. Addition of RQESAC token example. Misc corrections.
 - Oct 18, 2024: Addition of Pre-enrollment process. Addition of CSC API call examples on `credentials/list`, `credentials/info`. Refinement of RQESAC. Changes to Signing Process Metadata endpoint to support multiple credentials. Addition of credential selection screen.
+- Oct 28, 2024: Addition of credential authorization. Addition of `credentials/info` example and required attributes.
 
 ## 3.0 The Signing Architecture:
 
@@ -299,12 +300,30 @@ Content-Type: "application/json"
 }
 ```
 
-#### 3.2.1.4: Credential Selection:
+**`credential_info` Objects**:
+
+Objects inside the `credential_info` list follow the output format of the `credentials/info` endpoint, as denoted on the CSC API v2. 
+
+#### 3.2.1.4: Required Attributes for Supported Credentials:
+
+Credentials need to have the following attributes to be supported for signing:
+
+- `key/status`: `enabled`
+- `TBA: Key Algo`
+- `cert`:
+  - `status`: `valid`
+- `auth`:
+  - `mode`: `explicit` | `oauth2code`
+  - `objects`: REQUIRED if using `explicit` auth mode
+
+> TBA Restrictions on algo use?
+
+#### 3.2.1.5: Credential Selection:
 
 Should the user own more than one credential, the wallet will need to present the user with a selection screen for the user to pick
 the credential they wish to use to sign the document.
 
-#### 3.2.1.5: What You See is What You Sign (WYSIWYS):
+#### 3.2.1.6: What You See is What You Sign (WYSIWYS):
 
 The EUDI Wallet app can use the attributes of the metadata response to provide a WYSIWYS (What You See Is What You Sign) preview to the user, helping them visualize the final document. 
 
@@ -312,15 +331,92 @@ The EUDI Wallet app can use the attributes of the metadata response to provide a
 
 ### 3.2.2 Phase 2: Signature Approval & SSP to RQES communication
 
-### 3.2.2.1: Signature Approval
+#### 3.2.2.1: Signature Approval
 
-TBA
+The user can accept the signing of a document using the corresponding acceptance button on their wallet. Upon acceptance, a
+series of steps is performed.
 
-### 3.2.2.2: Signature Service Provider to RQES Communication to Finalize Signing
+#### 3.2.2.2: Credential Authorization
 
-TBA
+Depending on the `auth/mode` attribute of the credential, the wallet will need to follow a specific flow to authorize the
+credential. 
 
-> Author's note: Should be kept vague as to allow different handling of documents for different providers.
+##### Authorization Code Flow (oauth2code):
+
+If the auth mode is set to follow the **OAuth2 Authorization Code Flow**, the wallet will need to redirect to the RQES Provider's
+`oauth2/authorize` and the `oauth2/token`, as defined by [RFC-6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1) and while following the procedure in the CSC API v2 Spec.
+
+```http request
+GET https://rqes.example.com/oauth2/authorize?
+    response_type=code&
+    client_id=<OAuth2_client_id>&
+    redirect_uri=<OAuth2_redirect_uri>&
+    scope=credential&
+    code_challenge=K2-ltc83acc4h0c9w6ESC_rEMTJ3bww-uCHaoeK1t8U&
+    code_challenge_method=S256&
+    credentialID=GX0112348&
+    numSignatures=1&
+    hashes=MTIzNDU2Nzg5MHF3ZXJ0enVpb3Bhc2RmZ2hqa2zDtnl4&
+    hashAlgorithmOID=2.16.840.1.101.3.4.2.1&state=12345678
+```
+
+> Author's Note: There's some questions to be answered reg. Auth Code Flow, that might inhibit the adoption:
+> - What is going to be the Client ID? How is the RQES provider going to be aware of the wallet's Client ID prior to the request?
+> - Wallet providers will need to prepare for this process and build the required mechanisms, which might prove slow.
+
+MORE TBA
+
+##### Explicit Flow (explicit):
+
+In the case of `explicit` credential authorization, the Wallet will need to parse the `expression` parameter of the respective
+credential and present the required authorization prompts (for example, a PIN prompt).
+
+For each step of the authorization, the specific CSC API endpoints will need to be queried by the Wallet (for example, the
+`credentials/getChallenge` endpoint, to receive an OTP).
+
+After the respective input from the user has been collected, the `credentials/authorize` endpoint can be queried by the wallet
+to enable the finalize the authorization process:
+
+```mermaid
+%% Signature Metadata Endpoint
+  sequenceDiagram
+    participant EUDI Wallet
+    participant RQES Provider
+    EUDI Wallet->>RQES Provider: POST /csc/v2/credentials/authorize
+    RQES Provider->>EUDI Wallet: SAD
+```
+
+```http request
+POST /csc/v2/credentials/authorize HTTP/1.1
+Host: rqes.example.com
+Authorization: Bearer ...
+Content-Type: application/json
+{
+  "credentialID": "GX0112348",
+  "numSignatures": 1,
+  "hashes": [
+    "sTOgwOm+474gFj0q0x1iSNspKqbcse4IeiqlDg/HWuI="
+  ],
+  "hashAlgorithmOID": "2.16.840.1.101.3.4.2.1",
+  "authData": [
+    {
+      "id": "PIN",
+      "value": "123456"
+    },
+    {
+      "id": "OTP",
+      "value": "738496"
+    }
+  ]
+}
+```
+
+> Author's Note: In this case, the `authorize` request can't be made unless the Wallet is `Service Authorized` first (according to CSC Spec).
+> There are 2 cases:
+> 1. The wallet completes a full Auth Code Flow to become credential authorized (see caveats in 3.2.2.2, above).
+> 2. The wallet has access to the **OAuth2 Client Credentials** needed to complete the `service` authorization. 
+> This makes `3.1` redundant and adds the client credentials back into the RQESAC. 
+
 
 ## 3.3 Phase 3: Signature Confirmation and Final Document Retrieval and Storage
 
