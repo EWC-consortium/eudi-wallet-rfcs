@@ -20,28 +20,20 @@ At present, there are no standardized procedures and interfaces for digitally pr
 - Oct 1 2024: Addition of SSP discovery endpoint. Addition of RQESAC token example. Misc corrections.
 - Oct 18, 2024: Addition of Pre-enrollment process. Addition of CSC API call examples on `credentials/list`, `credentials/info`. Refinement of RQESAC. Changes to Signing Process Metadata endpoint to support multiple credentials. Addition of credential selection screen.
 - Oct 28, 2024: Addition of credential authorization. Addition of `credentials/info` example and required attributes.
+- Oct 29, 2024: Addition of the Signature Creation step. Marking of the Pre-Enrollment step as optional (moved to Annex 2) and restoration of Client Credentials within the RQESAC.
 
 ## 3.0 The Signing Architecture:
 
 The architecture covered in this specification follows the process of remotely signing a document using long-term certificates, handled by a Remote QES (or AES) Service, as detailed in D4.8.
 
-The architecture will be broken down in 4 main parts:
-1. Provider Pre-enrollment (off scope)
-2. Signing Request (Authentication, RQES Delegation, Initialization)
-3. Signature Application & SS to RQES Communications 
-4. Signature Confirmation & Final Document Retrieval and Storage
+The architecture will be broken down in 3 main parts:
+1. Signing Request (Authentication, RQES Delegation, Initialization)
+2. Signature Application & SS to RQES Communications 
+3. Signature Confirmation & Final Document Retrieval and Storage
 
-## 3.1 Signing Service Provider Pre-enrollment to Remote Qualified Electronic Signature Service (off-scope)
+**Remote QES services shall adhere to the [CSC (Cloud Signature Consortium)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) specifications that are also the basis for the JSON part of the ETSI TS 119 432 standard on protocols for remote digital signature creation.**
 
-Remote QES services shall adhere to the [CSC (Cloud Signature Consortium)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) specifications that are also the basis for the JSON part of the ETSI TS 119 432 standard on protocols for remote digital signature creation.
-
-Pre-enrollment is **required** in order for SSPs to be able to access the CSC API of the RQES Provider.
-
-Pre-enrollment is facilitated through a contractual agreement, outside the scope of this RFC.
-
-Upon pre-enrollment, **OAuth2 Client Credentials** for access to the [CSC Specification Compatible API (v2)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) exposed by the RQES provider are issued to the SSP, to facilitate communication between the parties.
-
-## 3.2 Signing Process:
+## 3.1 Signing Process:
 
 ```mermaid
    sequenceDiagram
@@ -77,7 +69,7 @@ Upon pre-enrollment, **OAuth2 Client Credentials** for access to the [CSC Specif
 ```
 Figure 1: Signing Procedure diagram.
 
-### 3.2.1: Phase 1: User Authentication & RQES Delegation
+### 3.1.1: Phase 1: User Authentication & RQES Delegation
 
 #### Overview:
 
@@ -94,23 +86,20 @@ Figure 1: Signing Procedure diagram.
     EUDI Wallet->>Signing Service: Signature Authorized.
 ```
 
-#### 3.2.1.1: User Authentication & Multiple RQES Service Support
+#### 3.1.1.1: User Authentication & Multiple RQES Service Support
 
 The user is authenticated through a Presentation Request requesting 2 credentials:
 
 1. The User's PID or LPID, which contains the user's personal (or business) identification record.
 2. An RQES Access Credential (RQESAC): Serves as an access and configuration credential to the user's RQES service. Through the presented RQES Access Credential, the user can choose their preferred RQES service. Example provided in Annex A.
 
-##### RQES Provider Support Check:
+##### Service Authentication of the SSP, Listing of the User's Credentials and SRU Preparation:
 
-If the RQES service is supported (pre-enrollment has been performed) by the SSP, the process continues. If the SSP has not 
-performed the pre-enrollment step (and does not have access to the RQES Provider's API), the process stops at this point.
-
-##### Listing of the User's Credentials and SRU Preparation:
-
-The Signing Service Provider must then query the user's preferred RQES Provider to request the user's available credentials and construct the final Signing Request URIs.
+After User Authentication and RQESAC Verification, the Signing Service Provider must then query the user's preferred RQES Provider to request the user's available credentials and construct the final Signing Request URIs.
 
 The Signing Service Provider must query the RQES service using the `rqes_provider.api` parameter to acquire information about the service and its supported authentication methods.
+
+Authentication must be done using the **OAuth2 Client Credentials** located inside the RQESAC (see Annex 1). Should the `service_auth` object not be present inside the RQESAC, the SSP must be pre-enrolled with the RQES Provider, to proceed (see Annex 2).
 
 **credentials/list**
 
@@ -218,7 +207,7 @@ Content-Type: application/json
 }
 ```
 
-#### 3.2.1.2 Signing Request URI:
+#### 3.1.1.2 Signing Request URI:
 
 After service authentication and authorization, the Signing Service Provider can form the "Signature Request" URIs (SRU), responsible for **initiation of the signing process**.
 
@@ -235,7 +224,7 @@ Sample Signature Request URI:
 eudi-sig-request://?signature_url=https://signing_server_url/signing?token=<signature_access_token>
 ```
 
-#### 3.2.1.3 Signing Process Metadata:
+#### 3.1.1.3 Signing Process Metadata:
 
 The EUDI Wallet executes the following GET request to obtain the metadata about the signing process and to draw the final preview and approval UI, to show the user.
 
@@ -304,7 +293,7 @@ Content-Type: "application/json"
 
 Objects inside the `credential_info` list follow the output format of the `credentials/info` endpoint, as denoted on the CSC API v2. 
 
-#### 3.2.1.4: Required Attributes for Supported Credentials:
+#### 3.1.1.4: Required Attributes for Supported Credentials:
 
 Credentials need to have the following attributes to be supported for signing:
 
@@ -318,28 +307,28 @@ Credentials need to have the following attributes to be supported for signing:
 
 > TBA Restrictions on algo use?
 
-#### 3.2.1.5: Credential Selection:
+#### 3.1.1.5: Credential Selection:
 
 Should the user own more than one credential, the wallet will need to present the user with a selection screen for the user to pick
 the credential they wish to use to sign the document.
 
-#### 3.2.1.6: What You See is What You Sign (WYSIWYS):
+#### 3.1.1.6: What You See is What You Sign (WYSIWYS):
 
 The EUDI Wallet app can use the attributes of the metadata response to provide a WYSIWYS (What You See Is What You Sign) preview to the user, helping them visualize the final document. 
 
 > Author's Note: More needs TBA regarding signature preview support.
 
-### 3.2.2 Phase 2: Signature Approval & SSP to RQES communication
+### 3.1.2 Phase 2: Signature Creation & SSP to RQES communication
 
-#### 3.2.2.1: Signature Approval
+#### 3.1.2.1: Signature Creation
 
 The user can accept the signing of a document using the corresponding acceptance button on their wallet. Upon acceptance, a
 series of steps is performed.
 
-#### 3.2.2.2: Credential Authorization
+#### 3.1.2.2: Credential Authorization
 
-Depending on the `auth/mode` attribute of the credential, the wallet will need to follow a specific flow to authorize the
-credential. The credential authorization will need to happen on the wallet, as the SSP cannot be trusted with the sensitive
+Depending on the `auth/mode` attribute of the credential, **the wallet will need to follow a specific flow to authorize the
+credential**. The credential authorization will need to happen on the wallet, as the SSP cannot be trusted with the sensitive
 credentials of the user (eg. their PIN).
 
 ##### Authorization Code Flow (oauth2code):
@@ -414,12 +403,52 @@ Content-Type: application/json
 
 > Author's Note: In this case, the `authorize` request can't be made unless the Wallet is `Service Authorized` first (according to CSC Spec).
 > There are 2 cases:
-> 1. The wallet completes a full Auth Code Flow to become credential authorized (see caveats in 3.2.2.2, above).
+> 1. The wallet completes a full Auth Code Flow to become credential authorized (see caveats in 3.1.2.2, above).
 > 2. The wallet has access to the **OAuth2 Client Credentials** needed to complete the `service` authorization. 
 > This makes `3.1` redundant and adds the client credentials back into the RQESAC. 
 
+#### 3.1.2.3: Signature Creation:
 
-## 3.3 Phase 3: Signature Confirmation and Final Document Retrieval and Storage
+After the successful authorization of the user's credential and the retrieval of the SAD, the `signatures/signHash` endpoint of the CSC Compatible API of the RQES Provider can be used to sign the document's hash:
+
+```mermaid
+%% Signature Metadata Endpoint
+  sequenceDiagram
+    participant EUDI Wallet
+    participant RQES Provider
+    EUDI Wallet->>RQES Provider: POST /csc/v2/signatures/signHash
+    RQES Provider->>EUDI Wallet: Document Signatures
+```
+
+```http request
+POST /csc/v2/signatures/signHash HTTP/1.1
+Host: service.domain.org
+Content-Type: application/json
+Authorization: Bearer 4/CKN69L8gdSYp5_pwH3XlFQZ3ndFhkXf9P2_TiHRG-bA
+{
+  "credentialID": "GX0112348",
+  "SAD": "_TiHRG-bAH3XlFQZ3ndFhkXf9P24/CKN69L8gdSYp5_pw",
+  "hashes": [
+    "sTOgwOm+474gFj0q0x1iSNspKqbcse4IeiqlDg/HWuI=",
+  ],
+  "hashAlgorithmOID": "2.16.840.1.101.3.4.2.1",
+  "signAlgo": "1.2.840.113549.1.1.1"
+}
+```
+
+**Sample Response:**
+
+```json
+{
+  "signatures": [
+    "KedJuTob5gtvYx9qM3k3gm7kbLBwVbEQRl26S2tmXjqNND7MRGtoew=="
+  ]
+}
+```
+
+The wallet can then send the Signature to the SSP, to be attached to the document and for the final document to be created.
+
+## 3.2 Phase 3: Signature Confirmation and Final Document Retrieval and Storage
 
 TBA
 
@@ -445,6 +474,15 @@ TBA
   }
 }
 ```
+
+## Annex 2: RQES Pre-Enrollment
+
+Should an RQES provider not choose to provide the `Service Authorization` Client Credentials within the RQES Access Credential, the SSP must be pre-enrolled with the RQES Provider.
+
+Pre-enrollment is facilitated through a contractual agreement, outside the scope of this RFC.
+
+Upon pre-enrollment, **OAuth2 Client Credentials** for access to the [CSC Specification Compatible API (v2)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) exposed by the RQES provider are issued to the SSP, to facilitate communication between the parties.
+
 
 ### Schema:
 
