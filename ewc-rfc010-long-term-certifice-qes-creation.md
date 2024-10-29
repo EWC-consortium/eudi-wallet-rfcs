@@ -26,10 +26,11 @@ At present, there are no standardized procedures and interfaces for digitally pr
 
 The architecture covered in this specification follows the process of remotely signing a document using long-term certificates, handled by a Remote QES (or AES) Service, as detailed in D4.8.
 
-The architecture will be broken down in 3 main parts:
-1. Signing Request (Authentication, RQES Delegation, Initialization)
-2. Signature Application & SS to RQES Communications 
-3. Signature Confirmation & Final Document Retrieval and Storage
+The architecture will be broken down in 4 main phases:
+1. Phase 1: User Authentication & RQES Delegation
+2. Phase 2: Signing Initialization
+3. Phase 3: Signature Creation
+4. Phase 4: Signature Confirmation, Dispatching of Signature to SSP, Final Document Retrieval and Storage
 
 **Remote QES services shall adhere to the [CSC (Cloud Signature Consortium)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) specifications that are also the basis for the JSON part of the ETSI TS 119 432 standard on protocols for remote digital signature creation.**
 
@@ -40,8 +41,7 @@ The architecture will be broken down in 3 main parts:
     participant EUDI Wallet
     participant Signing Service Provider
     participant Delegated RQES
-    Note right of Delegated RQES: 1. EUDI wallet does not care about the certificates and the signing part (not yet).
-    Note right of Delegated RQES: 2. The user should not be presented with a lot of authorization interfaces. They should be authenticated strongly only once, as to not hamper the experience.
+    Note right of Delegated RQES: 1. The user should not be presented with a lot of authorization interfaces. They should be authenticated strongly only once, as to not hamper the experience.
     Note over EUDI Wallet, Delegated RQES: Phase 1: Authentication, Delegated RQES Delegation, Initialization
 
     EUDI Wallet->>Signing Service Provider: PID
@@ -60,16 +60,16 @@ The architecture will be broken down in 3 main parts:
     Signing Service Provider->>EUDI Wallet: Document Metadata Passed to User
     EUDI Wallet->>EUDI Wallet: User Reviews Document
     EUDI Wallet->>EUDI Wallet: User Authorizes Signing
-    EUDI Wallet->>Signing Service Provider: Signature Authorization (TBD)
-    Signing Service Provider->>Delegated RQES: POST credential/authorize { credentialId: 123412341234134 }
-    Delegated RQES->>Signing Service Provider: SAD
-    Signing Service Provider->>Delegated RQES: POST signatures/signHash OR signatures/signDoc { SAD: ... }
-    Delegated RQES->>Signing Service Provider: Signatures
-    Signing Service Provider->>EUDI Wallet: Signatures OK { hashes: [...], finalDocumentUrl: ... }
+    EUDI Wallet->>Delegated RQES: Credential Authorization
+    EUDI Wallet->>Delegated RQES: POST credential/authorize { credentialId: 123412341234134 }
+    Delegated RQES->>EUDI Wallet: SAD
+    EUDI Wallet->>Delegated RQES: POST signatures/signHash OR signatures/signDoc { SAD: ... }
+    Delegated RQES->>EUDI Wallet: Signatures
+    EUDI Wallet->>Signing Service Provider: Signatures OK { signatures: [...] }
 ```
 Figure 1: Signing Procedure diagram.
 
-### 3.1.1: Phase 1: User Authentication & RQES Delegation
+### 3.1.1 Phase 1: User Authentication & RQES Delegation
 
 #### Overview:
 
@@ -77,23 +77,22 @@ Figure 1: Signing Procedure diagram.
 %% Example of sequence diagram
   sequenceDiagram
     participant EUDI Wallet
-    participant Signing Service
-    Signing Service->>EUDI Wallet: URI to Initiate Signing Process is launched
-    EUDI Wallet->>Signing Service: GET /signing-request?token=kj2h345l...
-    Signing Service->>EUDI Wallet: Signing Metadata
-    Note over EUDI Wallet: User reviews document to sign & confirms signing.
-    Note over EUDI Wallet: Final Confirmation by User.
-    EUDI Wallet->>Signing Service: Signature Authorized.
+    participant Signing Service Provider
+    participant RQES Provider
+    Signing Service Provider->>EUDI Wallet: Presentation Request for PID and RQESAC
+    EUDI Wallet->>Signing Service Provider: PID, RQESAC
+    Signing Service Provider->>RQES Provider: Service Authorization
+    RQES Provider->>Signing Service Provider: Credentials Listing
 ```
 
-#### 3.1.1.1: User Authentication & Multiple RQES Service Support
+##### 3.1.1.1: User Authentication & Multiple RQES Service Support
 
 The user is authenticated through a Presentation Request requesting 2 credentials:
 
 1. The User's PID or LPID, which contains the user's personal (or business) identification record.
 2. An RQES Access Credential (RQESAC): Serves as an access and configuration credential to the user's RQES service. Through the presented RQES Access Credential, the user can choose their preferred RQES service. Example provided in Annex A.
 
-##### Service Authentication of the SSP, Listing of the User's Credentials and SRU Preparation:
+##### 3.1.1.2: Service Authentication of the SSP, Listing of the User's Credentials and SRU Preparation:
 
 After User Authentication and RQESAC Verification, the Signing Service Provider must then query the user's preferred RQES Provider to request the user's available credentials and construct the final Signing Request URIs.
 
@@ -207,14 +206,32 @@ Content-Type: application/json
 }
 ```
 
-#### 3.1.1.2 Signing Request URI:
+### 3.1.2 Phase 2: Signing Initialization
+
+#### Overview
+
+```mermaid
+%% Example of sequence diagram
+  sequenceDiagram
+    participant Browser
+    participant EUDI Wallet
+    participant Signing Service Provider
+    Signing Service Provider->>Browser: Signing Request URIs (SRUs) 
+    Browser->>Browser: SRU Launch
+    EUDI Wallet->>Signing Service Provider: GET Signature Request Metadata
+    EUDI Wallet->>Signing Service Provider: GET Document for Preview
+    EUDI Wallet->>EUDI Wallet: Credential Validation
+    EUDI Wallet->>EUDI Wallet: Credential Selection by User (Optional)
+```
+
+#### 3.1.2.1: Signing Process Initialization through Signature Request URI (SRU)
 
 After service authentication and authorization, the Signing Service Provider can form the "Signature Request" URIs (SRU), responsible for **initiation of the signing process**.
 
 Each SRU contains a reference to the Signing Service Provider's **Signature Metadata Endpoint** with a token, authenticating the user and their credential. Each token MUST be bound to the user's profile and their specific credentials,
 obtained through the CSC compatible endpoints `credentials/list` and `credentials/info`.
 
-A one-time-use, secret token is embedded in the URL, to authenticate the user and to bind the signature to the user and their credentials. Signing services should keep track of these tokens and delete them after some time being unused. This token should not have any other purpose and must be kept secret from other users.
+A **one-time-use, secret token** is embedded in the URL, to authenticate the user and to bind the signature to the user and their credentials. Signing services should keep track of these tokens and delete them after some time being unused. This token should not have any other purpose and must be kept secret from other users.
 
 The signing process is initiated by the user either clicking a link or scanning a QR code with a SRU, provided by the Signing Service Provider, after acquiring the available credentials of the user.
 
@@ -224,7 +241,7 @@ Sample Signature Request URI:
 eudi-sig-request://?signature_url=https://signing_server_url/signing?token=<signature_access_token>
 ```
 
-#### 3.1.1.3 Signing Process Metadata:
+#### 3.1.2.3 Signing Process Metadata:
 
 The EUDI Wallet executes the following GET request to obtain the metadata about the signing process and to draw the final preview and approval UI, to show the user.
 
@@ -273,7 +290,7 @@ Content-Type: "application/json"
       }
    ],
    "rqes_provider": {
-      "title": "TrustedSig LLC",
+      "title": "Intesi Group",
       "homepage": "https://...",
       "title_short": "INTESI_GRP_ITA",
       // more details TBD
@@ -293,7 +310,7 @@ Content-Type: "application/json"
 
 Objects inside the `credential_info` list follow the output format of the `credentials/info` endpoint, as denoted on the CSC API v2. 
 
-#### 3.1.1.4: Required Attributes for Supported Credentials:
+#### 3.1.2.4: Required Attributes for Supported Credentials:
 
 Credentials need to have the following attributes to be supported for signing:
 
@@ -307,25 +324,39 @@ Credentials need to have the following attributes to be supported for signing:
 
 > TBA Restrictions on algo use?
 
-#### 3.1.1.5: Credential Selection:
+#### 3.1.2.5: Credential Selection:
 
 Should the user own more than one credential, the wallet will need to present the user with a selection screen for the user to pick
 the credential they wish to use to sign the document.
 
-#### 3.1.1.6: What You See is What You Sign (WYSIWYS):
+#### 3.1.2.6: What You See is What You Sign (WYSIWYS):
 
 The EUDI Wallet app can use the attributes of the metadata response to provide a WYSIWYS (What You See Is What You Sign) preview to the user, helping them visualize the final document. 
 
 > Author's Note: More needs TBA regarding signature preview support.
 
-### 3.1.2 Phase 2: Signature Creation & SSP to RQES communication
+### 3.1.3 Phase 3: Signature Creation
 
-#### 3.1.2.1: Signature Creation
+#### Overview
+
+```mermaid
+  sequenceDiagram
+    participant EUDI Wallet
+    participant RQES Provider
+    EUDI Wallet->>EUDI Wallet: User Accepts the Signing
+    EUDI Wallet->>RQES Provider: Credential Authorization
+    RQES Provider->>EUDI Wallet: SAD
+    EUDI Wallet->>RQES Provider: Signature Request
+    RQES Provider->>EUDI Wallet: Signatures
+```
+
+
+#### 3.1.3.1: Signature Creation
 
 The user can accept the signing of a document using the corresponding acceptance button on their wallet. Upon acceptance, a
 series of steps is performed.
 
-#### 3.1.2.2: Credential Authorization
+#### 3.1.3.2: Credential Authorization
 
 Depending on the `auth/mode` attribute of the credential, **the wallet will need to follow a specific flow to authorize the
 credential**. The credential authorization will need to happen on the wallet, as the SSP cannot be trusted with the sensitive
@@ -401,13 +432,7 @@ Content-Type: application/json
 }
 ```
 
-> Author's Note: In this case, the `authorize` request can't be made unless the Wallet is `Service Authorized` first (according to CSC Spec).
-> There are 2 cases:
-> 1. The wallet completes a full Auth Code Flow to become credential authorized (see caveats in 3.1.2.2, above).
-> 2. The wallet has access to the **OAuth2 Client Credentials** needed to complete the `service` authorization. 
-> This makes `3.1` redundant and adds the client credentials back into the RQESAC. 
-
-#### 3.1.2.3: Signature Creation:
+#### 3.1.3.3: Signature Creation:
 
 After the successful authorization of the user's credential and the retrieval of the SAD, the `signatures/signHash` endpoint of the CSC Compatible API of the RQES Provider can be used to sign the document's hash:
 
@@ -448,7 +473,7 @@ Authorization: Bearer 4/CKN69L8gdSYp5_pwH3XlFQZ3ndFhkXf9P2_TiHRG-bA
 
 The wallet can then send the Signature to the SSP, to be attached to the document and for the final document to be created.
 
-## 3.2 Phase 3: Signature Confirmation and Final Document Retrieval and Storage
+### 3.1.4 Phase 4: Signature Confirmation, Dispatching of Signature to SSP, Final Document Retrieval and Storage
 
 TBA
 
