@@ -437,6 +437,11 @@ TBA
     "title": "Intesi Group SPA",
     "title_short": "INTESI_GRP_ITA",
     "location": "Milan, IT"
+  },
+  "service_auth": {
+    "grant": "client_credentials",
+    "client_id": "...",
+    "client_secret": "..."
   }
 }
 ```
