@@ -6,7 +6,7 @@ This Specification defines the procedures for using the EUDI wallet to digitally
 
 ### Authors:
 
-- Mr. Kyriakos Giannakis (Intesi Group, Italy)
+- Mr. Kyriakos Giannakis (Intesi Group, Italy | Flare, Greece)
 
 ## 2.0: Motivation:
 
