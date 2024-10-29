@@ -46,17 +46,18 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | RFC-007   | [Payment Wallet Attestation - v1.0](payment-rfcs/ewc-rfc007-payment-wallet-attestation.md)                   |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v2.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md)   |
 
-### Candidate RFCs (Work in progress)
+### RFCs Under Development
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
 
 | **RFC #** | **RFC Title**                                                                               |
 | --------- | ------------------------------------------------------------------------------------------- |
 | RFC-003   | [Issue Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md) |
-| RFC-004   | Individual Wallet Instance Attestation                                                      |
-| RFC-006   | Organisational Wallet Instance Attestation                                                  |
+| RFC-004   | Individual Wallet Unit Attestation                                                          |
+| RFC-006   | Organisational Wallet Unit Attestation                                                      |
 | RFC-008   | Strong Customer Authentication                                                              |
 | RFC-009   | Payment Transaction                                                                         |
+| RFC-010   | Synchronous Document Signing using Long-Term Certificates                                   |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
 
