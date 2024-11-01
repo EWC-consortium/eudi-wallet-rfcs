@@ -32,11 +32,6 @@ At present, there are no standardized procedures and interfaces for digitally pr
 ### 2.2 Table of Contents:
 
 - [The Signing Architecture](#30-the-signing-architecture)
-  - [Phases of the Signing Architecture](#phases-of-the-signing-architecture)
-    1. [User Authentication & RQES Delegation](#phase-1-user-authentication--rqes-delegation)
-    2. [Signing Initialization](#phase-2-signing-initialization)
-    3. [Signature Creation](#phase-3-signature-creation)
-    4. [Signature Confirmation, Dispatching of Signature, Document Retrieval and Storage](#phase-4-signature-confirmation-dispatching-of-signature-final-document-retrieval-and-storage)
 - [Signing Process](#31-signing-process)
   - [Phase 1: User Authentication & RQES Delegation](#311-phase-1-user-authentication--rqes-delegation)
     - [Overview](#overview)
