@@ -31,14 +31,13 @@ At present, there are no standardized procedures and interfaces for digitally pr
 
 ### 2.2 Table of Contents:
 
-1. [The Signing Architecture](#30-the-signing-architecture)
+- [The Signing Architecture](#30-the-signing-architecture)
   - [Phases of the Signing Architecture](#phases-of-the-signing-architecture)
     1. [User Authentication & RQES Delegation](#phase-1-user-authentication--rqes-delegation)
     2. [Signing Initialization](#phase-2-signing-initialization)
     3. [Signature Creation](#phase-3-signature-creation)
     4. [Signature Confirmation, Dispatching of Signature, Document Retrieval and Storage](#phase-4-signature-confirmation-dispatching-of-signature-final-document-retrieval-and-storage)
-
-2. [Signing Process](#31-signing-process)
+- [Signing Process](#31-signing-process)
   - [Phase 1: User Authentication & RQES Delegation](#311-phase-1-user-authentication--rqes-delegation)
     - [Overview](#overview)
     - [User Authentication & Multiple RQES Service Support](#3111-user-authentication--multiple-rqes-service-support)
@@ -58,8 +57,7 @@ At present, there are no standardized procedures and interfaces for digitally pr
       - [Explicit Flow (explicit)](#explicit-flow-explicit)
     - [Signature Creation Process](#3133-signature-creation)
   - [Phase 4: Signature Confirmation, Dispatching to SSP, Document Retrieval and Storage](#314-phase-4-signature-confirmation-dispatching-of-signature-to-ssp-final-document-retrieval-and-storage)
-
-3. [Annexes](#annexes)
+- [Annexes](#annexes)
   - [Annex 1: RQES Access Credential Schema and Example](#annex-1-rqes-access-credential-schema-and-example)
   - [Annex 2: RQES Pre-Enrollment](#annex-2-rqes-pre-enrollment)
 
