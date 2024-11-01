@@ -1,12 +1,19 @@
-# RFC-010 Synchronous Document Signing on a Remote Signing Service Provider using Long-Term Certificates and the EUDI Wallet - Draft 1
+# RFC-010 Synchronous Document Signing on a Remote Signing Service Provider using Long-Term Certificates
 
 ## 1.0 Summary:
 
 This Specification defines the procedures for using the EUDI wallet to digitally sign a document, using Long-Term certificates, on a Remote Signing Service Provider (SSP). It specifies a new protocol for executing digital signing, that will ensure successful communication and interoperability with the EUDI wallet, Signing Service Providers, and will support multiple Remote QES (RQES) Providers as per the ARF specification.
 
+**Status: Ready for Review**
+
 ### Authors:
 
 - Mr. Kyriakos Giannakis (Intesi Group, Italy | Flare, Greece)
+
+### Reviewers:
+
+TBA
+
 
 ## 2.0: Motivation:
 
@@ -21,6 +28,41 @@ At present, there are no standardized procedures and interfaces for digitally pr
 - Oct 18, 2024: Addition of Pre-enrollment process. Addition of CSC API call examples on `credentials/list`, `credentials/info`. Refinement of RQESAC. Changes to Signing Process Metadata endpoint to support multiple credentials. Addition of credential selection screen.
 - Oct 28, 2024: Addition of credential authorization. Addition of `credentials/info` example and required attributes.
 - Oct 29, 2024: Addition of the Signature Creation step. Marking of the Pre-Enrollment step as optional (moved to Annex 2) and restoration of Client Credentials within the RQESAC.
+
+### 2.2 Table of Contents:
+
+1. [The Signing Architecture](#30-the-signing-architecture)
+  - [Phases of the Signing Architecture](#phases-of-the-signing-architecture)
+    1. [User Authentication & RQES Delegation](#phase-1-user-authentication--rqes-delegation)
+    2. [Signing Initialization](#phase-2-signing-initialization)
+    3. [Signature Creation](#phase-3-signature-creation)
+    4. [Signature Confirmation, Dispatching of Signature, Document Retrieval and Storage](#phase-4-signature-confirmation-dispatching-of-signature-final-document-retrieval-and-storage)
+
+2. [Signing Process](#31-signing-process)
+  - [Phase 1: User Authentication & RQES Delegation](#311-phase-1-user-authentication--rqes-delegation)
+    - [Overview](#overview)
+    - [User Authentication & Multiple RQES Service Support](#3111-user-authentication--multiple-rqes-service-support)
+    - [Service Authentication of SSP, Credential Listing, SRU Preparation](#3112-service-authentication-of-ssp-listing-of-the-users-credentials-and-sru-preparation)
+  - [Phase 2: Signing Initialization](#312-phase-2-signing-initialization)
+    - [Overview](#overview-1)
+    - [Signing Process Initialization via SRU](#3121-signing-process-initialization-through-signature-request-uri-sru)
+    - [Signing Process Metadata](#3123-signing-process-metadata)
+    - [Required Attributes for Supported Credentials](#3124-required-attributes-for-supported-credentials)
+    - [Credential Selection](#3125-credential-selection)
+    - [WYSIWYS (What You See Is What You Sign)](#3126-what-you-see-is-what-you-sign-wysiwys)
+  - [Phase 3: Signature Creation](#313-phase-3-signature-creation)
+    - [Overview](#overview-2)
+    - [Signature Creation](#3131-signature-creation)
+    - [Credential Authorization](#3132-credential-authorization)
+      - [Authorization Code Flow (oauth2code)](#authorization-code-flow-oauth2code)
+      - [Explicit Flow (explicit)](#explicit-flow-explicit)
+    - [Signature Creation Process](#3133-signature-creation)
+  - [Phase 4: Signature Confirmation, Dispatching to SSP, Document Retrieval and Storage](#314-phase-4-signature-confirmation-dispatching-of-signature-to-ssp-final-document-retrieval-and-storage)
+
+3. [Annexes](#annexes)
+  - [Annex 1: RQES Access Credential Schema and Example](#annex-1-rqes-access-credential-schema-and-example)
+  - [Annex 2: RQES Pre-Enrollment](#annex-2-rqes-pre-enrollment)
+
 
 ## 3.0 The Signing Architecture:
 
