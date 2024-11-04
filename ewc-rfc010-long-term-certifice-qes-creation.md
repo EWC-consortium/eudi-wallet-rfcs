@@ -14,22 +14,7 @@ This Specification defines the procedures for using the EUDI wallet to digitally
 
 TBA
 
-
-## 2.0: Motivation:
-
-The primary motivation for this specification is to establish a standardized protocol for authorizing the digital signing of documents using the EUDI wallet and Long-Term certificates, on a Remote Signing Service Provider. 
-At present, there are no standardized procedures and interfaces for digitally presenting a document to the signer using the EUDI wallet, no procedures for authenticating the signing party to the Signing Signing Service Provider.
-
-## 2.1 Changelog:
-
-- Jul. 19 2024: Initialization of authoring process. Initial draft.
-- Sep. 10 2024: Addition of multiple RQES service support through RQES Access VC concept. Further Enrichment of RFC.
-- Oct 1 2024: Addition of SSP discovery endpoint. Addition of RQESAC token example. Misc corrections.
-- Oct 18, 2024: Addition of Pre-enrollment process. Addition of CSC API call examples on `credentials/list`, `credentials/info`. Refinement of RQESAC. Changes to Signing Process Metadata endpoint to support multiple credentials. Addition of credential selection screen.
-- Oct 28, 2024: Addition of credential authorization. Addition of `credentials/info` example and required attributes.
-- Oct 29, 2024: Addition of the Signature Creation step. Marking of the Pre-Enrollment step as optional (moved to Annex 2) and restoration of Client Credentials within the RQESAC.
-
-### 2.2 Table of Contents:
+### Table of Contents:
 
 - [The Signing Architecture](#30-the-signing-architecture)
 - [Signing Process](#31-signing-process)
@@ -52,9 +37,25 @@ At present, there are no standardized procedures and interfaces for digitally pr
       - [Explicit Flow (explicit)](#explicit-flow-explicit)
     - [Signature Creation Process](#3133-signature-creation)
   - [Phase 4: Signature Confirmation, Dispatching to SSP, Document Retrieval and Storage](#314-phase-4-signature-confirmation-dispatching-of-signature-to-ssp-final-document-retrieval-and-storage)
-- [Annexes](#annexes)
-  - [Annex 1: RQES Access Credential Schema and Example](#annex-1-rqes-access-credential-schema-and-example)
-  - [Annex 2: RQES Pre-Enrollment](#annex-2-rqes-pre-enrollment)
+- [Appendices](#annexes)
+  - [Appendix 1: RQES Access Credential Schema and Example](#appendix-1-rqes-access-credential-schema-and-example)
+  - [Appendix 2: RQES Pre-Enrollment](#appendix-2-rqes-pre-enrollment)
+  - [Appendix 3: Schemas](#appendix-3-schemas)
+
+## 2.0: Motivation:
+
+The primary motivation for this specification is to establish a standardized protocol for authorizing the digital signing of documents using the EUDI wallet and Long-Term certificates, on a Remote Signing Service Provider. 
+At present, there are no standardized procedures and interfaces for digitally presenting a document to the signer using the EUDI wallet, no procedures for authenticating the signing party to the Signing Signing Service Provider.
+
+## 2.1 Changelog:
+
+- Jul. 19 2024: Initialization of authoring process. Initial draft.
+- Sep. 10 2024: Addition of multiple RQES service support through RQES Access VC concept. Further Enrichment of RFC.
+- Oct 1 2024: Addition of SSP discovery endpoint. Addition of RQESAC token example. Misc corrections.
+- Oct 18, 2024: Addition of Pre-enrollment process. Addition of CSC API call examples on `credentials/list`, `credentials/info`. Refinement of RQESAC. Changes to Signing Process Metadata endpoint to support multiple credentials. Addition of credential selection screen.
+- Oct 28, 2024: Addition of credential authorization. Addition of `credentials/info` example and required attributes.
+- Oct 29, 2024: Addition of the Signature Creation step. Marking of the Pre-Enrollment step as optional (moved to Annex 2) and restoration of Client Credentials within the RQESAC.
+
 
 
 ## 3.0 The Signing Architecture:
@@ -512,7 +513,7 @@ The wallet can then send the Signature to the SSP, to be attached to the documen
 
 TBA
 
-## Annex 1: RQES Access Credential Schema and Example
+## Appendix 1: RQES Access Credential Schema and Example
 
 ### Example:
 
@@ -535,7 +536,7 @@ TBA
 }
 ```
 
-## Annex 2: RQES Pre-Enrollment
+## Appendix 2: RQES Pre-Enrollment
 
 Should an RQES provider not choose to provide the `Service Authorization` Client Credentials within the RQES Access Credential, the SSP must be pre-enrolled with the RQES Provider.
 
@@ -544,6 +545,6 @@ Pre-enrollment is facilitated through a contractual agreement, outside the scope
 Upon pre-enrollment, **OAuth2 Client Credentials** for access to the [CSC Specification Compatible API (v2)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) exposed by the RQES provider are issued to the SSP, to facilitate communication between the parties.
 
 
-### Schema:
+### Appendix 3: Schemas
 
 TBD
