@@ -53,7 +53,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | **RFC #** | **RFC Title**                                                                               |
 | --------- | ------------------------------------------------------------------------------------------- |
 | RFC-003   | [Issue Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md) |
-| RFC-004   | Individual Wallet Unit Attestation                                                          |
+| RFC-004   | [Individual Wallet Unit Attestation](ewc-rfc004-individual-wallet-attestation.md)                                                          |
 | RFC-006   | Organisational Wallet Unit Attestation                                                      |
 | RFC-008   | Strong Customer Authentication                                                              |
 | RFC-009   | Payment Transaction                                                                         |
