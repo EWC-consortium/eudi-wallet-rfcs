@@ -10,7 +10,7 @@
 * Mr Lal Chandran (iGrant.io, Sweden)
 * Dr Nikos Triantafyllou (University of the Aegean, Greece)
 
-**Status:**
+**Status:** Work in progress
 
 Current: OAuth 2.0 Attestation-Based Client Authentication Draft 03 [[1](#60reference)]
 
