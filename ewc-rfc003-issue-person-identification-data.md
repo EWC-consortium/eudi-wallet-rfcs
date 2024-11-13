@@ -69,59 +69,54 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
   sequenceDiagram
     participant I as Individual using EUDI Wallet
     participant TA as Trust Anchor
-    box PID Provisioning Services
-    participant O as Identity Provider
-    participant CI as Credential Issuer
-    participant AS as Authentic Source
-    end
+    participant P as PID Provider
     
-    Note over I,CI: Discovery of Issuer Capabilities 
+    Note over I,P: Discovery of Issuer Capabilities 
       
-    I->>CI: GET: Credential Offer URI
-    I->> CI: GET: /.well-known/openid-credential-issuer
-    CI-->> I: OpenID credential issuer configuration
-    I->> O: GET: /.well-known/oauth-authorization-server
-    O-->>I: OAuth authorization server metadata
+    I->> P: GET: Credential Offer URI
+    I->> P: GET: /.well-known/openid-credential-issuer
+    P-->> I: OpenID credential issuer configuration
+    I->> P: GET: /.well-known/oauth-authorization-server
+    P-->>I: OAuth authorization server metadata
         
     Note over I,TA: Issuer Authorization Verification
     I->>TA: Request Issuer Authorization Status
     TA-->>I: Confirm Issuer is Trusted
     
-    Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
+    Note over I,P: Authenticate, Authorize, Check Wallet's Conformity
     opt authorized flow
-    I->>O: Authorization request (with WTA and WIA)
-    O-->>O: Verify Wallet Trust Attestation and Instance Attestation & walletProvider vs TrustFramework 
+    I->>P: Authorization request (with WTA and WIA)
+    P-->>P: Verify Wallet Trust Attestation and Instance Attestation & walletProvider vs TrustFramework 
     opt wallet attestations not valid
-    O-->>I: Error message response
+    P-->>I: Error message response
     end
-    Note over O,AS: Data Collection from Authentic Source
-    O->>O: User authentication
-    O->>AS: Request Personal Identifier Data
-    AS-->>O: Provide Personal Identifier Data
-        O-->>I: Authorization response 
+    Note over P,AS: Data Collection from Authentic Source
+    P->>P: User authentication
+    P->>AS: Request Personal Identifier Data
+    AS-->>P: Provide Personal Identifier Data
+    P-->>I: Authorization response 
     end
     
-    I->>O: Token request
+    I->>P: Token request
     opt preauthorized flow
-    O-->>I: Wallet Trust Attestation and Instance Attestation Request
-    I-->>O: Wallet Trust Attestation and Instance Attestation Response
-    O-->>O: Verify Wallet Provider vs TrustFramework 
+    P-->>P: Wallet Trust Attestation and Instance Attestation Validation
+    P-->>TA: Verify Wallet Provider vs TrustFramework 
     opt wallet attestations not valid
-    O-->>I: Error message response
+    P-->>I: Error message response
     end
     
     Note right of I: hypotesis: WTA and WIA should be sent as parameters on token request
     end
-    O-->>I: Token response
+    P-->>I: Token response
             
-    Note over I,O: PID Generation and Secure Issuance
-    I->>O: POST: Credential request with access token
-    O->>CI: Credential request
-    Note over CI,AS: Data Acquisition from Authentic Source <BR> or temporary storage (userInfo)
-    CI->>AS: Request Personal Identifier Data
-    AS-->>CI: Provide Personal Identifier Data
+    Note over I,P: PID Generation and Secure Issuance
+    I->>P: POST: Credential request with access token
     
-    CI-->>I: Credential response with PID, stored securely in wallet
+    Note over P,AS: Data Acquisition from Authentic Source <BR> or temporary storage (userInfo)
+    P->>AS: Request Personal Identifier Data
+    AS-->>P: Provide Personal Identifier Data
+    
+    P-->>I: Credential response with PID, stored securely in wallet
 
 ```
 
