@@ -57,7 +57,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-006   | Organisational Wallet Unit Attestation                                                      |
 | RFC-008   | Strong Customer Authentication                                                              |
 | RFC-009   | Payment Transaction                                                                         |
-| RFC-010   | Synchronous Document Signing using Long-Term Certificates                                   |
+| RFC-010   | [Synchronous Document Signing on a Remote Signing Service Provider using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)|
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
 
