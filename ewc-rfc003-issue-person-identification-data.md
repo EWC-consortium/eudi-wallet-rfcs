@@ -69,62 +69,69 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
   sequenceDiagram
     participant I as Individual using EUDI Wallet
     participant TA as Trust Anchor
-    participant P as PID Provider
+    box PID Provisioning Services
+    participant O as Identity Provider
+    participant CI as Credential Issuer
+    participant AS as Authentic Source
+    end
     
-    Note over I,P: Discovery of Issuer Capabilities 
+    Note over I,CI: Discovery of Issuer Capabilities 
       
-    I->> P: GET: Credential Offer URI
-    I->> P: GET: /.well-known/openid-credential-issuer
-    P-->> I: OpenID credential issuer configuration
-    I->> P: GET: /.well-known/oauth-authorization-server
-    P-->>I: OAuth authorization server metadata
+    I->>CI: GET: Credential Offer URI
+    I->> CI: GET: /.well-known/openid-credential-issuer
+    CI-->> I: OpenID credential issuer configuration
+    I->> O: GET: /.well-known/oauth-authorization-server
+    O-->>I: OAuth authorization server metadata
         
     Note over I,TA: Issuer Authorization Verification
     I->>TA: Request Issuer Authorization Status
     TA-->>I: Confirm Issuer is Trusted
     
-    Note over I,P: Authenticate, Authorize, Check Wallet's Conformity
+    Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
     opt authorized flow
-    I->>P: Authorization request (with WTA and WIA)
-    P-->>P: Verify Wallet Trust Attestation and Instance Attestation & walletProvider vs TrustFramework 
+    I->>O: Authorization request (with WTA and WIA)
+    O-->>O: Verify Wallet Trust Attestation and Instance Attestation & walletProvider vs TrustFramework 
     opt wallet attestations not valid
-    P-->>I: Error message response
+    O-->>I: Error message response
     end
-    Note over P,AS: Data Collection from Authentic Source
-    P->>P: User authentication
-    P->>AS: Request Personal Identifier Data
-    AS-->>P: Provide Personal Identifier Data
-    P-->>I: Authorization response 
+    Note over O,AS: User Authentication
+      O->>O: User authentication
+        opt user data verified vs authentic source
+          O->>AS: Request Personal Identifier Data
+          AS-->>O: Provide Personal Identifier Data
+      end
+      O-->>I: Authorization response 
     end
     
-    I->>P: Token request
+    I->>O: Token request
     opt preauthorized flow
-    P-->>P: Wallet Trust Attestation and Instance Attestation Validation
-    P-->>TA: Verify Wallet Provider vs TrustFramework 
-    opt wallet attestations not valid
-    P-->>I: Error message response
+      O-->>I: Wallet Trust Attestation and Instance Attestation Request
+      I-->>O: Wallet Trust Attestation and Instance Attestation Response
+      O-->>O: Verify Wallet Provider vs TrustFramework 
+        opt wallet attestations not valid
+          O-->>I: Error message response
+        end
+    
+      O->>O: User authentication (user credentials or qrcode flow)
+      Note right of I: hypotesis: WTA and WIA should be sent as parameters on token request
     end
+    O-->>I: Token response
     
-    Note right of I: hypotesis: WTA and WIA should be sent as parameters on token request
-    end
-    P-->>I: Token response
-            
-    Note over I,P: PID Generation and Secure Issuance
-    I->>P: POST: Credential request with access token
+        
+    Note over I,O: PID Generation and Secure Issuance
+    I->>O: POST: Credential request with access token
+    O->>CI: Credential request
+    Note over CI,AS: Data Acquisition from Authentic Source <BR> or temporary storage (userInfo)
+    CI->>AS: Request Personal Identifier Data
+    AS-->>CI: Provide Personal Identifier Data
     
-    Note over P,AS: Data Acquisition from Authentic Source <BR> or temporary storage (userInfo)
-    P->>AS: Request Personal Identifier Data
-    AS-->>P: Provide Personal Identifier Data
-    
-    P-->>I: Credential response with PID, stored securely in wallet
+    CI-->>I: Credential response with PID, stored securely in wallet
 
 ```
 
 Figure 1: PID Issuance Process Incorporating Preliminary Checks
 
-The process foresees two options: the traditional authorization code flow and pre-authorized code flow, adhering to the OID4VCI specification [1].
-In the authorization flow, the bearer token is provided after user authentication, and then it's exchanged in order to collect an access token to access data and to get the PID credential.
-In the preauthorized flow, the authentication is managed before and externally from this process, so an authorization code is provided to get the access token. 
+The process highlights the integration of the new preliminary steps with the traditional authorization code flow and pre-authorized code flow, adhering to the OID4VCI specification. It ensures a robust framework for digital identity issuance, from initial compliance verification to the secure generation and storage of PID credentials, followed by ongoing management.
 
 ### Post-Issuance Verification and Management
 
@@ -867,10 +874,7 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 
 # 6.0 Reference
 
-1. OpenID Foundation (2024), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: 
-[https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html);
-[https://openid.github.io/OpenID4VCI/openid-4-verifiable-credential-issuance-wg-draft.html](https://openid.github.io/OpenID4VCI/openid-4-verifiable-credential-issuance-wg-draft.html)
-(Accessed: October 10, 2024).
+1. OpenID Foundation (2024), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html) (Accessed: October 10, 2024).
 2. European Commission (2024) The European Digital Identity Wallet Architecture and Reference Framework (2024-09, v1.4.1)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: October 16, 2024).
 3. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 4. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
