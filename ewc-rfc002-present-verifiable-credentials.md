@@ -699,7 +699,7 @@ Host: identity-provider.gov
 Content-Type: application/x-www-form-urlencoded
 
 &grant_type=urn:ietf:params:oauth:grant-type:pre-authorized_code
-&pre_authorized_code=SplxlOBeZQQYbYS6WxSbIA
+&pre-authorized_code=SplxlOBeZQQYbYS6WxSbIA
 &user_pin=493536
 ```
 
@@ -713,7 +713,7 @@ This request is made with the following query params:
    </td>
   </tr>
   <tr>
-   <td><code>pre_authorized_code</code>
+   <td><code>pre-authorized_code</code>
    </td>
    <td>Code representing the Credential Issuer's authorisation for the Wallet to obtain Credentials of a certain type. This code must be short-lived and single-use.
    </td>
