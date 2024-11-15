@@ -87,7 +87,7 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     
     Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
     opt authorization flow
-    I->>O: Authorization request (with WTA and WIA)
+    I->>O: Authorization request
     O-->>O: Wallet Unit attestation validation
     O-->>TA: Wallet Provider verification against Trust Framework
       opt wallet attestations not valid
