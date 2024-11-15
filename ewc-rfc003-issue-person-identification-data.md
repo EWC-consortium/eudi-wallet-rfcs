@@ -103,13 +103,14 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     end
     
     I->> O: Token request
-    Note right of I: hypotesis: WTA and WIA should be sent as parameters on token request
+    Note right of I: WTA and WIA should be sent as parameters on token request
+    opt preauthorized flow or in case wallet attestations have not been verified yet
     O-->>O: Wallet Unit attestation validation
     O-->>TA: Wallet Provider verification against Trust Framework
       opt wallet attestations not valid
           O-->>I: Error message response
       end
-    
+    end
     O->>O: authorization/pre-authorized code validation
     O-->>I: Token response
         
