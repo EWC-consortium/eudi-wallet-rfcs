@@ -88,11 +88,6 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
     opt authorization flow
     I->>O: Authorization request
-    O-->>O: Wallet Unit attestation validation
-    O-->>TA: Wallet Provider verification against Trust Framework
-      opt wallet attestations not valid
-          O-->>I: Error message response
-      end
     
     Note over O,AS: User Authentication
         opt user data verified vs authentic source
@@ -104,13 +99,11 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     
     I->> O: Token request
     Note right of I: WTA and WIA should be sent as parameters on token request
-    opt preauthorized flow or in case wallet attestations have not been verified yet
     O-->>O: Wallet Unit attestation validation
     O-->>TA: Wallet Provider verification against Trust Framework
       opt wallet attestations not valid
           O-->>I: Error message response
       end
-    end
     O->>O: authorization/pre-authorized code validation
     O-->>I: Token response
         
@@ -559,7 +552,7 @@ Query params for the authorisation request are given below:
   </tr>
 </table>
 
-> Note 1: the wallet trust attestation and the wallet instance attestation could be verified indifferently in this step or during token request step (that shall be for pre authorized flow). 
+> Note 1: the wallet trust attestation and the wallet instance attestation shall be verified during token request step. 
 
 > Note 2: In the authorization flow, we assume that the user will be asked to authenticate in order to provide his identity and optionally personal data will be collected and stored by identity provider. 
 
@@ -644,7 +637,7 @@ Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 
 ## 3.7 Token request
 
-In case of preauthorized flow this step foresees the wallet attestation validation and trustworthiness of wallet instance and its provider.
+In this step wallet trustwothiness in verified using wallet unit attestations received within token request. Wallet provider could be validated against trust framework and the wallet instance could be verified against a version trustlist exposed by the wallet provider, if available.
 > Note: The validation of wallet is based on wallet unit attestation (rif RFC004 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md])
 
 ### 3.7.1 Authorisation code flow
