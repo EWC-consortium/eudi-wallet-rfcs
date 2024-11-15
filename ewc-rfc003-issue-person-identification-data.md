@@ -69,17 +69,14 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
   sequenceDiagram
     participant I as Individual using EUDI Wallet
     participant TA as Trust Anchor
-    box PID Provisioning Services
     participant O as Identity Provider
-    participant CI as Credential Issuer
     participant AS as Authentic Source
-    end
-    
-    Note over I,CI: Discovery of Issuer Capabilities 
+        
+    Note over I,O: Discovery of Issuer Capabilities 
       
-    I->>CI: GET: Credential Offer URI
-    I->> CI: GET: /.well-known/openid-credential-issuer
-    CI-->> I: OpenID credential issuer configuration
+    I->>O: GET: Credential Offer URI
+    I->> O: GET: /.well-known/openid-credential-issuer
+    O-->> I: OpenID credential issuer configuration
     I->> O: GET: /.well-known/oauth-authorization-server
     O-->>I: OAuth authorization server metadata
         
@@ -102,7 +99,7 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     I->> O: Token request
     Note right of I: hypotesis: WTA and WIA should be sent as parameters on token request
     O-->>O: Wallet Unit attestation validation
-    O-->>O: Wallet Provider verification against Trust Framework
+    O-->>TA: Wallet Provider verification against Trust Framework
       opt wallet attestations not valid
           O-->>I: Error message response
       end
@@ -112,12 +109,11 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
         
     Note over I,O: PID Generation and Secure Issuance
     I->>O: POST: Credential request with access token
-    O->>CI: Credential request
-    Note over CI,AS: Data Acquisition from Authentic Source <BR> or temporary storage (userInfo)
-    CI->>AS: Request Personal Identifier Data
-    AS-->>CI: Provide Personal Identifier Data
+    Note over O,AS: Data Acquisition from Authentic Source <BR> or temporary storage (userInfo)
+    O->>AS: Request Personal Identifier Data
+    AS-->>O: Provide Personal Identifier Data
     
-    CI-->>I: Credential response with PID, stored securely in wallet
+    O-->>I: Credential response with PID, stored securely in wallet
 
 ```
 
