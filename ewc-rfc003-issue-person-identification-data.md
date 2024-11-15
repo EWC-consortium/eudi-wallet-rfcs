@@ -40,6 +40,8 @@
 - [5.0 Implementers](#50-implementers)
 - [6.0 Reference](#60-reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
+- [Appendix B: SD-JWT PID example](#appendix-b-sd-jwt-pid-example)
+
 
 # 1.0 Summary
 
@@ -69,11 +71,10 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
   sequenceDiagram
     participant I as Individual using EUDI Wallet
     participant TA as Trust Anchor
-    participant O as Identity Provider
+    participant O as PID Provider
     participant AS as Authentic Source
         
     Note over I,O: Discovery of Issuer Capabilities 
-      
     I->>O: GET: Credential Offer URI
     I->> O: GET: /.well-known/openid-credential-issuer
     O-->> I: OpenID credential issuer configuration
@@ -87,8 +88,13 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
     opt authorization flow
     I->>O: Authorization request (with WTA and WIA)
+    O-->>O: Wallet Unit attestation validation
+    O-->>TA: Wallet Provider verification against Trust Framework
+      opt wallet attestations not valid
+          O-->>I: Error message response
+      end
+    
     Note over O,AS: User Authentication
-      O->>O: User authentication
         opt user data verified vs authentic source
           O->>AS: Request Personal Identifier Data
           AS-->>O: Provide Personal Identifier Data
@@ -104,7 +110,7 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
           O-->>I: Error message response
       end
     
-    O->>O: authorization code validation
+    O->>O: authorization/pre-authorized code validation
     O-->>I: Token response
         
     Note over I,O: PID Generation and Secure Issuance
@@ -127,7 +133,7 @@ Following the issuance of the PID, initial and periodic verification procedures 
 
 ## 3.1 Credential offer
 
-For PID credential issuance, the member state PID issuer will adopt RFC001 for credential offer pre-authorised code flow, using the credential_offer_uri parameter as shown below:
+For PID credential issuance, this RFC allows both authorization and preauthorized flows. PID issuer will use the credential_offer_uri parameter as shown below:
 
 ```
 openid-credential-offer://?credential_offer_uri=https://identity-provider.gov/pid-credential-offer
@@ -552,9 +558,9 @@ Query params for the authorisation request are given below:
   </tr>
 </table>
 
-> Note 1: the wallet trust attestation and the wallet instance attestantion could be requested to the user as string parameters or through an engagement using qrcode. 
+> Note 1: the wallet trust attestation and the wallet instance attestation could be verified indifferently in this step or during token request step (that shall be for pre authorized flow). 
 
-> Note 2: In the authorization flow, we assume that the user will be asked to authenticate and optionally personal data will be collected and stored by identity provider. 
+> Note 2: In the authorization flow, we assume that the user will be asked to authenticate in order to provide his identity and optionally personal data will be collected and stored by identity provider. 
 
 ## 3.6 Authorization response
 
@@ -637,7 +643,7 @@ Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 
 ## 3.7 Token request
 
-This step foresees the wallet attestation validation and trustworthiness of wallet instance and its provider.
+In case of preauthorized flow this step foresees the wallet attestation validation and trustworthiness of wallet instance and its provider.
 > Note: The validation of wallet is based on wallet unit attestation (rif RFC004 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md])
 
 ### 3.7.1 Authorisation code flow
@@ -778,7 +784,8 @@ In cases where the PID credential is immediately available, the response is stru
 ```
 
 This response provides the PID credential in an encoded format, ensuring that the recipient can use it straightaway. The c_nonce ensures the response's freshness, enhancing security.
-
+> [!NOTE] 
+> A complete example of PID with sd jwt is provided in Appendix B
 ### 3.10.2 Deferred
 
 Should the credential not be ready for immediate issuance, the response includes an acceptance token, signaling that the PID credential's issuance is deferred:
@@ -875,3 +882,129 @@ For a JWT there are multiple ways for resolving the public key using the `kid` h
 * If the key identifier is not a DID, then resolve the JWKs endpoint in the AS configuration and match the public key from the JWK set using the key identifier.
 
 Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
+
+# Appendix B: SD-JWT PID example
+
+This is an example of a PID formatted according to Reference implementation (Nov 2024 ).
+
+```json
+{
+  "format": "vc+sd-jwt",
+  "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiREdYYWl2U0FwbEtVa3Q5NmZUV29CQ3dIVUV1Rk5ROTlmMi1KeUZDV01qTSIsIk15dk1HX0IyVzltSy1Wa0FEMFJFY3BwZFJxNF9IbG5rRFlSbHNoNXBrbG8iLCJQbmg2V0JkTUREeXhkRks1YVQ4X1p3ajlpRTYyakM4RE00UDNYc0xFLUxVIiwiUWh5TDN5aXR1LURyUUZfNjhvOXoxWmJ0c0FGeWw1ckVzV0NSakxoNEpHayIsIlVudG04Sm1NT0FIYlg1TXZKcWY4LWM4Ynd2OGV6U0ZSczhjZDVEbWtOblEiXSwidmN0IjoiZXUuZXVyb3BhLmVjLmV1ZGkucGlkLjEiLCJfc2RfYWxnIjoic2hhMy0yNTYiLCJpc3MiOiJodHRwczovL2lzc3Vlci1iYWNrZW5kLmV1ZGl3LmRldiIsImNuZiI6eyJqd2siOnsia3R5IjoiUlNBIiwiZSI6IkFRQUIiLCJ1c2UiOiJzaWciLCJraWQiOiJkNzE4NWVjYS04YThiLTQwYTItOTMzYi1iM2YxNWI5YjVhMWUiLCJpYXQiOjE3MzE2Njg1OTIsIm4iOiJ6QU14YTJUeEpnM2hJS2o0V0d5RW1TTWNEbGpRY2xOVEFuZERmbHdUTnZZbldYbENBLVhCb2d6UnpBclI0OG9kSko4Yi1OcjlmNW9ZSElwOFdkTm9BczRodmUxTkJRdXdTdVlOaS1TTFZrY05ENGhuMWdWbXlpZXd6Tmx2UjZMTDdKb0JSRHRUZTNQYVI5WEFvQkhSeWNxNGpNeThyM3hMb1gwWHhtQW9jdHh0bTZyN2V5Mmg5NTF2VUVlaFZrblg1OC1STzJKanBZbDFzUldJTWJRQ19oVFlxdkgwc1ZGd1V4dG5RcWE1M2VTejlVWk81Wmt6SmE3VnM5Z1NNQ2NYUnR6OFhCWFR3V05NOWg4ZERoak56RVhScHpZcGdJYU00VElEZDRpLV9VUHM5ZU4zTFdzVWlzaVktakFTNmtFeDZhcFNHa1ppdC04YnYxSHktMldkT3cifX0sImV4cCI6MTczNDI2MDU5MywiaWF0IjoxNzMxNjY4NTkzLCJhZ2VfZXF1YWxfb3Jfb3ZlciI6eyJfc2QiOlsiaXBTODMtM1BZVWstRXN5WHpwYUMtUHRYWVNNZ1JacHFNZG5VX0JTNFd1MCJdfX0.8WXGs3v-9drBO_6DiwKZ92DrCeNyAsAIgKidFZtIzBPVj_v5idjUJimqG3GzqRgSESCo28M6WliOu31bD2QoZw~WyJVai1pTDlsX19CRktFUWp5cTJEVDRnIiwiaXNzdWFuY2VfZGF0ZSIsIjIwMjQtMTEtMTUiXQ~WyJRaEwwRXpHSXVpRlJWY0NlQ3NrY0h3IiwiZ2l2ZW5fbmFtZSIsIlR5bGVyIl0~WyJZQXlENGt2MUQ3aTJ3dUJKMl93TFNRIiwiZmFtaWx5X25hbWUiLCJOZWFsIl0~WyJIMjBSQXpDN0MzMHpqNXBYbl9QOWZRIiwiYmlydGhkYXRlIiwiMTk1NS0wNC0xMiJd~WyJMam1ManNoVUFfNzBGX2d1Mm1HWnVBIiwiMTgiLHRydWVd~WyIxMEpKTDR2ZjZrMk9kSlV2VnY0OV93IiwiZ2VuZGVyIiwxXQ~WyJBY0RWdVN2RHp1N1pvWXJvdWE4ekxRIiwiYWdlX2luX3llYXJzIiw3MF0~WyJiMEJ3Y1E5cUdxSVZQVjkzSHAtdjVBIiwiYmlydGhkYXRlX3llYXIiLCIxOTU1Il0~WyJ4QmdaX0RxS3RYR19DRllCTE01cmxRIiwiY291bnRyeSIsIkFUIl0~WyJNajJ5M0p3R29BQzhqaEIxRFc5Zjl3IiwicmVnaW9uIiwiTG93ZXIgQXVzdHJpYSJd~WyJPUHduYkpCT0s2Vll0alBMMDZWeHNRIiwibG9jYWxpdHkiLCJHZW1laW5kZSBCaWJlcmJhY2giXQ~WyJadnVxeHcxSDBwbVJMN0VWSVRDb1VnIiwicG9zdGFsX2NvZGUiLCIzMzMxIl0~WyJleDBxQmVhRXRZeU5IV2ZsaDRGTG1nIiwic3RyZWV0X2FkZHJlc3MiLCIxMDEgVHJhdW5lciJd~WyJDY0xtekpPREJGMVJKOXdyMG1NaEV3IiwiYWRkcmVzcyIseyJfc2QiOlsiLWQwTDdObFpDcnFUUW02OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
+  "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
+  "c_nonce_expires_in": 86400
+}
+```
+This credential can be decoded through [https://sdjwt.info/ ]
+The disclosed payload
+```json
+
+{
+  "18": {
+    "value": true,
+    "disclose": true
+  },
+  "vct": {
+    "value": "eu.europa.ec.eudi.pid.1",
+    "disclose": false
+  },
+  "_sd_alg": {
+    "value": "sha3-256",
+    "disclose": false
+  },
+  "iss": {
+    "value": "https://issuer-backend.eudiw.dev",
+    "disclose": false
+  },
+  "cnf": {
+    "value": {
+      "jwk": {
+        "kty": "RSA",
+        "e": "AQAB",
+        "use": "sig",
+        "kid": "d7185eca-8a8b-40a2-933b-b3f15b9b5a1e",
+        "iat": 1731668592,
+        "n": "zAMxa2TxJg3hIKj4WGyEmSMcDljQclNTAndDflwTNvYnWXlCA-XBogzRzArR48odJJ8b-Nr9f5oYHIp8WdNoAs4hve1NBQuwSuYNi-SLVkcND4hn1gVmyiewzNlvR6LL7JoBRDtTe3PaR9XAoBHRycq4jMy8r3xLoX0XxmAoctxtm6r7ey2h951vUEehVknX58-RO2JjpYl1sRWIMbQC_hTYqvH0sVFwUxtnQqa53eSz9UZO5ZkzJa7Vs9gSMCcXRtz8XBXTwWNM9h8dDhjNzEXRpzYpgIaM4TIDd4i-_UPs9eN3LWsUisiY-jAS6kEx6apSGkZit-8bv1Hy-2WdOw"
+      }
+    },
+    "disclose": false
+  },
+  "exp": {
+    "value": 1734260593,
+    "disclose": false
+  },
+  "iat": {
+    "value": 1731668593,
+    "disclose": false
+  },
+  "age_equal_or_over": {
+    "value": {
+      "_sd": [
+        "ipS83-3PYUk-EsyXzpaC-PtXYSMgRZpqMdnU_BS4Wu0"
+      ]
+    },
+    "disclose": false
+  },
+  "issuance_date": {
+    "value": "2024-11-15",
+    "disclose": true
+  },
+  "given_name": {
+    "value": "Tyler",
+    "disclose": true
+  },
+  "family_name": {
+    "value": "Neal",
+    "disclose": true
+  },
+  "birthdate": {
+    "value": "1955-04-12",
+    "disclose": true
+  },
+  "gender": {
+    "value": 1,
+    "disclose": true
+  },
+  "age_in_years": {
+    "value": 70,
+    "disclose": true
+  },
+  "birthdate_year": {
+    "value": "1955",
+    "disclose": true
+  },
+  "country": {
+    "value": "AT",
+    "disclose": true
+  },
+  "region": {
+    "value": "Lower Austria",
+    "disclose": true
+  },
+  "locality": {
+    "value": "Gemeinde Biberbach",
+    "disclose": true
+  },
+  "postal_code": {
+    "value": "3331",
+    "disclose": true
+  },
+  "street_address": {
+    "value": "101 Trauner",
+    "disclose": true
+  },
+  "address": {
+    "value": {
+      "_sd": [
+        "-d0L7NlZCrqTQm69Yh2SkUvgizjYtrtpg6_qEmquoTc",
+        "6QtSVWFVGfDBh_YmxR2XqVX76fWR1bsb_lVISMycPbU",
+        "WhJkGsJpdbT623hSGyKUuG3He31HlQIcbDuvbeOHzwQ",
+        "ZeKDZ8oslHvtKsJX3Ncl0LsqBY1VLgwlYHkeI7a0LdE",
+        "kgBUkYONl82uIu0nCG2CiJ9nfgd_ZfBOwCd1iqRJTnU"
+      ]
+    },
+    "disclose": true
+  }
+}
+```
+
