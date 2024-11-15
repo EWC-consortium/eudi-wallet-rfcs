@@ -88,12 +88,8 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     TA-->>I: Confirm Issuer is Trusted
     
     Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
-    opt authorized flow
+    opt authorization flow
     I->>O: Authorization request (with WTA and WIA)
-    O-->>O: Verify Wallet Trust Attestation and Instance Attestation & walletProvider vs TrustFramework 
-    opt wallet attestations not valid
-    O-->>I: Error message response
-    end
     Note over O,AS: User Authentication
       O->>O: User authentication
         opt user data verified vs authentic source
@@ -103,20 +99,16 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
       O-->>I: Authorization response 
     end
     
-    I->>O: Token request
-    opt preauthorized flow
-      O-->>I: Wallet Trust Attestation and Instance Attestation Request
-      I-->>O: Wallet Trust Attestation and Instance Attestation Response
-      O-->>O: Verify Wallet Provider vs TrustFramework 
-        opt wallet attestations not valid
+    I->> O: Token request
+    Note right of I: hypotesis: WTA and WIA should be sent as parameters on token request
+    O-->>O: Wallet Unit attestation validation
+    O-->>O: Wallet Provider verification against Trust Framework
+      opt wallet attestations not valid
           O-->>I: Error message response
-        end
+      end
     
-      O->>O: User authentication (user credentials or qrcode flow)
-      Note right of I: hypotesis: WTA and WIA should be sent as parameters on token request
-    end
+    O->>O: authorization code validation
     O-->>I: Token response
-    
         
     Note over I,O: PID Generation and Secure Issuance
     I->>O: POST: Credential request with access token
@@ -566,7 +558,7 @@ Query params for the authorisation request are given below:
 
 > Note 1: the wallet trust attestation and the wallet instance attestantion could be requested to the user as string parameters or through an engagement using qrcode. 
 
-> Note 2: In the authorization flow, we assume that the user will be asked to authenticate and personal data will be collected and eventually stored by identity provider. 
+> Note 2: In the authorization flow, we assume that the user will be asked to authenticate and optionally personal data will be collected and stored by identity provider. 
 
 ## 3.6 Authorization response
 
@@ -576,7 +568,6 @@ In the context of PID credential issuance, the government identity provider may 
 HTTP/1.1 302 Found
 Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock&redirect_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Fdirect_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Frequest_uri%2F111d2819-9ab7-4959-83e5-f414c57fdc27
 ```
-
 Query params for the authorisation response are given below:
 
 <table>
@@ -650,6 +641,9 @@ Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 
 ## 3.7 Token request
 
+This step foresees the wallet attestation validation and trustworthiness of wallet instance and its provider.
+> Note: The validation of wallet is based on wallet unit attestation (rif RFC004 [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md])
+
 ### 3.7.1 Authorisation code flow
 
 For PID credential issuance, the token request using the authorization code flow is structured as follows:
@@ -719,7 +713,7 @@ This request is made with the following query params:
    </td>
   </tr>
   <tr>
-   <td>pre-<code>authorized_code</code>
+   <td><code>pre-authorized_code</code>
    </td>
    <td>Code representing the Credential Issuer's authorisation for the Wallet to obtain Credentials of a certain type. This code must be short-lived and single-use.
    </td>
@@ -731,8 +725,6 @@ This request is made with the following query params:
    </td>
   </tr>
 </table>
-
-> Note: We assume that the user has been previously authenticated (apart from this flow chart and before credential offer) and so the session reference token has been provided inside the token request towards the identity provider. So we assume that the wallet has not been engaged yet in that phase, and so it is here for WTA and WIA verification (for instance through a qrcode engagement).
 
 ## 3.8 Token response
 
@@ -749,8 +741,7 @@ The token response for PID credential issuance includes:
     "c_nonce_expires_in": 86400
 }
 ```
-
-This response grants the wallet an access and a refresh token for requesting the PID credential.
+This response grants the wallet an access token and a refresh token to be used  for the request of PID credential.
 
 ## 3.9 Credential request
 
