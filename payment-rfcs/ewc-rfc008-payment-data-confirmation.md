@@ -1,4 +1,4 @@
-# EWC RFC 008: Payment Data Confirmation - v1.0
+# EWC RFC008: Payment Data Confirmation - v0.9
 
 **Authors:**
 * Lal Chandran, iGrant.io, Sweden
@@ -18,7 +18,7 @@ Published under a Creative Commons Attribution 4.0 International License
 
 **Table of Contents**
 
-- [EWC RFC 008: Payment Data Confirmation - v1.0](#ewc-rfc-008-payment-data-confirmation---v10)
+- [EWC RFC008: Payment Data Confirmation - v0.9](#ewc-rfc008-payment-data-confirmation---v09)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Pre-requisites](#30-pre-requisites)
