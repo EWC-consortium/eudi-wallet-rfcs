@@ -55,7 +55,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-003   | [Issue Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md) |
 | RFC-004   | [Individual Wallet Unit Attestation](ewc-rfc004-individual-wallet-attestation.md)           |
 | RFC-006   | Organisational Wallet Unit Attestation                                                      |
-| RFC-008   | Payment Data Confirmation                                                                   |
+| RFC-008   | [Payment Data Confirmation - v0.9](payment-rfcs/ewc-rfc008-payment-data-confirmation.md)    |
 | RFC-009   | Payment Transaction Initiation                                                              |
 | RFC-010   | Synchronous Document Signing using Long-Term Certificates                                   |
 
