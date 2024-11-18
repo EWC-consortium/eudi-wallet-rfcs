@@ -25,13 +25,13 @@ Published under a Creative Commons Attribution 4.0 International License
 - [4.0 Messages](#40-messages)
   - [4.1 Authorisation request](#41-authorisation-request)
   - [4.2 Authorisation response](#42-authorisation-response)
-- [5.0	Validation rules](#50validation-rules)
-  - [5.1 Holder wallet](#51-holder-wallet)
-  - [5.1 Verifier](#51-verifier)
+- [5.0	Validation Rules](#50validation-rules)
+  - [5.1 Holder Wallet](#51-holder-wallet)
+  - [5.2 Verifier](#52-verifier)
 - [6.0 Schema definitions](#60-schema-definitions)
   - [6.1 Presentation definition](#61-presentation-definition)
-  - [6.2	Transaction data](#62transaction-data)
-  - [6.3	Key binding JWT](#63key-binding-jwt)
+  - [6.2 Transaction data](#62-transaction-data)
+  - [6.3 Key binding JWT](#63-key-binding-jwt)
 - [7.0 References](#70-references)
 
 # 1.0 Summary
@@ -70,25 +70,25 @@ The authorisation request defined in EWC RFC 002 [3] is extended to support the 
 
 <table>
   <tr>
-   <td colspan="2" ><strong><code>type</code></strong>
+   <td colspan="3" ><strong><code>type</code></strong>
    </td>
    <td>REQUIRED. The string that identifies the type of transaction data. This value determines parameters that can be included in the transaction_data object. It is RECOMMENDED that collision-resistant names be used for type values. The value must be set to ‘payment_data’. 
    </td>
   </tr>
   <tr>
-   <td colspan="2" ><strong><code>credential_ids</code></strong>
+   <td colspan="3" ><strong><code>credential_ids</code></strong>
    </td>
    <td>REQUIRED. An array of strings, each referencing a Credential requested by the Verifier that can be used to authorize this transaction. In Presentation Exchange, the string matches the id field in the Input Descriptor. If there is more than one element in the array, the Wallet MUST use only one of the referenced Credentials for transaction authorization.
    </td>
   </tr>
   <tr>
-   <td colspan="2" ><strong><code>transaction_data_hashes_alg</code></strong>
+   <td colspan="3" ><strong><code>transaction_data_hashes_alg</code></strong>
    </td>
    <td>OPTIONAL. An array of strings, each representing a hash algorithm identifier. If this parameter is absent, a default value of sha-256 MUST be used.
    </td>
   </tr>
   <tr>
-   <td colspan="2" ><strong><code>payment_data</code></strong>
+   <td colspan="3" ><strong><code>payment_data</code></strong>
    </td>
    <td>REQUIRED. An object related to payment transactions. This is introduced in EWC to support payment transactions. 
 <p>
@@ -98,7 +98,7 @@ This object contains the parameters given below.
   <tr>
    <td>
    </td>
-   <td><strong><code>payee</code></strong>
+   <td colspan="2" ><strong><code>payee</code></strong>
    </td>
    <td>REQUIRED. The name of the payee to whom the payment is being made.
    </td>
@@ -106,25 +106,67 @@ This object contains the parameters given below.
   <tr>
    <td>
    </td>
-   <td><strong><code>amount</code></strong>
+   <td colspan="2" ><strong><code>currency_amount</code></strong>
    </td>
-   <td>REQUIRED. A <a href="https://w3c.github.io/payment-request/#dfn-valid-decimal-monetary-value">valid decimal monetary value</a> containing a monetary amount. e.g. 23.50
+   <td>REQUIRED. An object conforming to the PaymentCurrencyAmount dictionary specification as defined in the W3C Payment Request API [9].
    </td>
   </tr>
   <tr>
+   <td>
+   </td>
    <td>
    </td>
    <td><strong><code>currency</code></strong>
    </td>
-   <td>REQUIRED. An [<a href="https://w3c.github.io/payment-request/#bib-iso4217">ISO4217</a>] <a href="https://tc39.es/ecma402/#sec-iswellformedcurrencycode">well-formed</a> 3-letter alphabetic code, e.g. EUR
+   <td>REQUIRED. A well-formed 3-letter alphabetic code, e.g. EUR.
    </td>
   </tr>
   <tr>
    <td>
    </td>
-   <td><strong><code>recurring_indicator</code></strong>
+   <td>
    </td>
-   <td>REQUIRED. Indicates whether the payment is one-off (0) or recurring (1). 
+   <td><strong><code>value</code></strong>
+   </td>
+   <td>REQUIRED. A valid decimal monetary value containing a monetary amount. e.g. 23.50.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>recurring_schedule</code></strong>
+   </td>
+   <td>OPTIONAL. If present, it indicates a recurring payment with the following details: 
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>start_date</code></strong>
+   </td>
+   <td>REQUIRED If the parent object is present. Indicates the date (ISO 8601) when the series of recurring payments has been agreed to commence. 
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>expiry_date</code></strong>
+   </td>
+   <td>OPTIONAL. Indicates the date (ISO 8601) when the series of recurring payments has been agreed to end. If absent, no expiration date has been agreed upon.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>frequency</code></strong>
+   </td>
+   <td>REQUIRED If the parent object is present, indicates the minimum number of days between single occurrences of the recurring schedule.
    </td>
   </tr>
 </table>
@@ -151,21 +193,33 @@ The authorisation response, as defined in EWC RFC 002 [3], is extended to includ
 </table>
 
 
+# 5.0	Validation Rules
 
-# 5.0	Validation rules
+## 5.1 Holder Wallet
 
-## 5.1 Holder wallet
+The holder wallet must display all attributes (keys and values) contained in the <strong><code>payment_data</code></strong> object to the user as part of releasing the PWA credential and obtaining an explicit user action, signalling they confirm the details presented. It may localise (translate) keys, localise (adapt) number formats and replace or amend currency codes with symbols where appropriate and unambiguous. 
 
-The wallet must display all attributes (keys and values) contained in the <strong><code>payment_data</code></strong> object to the user as part of the process of releasing the PWA credential and obtain a clear user action signalling they confirm the details presented. It may localise (translate) keys, localise (adapt) number formats and replace or amend currency codes with symbols where appropriate and unambiguous.
+## 5.2 Verifier
 
-## 5.1 Verifier
-
-The integrity and authenticity of the payment data can be verified by the party who knows the key pair's public key whose possession was proven by the user when the Payment Wallet Attestation was issued as per EWC RFC 007 [5].
+The integrity and authenticity of the payment data can be verified by the party who knows the public key of the key pair whose possession was proven by the user when the Payment Wallet Attestation was issued as per EWC RFC 007 [5].
 
 The verifier further needs to have the following information, either directly from the wallet or relayed by the intermediary in a three-party model:
 
-1. The PWA that was issued into the user’s wallet and that corresponds to the funding source (card or account) in question, presented from the user’s wallet and hence signed by the user.
-2. The original <strong><code>transaction_data</code></strong> object as it was constructed and sent to the wallet as part of the authorization request.
+* The PWA issued into the user’s wallet and corresponding to the funding source (card or account) in question was presented from the user’s wallet and signed by the user.
+* The <strong><code>transaction_data</code></strong> object was constructed and sent to the wallet as part of the authorization request.
+* The key-binding JWT incl. the hash of the <strong><code>transaction_data</code></strong> object.
+* The original input from the user on the payment details, i.e. payee, amount, currency at least, plus any optional parameters. In a two-party model, the user typically inputs this data into a form the bank presents in their online or mobile banking. In a three-party model, the intermediary relays this data, which he has agreed with the user, through industry-specific protocols like 3DS or open banking APIs.
+
+With these details at hand, the verifier performs the following validations:
+
+1. It checks by working with the public key it has on record that the Payment Wallet Attestation and key binding JWT have been presented by the same user to whom the PWA has been issued.
+2. It checks by comparing its own records to ensure that the PWA is valid for the funding source (card or account) in question (including non-revoked).
+3. It checks that the <strong><code>transaction_data</code></strong> object results in the same hash value when hashed with the given function as the hash contained in the key binding JWT.
+4. It checks that the transaction details in the <strong><code>transaction_data</code></strong> object correspond to the values obtained from the user or through the intermediary.
+5. It checks that the timestamp <code>(iat</code>) in the key binding JWT is close (e.g. ±5 minutes) to receiving the input from the user (two-party model) or intermediary (three-party model), respectively.
+
+In addition to the above, the verifier may want to validate the user’s Wallet Unit Attestation. This part is outside the scope of this specification. Please see EWC RFC 004 [10] for further details.
+
 
 # 6.0 Schema definitions
 
@@ -221,20 +275,26 @@ Below is a non-normative example of a presentation definition to request the Pay
 }
 ```
 
-## 6.2	Transaction data
+## 6.2 Transaction data
 
 Below is a non-normative example of a <strong><code>payment_data</code></strong> object providing the payload for <strong><code>transaction_data</code></strong>.
 
 ```json
 {
-  "payee": "merchant xyz",
-  "amount": 23.58,
-  "currency": "EUR",
-  "recurring_indicator": <[0,1]>
+  "payee": "Merchant XYZ",
+  "currency_amount": {
+    "currency": "EUR",
+    "value": "23.58"
+  },
+  "recurring_schedule": {
+    "start_date": "2024-11-01",
+    "expiry_date": "2025-10-31",
+    "frequency": 30
+  }
 }
 ```
 
-## 6.3	Key binding JWT
+## 6.3 Key binding JWT
 
 Below is a non-normative example of a key-binding JWT with transaction data:
 
@@ -265,3 +325,7 @@ Below is a non-normative example of a key-binding JWT with transaction data:
 7. European Parliament and Council, 2024. Regulation (EU) 2024/1183 amending Regulation (EU) No 910/2014 as regards establishing the European Digital Identity Framework. Official Journal of the European Union, L 1183, pp. 1–45. Available at: [https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401183#d1e38-1-1](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401183#d1e38-1-1) (Last Accessed: 15 Nov, 2024) 
 
 8. European Parliament and Council, 2015. Directive (EU) 2015/2366 of the European Parliament and of the Council of 25 November 2015 on payment services in the internal market, amending Directives 2002/65/EC, 2009/110/EC and 2013/36/EU and Regulation (EU) No 1093/2010, and repealing Directive 2007/64/EC. Official Journal of the European Union, L 337, 23.12.2015, p. 35–127. Available at: [https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32015L2366](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32015L2366) (Last Accessed: 15 Nov, 2024) 
+
+9.  W3C: Payment Request API, Editor’s Draft 09 September 2024. Available at: [https://w3c.github.io/payment-request/#paymentcurrencyamount-dictionary](https://w3c.github.io/payment-request/#paymentcurrencyamount-dictionary) (Last accessed: 18 Nov 2024)
+
+10. EWC RFC 004: Individual Wallet Unit Attestation - v1.0. Available at:  [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md) (Last Accessed: 18 Nov, 2024)
