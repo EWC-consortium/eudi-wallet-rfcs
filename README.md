@@ -53,10 +53,10 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | **RFC #** | **RFC Title**                                                                               |
 | --------- | ------------------------------------------------------------------------------------------- |
 | RFC-003   | [Issue Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md) |
-| RFC-004   | [Individual Wallet Unit Attestation](ewc-rfc004-individual-wallet-attestation.md)                                                          |
+| RFC-004   | [Individual Wallet Unit Attestation](ewc-rfc004-individual-wallet-attestation.md)           |
 | RFC-006   | Organisational Wallet Unit Attestation                                                      |
-| RFC-008   | Strong Customer Authentication                                                              |
-| RFC-009   | Payment Transaction                                                                         |
+| RFC-008   | Payment Data Confirmation                                                                   |
+| RFC-009   | Payment Transaction Initiation                                                              |
 | RFC-010   | Synchronous Document Signing using Long-Term Certificates                                   |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
@@ -81,12 +81,12 @@ Date of availability: 15 October 2024
 Date of availability: 15 November 2024
 
 | Wallet                        | Link                                                                                   | Holder | Issuer | Verifier |
-| ----------------------------- | ---------------------------------------------------------------------------------------| :----: | :----: | :------: |
-| iGrant.io Organisation Wallet | [https://demo-business.igrant.io/](https://demo-business.igrant.io/)                   |   ✅   |   ✅    |    ✅     |
-| SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)                             |   ✅   |   ✅    |    ✅     |
+| ----------------------------- | -------------------------------------------------------------------------------------- | :----: | :----: | :------: |
+| iGrant.io Organisation Wallet | [https://demo-business.igrant.io/](https://demo-business.igrant.io/)                   |   ✅    |   ✅    |    ✅     |
+| SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)                             |   ✅    |   ✅    |    ✅     |
 | Archipels                     | Link to be provided                                                                    |        |   ✅    |    ✅     |
 | ValidatedID                   | [https://staging-studio.vidchain.net/login](https://staging-studio.vidchain.net/login) |        |   ✅    |    ✅     |
-| Mini Suomi (Vero, Finland)    | Link to be provided                                                                    |   ✅   |   ✅    |    ✅     |
+| Mini Suomi (Vero, Finland)    | Link to be provided                                                                    |   ✅    |   ✅    |    ✅     |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 1.0)
 
