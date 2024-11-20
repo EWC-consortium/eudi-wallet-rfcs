@@ -80,7 +80,7 @@ Date of availability: 15 November 2024
 
 | Wallet                        | Link                                                                                   | Holder | Issuer | Verifier |
 | ----------------------------- | -------------------------------------------------------------------------------------- | :----: | :----: | :------: |
-| iGrant.io Organisation Wallet | [https://demo-business.igrant.io/](https://demo-business.igrant.io/)                   |   ✅    |   ✅    |    ✅     |
+| iGrant.io Organisation Wallet | [Organisation Wallet - Dashboard](https://demo-business.igrant.io/), [DevDocs](https://docs.igrant.io/docs/organisation-wallet-overview/)|   ✅    |   ✅    |    ✅     |
 | SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)                             |   ✅    |   ✅    |    ✅     |
 | Archipels                     | [https://app.archipels.io/](https://app.archipels.io/)                                 |        |   ✅    |    ✅     |
 | ValidatedID                   | [https://staging-studio.vidchain.net/login](https://staging-studio.vidchain.net/login) |        |   ✅    |    ✅     |
