@@ -24,13 +24,13 @@ This repository is created to align the implementation of digital wallets across
 
 Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Once implemented and aligned with the RFCs, wallet providers can raise a PR.
 
-## RFC Process Summary
+## RFC Process Summary for EWC Large Scale Pilots (LSPs)
 
-RFCs go through this process towards the Large Scale Pilots (LSPs):
+RFCs progress through the following process towards the Large Scale Pilots (LSPs):
 
-![image](https://github.com/user-attachments/assets/5fc6cf87-9364-47bc-8666-8817b07779df)
+![RFC Process Workflow](https://github.com/user-attachments/assets/5fc6cf87-9364-47bc-8666-8817b07779df)
 
-Each wallet needs to follow the EWC RFC and perform compliance tests against the EWC Interoperability Test Bed (ITB) to be interoperable with other wallets within EWC. Kindly use the #wallet-support in [EWC slack for support](https://eudigitaliden-gax7504.slack.com/archives/C063LNT4L4R).
+To ensure interoperability with other wallets (issuer/holder/verifier) within the **European Wallet Consortium (EWC)**, all wallets, issuer-only, or verifier-only applications must comply with the EWC RFC and complete compliance testing with the **EWC Interoperability Test Bed (ITB)**. For guidance and support, please use the `#wallet-support` channel in the [EWC Slack Workspace](https://eudigitaliden-gax7504.slack.com/archives/C063LNT4L4R).
 
 ## Current RFCs
 
@@ -72,9 +72,7 @@ Date of availability: 15 October 2024
 | iGrant.io Data Wallet | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                                      |   ✅    |   ✅    |    ✅     |
 | Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)             |   ✅    |        |          |
 | ValidatedID           | [iOS](https://apps.apple.com/us/app/id-wallet-lsp/id6504026408), [Android](https://play.google.com/store/apps/details?id=com.vididentity.wallet.lsp) |   ✅    |   ✅    |    ✅     |
-| Digidentity\*         | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity)                              |   ✅    |   ✅    |          |
-
-\*) Available only by 15 November 2024
+| Digidentity         | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity)                              |   ✅    |   ✅    |          |
 
 ### Organisation Wallets (Holder, Issuers and Verifiers)
 
@@ -104,7 +102,7 @@ NOTE: These were the wallets compliant with EWC release 1.0.
 
 | Wallet                          | Link                                                                    | Holder | Issuer | Verifier |
 | ------------------------------- | ----------------------------------------------------------------------- | :----: | :----: | :------: |
-| iGrant.io Organisation Wallet   | [demo-business.igrant.io/](https://demo-business.igrant.io/)            |   ✅    |   ✅    |    ✅     |
+| iGrant.io Organisation Wallet   | [Organisation Wallet Dashboard](https://demo-business.igrant.io/), [DevDocs](https://docs.igrant.io/docs/organisation-wallet-overview/)            |   ✅    |   ✅    |    ✅     |
 | Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                            |   ✅    |   ✅    |    ✅     |
 | ValidatedID                     |                                                                         |   ✅    |   ✅    |    ✅     |
 | Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |   ✅    |    ✅     |
