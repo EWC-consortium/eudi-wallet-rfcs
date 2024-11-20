@@ -28,7 +28,7 @@ Feel free to improve the plugin and send us a pull request. If you find any prob
 
 RFCs go through this process towards the Large Scale Pilots (LSPs):
 
-![image](https://github.com/EWC-consortium/eudi-wallet-rfcs/assets/455274/2113d6b6-1398-4004-8054-2a91551ef437)
+![image](https://github.com/user-attachments/assets/5fc6cf87-9364-47bc-8666-8817b07779df)
 
 Each wallet needs to follow the EWC RFC and perform compliance tests against the EWC Interoperability Test Bed (ITB) to be interoperable with other wallets within EWC. Kindly use the #wallet-support in [EWC slack for support](https://eudigitaliden-gax7504.slack.com/archives/C063LNT4L4R).
 
