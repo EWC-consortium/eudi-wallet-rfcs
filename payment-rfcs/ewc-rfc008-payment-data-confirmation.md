@@ -198,7 +198,7 @@ The authorisation response, as defined in EWC RFC 002 [3], is extended to includ
 
 ## 5.1 Holder Wallet
 
-The holder wallet must display all attributes (keys and values) contained in the <strong><code>payment_data</code></strong> object to the user as part of releasing the PWA credential and obtaining an explicit user action, signalling they confirm the details presented. It may localise (translate) keys, localise (adapt) number formats and replace or amend currency codes with symbols where appropriate and unambiguous.
+The holder wallet must display all attributes (keys and values) contained in the <strong><code>payment_data</code></strong> object to the user as part of releasing the PWA credential and obtaining an explicit user action, signalling they confirm the details presented. It may localise (translate) keys, localise (adapt) number formats and replace or amend currency codes with symbols where appropriate and unambiguous. 
 
 ## 5.2 Verifier
 To verify the VP token received in the presentation response, the verifier needs to have the following information.
@@ -321,11 +321,11 @@ Below is a non-normative example of a key-binding JWT with transaction data:
 
 5. EWC RFC 007: Payment Wallet Attestation - v1.0. Available at:  [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/payment-rfcs/ewc-rfc007-payment-wallet-attestation.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/payment-rfcs/ewc-rfc007-payment-wallet-attestation.md) (Last Accessed: 10 Nov, 2024)
 
-6. EWC: Payment Authentication (SCA) using EU DI Wallets – Implementation Guide. Available at: [https://github.com/EWC-consortium/eudi-wallet-rfcs/tree/main/payment-rfcs/implementation-guides](https://github.com/EWC-consortium/eudi-wallet-rfcs/tree/main/payment-rfcs/implementation-guides) (Last Accessed: 15 Nov, 2024)
+6. EWC: Payment Authentication (SCA) using EU DI Wallets – Implementation Guide. Available at: [https://github.com/EWC-consortium/eudi-wallet-rfcs/tree/main/payment-rfcs/implementation-guides](https://github.com/EWC-consortium/eudi-wallet-rfcs/tree/main/payment-rfcs/implementation-guides) (Last Accessed: 15 Nov, 2024) 
 
-7. European Parliament and Council, 2024. Regulation (EU) 2024/1183 amending Regulation (EU) No 910/2014 as regards establishing the European Digital Identity Framework. Official Journal of the European Union, L 1183, pp. 1–45. Available at: [https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401183#d1e38-1-1](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401183#d1e38-1-1) (Last Accessed: 15 Nov, 2024)
+7. European Parliament and Council, 2024. Regulation (EU) 2024/1183 amending Regulation (EU) No 910/2014 as regards establishing the European Digital Identity Framework. Official Journal of the European Union, L 1183, pp. 1–45. Available at: [https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401183#d1e38-1-1](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=OJ:L_202401183#d1e38-1-1) (Last Accessed: 15 Nov, 2024) 
 
-8. European Parliament and Council, 2015. Directive (EU) 2015/2366 of the European Parliament and of the Council of 25 November 2015 on payment services in the internal market, amending Directives 2002/65/EC, 2009/110/EC and 2013/36/EU and Regulation (EU) No 1093/2010, and repealing Directive 2007/64/EC. Official Journal of the European Union, L 337, 23.12.2015, p. 35–127. Available at: [https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32015L2366](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32015L2366) (Last Accessed: 15 Nov, 2024)
+8. European Parliament and Council, 2015. Directive (EU) 2015/2366 of the European Parliament and of the Council of 25 November 2015 on payment services in the internal market, amending Directives 2002/65/EC, 2009/110/EC and 2013/36/EU and Regulation (EU) No 1093/2010, and repealing Directive 2007/64/EC. Official Journal of the European Union, L 337, 23.12.2015, p. 35–127. Available at: [https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32015L2366](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32015L2366) (Last Accessed: 15 Nov, 2024) 
 
 9.  W3C: Payment Request API, Editor’s Draft 09 September 2024. Available at: [https://w3c.github.io/payment-request/#paymentcurrencyamount-dictionary](https://w3c.github.io/payment-request/#paymentcurrencyamount-dictionary) (Last accessed: 18 Nov 2024)
 
