@@ -1,16 +1,18 @@
 # EWC RFC004: Individual Wallet Unit Attestation - v1.0
 
 **Authors:** 
+
 * Mr Sebastian Bickerle (Lissi GmbH, Germany)
 * Mr Edward Curran (Lissi GmbH, Germany)
 * Mr George Padayatti (iGrant.io, Sweden)
 
 **Reviewers:**
+
 * Mr Lal Chandran (iGrant.io, Sweden)
 * Dr Andreas Abraham (ValidatedID, Spain)
 * Dr Nikos Triantafyllou (University of the Aegean, Greece)
 
-**Status:** Work in progress
+**Status:** Approved
 
 **Table of Contents**
 - [EWC RFC004: Individual Wallet Unit Attestation - v1.0](#ewc-rfc004-individual-wallet-unit-attestation---v10)

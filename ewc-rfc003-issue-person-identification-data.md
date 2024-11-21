@@ -2,6 +2,7 @@
 
 **Authors:**
 
+* Leone Riello (Infocert, Italy)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Mr Lal Chandran (iGrant.io, Sweden)
 
@@ -9,7 +10,7 @@
 
 * Mr George Padayatti (iGrant.io, Sweden)
 
-**Status:** Ready for Review
+**Status:** Approved
 
 **Table of Contents**
 
