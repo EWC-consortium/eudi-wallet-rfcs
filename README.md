@@ -84,7 +84,7 @@ Date of availability: 15 November 2024
 | SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)                                                                                |   ✅    |   ✅    |    ✅     |
 | Archipels                     | [https://app.archipels.io/](https://app.archipels.io/)                                                                                    |        |   ✅    |    ✅     |
 | ValidatedID                   | [https://staging-studio.vidchain.net/login](https://staging-studio.vidchain.net/login)                                                    |        |   ✅    |    ✅     |
-| Mini Suomi (Vero, Finland)    | [https://wallet.minisuomi.fi](https://wallet.minisuomi.fi, [Api](https://test.minisuomi.fi/swagger)                                                                                  |   ✅    |   ✅    |    ✅     |
+| Mini Suomi (Vero, Finland)    | [https://wallet.minisuomi.fi](https://wallet.minisuomi.fi), [Api](https://test.minisuomi.fi/swagger)                                                                                  |   ✅    |   ✅    |    ✅     |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 1.0)
 
