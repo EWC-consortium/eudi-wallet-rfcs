@@ -1109,7 +1109,7 @@ The credential can be issued, either directly into the organization's wallet or 
             }
           ]
         },
-        "expire_date": {
+        "expiry_date": {
           "display": [
             {
               "name": "Date and possibly time of expiration",

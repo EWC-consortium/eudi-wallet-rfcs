@@ -2,6 +2,7 @@
 
 **Authors:**
 
+* Mr Leone Riello (Infocert, Italy)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Mr Lal Chandran (iGrant.io, Sweden)
 
@@ -10,8 +11,11 @@
 * Mr George Padayatti (iGrant.io, Sweden)
 * Mr Jaromir Talir (NIC.cz, Czech Republic)
 * Mr Roger Fagerud (DIGG, Sweden)
+* Mr Jaromir Talir (CZ.NIC, Czech Rep.)
+* Mr Roger Fagerud (DIGG, Swden)
+* Mr Antti Laine (DVV, Finland)
 
-**Status:** Ready for Review
+**Status:** approved
 
 **Table of Contents**
 
