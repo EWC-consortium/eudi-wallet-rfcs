@@ -147,9 +147,7 @@ On resolving the `credential_offer_uri` query parameter, the issuer responds wit
 ```json
 {
   "credential_issuer": "https://identity-provider.gov",
-  "credential_configuration_ids": [
-    "eu.europa.ec.eudi.pid.1"
-  ],
+  "credential_configuration_ids": ["eu.europa.ec.eudi.pid.1"],
   "grants": {
     "authorization_code": {
       "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
@@ -165,26 +163,18 @@ For the pre-authorized flow, the credential response format is adapted to includ
 ```json
 {
   "credential_issuer": "https://identity-provider.gov",
-  "credential_configuration_ids": [
-    {
-      "format": "vc+sd-jwt",
-      "types": [
-        "VerifiableCredential",
-        "eu.europa.ec.eudi.pid.1"
-      ],
-      "trust_framework": {
-        "name": "ewc-issuer-trust-list",
-        "type": "Accreditation",
-        "uri": "Link to the issuer trust list"
-      }
-    }
-  ],
+  "credential_configuration_ids": ["eu.europa.ec.eudi.pid.1"],
   "grants": {
-    "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
-      "pre-authorized_code": "eyJhbGciOiJSU0Et...FYUaBy",
-      "user_pin_required": true
-    }
-  }
+      "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
+        "pre-authorized_code": "asfdasfdsadfsa",
+        "tx_code": {
+          "length": 4,
+          "input_mode": "numeric",
+          "description":
+            "Please provide onetimecode....",
+        }
+      }
+   }
 }
 ```
 
