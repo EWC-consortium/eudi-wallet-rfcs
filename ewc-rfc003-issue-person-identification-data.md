@@ -8,6 +8,8 @@
 **Reviewers:**
 
 * Mr George Padayatti (iGrant.io, Sweden)
+* Mr Jaromir Talir (NIC.cz, Czech Republic)
+* Mr Roger Fagerud (DIGG, Sweden)
 
 **Status:** Ready for Review
 
@@ -407,7 +409,7 @@ For PID credential issuance, the token request using the authorization code flow
 POST /token HTTP/1.1
 Host: identity-provider.gov
 Content-Type: application/x-www-form-urlencoded
-Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+Authorization: Bearer czZCaGRSa3F0MzpnWDFmQmF0M2JW
 
 &grant_type=authorization_code
 &code=SplxlOBeZQQYbYS6WxSbIA
@@ -415,6 +417,11 @@ Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 &redirect_uri=https%3A%2F%2FWallet.example.org%2Fcb
 ```
 
+In order to simplify the PID issuance pilot, the validation of Wallet attestations is not mandatory. Whether this validation could be performed, two headers must be included<br>
+```http
+OAuth-Client-Attestation: <wallet-unit-attestation-jwt>
+OAuth-Client-Attestation-PoP: <wallet-unit-attestation-pop-jwt>
+```
 This request is made with the following query params:
 
 <table>
