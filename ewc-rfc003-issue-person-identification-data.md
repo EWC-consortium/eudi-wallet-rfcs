@@ -2,13 +2,16 @@
 
 **Authors:**
 
-* Leone Riello (Infocert, Italy)
+* Mr Leone Riello (Infocert, Italy)
 * Mr Matteo Mirabelli (Infocert, Italy)
 * Mr Lal Chandran (iGrant.io, Sweden)
 
 **Reviewers:**
 
 * Mr George Padayatti (iGrant.io, Sweden)
+* Mr Jaromir Talir (NIC.cz, Czech Republic)
+* Mr Roger Fagerud (DIGG, Swden)
+* Mr Antti Laine (DVV, Finland)
 
 **Status:** Approved
 
@@ -144,9 +147,7 @@ On resolving the `credential_offer_uri` query parameter, the issuer responds wit
 ```json
 {
   "credential_issuer": "https://identity-provider.gov",
-  "credential_configuration_ids": [
-    "eu.europa.ec.eudi.pid.1"
-  ],
+  "credential_configuration_ids": ["eu.europa.ec.eudi.pid.1"],
   "grants": {
     "authorization_code": {
       "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
@@ -162,26 +163,18 @@ For the pre-authorized flow, the credential response format is adapted to includ
 ```json
 {
   "credential_issuer": "https://identity-provider.gov",
-  "credential_configuration_ids": [
-    {
-      "format": "vc+sd-jwt",
-      "types": [
-        "VerifiableCredential",
-        "eu.europa.ec.eudi.pid.1"
-      ],
-      "trust_framework": {
-        "name": "ewc-issuer-trust-list",
-        "type": "Accreditation",
-        "uri": "Link to the issuer trust list"
-      }
-    }
-  ],
+  "credential_configuration_ids": ["eu.europa.ec.eudi.pid.1"],
   "grants": {
-    "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
-      "pre-authorized_code": "eyJhbGciOiJSU0Et...FYUaBy",
-      "user_pin_required": true
-    }
-  }
+      "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
+        "pre-authorized_code": "asfdasfdsadfsa",
+        "tx_code": {
+          "length": 4,
+          "input_mode": "numeric",
+          "description":
+            "Please provide onetimecode....",
+        }
+      }
+   }
 }
 ```
 
@@ -316,12 +309,13 @@ Query params for the authorisation request are given below:
 
 ## 3.6 Authorization response
 
-In the context of PID credential issuance, the government identity provider may **optionally** request additional details for enhanced authentication, such as DID verification. In scenarios necessitating this heightened security, the authorization response will include a `response_type` parameter set to `direct_post`. An example of such a response is:
+The credential issuer can **optionally** request additional details to authenticate the client e.g. DID authentication. In this case, the authorisation response will contain a `response_mode` parameter with the value `direct_post`. A sample response is as given:
 
 ```http
 HTTP/1.1 302 Found
-Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock&redirect_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Fdirect_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https%3A%2F%2Fapi-conformance.ebsi.eu%2Fconformance%2Fv3%2Fauth-mock%2Frequest_uri%2F111d2819-9ab7-4959-83e5-f414c57fdc27
+Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https://example.server.com&redirect_uri=https://example.server.com/direct_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https://example.server.com/request_uri
 ```
+
 Query params for the authorisation response are given below:
 
 <table>
@@ -408,7 +402,7 @@ For PID credential issuance, the token request using the authorization code flow
 POST /token HTTP/1.1
 Host: identity-provider.gov
 Content-Type: application/x-www-form-urlencoded
-Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+Authorization: Bearer czZCaGRSa3F0MzpnWDFmQmF0M2JW
 
 &grant_type=authorization_code
 &code=SplxlOBeZQQYbYS6WxSbIA
@@ -416,6 +410,11 @@ Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
 &redirect_uri=https%3A%2F%2FWallet.example.org%2Fcb
 ```
 
+In order to simplify the PID issuance pilot, the validation of Wallet attestations is not mandatory. Whether this validation could be performed, two headers must be included<br>
+```http
+OAuth-Client-Attestation: <wallet-unit-attestation-jwt>
+OAuth-Client-Attestation-PoP: <wallet-unit-attestation-pop-jwt>
+```
 This request is made with the following query params:
 
 <table>
