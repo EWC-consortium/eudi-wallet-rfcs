@@ -13,7 +13,7 @@
 * Mr Roger Fagerud (DIGG, Swden)
 * Mr Antti Laine (DVV, Finland)
 
-**Status:** approved
+**Status:** Approved
 
 **Table of Contents**
 
