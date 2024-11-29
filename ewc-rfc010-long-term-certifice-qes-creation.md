@@ -22,6 +22,7 @@ This Specification defines the procedures for using the EUDI wallet to digitally
 
 - Nov. 11 2024: Initialization of authoring process.
 - Nov. 28 2024: Phase 4,5 authoring. Reformatting of headings and content. Addition of references.
+- Nov. 29 2024: Added Overview section.
 
 # 3.0 The Signing Architecture:
 
@@ -41,6 +42,53 @@ The architecture will be broken down in 4 main phases:
 > **Note**: The Signer's Document (SD) uploading process is out of scope of this RFC. The SD can be uploaded either by the user or the Service Provider, prior to the execution of the signing procedure.
 
 # 4. Signing Process:
+
+## 4.0 Overview:
+
+```mermaid
+   sequenceDiagram
+    participant User
+    participant EUDI Wallet
+    participant Service Provider
+    box CSC Protocol Usage
+    participant Signing Service
+    participant RQES Provider
+    end
+
+    Note over User, Signing Service: Phase 1: Service Provider Access & User Authentication
+    User->>Service Provider: Service Access
+    Service Provider->>Signing Service: Request Signing of Document
+    Signing Service->>User: PID Presentation Request via OID4VP
+    EUDI Wallet->>Signing Service: PID Presentation
+
+    Note over Signing Service, RQES Provider: Phase 2: Certificate Listing and Selection
+    Signing Service->>RQES Provider: POST /csc/v2/credentials/list
+    RQES Provider->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
+
+    Note over User, RQES Provider: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
+    Signing Service->>User: PID Presentation Request (Signature Confirmation)
+    EUDI Wallet->>Signing Service: PID Presentation
+
+    
+    User->>RQES Provider: Credential Authorization (for oauth2code flow)
+    activate RQES Provider
+    activate Signing Service
+    User->>Signing Service: Credential Authorization (for explicit flow)
+    deactivate Signing Service
+    
+
+    Signing Service->>RQES Provider: POST /csc/v2/credentials/authorize
+    deactivate RQES Provider
+    RQES Provider->>Signing Service: SAD
+
+    Note over Signing Service, RQES Provider: Phase 4: Signature Creation
+    Signing Service->>RQES Provider: POST /csc/v2/signatures/signHash
+    RQES Provider->>Signing Service: Signed Hash
+
+    Note over User, Signing Service: Phase 5: Signed Document Formation and Retrieval
+    Signing Service->>Service Provider: Signed Document
+    Service Provider->>User: Signed Document
+```
 
 ## 4.1 Phase 1: Service Provider Access & User Authentication
 
