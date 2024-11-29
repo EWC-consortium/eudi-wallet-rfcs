@@ -75,7 +75,7 @@ The architecture will be broken down in 4 main phases:
     participant User
     participant EUDI Wallet
     participant Service Provider
-    box CSC Protocol Usage
+    box Purple CSC Protocol Usage
     participant Signing Service
     participant RQES Provider
     end
