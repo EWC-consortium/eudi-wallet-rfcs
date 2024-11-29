@@ -73,6 +73,7 @@ Date of availability: 15 October 2024
 | Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)             |   ✅    |        |          |
 | ValidatedID           | [iOS](https://apps.apple.com/us/app/id-wallet-lsp/id6504026408), [Android](https://play.google.com/store/apps/details?id=com.vididentity.wallet.lsp) |   ✅    |   ✅    |    ✅     |
 | Digidentity           | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity)                              |   ✅    |   ✅    |          |
+| Signicat           |                              |   |   ✅    |          |
 
 ### Organisation Wallets (Holder, Issuers and Verifiers)
 
