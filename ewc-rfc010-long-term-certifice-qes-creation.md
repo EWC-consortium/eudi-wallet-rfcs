@@ -12,17 +12,42 @@ TBA
 
 **Table of Contents:**
 
+- [1.0 Summary](#10-summary)
+- [2.0 Motivation](#20-motivation)
+- [3.0 The Signing Architecture](#30-the-signing-architecture)
+    - [3.1 Phase 1: Service Provider Access & User Authentication](#31-phase-1-service-provider-access--user-authentication)
+    - [3.2 Phase 2: Certificate Listing and Selection](#32-phase-2-certificate-listing-and-selection)
+    - [3.3 Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)](#33-phase-3-signature-confirmation--private-key-unlocking-credential-authorization)
+    - [3.4 Phase 4: Signature Creation](#34-phase-4-signature-creation)
+    - [3.5 Phase 5: Signed Document Formation and Retrieval](#35-phase-5-signed-document-formation-and-retrieval)
+- [4. Signing Process](#4-signing-process)
+    - [4.0 Overview](#40-overview)
+    - [4.1 Phase 1: Service Provider Access & User Authentication](#41-phase-1-service-provider-access--user-authentication)
+        - [4.1.1 Service Access by User](#411-service-access-by-user)
+        - [4.1.2 User Authentication](#412-user-authentication)
+    - [4.2 Phase 2: Certificate Listing and Selection](#42-phase-2-certificate-listing-and-selection)
+    - [4.3 Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)](#43-phase-3-signature-confirmation--private-key-unlocking-credential-authorization)
+        - [4.3.1 Signing Confirmation as Willful Act](#431-signing-confirmation-as-willful-act)
+        - [4.3.2 Private Key Unlocking (Credential Authorization)](#432-private-key-unlocking-credential-authorization)
+    - [4.4 Phase 4: Signature Creation](#44-phase-4-signature-creation)
+    - [4.5 Phase 5: Signed Document Formation and Retrieval](#45-phase-5-signed-document-formation-and-retrieval)
+- [5. Reference](#5-reference)
+
+**Changelog:**
+
+- Nov. 11 2024: Initialization of authoring process.
+- Nov. 28 2024: Phase 4,5 authoring. Reformatting of headings and content. Addition of references.
+- Nov. 29 2024: Added Overview section.
+
 # 1.0 Summary:
 
 This Specification defines the procedures for using the EUDI wallet to digitally sign a document, using Long-Term certificates, on a Remote Signing Service Provider (SSP). It uses the user's PID to identify the user's Certificates. The Signer's Private Keys are stored safely in a Remote Qualified Electronic Signature (RQES) service.
 
 **Remote QES services shall adhere to the [CSC (Cloud Signature Consortium)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) specifications that are also the basis for the JSON part of the ETSI TS 119 432 standard on protocols for remote digital signature creation.**
 
-# 2.0 Changelog:
+# 2.0 Motivation:
 
-- Nov. 11 2024: Initialization of authoring process.
-- Nov. 28 2024: Phase 4,5 authoring. Reformatting of headings and content. Addition of references.
-- Nov. 29 2024: Added Overview section.
+The motivation for this specification is to provide a robust and secure framework for enabling remote digital document signing using long-term certificates and the EUDI Wallet as a means of user authentication. As organizations and individuals increasingly transition to digital workflows, the need for verifiable and legally binding electronic signatures has grown significantly. This document aims to establish a standardized and interoperable approach that ensures trust, security, and ease of use and implementation in the signing process.
 
 # 3.0 The Signing Architecture:
 
