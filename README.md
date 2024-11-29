@@ -24,13 +24,13 @@ This repository is created to align the implementation of digital wallets across
 
 Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Once implemented and aligned with the RFCs, wallet providers can raise a PR.
 
-## RFC Process Summary
+## RFC Process Summary for EWC Large Scale Pilots (LSPs)
 
-RFCs go through this process towards the Large Scale Pilots (LSPs):
+RFCs progress through the following process towards the Large Scale Pilots (LSPs):
 
-![image](https://github.com/EWC-consortium/eudi-wallet-rfcs/assets/455274/2113d6b6-1398-4004-8054-2a91551ef437)
+![RFC Process Workflow](https://github.com/user-attachments/assets/5fc6cf87-9364-47bc-8666-8817b07779df)
 
-Each wallet needs to follow the EWC RFC and perform compliance tests against the EWC Interoperability Test Bed (ITB) to be interoperable with other wallets within EWC. Kindly use the #wallet-support in [EWC slack for support](https://eudigitaliden-gax7504.slack.com/archives/C063LNT4L4R).
+To ensure interoperability with other wallets (issuer/holder/verifier) within the **European Wallet Consortium (EWC)**, all wallets, issuer-only, or verifier-only applications must comply with the EWC RFC and complete compliance testing with the **EWC Interoperability Test Bed (ITB)**. For guidance and support, please use the `#wallet-support` channel in the [EWC Slack Workspace](https://eudigitaliden-gax7504.slack.com/archives/C063LNT4L4R).
 
 ## Current RFCs
 
@@ -40,8 +40,10 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 | **RFC #** | **RFC Title**                                                                                                |
 | --------- | ------------------------------------------------------------------------------------------------------------ |
-| RFC-001   | [Issue Verifiable Credentials Workflow - v2.0](ewc-rfc001-issue-verifiable-credential.md)                    |
+| RFC-001   | [Issue Verifiable Credential - v2.0](ewc-rfc001-issue-verifiable-credential.md)                              |
 | RFC-002   | [Present Verifiable Credentials Workflow - v1.0](ewc-rfc002-present-verifiable-credentials.md)               |
+| RFC-003   | [Issue Person Identification Data (PID) - v1.1](ewc-rfc003-issue-person-identification-data.md)              |
+| RFC-004   | [Individual Wallet Unit Attestation - v1.0](ewc-rfc004-individual-wallet-attestation.md)                     |
 | RFC-005   | [Issue Legal Person Identification Data (LPID) - v1.0](ewc-rfc005-issue-legal-person-identification-data.md) |
 | RFC-007   | [Payment Wallet Attestation - v1.0](payment-rfcs/ewc-rfc007-payment-wallet-attestation.md)                   |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v2.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md)   |
@@ -50,14 +52,12 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
 
-| **RFC #** | **RFC Title**                                                                               |
-| --------- |---------------------------------------------------------------------------------------------|
-| RFC-003   | [Issue Person Identification Data Issuance](ewc-rfc003-issue-person-identification-data.md) |
-| RFC-004   | [Individual Wallet Unit Attestation](ewc-rfc004-individual-wallet-attestation.md)           |
-| RFC-006   | Organisational Wallet Unit Attestation                                                      |
-| RFC-008   | [Payment Data Confirmation - v0.9](payment-rfcs/ewc-rfc008-payment-data-confirmation.md)    |
-| RFC-009   | Payment Transaction Initiation                                                              |
-| RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)          |
+| **RFC #** | **RFC Title**                                                                            |
+| --------- | ---------------------------------------------------------------------------------------- |
+| RFC-006   | Organisational Wallet Unit Attestation                                                   |
+| RFC-008   | [Payment Data Confirmation - v0.9](payment-rfcs/ewc-rfc008-payment-data-confirmation.md) |
+| RFC-009   | Payment Transaction Initiation                                                           |
+| RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)                              |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
 
@@ -72,21 +72,19 @@ Date of availability: 15 October 2024
 | iGrant.io Data Wallet | [iOS](https://apple.co/2Mz9nJp), [Android](https://play.google.com/store/apps/details?id=io.igrant.mobileagent)                                      |   ✅    |   ✅    |    ✅     |
 | Lissi ID-Wallet       | [iOS](https://testflight.apple.com/join/9AWbZISv), [Android](https://play.google.com/store/apps/details?id=io.lissi.mobile.android.beta)             |   ✅    |        |          |
 | ValidatedID           | [iOS](https://apps.apple.com/us/app/id-wallet-lsp/id6504026408), [Android](https://play.google.com/store/apps/details?id=com.vididentity.wallet.lsp) |   ✅    |   ✅    |    ✅     |
-| Digidentity\*         | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity)                              |   ✅    |        |          |
-
-\*) Available only by 15 November 2024
+| Digidentity           | [iOS](https://apps.apple.com/app/id916749732), [Android](https://play.google.com/store/apps/details?id=com.digidentity)                              |   ✅    |   ✅    |          |
 
 ### Organisation Wallets (Holder, Issuers and Verifiers)
 
 Date of availability: 15 November 2024
 
-| Wallet                        | Link                                                                                   | Holder | Issuer | Verifier |
-| ----------------------------- | -------------------------------------------------------------------------------------- | :----: | :----: | :------: |
-| iGrant.io Organisation Wallet | [https://demo-business.igrant.io/](https://demo-business.igrant.io/)                   |   ✅    |   ✅    |    ✅     |
-| SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)                             |   ✅    |   ✅    |    ✅     |
-| Archipels                     | [https://app.archipels.io/](https://app.archipels.io/)                                 |        |   ✅    |    ✅     |
-| ValidatedID                   | [https://staging-studio.vidchain.net/login](https://staging-studio.vidchain.net/login) |        |   ✅    |    ✅     |
-| Mini Suomi (Vero, Finland)    | Link to be provided                                                                    |   ✅    |   ✅    |    ✅     |
+| Wallet                        | Link                                                                                                                                      | Holder | Issuer | Verifier |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
+| iGrant.io Organisation Wallet | [Organisation Wallet - Dashboard](https://demo-business.igrant.io/), [DevDocs](https://docs.igrant.io/docs/organisation-wallet-overview/) |   ✅    |   ✅    |    ✅     |
+| SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)                                                                                |   ✅    |   ✅    |    ✅     |
+| Archipels                     | [https://app.archipels.io/](https://app.archipels.io/)                                                                                    |        |   ✅    |    ✅     |
+| ValidatedID                   | [https://staging-studio.vidchain.net/login](https://staging-studio.vidchain.net/login)                                                    |        |   ✅    |    ✅     |
+| Mini Suomi (Vero, Finland)    | [https://wallet.minisuomi.fi](https://wallet.minisuomi.fi), [Api](https://test.minisuomi.fi/swagger)                                                                                  |   ✅    |   ✅    |    ✅     |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 1.0)
 
@@ -102,16 +100,16 @@ NOTE: These were the wallets compliant with EWC release 1.0.
 
 ### Organisation Wallets (Holder, Issuers and Verifiers)
 
-| Wallet                          | Link                                                                    | Holder | Issuer | Verifier |
-| ------------------------------- | ----------------------------------------------------------------------- | :----: | :----: | :------: |
-| iGrant.io Organisation Wallet   | [demo-business.igrant.io/](https://demo-business.igrant.io/)            |   ✅    |   ✅    |    ✅     |
-| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                            |   ✅    |   ✅    |    ✅     |
-| ValidatedID                     |                                                                         |   ✅    |   ✅    |    ✅     |
-| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport) |        |   ✅    |    ✅     |
-| DVV Wallet                      |                                                                         |        |   ✅    |    ✅     |
-| UAegean (Cyclades Fast Ferries) |                                                                         |        |   ✅    |    ✅     |
-| E-Group                         |                                                                         |        |   ✅    |    ✅     |
-| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                |        |   ✅    |    ✅     |
+| Wallet                          | Link                                                                                                                                    | Holder | Issuer | Verifier |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
+| iGrant.io Organisation Wallet   | [Organisation Wallet Dashboard](https://demo-business.igrant.io/), [DevDocs](https://docs.igrant.io/docs/organisation-wallet-overview/) |   ✅    |   ✅    |    ✅     |
+| Lissi ID-Wallet Connector       | [lissi.id](https://lissi.id)                                                                                                            |   ✅    |   ✅    |    ✅     |
+| ValidatedID                     |                                                                                                                                         |   ✅    |   ✅    |    ✅     |
+| Amadeus                         | [Passport Verfifier](https://tid-wallet-dev.azurewebsites.net/passport)                                                                 |        |   ✅    |    ✅     |
+| DVV Wallet                      |                                                                                                                                         |        |   ✅    |    ✅     |
+| UAegean (Cyclades Fast Ferries) |                                                                                                                                         |        |   ✅    |    ✅     |
+| E-Group                         |                                                                                                                                         |        |   ✅    |    ✅     |
+| Sicpa Digital Trust Suite       | [sicpa.com](https://docs.dip.sicpa.com/)                                                                                                |        |   ✅    |    ✅     |
 
 ## Funding
 
