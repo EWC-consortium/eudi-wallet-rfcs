@@ -1,4 +1,4 @@
-# RFC-010 Synchronous Document Signing on a Remote Signing Service Provider using Long-Term Certificates (v1)
+# RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates (v1)
 
 **Status: Under development**
 
