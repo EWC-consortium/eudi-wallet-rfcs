@@ -23,7 +23,7 @@
 
 **Table of Contents**
 
-- [EWC RFC100: Interoperability Profile Towards ITB - v2.0](#ewc-rfc100-interoperability-profile-towards-itb---v10)
+- [EWC RFC100: Interoperability Profile Towards ITB - v2.0](#ewc-rfc100-interoperability-profile-towards-itb---v20)
 - [1.0 Summary](#10-summary)
   - [1.1 Background](#11-background)
   - [1.2 Introduction to ITB](#12-introduction-to-itb)
@@ -38,7 +38,9 @@
   - [5.1 Steps to Conformance](#51-steps-to-conformance)
   - [5.2 Interoperable Profile](#52-interoperable-profile)
 - [6.0 Implementers](#60-implementers)
-- [6.0 Reference](#60-reference)
+- [7.0 RFC v2.0 Compliance Details](#70-rfc-v20-compliance-details)
+- [8.0 Reference](#80-reference)
+
 
 # 1.0 Summary
 
@@ -276,7 +278,27 @@ The Verifier service MUST follow the EWC RFC [4] in its implementation.
 
 Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-wallet-rfcs?tab=readme-ov-file#implementers).
 
-# 6.0 Reference
+# 7.0 RFC v2.0 Compliance Details
+
+In order to ensure interoperability across the phase 2 piloting in EWC the implementers (Holder Wallet, Issuers and Verifiers)
+must support the following RFCs :
+
+1. [EWC RFC 001: Issue Verifiable Credential - v2.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md)
+2. [EWC RFC002: Present Verifiable Credentials - v2.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md)
+
+Furthermore, for EWC Phase 2.0 piloting support for:
+1. [Selective Disclosure - JSON Web Token Verifiable Credential	vc+sd-jwt](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-sd-jwt-vc-01)
+2. [Selective Disclosure - JSON Web Token Verifiable Presentation	vp+sd-jwt](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-sd-jwt-vc-01)
+
+is mandatory. 
+
+**Holder Wallet** providers, MUST login to the ITB and successfully pass the tests in the RFCv2.0 test suite.
+**Relying Parties** (Issuers/Verifiers) MUST integrate with the ITB (as described in this document) and validate their flows with 
+and EWC RFC v2.0 Compliant Holder Wallet. 
+
+
+
+# 8.0 Reference
 
 1. EWC Technological Focus: [https://github.com/EWC-consortium/ewc-wiki/wiki/Focus](https://github.com/EWC-consortium/ewc-wiki/wiki/Focus)
 
