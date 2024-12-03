@@ -12,26 +12,6 @@ TBA
 
 **Table of Contents:**
 
-- [1.0 Summary](#10-summary)
-- [2.0 Motivation](#20-motivation)
-- [3.0 The Signing Architecture](#30-the-signing-architecture)
-    - [3.1 Phase 1: Service Provider Access & User Authentication](#31-phase-1-service-provider-access--user-authentication)
-    - [3.2 Phase 2: Certificate Listing and Selection](#32-phase-2-certificate-listing-and-selection)
-    - [3.3 Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)](#33-phase-3-signature-confirmation--private-key-unlocking-credential-authorization)
-    - [3.4 Phase 4: Signature Creation](#34-phase-4-signature-creation)
-    - [3.5 Phase 5: Signed Document Formation and Retrieval](#35-phase-5-signed-document-formation-and-retrieval)
-- [4. Signing Process](#4-signing-process)
-    - [4.0 Overview](#40-overview)
-    - [4.1 Phase 1: Service Provider Access & User Authentication](#41-phase-1-service-provider-access--user-authentication)
-        - [4.1.1 Service Access by User](#411-service-access-by-user)
-        - [4.1.2 User Authentication](#412-user-authentication)
-    - [4.2 Phase 2: Certificate Listing and Selection](#42-phase-2-certificate-listing-and-selection)
-    - [4.3 Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)](#43-phase-3-signature-confirmation--private-key-unlocking-credential-authorization)
-        - [4.3.1 Signing Confirmation as Willful Act](#431-signing-confirmation-as-willful-act)
-        - [4.3.2 Private Key Unlocking (Credential Authorization)](#432-private-key-unlocking-credential-authorization)
-    - [4.4 Phase 4: Signature Creation](#44-phase-4-signature-creation)
-    - [4.5 Phase 5: Signed Document Formation and Retrieval](#45-phase-5-signed-document-formation-and-retrieval)
-- [5. Reference](#5-reference)
 
 **Changelog:**
 
@@ -54,11 +34,12 @@ The motivation for this specification is to provide a robust and secure framewor
 The architecture covered in this specification follows the process of remotely signing a document using long-term certificates, handled by a Remote QES (or AES) Service, as detailed in D4.8.
 
 The architecture will be broken down in 4 main phases:
-1. Phase 1: Service Provider Access & User Authentication
-2. Phase 2: Certificate Listing and Selection
-3. Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
-4. Phase 4: Signature Creation
-5. Phase 5: Signed Document Formation and Retrieval
+1. Phase 1: Signing Service User Registration
+2. Phase 2: Service Provider Access & User Authentication
+3. Phase 3: Certificate Listing and Selection
+4. Phase 4: Signature Confirmation & Private Key Unlocking (Credential Authorization)
+5. Phase 5: Signature Creation
+6. Phase 6: Signed Document Formation and Retrieval
 
 **Remote QES services shall adhere to the [CSC (Cloud Signature Consortium)](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf) specifications that are also the basis for the JSON part of the ETSI TS 119 432 standard on protocols for remote digital signature creation.**
 
@@ -115,7 +96,61 @@ The architecture will be broken down in 4 main phases:
     Service Provider->>User: Signed Document
 ```
 
-## 4.1 Phase 1: Service Provider Access & User Authentication
+## 4.1 Phase 1: Signing Service User Registration
+
+```mermaid
+   sequenceDiagram
+  participant User
+  participant EUDI Wallet
+  participant Signing Service
+
+  User->>Signing Service: Request registration
+  Signing Service->>User: PID Presentation Request via OID4VP
+  EUDI Wallet->>Signing Service: PID Presentation
+  
+  Signing Service->>User: Credential Offer Deeplink for QESAC
+  EUDI Wallet->>Signing Service: Credential Request for QESAC
+  Signing Service->>EUDI Wallet: QESAC Issuance
+```
+
+Before the user can get access to the Signing Service to be able to sign documents, the user will need to be registered with the Signing Service.
+
+The registration process should be accessible only to users who are strongly authenticated with the service.
+
+During the registration procedure, the Signing Service must request the user's PID to be presented with, at least, the [mandatory attributes](https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/1.4.0/annexes/annex-3/annex-3.01-pid-rulebook/#23-pid-attributes) (`family_name`, `given_name`, `birth_date`, `age_over_18`, `issuance_date`, `expiry_date`) included in the presentation.
+
+Checks should be performed in order to make sure the presented document is valid and current (out of scope).
+
+The Signing Service should then use these attributes, along with data from the authentication context of the user to issue a QES Auth Credential (QESAC), including in its `token` claim a unique identifier or token, binding the user's profile to this VC.
+
+For the issuance of the QESAC, the process detailed in [RFC-001 (Issue Verifiable Credential)](ewc-rfc001-issue-verifiable-credential.md) must be used.
+
+### QESAC Claims Example:
+
+```json
+{
+  "token": "XRfEU4QYJGhnmgpu3LftecA4197QR78n06gQf9QdbvwAdYX9eucNbep6wiwL259L"
+}
+```
+
+Other claims can be added as needed by the Signing Service, however **the `token` claim is required**.
+
+### Inclusion of Credential ID in the QESAC (Optional):
+
+If needed, the user's credential ID can also be included in the QESAC to assist the Signing Service on the selection of the credential during the signing process, should the user have more than one Signing Credentials (Certificates):
+
+```json
+{
+  "token": "XRfEU4QYJGhnmgpu3LftecA4197QR78n06gQf9QdbvwAdYX9eucNbep6wiwL259L",
+  "credential_id": "GX0112348"
+}
+```
+
+### VCT of QESAC:
+
+The `vct` of the QESAC can be defined by the Signing Service, as needed, and is out of scope of this RFC.
+
+## 4.2 Phase 2: Service Provider Access & User Authentication
 
 #### Overview:
 
@@ -128,27 +163,30 @@ The architecture will be broken down in 4 main phases:
 
   User->>Service Provider: Service Access
   Service Provider->>Signing Service: Request Signing of Document
-  Signing Service->>User: PID Presentation Request via OID4VP
-  EUDI Wallet->>Signing Service: PID Presentation
+  Signing Service->>User: PID, QESAC Presentation Request via OID4VP
+  EUDI Wallet->>Signing Service: PID, QESAC Presentation
 ```
 
 In the first part of the signing procedure, the **User** accesses (through their browser) the **Service Provider** to request a document to be signed.
 
-### 4.1.1: Service Access by User:
+### 4.2.1: Service Access by User:
 
 Initially, the User accesses the Service Provider through their browser. Upon arrival, the user should be presented with an Authentication screen, requesting presentation of their PID.
 
-### 4.1.2: User Authentication
+### 4.2.2: User Authentication
 
-The Service Provider should (unless previously authenticated) require the user is authenticated. Authentication of the user happens through a presentation of their PID.
+The Signing Service should require the user is authenticated. Authentication of the user happens through a presentation of their PID and their QESAC.
 
-Requested data should include, at a minimum, the [mandatory attributes](https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/1.4.0/annexes/annex-3/annex-3.01-pid-rulebook/#23-pid-attributes) of the user's PID to be presented (`family_name`, `given_name`, `birth_date`, `age_over_18`, `issuance_date`, `expiry_date`).
+The Signing Service should, at minimum, make the following verifications during authentication:
 
-Checks should be performed in order to make sure the presented document is valid and current (out of scope).
+- The VPs of the QESAC, PID are valid.
+- The `token` inside the QESAC is valid and not recalled.
+- The PID attributes presented match the attributes presented during the issuance of the QESAC.
+- If a `credential_id` is included in the QESAC, the credential with the specified ID exists.
 
-## 4.2 Phase 2: Certificate Listing and Selection
+## 4.3 Phase 3: Certificate Listing and Selection (Optional)
 
-**The presented claims from the User's PID** are then used for the **determination and selection** of the User's Signing Certificate (`Credential`) from the Remote QES Service:
+The User's Signing Certificates (`Credentials`) from the Remote QES Service are listed:
 
 **credentials/list**
 
@@ -238,6 +276,8 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
+After the listing of the credentials, the Signing Service can determine the one to be used through an internal policy, show a credential selection screen to the user or, if provided, use the `credential_id` claim inside the QESAC to identify the credential to be used.
+
 **credentials/info (optional)**:
 
 SSPs can utilize the `credentials/info` endpoint to receive info about a specific credential:
@@ -260,11 +300,11 @@ The actual process of the certificate selection is not detailed in this RFC, as 
 
 > **Note**: Authentication to the RQES Provider is out of scope. Implementors will need to follow the CSC API Spec Guidelines for Service Authentication & Authorization. The user might need to be redirected to the RQES Provider to complete authorization.
 
-## 4.3: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
+## 4.4: Phase 4: Signature Confirmation & Private Key Unlocking (Credential Authorization)
 
 During this step of the process, the Signing of the Signer's Document (SD) must be confirmed by the user and the Private Key of the User's Certificate will need to be unlocked (authorized for use), in order to obtain the `Signature Activation Data (SAD)`.
 
-### 4.3.1: Signing Confirmation as Willful Act
+### 4.4.1: Signing Confirmation as Willful Act
 
 In order to confirm that the signature approval is a willful act, a second PID Presentation must be requested by the Signing Service:
 
@@ -280,7 +320,7 @@ In order to confirm that the signature approval is a willful act, a second PID P
 
 During this step, the Signing Service must confirm that the PID attributes presented exactly match the PID attributes presented in Phase 1. Any deviation should result in the immediate termination of the process.
 
-### 4.3.2: Private Key Unlocking (Credential Authorization)
+### 4.4.2: Private Key Unlocking (Credential Authorization)
 
 The Signing Service will need to parse the `auth.mode` object of the user's credential to determine the mode of credential authorization:
 
@@ -379,7 +419,7 @@ Content-Type: application/json;charset=UTF-8
 }
 ```
 
-## 4.4 Phase 4: Signature Creation
+## 4.5 Phase 5: Signature Creation
 
 After the SAD has been obtained by authorizing the credential for use, the SAD can be used to sign the document's hash (Data To Be Signed Representation, DTBSR) using the `signature/signHash` endpoint of the RQES Provider. The endpoint must respond with the Signed Hash (DSV, Digital Signature Value).
 
@@ -422,7 +462,7 @@ Authorization: Bearer 4/CKN69L8gdSYp5_pwH3XlFQZ3ndFhkXf9P2_TiHRG-bA
 }
 ```
 
-## 4.5 Phase 5: Signed Document Formation and Retrieval
+## 4.6 Phase 6: Signed Document Formation and Retrieval
 
 After the signing of the hash (SDR) has been completed, the AdES digital signature can be formed and the final document can be sent back to the Service Provider for further handling and/or for download by the user.
 
