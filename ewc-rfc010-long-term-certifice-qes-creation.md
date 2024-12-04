@@ -18,6 +18,7 @@ TBA
 - Nov. 11 2024: Initialization of authoring process.
 - Nov. 28 2024: Phase 4,5 authoring. Reformatting of headings and content. Addition of references.
 - Nov. 29 2024: Added Overview section.
+- Dec. 3 2024: Refinements on User Authn/z. Added registration phase.
 
 # 1.0 Summary:
 
@@ -56,7 +57,7 @@ The architecture will be broken down in 4 main phases:
     participant User
     participant EUDI Wallet
     participant Service Provider
-    box Purple CSC Protocol Usage
+    box CSC Protocol Usage
     participant Signing Service
     participant RQES Provider
     end
