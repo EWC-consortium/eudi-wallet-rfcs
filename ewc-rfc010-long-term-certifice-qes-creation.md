@@ -148,8 +148,8 @@ If needed, the user's credential ID can also be included in the QESAC to assist 
 
 ### VCT of QESAC:
 
-The `vct` of the QESAC can be defined by the Signing Service, as needed, and is out of scope of this RFC.
-
+Since each Signing Service has its own requirements and processes and should not be used by another Signing Service, the `vct` of the QESAC can be set by each Signing Service accordingly.
+ 
 ## 4.2 Phase 2: Service Provider Access & User Authentication
 
 #### Overview:
