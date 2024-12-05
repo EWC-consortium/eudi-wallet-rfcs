@@ -12,6 +12,34 @@ TBA
 
 **Table of Contents:**
 
+# Table of Contents
+
+- [RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates (v1)](#rfc-010-document-signing-on-a-remote-signing-service-provider-using-long-term-certificates-v1)
+    - [1.0 Summary](#10-summary)
+    - [2.0 Motivation](#20-motivation)
+    - [3.0 The Signing Architecture](#30-the-signing-architecture)
+        - [3.1 Architecture Phases](#31-architecture-phases)
+    - [4. Signing Process](#4-signing-process)
+        - [4.0 Overview](#40-overview)
+        - [4.1 Phase 1: Signing Service User Registration](#41-phase-1-signing-service-user-registration)
+            - [4.1.1 QESAC Claims Example](#411-qesac-claims-example)
+            - [4.1.2 Inclusion of Credential ID in the QESAC (Optional)](#412-inclusion-of-credential-id-in-the-qesac-optional)
+            - [4.1.3 VCT of QESAC](#413-vct-of-qesac)
+        - [4.2 Phase 2: Service Provider Access & User Authentication](#42-phase-2-service-provider-access--user-authentication)
+            - [4.2.1 Service Access by User](#421-service-access-by-user)
+            - [4.2.2 User Authentication](#422-user-authentication)
+        - [4.3 Phase 3: Certificate Listing and Selection (Optional)](#43-phase-3-certificate-listing-and-selection-optional)
+            - [4.3.1 credentials/list](#431-credentialslist)
+            - [4.3.2 credentials/info (optional)](#432-credentialsinfo-optional)
+        - [4.4 Phase 4: Signature Confirmation & Private Key Unlocking (Credential Authorization)](#44-phase-4-signature-confirmation--private-key-unlocking-credential-authorization)
+            - [4.4.1 Signing Confirmation as Willful Act](#441-signing-confirmation-as-willful-act)
+            - [4.4.2 Private Key Unlocking (Credential Authorization)](#442-private-key-unlocking-credential-authorization)
+                - [4.4.2.1 Authorization Code Flow (oauth2code)](#4421-authorization-code-flow-oauth2code)
+                - [4.4.2.2 Explicit Flow (explicit)](#4422-explicit-flow-explicit)
+        - [4.5 Phase 5: Signature Creation](#45-phase-5-signature-creation)
+        - [4.6 Phase 6: Signed Document Formation and Retrieval](#46-phase-6-signed-document-formation-and-retrieval)
+    - [5. Reference](#5-reference)
+
 
 **Changelog:**
 
@@ -34,7 +62,7 @@ The motivation for this specification is to provide a robust and secure framewor
 
 The architecture covered in this specification follows the process of remotely signing a document using long-term certificates, handled by a Remote QES (or AES) Service, as detailed in D4.8.
 
-The architecture will be broken down in 4 main phases:
+The architecture will be broken down in 6 main phases:
 1. Phase 1: Signing Service User Registration
 2. Phase 2: Service Provider Access & User Authentication
 3. Phase 3: Certificate Listing and Selection
