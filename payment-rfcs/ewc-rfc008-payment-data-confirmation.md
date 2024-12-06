@@ -38,7 +38,7 @@ Published under a Creative Commons Attribution 4.0 International License
 
 This specification defines how a Relying Party (RP) can interact with an EUDI wallet to receive verifiable confirmation that a user has agreed to specific details of an (intended) payment transaction. The RP could be the user’s bank (two-party model) or an intermediary like a merchant or a Payment Initiation Service Provider (three-party model). In the latter case, the way how the intermediary relays the data to the user’s bank is out of the scope of this specification but would typically happen through industry-specific protocols such as e.g. EMV 3-D Secure [1] or the Berlin Group’s suite of open banking APIs [2].
 
-This specification builds upon using the OpenID4VP protocol defined in EWC RFC 002 [3]. It also leverages the <strong><code>transaction_data</code></strong> feature recently introduced to OpenID4VP [4] to add a dynamic element to the presentation. Lastly, this specification uses the Payment Wallet Attestation (PWA) specified in EWC RFC 007 [5] as the credential referencing the wallet's key to confirm the payment transaction details. The credential format used in this document is SD-JWT, but others may also be supported.
+This specification builds upon using the OpenID4VP protocol defined in EWC RFC 002 [3]. It also leverages the <strong><code>transaction_data</code></strong> feature recently introduced to OpenID4VP [4] to add a dynamic element to the presentation. Lastly, this specification uses the Payment Wallet Attestation (PWA) specified in EWC RFC 007 [5] as the credential referencing the wallet's key to confirm the payment transaction details. The credential format used in this document is SD-JWT VC, but others may also be supported.
 
 This specification further details concepts developed and documented by the EWC Payment Task Force in their “Payment Authentication (SCA) using EU DI Wallets – Implementation Guide” [6].
 
@@ -66,7 +66,8 @@ The following are the pre-requisites for this RFC:
 
 ## 4.1 Authorisation request
 
-The authorisation request defined in EWC RFC 002 [3] is extended to support the new parameter **<code>transaction_data</code></strong>. This enables a binding agreement between the user's identification/authentication and authorisation (see [Chapter 5.1 - Presentation Definition](#6-1-presentation-definition-6)) to complete confirmation of a payment transaction. It is defined as an array of strings, each of which is a base64 encoded JSON object containing a typed parameter set with details about the transaction that the Verifier requests the individuals to authorise. The <strong><code>transaction_data</code></strong> object includes the following parameters:
+The authorisation request defined in EWC RFC 002 [3] is extended to support the new parameter <code>transaction_data</code></strong>. This enables a binding agreement between the user's identification/authentication and authorisation (see [Chapter 5.1 - Presentation Definition](#6-1-presentation-definition-6)) to complete confirmation of a payment transaction. It is defined as an array of strings, each of which is a base64 encoded JSON object containing a typed parameter set with details about the transaction that the Verifier requests the individuals to authorise.
+The <strong><code>transaction_data</code></strong> parameter must contain a transaction data object (base64 encoded JSON object) that includes the following properties:
 
 <table>
   <tr>
@@ -200,36 +201,36 @@ The authorisation response, as defined in EWC RFC 002 [3], is extended to includ
 The holder wallet must display all attributes (keys and values) contained in the <strong><code>payment_data</code></strong> object to the user as part of releasing the PWA credential and obtaining an explicit user action, signalling they confirm the details presented. It may localise (translate) keys, localise (adapt) number formats and replace or amend currency codes with symbols where appropriate and unambiguous. 
 
 ## 5.2 Verifier
+To verify the VP token received in the presentation response, the verifier needs to have the following information.
+This information may have originated from themselves, or been relayed to them by the intermediary in a three-party model:
 
-The integrity and authenticity of the payment data can be verified by the party who knows the public key of the key pair whose possession was proven by the user when the Payment Wallet Attestation was issued as per EWC RFC 007 [5].
+* The base64url encoded <strong><code>transaction_data</code></strong> string that was sent to the wallet as part of the authorization request.
+* In a three party model - The original input from the user on the payment details, i.e. payee, amount, currency at least, plus any optional parameters. Obtained from the intermediary through industry-specific protocols like 3DS or open banking APIs.
 
-The verifier further needs to have the following information, either directly from the wallet or relayed by the intermediary in a three-party model:
+With this information at hand, plus the VP token presented by the wallet, the verifier performs the following:
 
-* The PWA issued into the user’s wallet and corresponding to the funding source (card or account) in question was presented from the user’s wallet and signed by the user.
-* The <strong><code>transaction_data</code></strong> object was constructed and sent to the wallet as part of the authorization request.
-* The key-binding JWT incl. the hash of the <strong><code>transaction_data</code></strong> object.
-* The original input from the user on the payment details, i.e. payee, amount, currency at least, plus any optional parameters. In a two-party model, the user typically inputs this data into a form the bank presents in their online or mobile banking. In a three-party model, the intermediary relays this data, which he has agreed with the user, through industry-specific protocols like 3DS or open banking APIs.
+1. Validate the VP Token as described in OpenID4VP [4] for the IETF SD-JWT VC credential format.
+  * This should include validating the key binding JWT, as a PWA is always bound to a key.
+  * This should include checking that the timestamp <code>(iat</code>) in the key binding JWT is close (e.g. ±5 minutes) to receiving the input from the user (two-party model) or intermediary (three-party model), respectively.
+2. Validate the `transaction_data`
+  * Validate that the original base64url encoded <strong><code>transaction_data</code></strong> string results in the same hash value when hashed with the given function as the hash contained in `transaction_data_hashes` in the key binding JWT.
+  * In a three party model - Validate that the payment data in the <strong><code>transaction_data</code></strong> string (once decoded) correspond to the original input from the user obtained through the intermediary.
+3. Validate the suitability of the PWA
+* Ensure that the PWA was issued by a suitable entity, most likely the issuer should be the same entity as verifier.
+* Ensure that the PWA is valid for the funding source (card or account) in question (including non-revoked). Most likely the contents of the PWA can be cross-referenced against the verifiers internal records.
 
-With these details at hand, the verifier performs the following validations:
-
-1. It checks by working with the public key it has on record that the Payment Wallet Attestation and key binding JWT have been presented by the same user to whom the PWA has been issued.
-2. It checks by comparing its own records to ensure that the PWA is valid for the funding source (card or account) in question (including non-revoked).
-3. It checks that the <strong><code>transaction_data</code></strong> object results in the same hash value when hashed with the given function as the hash contained in the key binding JWT.
-4. It checks that the transaction details in the <strong><code>transaction_data</code></strong> object correspond to the values obtained from the user or through the intermediary.
-5. It checks that the timestamp <code>(iat</code>) in the key binding JWT is close (e.g. ±5 minutes) to receiving the input from the user (two-party model) or intermediary (three-party model), respectively.
 
 In addition to the above, the verifier may want to validate the user’s Wallet Unit Attestation. This part is outside the scope of this specification. Please see EWC RFC 004 [10] for further details.
-
 
 # 6.0 Schema definitions
 
 ## 6.1 Presentation definition
 
 Below is a non-normative example of a presentation definition to request the Payment Wallet Attestation by specifying the credential type. If the relying party has further information about other attribute values, additional constraints may be used to identify a particular PWA in the user’s wallet.
-
+The id of the input descriptor requesting the PWA, here `7c94e62d-82c2-41d7-a649-6c204bf59d1c`, should be referenced in `credential_ids` of the authorization request.
 ```json
 {
-  "id": "7c94e62d-82c2-41d7-a649-6c204bf59d1c",
+  "id": "8dd03977-74e4-4b10-ad6d-05a681f44fc9",
   "format": {
     "vc+sd-jwt": {
       "alg": [
