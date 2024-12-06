@@ -656,111 +656,32 @@ The disclosed payload
 ```json
 
 {
-  "18": {
-    "value": true,
-    "disclose": true
-  },
-  "vct": {
-    "value": "eu.europa.ec.eudi.pid.1",
-    "disclose": false
-  },
-  "_sd_alg": {
-    "value": "sha3-256",
-    "disclose": false
-  },
-  "iss": {
-    "value": "https://issuer-backend.eudiw.dev",
-    "disclose": false
-  },
+  "iss": "https://example.com/issuer",
+  "iat": 1683000000,
+  "exp": 1883000000,
+  "vct": "urn:eu.europa.ec.eudi:pid:1",
   "cnf": {
-    "value": {
-      "jwk": {
-        "kty": "RSA",
-        "e": "AQAB",
-        "use": "sig",
-        "kid": "d7185eca-8a8b-40a2-933b-b3f15b9b5a1e",
-        "iat": 1731668592,
-        "n": "zAMxa2TxJg3hIKj4WGyEmSMcDljQclNTAndDflwTNvYnWXlCA-XBogzRzArR48odJJ8b-Nr9f5oYHIp8WdNoAs4hve1NBQuwSuYNi-SLVkcND4hn1gVmyiewzNlvR6LL7JoBRDtTe3PaR9XAoBHRycq4jMy8r3xLoX0XxmAoctxtm6r7ey2h951vUEehVknX58-RO2JjpYl1sRWIMbQC_hTYqvH0sVFwUxtnQqa53eSz9UZO5ZkzJa7Vs9gSMCcXRtz8XBXTwWNM9h8dDhjNzEXRpzYpgIaM4TIDd4i-_UPs9eN3LWsUisiY-jAS6kEx6apSGkZit-8bv1Hy-2WdOw"
-      }
-    },
-    "disclose": false
+    "jwk": {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "TCAER19Zvu3OHF4j4W4vfSVoHIP1ILilDls7vCeGemc",
+      "y": "ZxjiWWbZMQGHVWKVQ4hbSIirsVfuecCE6t4jT9F2HZQ"
+    }
   },
-  "exp": {
-    "value": 1734260593,
-    "disclose": false
-  },
-  "iat": {
-    "value": 1731668593,
-    "disclose": false
-  },
-  "age_equal_or_over": {
-    "value": {
-      "_sd": [
-        "ipS83-3PYUk-EsyXzpaC-PtXYSMgRZpqMdnU_BS4Wu0"
-      ]
-    },
-    "disclose": false
-  },
-  "issuance_date": {
-    "value": "2024-11-15",
-    "disclose": true
-  },
-  "given_name": {
-    "value": "Tyler",
-    "disclose": true
-  },
-  "family_name": {
-    "value": "Neal",
-    "disclose": true
-  },
-  "birthdate": {
-    "value": "1955-04-12",
-    "disclose": true
-  },
-  "gender": {
-    "value": 1,
-    "disclose": true
-  },
-  "age_in_years": {
-    "value": 70,
-    "disclose": true
-  },
-  "birthdate_year": {
-    "value": "1955",
-    "disclose": true
-  },
-  "country": {
-    "value": "AT",
-    "disclose": true
-  },
-  "region": {
-    "value": "Lower Austria",
-    "disclose": true
-  },
-  "locality": {
-    "value": "Gemeinde Biberbach",
-    "disclose": true
-  },
-  "postal_code": {
-    "value": "3331",
-    "disclose": true
-  },
-  "street_address": {
-    "value": "101 Trauner",
-    "disclose": true
-  },
+  "is_over_18": true,
+  "is_over_21": true,
+  "is_over_65": true,
   "address": {
-    "value": {
-      "_sd": [
-        "-d0L7NlZCrqTQm69Yh2SkUvgizjYtrtpg6_qEmquoTc",
-        "6QtSVWFVGfDBh_YmxR2XqVX76fWR1bsb_lVISMycPbU",
-        "WhJkGsJpdbT623hSGyKUuG3He31HlQIcbDuvbeOHzwQ",
-        "ZeKDZ8oslHvtKsJX3Ncl0LsqBY1VLgwlYHkeI7a0LdE",
-        "kgBUkYONl82uIu0nCG2CiJ9nfgd_ZfBOwCd1iqRJTnU"
-      ]
-    },
-    "disclose": true
-  }
+    "street_address": "123 Main St",
+    "locality": "Anytown",
+    "region": "Anystate",
+    "country": "US"
+  },
+  "email": "johndoe@example.com",
+  "phone_number": "+1-202-555-0101",
+  "family_name": "Doe",
+  "birthdate": "1940-01-01",
+  "given_name": "John"
 }
 ```
 
