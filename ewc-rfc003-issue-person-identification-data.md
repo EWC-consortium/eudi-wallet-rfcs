@@ -131,15 +131,18 @@ Following the issuance of the PID, initial and periodic verification procedures 
 
 ## 3.1 Credential offer
 
-For PID credential issuance, this RFC allows both authorization and preauthorized flows. PID issuer will use the credential_offer_uri parameter as shown below:
+For PID credential issuance, this RFC allows both authorization and preauthorized code flows. 
+Credential offer can be provided by reference and by value.
+In the first case the `credential_offer_uri` query parameter contains the URL where the credential offer from the government-approved identity provider can be resolved. 
+This approach ensures a streamlined user experience while maintaining the necessary information exchange for the PID issuance process. The holder wallet obtains the above by scanning a QR code for cross-device workflows or via a deeplink for same-device workflows.
+
+Here there's an example:
 
 ```
 openid-credential-offer://?credential_offer_uri=https://identity-provider.gov/pid-credential-offer
 
 ```
-
-In this case, the `credential_offer_uri` query parameter contains the URL where the credential offer from the government-approved identity provider can be resolved. This approach ensures a streamlined user experience while maintaining the necessary information exchange for the PID issuance process. The holder wallet obtains the above by scanning a QR code for cross-device workflows or via a deeplink for same-device workflows.
-
+Options regarding credential offer are well described at https://issuer.eudiw.dev/
 ## 3.2 Credential offer response
 
 On resolving the `credential_offer_uri` query parameter, the issuer responds with details of the PID credential offer. The response format is adapted to the specific requirements of PID issuance and may include information such as the credential type related to personal identification and the applicable trust framework. The response can be in one of the following formats:
