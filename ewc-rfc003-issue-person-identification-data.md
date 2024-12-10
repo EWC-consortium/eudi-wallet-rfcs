@@ -150,7 +150,7 @@ On resolving the `credential_offer_uri` query parameter, the issuer responds wit
 ```json
 {
   "credential_issuer": "https://identity-provider.gov",
-  "credential_configuration_ids": ["eu.europa.ec.eudi.pid.1"],
+  "credential_configuration_ids": ["urn:eu.europa.ec.eudi:pid:1"],
   "grants": {
     "authorization_code": {
       "issuer_state": "eyJhbGciOiJSU0Et...FYUaBy"
@@ -166,7 +166,7 @@ For the pre-authorized flow, the credential response format is adapted to includ
 ```json
 {
   "credential_issuer": "https://identity-provider.gov",
-  "credential_configuration_ids": ["eu.europa.ec.eudi.pid.1"],
+  "credential_configuration_ids": ["urn:eu.europa.ec.eudi:pid:1"],
   "grants": {
       "urn:ietf:params:oauth:grant-type:pre-authorized_code": {
         "pre-authorized_code": "asfdasfdsadfsa",
@@ -215,7 +215,7 @@ GET https://identity-provider.gov/auth/authorize?
 &issuer_state=uniqueStateIdentifier
 &state=client-state
 &client_id=did%3Akey%3Az2dmzD81cgPx8Vki7JbuuMmFYrWPgYoytykUZ3eyqht1j9KbsEYvdrjxMjQ4tpnje9BDBTzuNDP3knn6qLZErzd4bJ5go2CChoPjd5GAH3zpFJP5fuwSk66U5Pq6EhF4nKnHzDnznEP8fX99nZGgwbAh1o7Gj1X52Tdhf7U4KTk66xsA5r
-&authorization_details%3D%5B%7B%22format%22%3A%22jwt_vc%22%2C%22locations%22%3A%5B%22https%3A%2F%2Fissuer.example.com%22%5D%2C%22type%22%3A%22openid_credential%22%2C%22types%22%3A%5B%22eu.europa.ec.eudi.pid.1%22%5D%7D%5D
+&authorization_details%3D%5B%7B%22format%22%3A%22jwt_vc%22%2C%22locations%22%3A%5B%22https%3A%2F%2Fissuer.example.com%22%5D%2C%22type%22%3A%22openid_credential%22%2C%22types%22%3A%5B%22urn%3Aeu.europa.ec.eudi%3Apid%3A1%22%5D%7D%5D
 &redirect_uri=openid%3A
 &nonce=glkFFoisdfEui43
 &code_challenge=YjI0ZTQ4NTBhMzJmMmZhNjZkZDFkYzVhNzlhNGMyZDdjZDlkMTM4YTY4NjcyMTA5M2Q2OWQ3YjNjOGJlZDBlMSAgLQo%3D
@@ -266,7 +266,7 @@ Query params for the authorisation request are given below:
       "format": "jwt_vc_json",
       "credential_definition": {
          "type": [
-            "eu.europa.ec.eudi.pid.1"
+            "urn:eu.europa.ec.eudi:pid:1"
          ]
       }
    }
@@ -512,7 +512,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
    "format": "vc+sd-jwt",
-   "vct": "eu.europa.ec.eudi.pid.1",
+   "vct": "urn:eu.europa.ec.eudi:pid:1",
    "proof": {
       "proof_type": "jwt",
       "jwt":"eyJraW...KWjceMcr"
