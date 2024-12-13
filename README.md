@@ -57,7 +57,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-006   | Organisational Wallet Unit Attestation                                                   |
 | RFC-008   | [Payment Data Confirmation - v0.9](payment-rfcs/ewc-rfc008-payment-data-confirmation.md) |
 | RFC-009   | Payment Transaction Initiation                                                           |
-| RFC-010   | [Synchronous Document Signing using Long-Term Certificates - v1](https://github.com/EWC-consortium/eudi-wallet-rfcs/pull/117)|
+| RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)                              |
 | RFC-011   | Payments with verifiable receipts                                                        |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
