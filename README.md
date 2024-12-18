@@ -60,6 +60,17 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)                              |
 | RFC-011   | Payments with verifiable receipts                                                        |
 
+## EWC Wallet Implementers (ITB - Compliant to EWC release 2.1)
+
+### Wallet Providers (With Issuer/Holder/Verifier functionalities)
+_Coming soon_
+
+### Issuer-only 
+_Coming soon_
+
+### Verifier-Only
+_Coming soon_
+
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
 
 NOTE: The wallets scheduled to be compliant with EWC release 2.0 based on the survey concluded on 15 October 2024 are as given:
