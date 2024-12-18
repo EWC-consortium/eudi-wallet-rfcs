@@ -84,7 +84,7 @@ The EWC LSP must align with standard protocols for issuing and verifying credent
 
 ## 3.1 Steps to Conformance
 
-EWC wallets will implement the EWC RFCs for OIDC4VC [3][4] two “official” EWC testing RP services: An Issuer and a Verifier. These services will be integrated into the EWC Operational Testing environment as a test suite.
+EWC wallets will implement the EWC RFCs for OIDC4VC [3][4] two “official” EWC testing RP services: An Issuer and a Verifier. These services are integrated into the EWC Operational Testing environment as a test suite.
 
 To check the conformance of a Holder wallet solution as a wallet provider, the following steps must be followed:
 
@@ -92,7 +92,9 @@ To check the conformance of a Holder wallet solution as a wallet provider, the f
 
 - Login to the EWC Operational Testing environment instance ([https://dss.aegean.gr/itb](https://dss.aegean.gr/itb))
 
-- Navigate to the test suite “**EWC Holder Wallet Conformance Test Suite**”
+- Navigate to the test suite “**EWC RFC v2 | RFC v2 test suite for OIDC4VCI v13 and OIDC4VP v20**”
+  ![image](https://github.com/user-attachments/assets/2e10900d-ee97-4a46-ab81-0bfb5ddfc442)
+
 
 - Execute the test cases:
 
