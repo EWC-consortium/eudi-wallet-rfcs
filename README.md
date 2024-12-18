@@ -52,23 +52,26 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
 
-| **RFC #** | **RFC Title**                                                                            |
-| --------- | ---------------------------------------------------------------------------------------- |
-| RFC-006   | Organisational Wallet Unit Attestation                                                   |
-| RFC-008   | [Payment Data Confirmation - v0.9](payment-rfcs/ewc-rfc008-payment-data-confirmation.md) |
-| RFC-009   | Payment Transaction Initiation                                                           |
-| RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)                              |
-| RFC-011   | Payments with verifiable receipts                                                        |
+| **RFC #** | **RFC Title**                                                                                          |
+| --------- | ------------------------------------------------------------------------------------------------------ |
+| RFC-006   | [Organisational Wallet Unit Attestation - v0.9](/ewc-rfc006-organisational-wallet-unit-attestation.md) |
+| RFC-008   | [Payment Data Confirmation - v0.9](payment-rfcs/ewc-rfc008-payment-data-confirmation.md)               |
+| RFC-009   | Payment Transaction Initiation                                                                         |
+| RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)        |
+| RFC-011   | Payments with verifiable receipts                                                                      |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.1)
 
 ### Wallet Providers (With Issuer/Holder/Verifier functionalities)
+
 _Coming soon_
 
-### Issuer-only 
+### Issuer-only
+
 _Coming soon_
 
 ### Verifier-Only
+
 _Coming soon_
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC release 2.0)
@@ -96,8 +99,8 @@ Date of availability: 15 November 2024
 | SICPA Digital Trust Suite     | [https://docs.dip.sicpa.com/](https://docs.dip.sicpa.com/)                                                                                |   ✅    |   ✅    |    ✅     |
 | Archipels                     | [https://app.archipels.io/](https://app.archipels.io/)                                                                                    |        |   ✅    |    ✅     |
 | ValidatedID                   | [https://staging-studio.vidchain.net/login](https://staging-studio.vidchain.net/login)                                                    |        |   ✅    |    ✅     |
-| Mini Suomi (Vero, Finland)    | [https://wallet.minisuomi.fi](https://wallet.minisuomi.fi), [Api](https://test.minisuomi.fi/swagger)                                                                                  |   ✅    |   ✅    |    ✅     |
-| Signicat           |                              |   |   ✅    |          |
+| Mini Suomi (Vero, Finland)    | [https://wallet.minisuomi.fi](https://wallet.minisuomi.fi), [Api](https://test.minisuomi.fi/swagger)                                      |   ✅    |   ✅    |    ✅     |
+| Signicat                      |                                                                                                                                           |        |   ✅    |          |
 
 ## Funding
 
