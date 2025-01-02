@@ -355,6 +355,116 @@ The value of the verifiable credential type or `vct` claim for payment wallet at
 
 # 8.0	Schema definitions - Payment Wallet Attestation
 
+The table lists the attributes and possible values of the Payment Wallet Attestation:
+
+<table>
+  <tr>
+   <td colspan="3" ><strong><code>iss</code></strong>
+   </td>
+   <td>REQUIRED. Issuer of the credential. 
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3" ><strong><code>aud</code></strong>
+   </td>
+   <td>OPTIONAL. Intended audience of the credential.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3" ><strong><code>sub</code></strong>
+   </td>
+   <td>REQUIRED. Unique identifier assigned and retained by the PSP for the holder. This can be the 'PSU-ID' as per PSD2 or another identifier chosen by the PSP. The identifier should not be sensitive.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3" ><strong><code>transaction_data_hashes_alg</code></strong>
+   </td>
+   <td>OPTIONAL. An array of strings, each representing a hash algorithm identifier. If this parameter is absent, a default value of sha-256 MUST be used.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3" ><strong><code>payment_data</code></strong>
+   </td>
+   <td>REQUIRED. An object related to payment transactions. This is introduced in EWC to support payment transactions. 
+<p>
+This object contains the parameters given below.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>payee</code></strong>
+   </td>
+   <td>REQUIRED. The name of the payee to whom the payment is being made.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>currency_amount</code></strong>
+   </td>
+   <td>REQUIRED. An object conforming to the PaymentCurrencyAmount dictionary specification as defined in the W3C Payment Request API [9].
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>currency</code></strong>
+   </td>
+   <td>REQUIRED. A well-formed 3-letter alphabetic code, e.g. EUR.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>value</code></strong>
+   </td>
+   <td>REQUIRED. A valid decimal monetary value containing a monetary amount. e.g. 23.50.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>recurring_schedule</code></strong>
+   </td>
+   <td>OPTIONAL. If present, it indicates a recurring payment with the following details: 
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>start_date</code></strong>
+   </td>
+   <td>REQUIRED If the parent object is present. Indicates the date (ISO 8601) when the series of recurring payments has been agreed to commence. 
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>expiry_date</code></strong>
+   </td>
+   <td>OPTIONAL. Indicates the date (ISO 8601) when the series of recurring payments has been agreed to end. If absent, no expiration date has been agreed upon.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>frequency</code></strong>
+   </td>
+   <td>REQUIRED If the parent object is present, indicates the minimum number of days between single occurrences of the recurring schedule.
+   </td>
+  </tr>
+</table>
 Non-normative example:
 
 ```json
