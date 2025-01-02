@@ -66,8 +66,8 @@ The following are the pre-requisites for this RFC:
 
 ## 4.1 Authorisation request
 
-The authorisation request defined in EWC RFC 002 [3] is extended to support the new parameter <code>transaction_data</code></strong>. This enables a binding agreement between the user's identification/authentication and authorisation (see [Chapter 5.1 - Presentation Definition](#6-1-presentation-definition-6)) to complete confirmation of a payment transaction. It is defined as an array of strings, each of which is a base64 encoded JSON object containing a typed parameter set with details about the transaction that the Verifier requests the individuals to authorise.
-The <strong><code>transaction_data</code></strong> parameter must contain a transaction data object (base64 encoded JSON object) that includes the following properties:
+The authorisation request defined in EWC RFC 002 [3] is extended to support the new parameter <code>transaction_data</code></strong>. This enables a binding agreement between the user's identification/authentication and authorisation (see [Chapter 5.1 - Presentation Definition](#6-1-presentation-definition-6)) to complete confirmation of a payment transaction. It is defined as an array of strings, each of which is a base64url encoded JSON object containing a typed parameter set with details about the transaction that the Verifier requests the individuals to authorise.
+The <strong><code>transaction_data</code></strong> parameter must contain a transaction data object (base64url encoded JSON object) that includes the following properties:
 
 <table>
   <tr>
