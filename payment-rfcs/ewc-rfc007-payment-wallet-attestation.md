@@ -483,7 +483,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
    <td colspan="2" ><strong><code>currency</code></strong>
    </td>
-   <td>OPTIONAL. (Main) currency for the funding source. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   <td>OPTIONAL. (Main) currency for the funding source in the format of a well-formed 3-letter alphabetic code, e.g. <code>EUR</code>. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
    </td>
   </tr>
   <tr>
@@ -558,24 +558,28 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
   </tr>
 </table>
 
-Non-normative example:
+Below a non-normative example for the case when the funding source is a card:
 
 ```json
 {
   "iss": "https://mypsp.com",
   "aud": "https://mypsp.com/.well-known/oauth-authorization-server",
-  "sub": "<PSP account identifier>",
+  "sub": "johndoe1",
   "iat": 1541493724,
-  "exp": 1516247022,
-  "accounts": [
-    {
-      "card": "45126*****1234"
-    },
-    {
-      "iban": "NL76RABO0359400371"
-    }
-  ],
-  "account_holder_id": "<PSP customer identifier>",
+  "nbf": 1541493724,
+  "exp": 1586247022,
+  "vct": "PaymentWalletAttestation",
+  "id": "f9149e93-300e-4187-a0a5-f5e9cc797607", 
+  "fundingSource": {
+    "type": "card",
+    "lastFour": "1234",
+    "iin": "412345",
+    "par": "V001Z28RKA1EBL470G9XYG90R5D3E",
+    "aliasId": "0364da8c-033d-4e43-8eba-7814e7d2bbb9",
+    "currency": "EUR",
+    "scheme": "Visa",
+    "icon": "https://mypsp.com/card-art.png"
+  },
   "cnf": {
     "jwk": {
       "kty": "EC",
