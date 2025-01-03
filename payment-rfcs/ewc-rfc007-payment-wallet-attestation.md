@@ -1,4 +1,4 @@
-# EWC RFC007: Payment Wallet Attestation - v1.0
+# EWC RFC007: Payment Wallet Attestation - v1.1
 
 **Authors:** 
 * Lal Chandran, iGrant.io, Sweden
@@ -12,13 +12,13 @@
 * Marie Austenaa, Visa Europe, UK
 * Laurent Bailly, Visa Europe, France
 
-**Status:** Approved, 22-Oct-2024
+**Status:** *Work in Progress*
 
 Copyright © 2024 All Rights Reserved
 Published under a Creative Commons Attribution 4.0 International License
 
 **Table of Contents**
-- [EWC RFC007: Payment Wallet Attestation - v1.0](#ewc-rfc007-payment-wallet-attestation---v10)
+- [EWC RFC007: Payment Wallet Attestation - v1.1](#ewc-rfc007-payment-wallet-attestation---v11)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Pre-requisites](#30pre-requisites)
@@ -359,79 +359,161 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
 
 <table>
   <tr>
-   <td colspan="3" ><strong><code>iss</code></strong>
+   <td colspan="3"><strong><code>iss</code></strong>
    </td>
    <td>REQUIRED. Issuer of the credential. 
    </td>
   </tr>
   <tr>
-   <td colspan="3" ><strong><code>aud</code></strong>
+   <td colspan="3"><strong><code>aud</code></strong>
    </td>
    <td>OPTIONAL. Intended audience of the credential.
    </td>
   </tr>
   <tr>
-   <td colspan="3" ><strong><code>sub</code></strong>
+   <td colspan="3"><strong><code>sub</code></strong>
    </td>
    <td>REQUIRED. Unique identifier assigned and retained by the PSP for the holder. This can be the 'PSU-ID' as per PSD2 or another identifier chosen by the PSP. The identifier should not be sensitive.
    </td>
   </tr>
   <tr>
-   <td colspan="3" ><strong><code>transaction_data_hashes_alg</code></strong>
+   <td colspan="3"><strong><code>iat</code></strong>
    </td>
-   <td>OPTIONAL. An array of strings, each representing a hash algorithm identifier. If this parameter is absent, a default value of sha-256 MUST be used.
+   <td>REQUIRED. Time of issuance.
+   </td>
+  </tr>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>nbf</code></strong>
+   </td>
+   <td>OPTIONAL. Not to be used before this time.
+   </td>
+  </tr>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>exp</code></strong>
+   </td>
+   <td>OPTIONAL, but RECOMMENDED to issue the credential with a sensible expiry date, possibly aligned with expiry of the card (if present as funding source).
    </td>
   </tr>
   <tr>
-   <td colspan="3" ><strong><code>payment_data</code></strong>
+   <td colspan="3"><strong><code>vct</code></strong>
    </td>
-   <td>REQUIRED. An object related to payment transactions. This is introduced in EWC to support payment transactions. 
-<p>
-This object contains the parameters given below.
+   <td>REQUIRED. Currently, the supported value is <code>PaymentWalletAttestation</code>. (The value may evolve to improve collision resistance.)
    </td>
   </tr>
   <tr>
-   <td>
+   <td colspan="3"><strong><code>id</code></strong>
    </td>
-   <td colspan="2" ><strong><code>payee</code></strong>
-   </td>
-   <td>REQUIRED. The name of the payee to whom the payment is being made.
+   <td>REQUIRED. Unique identifier assigned and retained by the PSP for this credential.
    </td>
   </tr>
   <tr>
-   <td>
+   <td colspan="3"><strong><code>fundingSource</code></strong>
    </td>
-   <td colspan="2" ><strong><code>currency_amount</code></strong>
-   </td>
-   <td>REQUIRED. An object conforming to the PaymentCurrencyAmount dictionary specification as defined in the W3C Payment Request API [9].
-   </td>
-  </tr>
-  <tr>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td><strong><code>currency</code></strong>
-   </td>
-   <td>REQUIRED. A well-formed 3-letter alphabetic code, e.g. EUR.
-   </td>
-  </tr>
-  <tr>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td><strong><code>value</code></strong>
-   </td>
-   <td>REQUIRED. A valid decimal monetary value containing a monetary amount. e.g. 23.50.
+   <td>REQUIRED. Object holding details about the funding source for which the PWA is valid.
    </td>
   </tr>
   <tr>
    <td>
    </td>
-   <td colspan="2" ><strong><code>recurring_schedule</code></strong>
+   <td colspan="2" ><strong><code>type</code></strong>
    </td>
-   <td>OPTIONAL. If present, it indicates a recurring payment with the following details: 
+   <td>REQUIRED. Currently supported values are <code>account</code>, <code>card</code> and <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>lastFour</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>card</code>. Value MUST only contain the last four digits of the Primary Account Number (PAN) as per ISO/IEC 7812, not the full PAN.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>iin</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>card</code>. Value must be an 'IIN' (sometimes also called 'BIN') as per ISO/IEC 7812.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>par</code></strong>
+   </td>
+   <td>OPTIONAL. Contains the EMV Payment Account Reference associated with this card. May only present when <strong><code>type</code></strong> == <code>card</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>iban</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>account</code>. Value must be a valid IBAN.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>bic</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>account</code>. Value must be a 'BIC' as per ISO 9362.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>sortCode</code></strong>
+   </td>
+   <td>OPTIONAL. Contains e.g. a national bank sort or routing code. May only be present when <strong><code>type</code></strong> == <code>account</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>aliasId</code></strong>
+   </td>
+   <td>OPTIONAL. Unique identifier assigned and retained by the PSP for the funding source. This identifier should not be sensitive. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>currency</code></strong>
+   </td>
+   <td>OPTIONAL. (Main) currency for the funding source. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>scheme</code></strong>
+   </td>
+   <td>OPTIONAL. Currently supported values are 'Visa', 'American Express', 'Discover', 'JCB', 'Mastercard', 'UnionPay', ‘SEPA’, 'SEPA SCT' and 'SEPA SCT Inst'. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>icon</code></strong>
+   </td>
+   <td>OPTIONAL. URI to graphic showing a visual representation (logo) of the scheme or card art. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>cnf</code></strong>
+   </td>
+   <td>REQUIRED. Object containing information for cryptographic holder binding as per the specification.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>jwk</code></strong>
+   </td>
+   <td>
    </td>
   </tr>
   <tr>
@@ -439,9 +521,9 @@ This object contains the parameters given below.
    </td>
    <td>
    </td>
-   <td><strong><code>start_date</code></strong>
+   <td><strong><code>kty</code></strong>
    </td>
-   <td>REQUIRED If the parent object is present. Indicates the date (ISO 8601) when the series of recurring payments has been agreed to commence. 
+   <td>
    </td>
   </tr>
   <tr>
@@ -449,9 +531,9 @@ This object contains the parameters given below.
    </td>
    <td>
    </td>
-   <td><strong><code>expiry_date</code></strong>
+   <td><strong><code>crv</code></strong>
    </td>
-   <td>OPTIONAL. Indicates the date (ISO 8601) when the series of recurring payments has been agreed to end. If absent, no expiration date has been agreed upon.
+   <td>
    </td>
   </tr>
   <tr>
@@ -459,12 +541,23 @@ This object contains the parameters given below.
    </td>
    <td>
    </td>
-   <td><strong><code>frequency</code></strong>
+   <td><strong><code>x</code></strong>
    </td>
-   <td>REQUIRED If the parent object is present, indicates the minimum number of days between single occurrences of the recurring schedule.
+   <td>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>y</code></strong>
+   </td>
+   <td>
    </td>
   </tr>
 </table>
+
 Non-normative example:
 
 ```json
