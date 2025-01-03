@@ -591,9 +591,9 @@ Below a non-normative example for the case when the funding source is a card:
 }
 ```
 
-# 9.0	Reference
+# 9.0	References
 
-1. SCA for online payments using the EUDI Wallet - Implementation guide (currently available as EWC-internal draft; yet to be published). 
+1. SCA for online payments using the EUDI Wallet - Implementation guide - v1.01, Available at: [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/payment-rfcs/implementation-guides/payment-authentication-sca-using-eudi-wallets.pdf] /Accessed: January 3, 2025). 
 
 2. EWC RFC001, Issue Verifiable Credential - v1.0, Available at: [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md) (Accessed: April 20, 2024).
 
