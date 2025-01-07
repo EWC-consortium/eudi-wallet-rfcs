@@ -403,9 +403,9 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>id</code></strong>
+   <td colspan="3"><strong><code>jti</code></strong>
    </td>
-   <td>REQUIRED. Unique identifier assigned and retained by the PSP for this credential.
+   <td>OPTIONAL. Unique identifier assigned and retained by the PSP for this credential.
    </td>
   </tr>
   <tr>
@@ -569,7 +569,7 @@ Below a non-normative example for the case when the funding source is a card:
   "nbf": 1541493724,
   "exp": 1586247022,
   "vct": "PaymentWalletAttestation",
-  "id": "f9149e93-300e-4187-a0a5-f5e9cc797607", 
+  "jti": "f9149e93-300e-4187-a0a5-f5e9cc797607", 
   "fundingSource": {
     "type": "card",
     "lastFour": "1234",
