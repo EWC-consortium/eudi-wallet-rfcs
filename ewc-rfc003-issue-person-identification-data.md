@@ -28,18 +28,19 @@
   - [3.2 Credential offer response](#32-credential-offer-response)
   - [3.3 Discover request](#33-discover-request)
   - [3.4 Discover response](#34-discover-response)
-  - [3.5 Authorization request](#35-authorization-request)
-  - [3.6 Authorization response](#36-authorization-response)
-  - [3.7 Token request](#37-token-request)
-    - [3.7.1 Authorisation code flow](#371-authorisation-code-flow)
-    - [3.7.2 Pre-authorised code flow](#372-pre-authorised-code-flow)
-  - [3.8 Token response](#38-token-response)
-  - [3.9 Credential request](#39-credential-request)
-  - [3.10 Credential response](#310-credential-response)
-    - [3.10.1  In-time](#3101--in-time)
+  - [3.5 Issuer Authorization verification](#35-issuer-authorization-verification)
+  - [3.6 Authorization request](#36-authorization-request)
+  - [3.7 Authorization response](#37-authorization-response)
+  - [3.8 Token request](#38-token-request)
+    - [3.8.1 Authorisation code flow](#381-authorisation-code-flow)
+    - [3.8.2 Pre-authorised code flow](#382-pre-authorised-code-flow)
+  - [3.9 Token response](#39-token-response)
+  - [3.10 Credential request](#310-credential-request)
+  - [3.11 Credential response](#311-credential-response)
+    - [3.11.1  In-time](#3111--in-time)
     - [3.10.2 Deferred](#3102-deferred)
-  - [3.11 Issuer Authorization Verification](#311-issuer-authorization-verification)
-  - [3.12 Check Wallet's Conformity](#312-check-wallets-conformity)
+  - [3.12 Issuer Authorization Verification](#312-issuer-authorization-verification)
+  - [3.13 Check Wallet's Conformity](#313-check-wallets-conformity)
 - [4.0 Alternate response format](#40-alternate-response-format)
 - [5.0 Implementers](#50-implementers)
 - [6.0 Reference](#60-reference)
@@ -87,11 +88,10 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     I->> O: GET: /.well-known/oauth-authorization-server
     O-->>I: OAuth authorization server metadata
     I->> O: get PID provider RP access certificate
-    I <<->> TA: wallet relying party access certificate validation 
-        
+            
     Note over I,TA: Issuer Authorization Verification
     I->>TA: Request Issuer Authorization Status
-    TA-->>I: Confirm Issuer is Trusted
+    TA-->>I: Confirm Issuer is Trusted and wallet relying party access certificate validation 
     
     Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
     opt authorization flow
@@ -208,7 +208,13 @@ Upon resolving the well-known endpoints, the **identity provider** responds with
 
 Once the well-known endpoint for **authorization servers** configuration is resolved, the response will follow the oauth standard or openid specification
 
-## 3.5 Authorization request
+## 3.5 Issuer Authorization verification 
+According to IA 2997 [6] the PID provider must be authenticated to the wallet (art 8 comma 3).
+The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)
+TBD
+
+
+## 3.6 Authorization request
 
 The authorization request seeks permission to access the PID credential endpoint. Here is an adapted example of this request, specifically aimed at PID issuance by a government identity provider:
 
@@ -315,7 +321,7 @@ Query params for the authorisation request are given below:
 
 > Note 2: In the authorization flow, we assume that the user will be asked to authenticate in order to provide his identity and optionally personal data will be collected and stored by identity provider. 
 
-## 3.6 Authorization response
+## 3.7 Authorization response
 
 The credential issuer can **optionally** request additional details to authenticate the client e.g. DID authentication. In this case, the authorisation response will contain a `response_mode` parameter with the value `direct_post`. A sample response is as given:
 
@@ -384,14 +390,14 @@ POST /direct_post
 Content-Type: application/x-www-form-urlencoded
 &id_token=eyJraWQiOiJkaW...a980484ecae1
 ```
-## 3.7 Token request
+## 3.8 Token request
 
 In this step wallet trustwothiness in verified. 
 The validation mechanism is delegated to RFC004 [7]. 
 Wallet unit attestations received within token request will be verified; Wallet provider could be validated against trust framework and the wallet instance could be verified against a trustlist for valid and not revoked wallet solutions (and their versions) published by the wallet provider, if available. 
 > Note: The validation of wallet instance is based on wallet unit attestation [7] 
 
-### 3.7.1 Authorisation code flow
+### 3.8.1 Authorisation code flow
 
 For PID credential issuance, the token request using the authorization code flow is structured as follows:
 
@@ -441,7 +447,7 @@ This request is made with the following query params:
   </tr>
 </table>
 
-### 3.7.2 Pre-authorised code flow
+### 3.8.2 Pre-authorised code flow
 
 In scenarios where a pre-authorized code is used, the token request is structured as follows:
 
@@ -478,7 +484,7 @@ This request is made with the following query params:
   </tr>
 </table>
 
-## 3.8 Token response
+## 3.9 Token response
 
 The token response for PID credential issuance includes:
 
@@ -495,7 +501,7 @@ The token response for PID credential issuance includes:
 ```
 This response grants the wallet an access token and a refresh token to be used  for the request of PID credential.
 
-## 3.9 Credential request
+## 3.10 Credential request
 
 To request the PID credential, the wallet instance sends a request to the PID Endpoint as follows:
 
@@ -516,12 +522,12 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 This request specifies the format and type of credential being requested, along with a JWT proof of the user’s identity.
 
-## 3.10 Credential response
+## 3.11 Credential response
 
 The issuance of PID credentials may proceed directly or be deferred, contingent on the issuer's readiness to issue the credential immediately or require additional processing time.
 The wallet should verify the signature pf the credential against the certificate collected at the beginning and verified against the trusted list.(the certificate used signing the credential must be the same of the one collected at the beginning).
 
-### 3.10.1  In-time
+### 3.11.1  In-time
 
 In cases where the PID credential is immediately available, the response is structured as follows:
 
@@ -558,11 +564,11 @@ Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
 
 The user can later use the acceptance_token to request the credential once it's ready for issuance.
 
-## 3.11 Issuer Authorization Verification
+## 3.12 Issuer Authorization Verification
 
 During this process, the wallet queries the Trust Anchor to ascertain the issuer's trust status, thereby affirming that the issuer has been vetted and is compliant with established standards and regulations governing PID. It ensures that only entities with verified trustworthiness can issue PID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
 
-## 3.12 Check Wallet's Conformity
+## 3.13 Check Wallet's Conformity
 
 This verification process involves assessing whether the wallet possesses an internal certificate, issued by Certification Assessment Bodies (CAB), which confirms its compliance with the requisite standards for securely handling PID digital identities and associated qualified electronic attestations. It guarantees the secure storage and management of the PID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
 
@@ -625,7 +631,8 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 4. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 5. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 1.0, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
 6. Implementing Act 2024/2977, Available at  [http://data.europa.eu/eli/reg_impl/2024/2977/oj](http://data.europa.eu/eli/reg_impl/2024/2977/oj)
-7. RFC004 for wallet authentication, Available at https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md
+7. RFC004 for wallet authentication, Available at [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md)
+8. ETSI 119.471 v 0.0.11 [https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf] (https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf)
 
 # Appendix A: Public key resolution
 
@@ -768,9 +775,3 @@ The disclosed payload
   },
   "email": "johndoe@example.com",
   "phone_number": "+1-202-555-0101",
-  "family_name": "Doe",
-  "birthdate": "1940-01-01",
-  "given_name": "John"
-}
-```
-
