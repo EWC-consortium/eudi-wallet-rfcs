@@ -106,7 +106,7 @@ The architecture will be broken down in 6 main phases:
     EUDI Wallet->>Signing Service: PID Presentation
 
     
-    RQES->>User Provider: Credential Authorization (for oauth2code flow)
+    RQES Provider->>User: Credential Authorization (for oauth2code flow)
     activate RQES Provider
     activate Signing Service
     User->>Signing Service: Credential Authorization (for explicit flow)
