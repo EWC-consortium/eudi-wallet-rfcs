@@ -8,7 +8,7 @@
 
 **Reviewers:**
 
-- Mr. Andreas Abraham (ValidatedID, Switzerland)
+- Mr. Andreas Abraham (ValidatedID, Austria)
 
 **Table of Contents:**
 
