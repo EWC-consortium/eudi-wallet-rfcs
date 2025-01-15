@@ -211,13 +211,10 @@ Once the well-known endpoint for **authorization servers** configuration is reso
 ## 3.5 Issuer Authorization verification 
 According to IA 2997 draft [6] the PID provider must be authenticated to the wallet (art 8 comma 3) using a relying party web access certificate.
 The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)
-The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself.
-The wallet should have the capability to authenticate PID providers using a built in trusted list (and to validate the trusted root), that should be signed and provided by an official authoritative source.
-So the wallet instance collects the RP web access certificates from the endpoint present in the oauth metadata and checked against this trusted PID provider list.
-
+The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself. This authentication is based on the RP web access certificate validation performed by the wallet instance.
+The wallet instance collects the PID provider RP web access certificate from the endpoint present in the oauth metadata. 
+The wallet validates the certificate against a built in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
 In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signing certificate.
-> [!NOTE]
-> The authentication of the PID provider could be done using a challenge method too, but it could be more invasive.
 
 ## 3.6 Authorization request
 
