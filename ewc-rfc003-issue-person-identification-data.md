@@ -214,7 +214,7 @@ The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)
 The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself. This authentication is based on the RP web access certificate validation performed by the wallet instance.
 The wallet instance collects the PID provider RP web access certificate from the endpoint present in the oauth metadata. 
 The wallet validates the certificate against a built in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
-In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signing certificate.
+In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signature certificate.
 
 ## 3.6 Authorization request
 
