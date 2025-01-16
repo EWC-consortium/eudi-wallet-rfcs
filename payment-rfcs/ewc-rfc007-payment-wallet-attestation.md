@@ -47,7 +47,7 @@ Published under a Creative Commons Attribution 4.0 International License
 - [6.0	Alternate response format](#60alternate-response-format)
 - [7.0 Verifiable credential type](#70-verifiable-credential-type)
 - [8.0	Schema definitions - Payment Wallet Attestation](#80schema-definitions---payment-wallet-attestation)
-- [9.0	Reference](#90reference)
+- [9.0	References](#90references)
 - [Appendix: EWC Payment Taskforce](#appendix-ewc-payment-taskforce)
 
 
@@ -425,7 +425,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
   <tr>
    <td>
    </td>
-   <td colspan="2" ><strong><code>lastFour</code></strong>
+   <td colspan="2" ><strong><code>panLastFour</code></strong>
    </td>
    <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>card</code>. Value MUST only contain the last four digits of the Primary Account Number (PAN) as per ISO/IEC 7812, not the full PAN.
    </td>
@@ -441,17 +441,17 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
   <tr>
    <td>
    </td>
-   <td colspan="2" ><strong><code>par</code></strong>
+   <td colspan="2" ><strong><code>parLastFour</code></strong>
    </td>
-   <td>OPTIONAL. Contains the EMV Payment Account Reference associated with this card. May only present when <strong><code>type</code></strong> == <code>card</code>.
+   <td>RECOMMENDED. Contains the last four characters of the EMV Payment Account Reference associated with this card. May only present when <strong><code>type</code></strong> == <code>card</code>.
    </td>
   </tr>
   <tr>
    <td>
    </td>
-   <td colspan="2" ><strong><code>iban</code></strong>
+   <td colspan="2" ><strong><code>ibanLastFour</code></strong>
    </td>
-   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>account</code>. Value must be a valid IBAN.
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>account</code>. Contains the last four characters of the account's IBAN.
    </td>
   </tr>
   <tr>
@@ -572,9 +572,9 @@ Below a non-normative example for the case when the funding source is a card:
   "jti": "f9149e93-300e-4187-a0a5-f5e9cc797607", 
   "fundingSource": {
     "type": "card",
-    "lastFour": "1234",
+    "panLastFour": "1234",
     "iin": "412345",
-    "par": "V001Z28RKA1EBL470G9XYG90R5D3E",
+    "parLastFour": "5D3E",
     "aliasId": "0364da8c-033d-4e43-8eba-7814e7d2bbb9",
     "currency": "EUR",
     "scheme": "Visa",
