@@ -122,7 +122,7 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     AS-->>O: Provide Personal Identifier Data
     
     O-->>I: Credential response with PID, stored securely in wallet
-    I->> I: Validation of the signature certificate vs pid provider certificate
+    I->> I: Validation of the signature vs pid provider signature certificate
 
 ```
 
