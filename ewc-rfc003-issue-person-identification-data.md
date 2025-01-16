@@ -209,10 +209,10 @@ Upon resolving the well-known endpoints, the **identity provider** responds with
 Once the well-known endpoint for **authorization servers** configuration is resolved, the response will follow the oauth standard or openid specification
 
 ## 3.5 Issuer Authorization verification 
-According to IA 2997 draft [6] the PID provider must be authenticated to the wallet (art 8 comma 3) using a relying party web access certificate.
+According to IA 2997 draft [6] the PID provider must be authenticated to the wallet (art 8 comma 3) using a relying party access certificate.
 The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)
-The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself. This authentication is based on the RP web access certificate validation performed by the wallet instance.
-The wallet instance collects the PID provider RP web access certificate from the endpoint present in the oauth metadata. 
+The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself. This authentication is based on the RP access certificate validation performed by the wallet instance.
+The wallet instance collects the PID provider RP access certificate from the "credential_endpoint" present in the credential issuer metadata parameters. 
 The wallet validates the certificate against a built in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
 In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signature certificate.
 
