@@ -1,4 +1,4 @@
-# EWC RFC007: Payment Wallet Attestation - v1.0
+# EWC RFC007: Payment Wallet Attestation - v1.1
 
 **Authors:** 
 * Lal Chandran, iGrant.io, Sweden
@@ -12,13 +12,13 @@
 * Marie Austenaa, Visa Europe, UK
 * Laurent Bailly, Visa Europe, France
 
-**Status:** Approved, 22-Oct-2024
+**Status:** *In Review*
 
 Copyright © 2024 All Rights Reserved
 Published under a Creative Commons Attribution 4.0 International License
 
 **Table of Contents**
-- [EWC RFC007: Payment Wallet Attestation - v1.0](#ewc-rfc007-payment-wallet-attestation---v10)
+- [EWC RFC007: Payment Wallet Attestation - v1.1](#ewc-rfc007-payment-wallet-attestation---v11)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Pre-requisites](#30pre-requisites)
@@ -47,7 +47,7 @@ Published under a Creative Commons Attribution 4.0 International License
 - [6.0	Alternate response format](#60alternate-response-format)
 - [7.0 Verifiable credential type](#70-verifiable-credential-type)
 - [8.0	Schema definitions - Payment Wallet Attestation](#80schema-definitions---payment-wallet-attestation)
-- [9.0	Reference](#90reference)
+- [9.0	References](#90references)
 - [Appendix: EWC Payment Taskforce](#appendix-ewc-payment-taskforce)
 
 
@@ -355,24 +355,231 @@ The value of the verifiable credential type or `vct` claim for payment wallet at
 
 # 8.0	Schema definitions - Payment Wallet Attestation
 
-Non-normative example:
+The table lists the attributes and possible values of the Payment Wallet Attestation:
+
+<table>
+  <tr>
+   <td colspan="3"><strong><code>iss</code></strong> <i>(registered)</i>
+   </td>
+   <td>REQUIRED. Issuer of the credential. 
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>aud</code></strong> <i>(registered)</i>
+   </td>
+   <td>OPTIONAL. Intended audience of the credential.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>sub</code></strong> <i>(registered)</i>
+   </td>
+   <td>REQUIRED. Unique identifier assigned and retained by the PSP for the holder. This can be the 'PSU-ID' as per PSD2 or another identifier chosen by the PSP. The identifier should not be sensitive.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>iat</code></strong> <i>(registered)</i>
+   </td>
+   <td>REQUIRED. Time of issuance.
+   </td>
+  </tr>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>nbf</code></strong> <i>(registered)</i>
+   </td>
+   <td>OPTIONAL. Not to be used before this time.
+   </td>
+  </tr>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>exp</code></strong> <i>(registered)</i>
+   </td>
+   <td>OPTIONAL, but RECOMMENDED to issue the credential with a sensible expiry date, possibly aligned with expiry of the card (if present as funding source).
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>vct</code></strong> <i>(registered)</i>
+   </td>
+   <td>REQUIRED. Currently, the supported value is <code>PaymentWalletAttestation</code>. (The value may evolve to improve collision resistance.)
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>jti</code></strong> <i>(registered)</i>
+   </td>
+   <td>OPTIONAL. Unique identifier assigned and retained by the PSP for this credential.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>fundingSource</code></strong>
+   </td>
+   <td>REQUIRED. Object holding details about the funding source for which the PWA is valid.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>type</code></strong>
+   </td>
+   <td>REQUIRED. Currently supported values are <code>account</code>, <code>card</code> and <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>panLastFour</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>card</code>. Value MUST only contain the last four digits of the Primary Account Number (PAN) as per ISO/IEC 7812, not the full PAN.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>iin</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>card</code>. Value must be an 'IIN' (sometimes also called 'BIN') as per ISO/IEC 7812.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>parLastFour</code></strong>
+   </td>
+   <td>RECOMMENDED. Contains the last four characters of the EMV Payment Account Reference associated with this card. May only present when <strong><code>type</code></strong> == <code>card</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>ibanLastFour</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>account</code>. Contains the last four characters of the account's IBAN.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>bic</code></strong>
+   </td>
+   <td>CONDITIONAL. Must be present and only present when <strong><code>type</code></strong> == <code>account</code>. Value must be a 'BIC' as per ISO 9362.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>sortCode</code></strong>
+   </td>
+   <td>OPTIONAL. Contains e.g. a national bank sort or routing code. May only be present when <strong><code>type</code></strong> == <code>account</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>aliasId</code></strong>
+   </td>
+   <td>OPTIONAL. Unique identifier assigned and retained by the PSP for the funding source. This identifier should not be sensitive. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>currency</code></strong>
+   </td>
+   <td>OPTIONAL. (Main) currency for the funding source in the format of a well-formed 3-letter alphabetic code, e.g. <code>EUR</code>. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>scheme</code></strong>
+   </td>
+   <td>OPTIONAL. Currently supported values are 'Visa', 'American Express', 'Discover', 'JCB', 'Mastercard', 'UnionPay', ‘SEPA’, 'SEPA SCT' and 'SEPA SCT Inst'. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>icon</code></strong>
+   </td>
+   <td>OPTIONAL. URI to graphic showing a visual representation (logo) of the scheme or card art. Must not be present when <strong><code>type</code></strong> == <code>any</code>.
+   </td>
+  </tr>
+  <tr>
+   <td colspan="3"><strong><code>cnf</code></strong> <i>(registered)</i>
+   </td>
+   <td>REQUIRED. Object containing information for cryptographic holder binding as per the specification.
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td colspan="2" ><strong><code>jwk</code></strong>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>kty</code></strong>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>crv</code></strong>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>x</code></strong>
+   </td>
+   <td>
+   </td>
+  </tr>
+  <tr>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td><strong><code>y</code></strong>
+   </td>
+   <td>
+   </td>
+  </tr>
+</table>
+
+Below a non-normative example for the case when the funding source is a card:
 
 ```json
 {
   "iss": "https://mypsp.com",
   "aud": "https://mypsp.com/.well-known/oauth-authorization-server",
-  "sub": "<PSP account identifier>",
+  "sub": "johndoe1",
   "iat": 1541493724,
-  "exp": 1516247022,
-  "accounts": [
-    {
-      "card": "45126*****1234"
-    },
-    {
-      "iban": "NL76RABO0359400371"
-    }
-  ],
-  "account_holder_id": "<PSP customer identifier>",
+  "nbf": 1541493724,
+  "exp": 1586247022,
+  "vct": "PaymentWalletAttestation",
+  "jti": "f9149e93-300e-4187-a0a5-f5e9cc797607", 
+  "fundingSource": {
+    "type": "card",
+    "panLastFour": "1234",
+    "iin": "412345",
+    "parLastFour": "5D3E",
+    "aliasId": "0364da8c-033d-4e43-8eba-7814e7d2bbb9",
+    "currency": "EUR",
+    "scheme": "Visa",
+    "icon": "https://mypsp.com/card-art.png"
+  },
   "cnf": {
     "jwk": {
       "kty": "EC",
@@ -384,9 +591,9 @@ Non-normative example:
 }
 ```
 
-# 9.0	Reference
+# 9.0	References
 
-1. SCA for online payments using the EUDI Wallet - Implementation guide (currently available as EWC-internal draft; yet to be published). 
+1. SCA for online payments using the EUDI Wallet - Implementation guide - v1.01, Available at: [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/payment-rfcs/implementation-guides/payment-authentication-sca-using-eudi-wallets.pdf] /Accessed: January 3, 2025). 
 
 2. EWC RFC001, Issue Verifiable Credential - v1.0, Available at: [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md) (Accessed: April 20, 2024).
 
