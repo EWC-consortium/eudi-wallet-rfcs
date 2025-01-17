@@ -359,51 +359,51 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
 
 <table>
   <tr>
-   <td colspan="3"><strong><code>iss</code></strong>
+   <td colspan="3"><strong><code>iss</code></strong> <i>(registered)</i>
    </td>
    <td>REQUIRED. Issuer of the credential. 
    </td>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>aud</code></strong>
+   <td colspan="3"><strong><code>aud</code></strong> <i>(registered)</i>
    </td>
    <td>OPTIONAL. Intended audience of the credential.
    </td>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>sub</code></strong>
+   <td colspan="3"><strong><code>sub</code></strong> <i>(registered)</i>
    </td>
    <td>REQUIRED. Unique identifier assigned and retained by the PSP for the holder. This can be the 'PSU-ID' as per PSD2 or another identifier chosen by the PSP. The identifier should not be sensitive.
    </td>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>iat</code></strong>
+   <td colspan="3"><strong><code>iat</code></strong> <i>(registered)</i>
    </td>
    <td>REQUIRED. Time of issuance.
    </td>
   </tr>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>nbf</code></strong>
+   <td colspan="3"><strong><code>nbf</code></strong> <i>(registered)</i>
    </td>
    <td>OPTIONAL. Not to be used before this time.
    </td>
   </tr>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>exp</code></strong>
+   <td colspan="3"><strong><code>exp</code></strong> <i>(registered)</i>
    </td>
    <td>OPTIONAL, but RECOMMENDED to issue the credential with a sensible expiry date, possibly aligned with expiry of the card (if present as funding source).
    </td>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>vct</code></strong>
+   <td colspan="3"><strong><code>vct</code></strong> <i>(registered)</i>
    </td>
    <td>REQUIRED. Currently, the supported value is <code>PaymentWalletAttestation</code>. (The value may evolve to improve collision resistance.)
    </td>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>jti</code></strong>
+   <td colspan="3"><strong><code>jti</code></strong> <i>(registered)</i>
    </td>
    <td>OPTIONAL. Unique identifier assigned and retained by the PSP for this credential.
    </td>
@@ -503,7 +503,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
   </tr>
   <tr>
-   <td colspan="3"><strong><code>cnf</code></strong>
+   <td colspan="3"><strong><code>cnf</code></strong> <i>(registered)</i>
    </td>
    <td>REQUIRED. Object containing information for cryptographic holder binding as per the specification.
    </td>
