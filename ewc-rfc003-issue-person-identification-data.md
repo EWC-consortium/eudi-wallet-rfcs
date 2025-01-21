@@ -312,75 +312,7 @@ Query params for the authorisation request are given below:
 
 ## 3.6 Authorization response
 
-The credential issuer can **optionally** request additional details to authenticate the client e.g. DID authentication. In this case, the authorisation response will contain a `response_mode` parameter with the value `direct_post`. A sample response is as given:
-
-```http
-HTTP/1.1 302 Found
-Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https://example.server.com&redirect_uri=https://example.server.com/direct_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https://example.server.com/request_uri
-```
-
-Query params for the authorisation response are given below:
-
-<table>
-  <tr>
-   <td><code>state</code>
-   </td>
-   <td>The client uses an opaque value to maintain the state between the request and callback.
-   </td>
-  </tr>
-  <tr>
-   <td><code>client_id</code>
-   </td>
-   <td>Decentralised identifier
-   </td>
-  </tr>
-  <tr>
-   <td><code>redirect_uri</code>
-   </td>
-   <td>For redirection of the response
-   </td>
-  </tr>
-  <tr>
-   <td><code>response_type</code>
-   </td>
-   <td>The value must be <code>id_token</code> if the issuer requests DID authentication.
-   </td>
-  </tr>
-  <tr>
-   <td><code>response_mode</code>
-   </td>
-   <td>The value must be <code>direct_post</code>
-   </td>
-  </tr>
-  <tr>
-   <td><code>scope</code>
-   </td>
-   <td>The value must be <code>openid</code>
-   </td>
-  </tr>
-  <tr>
-   <td><code>nonce</code>
-   </td>
-   <td>A value used to associate a client session with an ID token and to mitigate replay attacks
-   </td>
-  </tr>
-  <tr>
-   <td><code>request_uri</code>
-   </td>
-   <td>The authorisation server’s private key signed the request.
-   </td>
-  </tr>
-</table>
-
-Following this protocol, the holder wallet is expected to respond with an id_token signed by its DID to the direct post endpoint, completing the authentication:
-
-```http
-POST /direct_post
-Content-Type: application/x-www-form-urlencoded
-&id_token=eyJraWQiOiJkaW...a980484ecae1
-```
-
-If no additional details are requested, the identity provider issues an authorization response containing a `code` parameter with a short-lived authorization code. This streamlined response facilitates a quick and secure exchange, vital for the sensitive nature of PID credential issuance:
+Is is not expected that PID provider requires additional data from the Holder to issue PID as PID is expected to be first credential in the wallet upon initialization. After user authentication (usually by existing notified eID mean), PID provider issues an authorization response containing a `code` parameter with a short-lived authorization code. This streamlined response facilitates a quick and secure exchange, vital for the sensitive nature of PID credential issuance:
 
 ```http
 HTTP/1.1 302 Found
