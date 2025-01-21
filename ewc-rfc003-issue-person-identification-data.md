@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # EWC RFC003: Issue Person Identification Data (PID) - v1.2
+=======
+# EWC RFC003: Issue Person Identification Data (PID) - v1.1
+>>>>>>> eudi-wallet-rfcs/main
 
 **Authors:**
 
@@ -18,6 +22,7 @@
 **Table of Contents**
 
 - [EWC RFC003: Issue Person Identification Data (PID) - v1.2](#ewc-rfc003-issue-person-identification-data-pid---v12)
+- [EWC RFC003: Issue Person Identification Data (PID) - v1.1](#ewc-rfc003-issue-person-identification-data-pid---v11)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Messages](#30-messages)
@@ -30,9 +35,9 @@
   - [3.4 Discover response](#34-discover-response)
   - [3.5 Issuer Authorization verification](#35-issuer-authorization-verification)
   - [3.6 Authorization request](#36-authorization-request)
-  - [3.7 Authorization response](#37-authorization-response)
-  - [3.8 Token request](#38-token-request)
-    - [3.8.1 Authorisation code flow](#381-authorisation-code-flow)
+  - [3.6 Authorization response](#36-authorization-response)
+  - [3.7 Token request](#37-token-request)
+    - [3.7.1 Authorisation code flow](#371-authorisation-code-flow)
     - [3.8.2 Pre-authorised code flow](#382-pre-authorised-code-flow)
   - [3.9 Token response](#39-token-response)
   - [3.10 Credential request](#310-credential-request)
@@ -41,6 +46,13 @@
     - [3.10.2 Deferred](#3102-deferred)
   - [3.12 Issuer Authorization Verification](#312-issuer-authorization-verification)
   - [3.13 Check Wallet's Conformity](#313-check-wallets-conformity)
+- [4.0 Alternate response format](#40-alternate-response-format)
+- [5.0 Implementers](#50-implementers)
+- [6.0 Reference](#60-reference)
+- [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
+- [Appendix C: PID attribute schema according to IA](#appendix-c-pid-attribute-schema-according-to-ia)
+- [Appendix C: SD-JWT PID example](#appendix-c-sd-jwt-pid-example)
+>>>>>>> eudi-wallet-rfcs/main
 - [4.0 Alternate response format](#40-alternate-response-format)
 - [5.0 Implementers](#50-implementers)
 - [6.0 Reference](#60-reference)
@@ -59,7 +71,7 @@ The EWC LSP must align with the standard protocol for issuing PID from trusted a
 
 # 3.0 Messages
 
-The PID credential issuance process incorporates comprehensive steps to ensure the security, reliability, and compliance. This includes both an authorization flow and a pre-authorized flow, with additional preliminary and post-issuance steps to align with regulatory standards and security best practices. The process is illustrated below, incorporating the critical steps of Wallet Conformity, Trust Anchor Verification, Reliable Data Acquisition, PID Generation, Secure Issuance and Storage; Renewal and Revocation Policies Management and communication to the user in accordance with regulation [6] is not in scope of this rfc.
+The PID credential issuance process incorporates comprehensive steps to ensure the security, reliability, and compliance. This includes both an authorization flow and a pre-authorized flow, with additional preliminary and post-issuance steps to align with regulatory standards and security best practices. The process is illustrated below, incorporating the critical steps of Wallet Conformity, Trust Anchor Verification, Reliable Data Acquisition, PID Generation, Secure Issuance and Storage; Renewal and Revocation Policies Management it's not in scope of this rfc.
 
 ### Preliminary Steps for PID Issuance
 
@@ -323,83 +335,26 @@ Query params for the authorisation request are given below:
 
 > Note 2: In the authorization flow, we assume that the user will be asked to authenticate in order to provide his identity and optionally personal data will be collected and stored by identity provider. 
 
-## 3.7 Authorization response
+## 3.6 Authorization response
 
-The credential issuer can **optionally** request additional details to authenticate the client e.g. DID authentication. In this case, the authorisation response will contain a `response_mode` parameter with the value `direct_post`. A sample response is as given:
+Is is not expected that PID provider requires additional data from the Holder to issue PID as PID is expected to be first credential in the wallet upon initialization. After user authentication (usually by existing notified eID mean), PID provider issues an authorization response containing a `code` parameter with a short-lived authorization code. This streamlined response facilitates a quick and secure exchange, vital for the sensitive nature of PID credential issuance:
 
 ```http
 HTTP/1.1 302 Found
-Location: http://localhost:8080?state=22857405-1a41-4db9-a638-a980484ecae1&client_id=https://example.server.com&redirect_uri=https://example.server.com/direct_post&response_type=id_token&response_mode=direct_post&scope=openid&nonce=a6f24536-b109-4623-a41a-7a9be932bdf6&request_uri=https://example.server.com/request_uri
+Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 ```
 
-Query params for the authorisation response are given below:
+> [!NOTE]
+> The above can be deeplinked to the EUDI wallet as well.
 
-<table>
-  <tr>
-   <td><code>state</code>
-   </td>
-   <td>The client uses an opaque value to maintain the state between the request and callback.
-   </td>
-  </tr>
-  <tr>
-   <td><code>client_id</code>
-   </td>
-   <td>Decentralised identifier
-   </td>
-  </tr>
-  <tr>
-   <td><code>redirect_uri</code>
-   </td>
-   <td>For redirection of the response
-   </td>
-  </tr>
-  <tr>
-   <td><code>response_type</code>
-   </td>
-   <td>The value must be <code>id_token</code> if the issuer requests DID authentication.
-   </td>
-  </tr>
-  <tr>
-   <td><code>response_mode</code>
-   </td>
-   <td>The value must be <code>direct_post</code>
-   </td>
-  </tr>
-  <tr>
-   <td><code>scope</code>
-   </td>
-   <td>The value must be <code>openid</code>
-   </td>
-  </tr>
-  <tr>
-   <td><code>nonce</code>
-   </td>
-   <td>A value used to associate a client session with an ID token and to mitigate replay attacks
-   </td>
-  </tr>
-  <tr>
-   <td><code>request_uri</code>
-   </td>
-   <td>The authorisation server’s private key signed the request.
-   </td>
-  </tr>
-</table>
-
-Following this protocol, the wallet instance is expected to respond with an id_token signed by its DID to the direct post endpoint, completing the authentication:
-
-```http
-POST /direct_post
-Content-Type: application/x-www-form-urlencoded
-&id_token=eyJraWQiOiJkaW...a980484ecae1
-```
-## 3.8 Token request
+## 3.7 Token request
 
 In this step wallet trustwothiness in verified. 
-The validation mechanism is delegated to RFC004 [7]. 
-Wallet unit attestations received within token request will be verified; Wallet provider could be validated against trust framework and the wallet instance could be verified against a trustlist for valid and not revoked wallet solutions (and their versions) published by the wallet provider, if available. 
-> Note: The validation of wallet instance is based on wallet unit attestation [7] 
+The validation mechanism is delegated to RFC004, still a draft in this stage. 
+Wallet unit attestations received within token request will be verified; Wallet provider could be validated against trust framework and the wallet instance could be verified against a  trustlist for valid and not revoked wallet versions published by the wallet provider, if available. 
+> Note: The validation of wallet is based on wallet unit attestation (rif RFC004 (WIP) [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md])
 
-### 3.8.1 Authorisation code flow
+### 3.7.1 Authorisation code flow
 
 For PID credential issuance, the token request using the authorization code flow is structured as follows:
 
@@ -777,3 +732,9 @@ The disclosed payload
   },
   "email": "johndoe@example.com",
   "phone_number": "+1-202-555-0101",
+  "family_name": "Doe",
+  "birthdate": "1940-01-01",
+  "given_name": "John"
+}
+```
+
