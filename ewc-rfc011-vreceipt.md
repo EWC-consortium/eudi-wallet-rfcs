@@ -218,7 +218,7 @@ sequenceDiagram
     Wallet-->>Merchant: Receive invite delivery address
     Merchant->>Receiver: vReceipt invite to delivery address
 
-    Note over Wallet, Merchant, Receiver: VCI Offer
+    Note over Wallet, Receiver: VCI Offer
     Receiver-->>Merchant: Redirect to Merchant Issuer using invite URI
     Merchant-->>Wallet: Present VCI request based on URI session
 
