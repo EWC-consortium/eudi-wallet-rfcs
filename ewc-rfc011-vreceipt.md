@@ -122,7 +122,7 @@ sequenceDiagram
     participant Organisational_Wallet as Organisational Wallet (Merchant)
     participant PSP_Bank as PSP (Bank)
 
-    Note over Individual_Buyer, Individuals_Wallet, Organisational_Wallet: vReceipt Issuance Initiation
+    Note over Individual_Buyer, Organisational_Wallet: vReceipt Issuance Initiation
     Individual_Buyer->>Organisational_Wallet: Request Checkout
     Organisational_Wallet->>Individuals_Wallet: vReceipt Credential offer (QR Code)
     Individual_Buyer->>Individuals_Wallet: Accept vReceipt Offer
