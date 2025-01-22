@@ -128,13 +128,13 @@ sequenceDiagram
     Individual_Buyer->>Individuals_Wallet: Accept vReceipt Offer
     Individuals_Wallet->>Organisational_Wallet: Request vReceipt
 
-    Note over Individual_Buyer,  Organisational_Wallet, PSP_Bank: Payment Authorization
+    Note over Individual_Buyer,  PSP_Bank: Payment Authorization
     Organisational_Wallet->>Individuals_Wallet: VP Payment Request (auth object, tx_data)
     Individual_Buyer->>Individuals_Wallet: Consent VP disclosure, tx_data signing
     Individuals_Wallet->>Organisational_Wallet: VP, signed tx_data
     Organisational_Wallet->>PSP_Bank: Payment Network (payment request)
 
-    Note over Individual_Buyer,  Organisational_Wallet, PSP_Bank: Payment Confirmation and vReceipt Issuance
+    Note over Individual_Buyer,  PSP_Bank: Payment Confirmation and vReceipt Issuance
     PSP_Bank->>Organisational_Wallet: Payment Confirmation
     Organisational_Wallet->>Individuals_Wallet: vReceipt
 ```
