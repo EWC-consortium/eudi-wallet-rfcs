@@ -203,7 +203,8 @@ Using this approach, the receipt can be stored in the individual’s (or their e
 | **vReceipt Issuance**             | - The customer accesses the vReceipt invitation (URI), redirecting them to the merchant's vReceipt issuance service.<br> - The service retrieves the relevant receipt details (e.g., using the session ID). It generates an OIDC4VCI request to issue the vReceipt as an Electronic Attribute Attestation (EAA) to the EUDI wallet.<br> - The system then presents the credential issuance invitation to the individual via a QR code or deep link.<br> - The individual receives the vReceipt in their EUDI wallet. |
 
 
-### 4.2.1 
+### 4.2.1 Receipt issued to the individual’s EUDI wallet
+
 The individual selects to have the vReceipt issued to their personal EUDI wallet by denoting an eAddress they control, the delivery address for the vReceipt. In the following flow the transmission of the vReceipt invite takes place by the Merchant to the Individual and may be implemented over the EUDI wallet (by having the individual present an appropriate credential) but can also be implemented by any other means (e.g. typing of the eAddress by the individual at the Merchants portal) 
 
 
