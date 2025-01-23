@@ -46,6 +46,7 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | RFC-004   | [Individual Wallet Unit Attestation - v1.0](ewc-rfc004-individual-wallet-attestation.md)                     |
 | RFC-005   | [Issue Legal Person Identification Data (LPID) - v1.0](ewc-rfc005-issue-legal-person-identification-data.md) |
 | RFC-007   | [Payment Wallet Attestation - v1.0](payment-rfcs/ewc-rfc007-payment-wallet-attestation.md)                   |
+| RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)        |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v2.0](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md)   |
 
 ### RFCs Under Development
@@ -57,7 +58,6 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | RFC-006   | [Organisational Wallet Unit Attestation - v0.9](/ewc-rfc006-organisational-wallet-unit-attestation.md) |
 | RFC-008   | [Payment Data Confirmation - v1.0](payment-rfcs/ewc-rfc008-payment-data-confirmation.md)               |
 | RFC-009   | Payment Transaction Initiation                                                                         |
-| RFC-010   | [Document Signing using Long-Term Certificates](ewc-rfc010-long-term-certifice-qes-creation.md)        |
 | RFC-011   | Payments with verifiable receipts                                                                      |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC 2.1)
