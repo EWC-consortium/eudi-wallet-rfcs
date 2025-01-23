@@ -1,6 +1,6 @@
-# RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates (v1)
+# RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates
 
-**Status: Under development**
+**Status: Approved**
 
 **Authors:**
 
@@ -8,7 +8,7 @@
 
 **Reviewers:**
 
-- Mr. Andreas Abraham (ValidatedID, Spain)
+- Dr. Andreas Abraham (ValidatedID, Spain)
 - Mr. Leone Riello (Infocert, Italy)
 
 **Table of Contents:**
