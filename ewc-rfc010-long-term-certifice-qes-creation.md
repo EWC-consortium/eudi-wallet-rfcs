@@ -15,7 +15,7 @@
 
 # Table of Contents
 
-- [RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates (v1)](#rfc-010-document-signing-on-a-remote-signing-service-provider-using-long-term-certificates-v1)
+- [RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates](#rfc-010-document-signing-on-a-remote-signing-service-provider-using-long-term-certificates-v1)
     - [1.0 Summary](#10-summary)
     - [2.0 Motivation](#20-motivation)
     - [3.0 The Signing Architecture](#30-the-signing-architecture)
@@ -514,5 +514,5 @@ The transfer of the document to the Service Provider is out of scope of this RFC
 
 1. OpenID Foundation (2023), 'OpenID for Verifiable Presentations (OID4VP)', Available at: [https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID2.html](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID2.html)
 2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.1.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases)
-3. Cloud Signing Consortium API Specification v2 (2023), Available at: [https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf)
+3. Cloud Signature Consortium API Specification v2 (2023), Available at: [https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf)
 4. ETSI TS 119 432 V1.2.1 (2020), Available at: [https://www.etsi.org/deliver/etsi_ts/119400_119499/119432/01.02.01_60/ts_119432v010201p.pdf](https://www.etsi.org/deliver/etsi_ts/119400_119499/119432/01.02.01_60/ts_119432v010201p.pdf)
