@@ -10,6 +10,10 @@
 
 - Dr. Andreas Abraham (ValidatedID, Spain)
 - Mr. Leone Riello (Infocert, Italy)
+- Dr. Nikos Triantafyllou (University of the Aegean, Greece)
+- Mr. Jon Ølnes (Signicat, Norway)
+- Mrs. Viky Manaila (Intesi Group, Italy)
+- Mr. Daniele Ribaudo (Intesi Group, Italy) 
 
 **Table of Contents:**
 
