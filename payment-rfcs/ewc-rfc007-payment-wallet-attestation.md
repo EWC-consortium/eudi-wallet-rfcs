@@ -12,7 +12,7 @@
 * Marie Austenaa, Visa Europe, UK
 * Laurent Bailly, Visa Europe, France
 
-**Status:** *In Review*
+**Status:** Approved v1.1 for release
 
 Copyright © 2024 All Rights Reserved
 Published under a Creative Commons Attribution 4.0 International License

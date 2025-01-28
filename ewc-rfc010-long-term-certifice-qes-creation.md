@@ -1,6 +1,6 @@
-# RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates (v1)
+# RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates
 
-**Status: Under development**
+**Status: Approved**
 
 **Authors:**
 
@@ -8,13 +8,18 @@
 
 **Reviewers:**
 
-TBA
+- Dr. Andreas Abraham (ValidatedID, Spain)
+- Mr. Leone Riello (Infocert, Italy)
+- Dr. Nikos Triantafyllou (University of the Aegean, Greece)
+- Mr. Jon Ølnes (Signicat, Norway)
+- Mrs. Viky Manaila (Intesi Group, Italy)
+- Mr. Daniele Ribaudo (Intesi Group, Italy) 
 
 **Table of Contents:**
 
 # Table of Contents
 
-- [RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates (v1)](#rfc-010-document-signing-on-a-remote-signing-service-provider-using-long-term-certificates-v1)
+- [RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates](#rfc-010-document-signing-on-a-remote-signing-service-provider-using-long-term-certificates-v1)
     - [1.0 Summary](#10-summary)
     - [2.0 Motivation](#20-motivation)
     - [3.0 The Signing Architecture](#30-the-signing-architecture)
@@ -89,38 +94,51 @@ The architecture will be broken down in 6 main phases:
     participant Signing Service
     participant RQES Provider
     end
+    
+    Note over User, Signing Service: Phase 1: Signing Service User Registration
+    User->>Signing Service: User Login/Registration to Signing Service (eg. via Username, Password, VCs)
+    Signing Service->>User: PID Presentation (Binding) Request via OID4VP
+    EUDI Wallet->>Signing Service: PID Presentation
+    Note over User, Signing Service: At this point the user has been strongly authenticated.
 
-    Note over User, Signing Service: Phase 1: Service Provider Access & User Authentication
+    Signing Service->>User: Credential Offer Deeplink for QESAC
+    EUDI Wallet->>Signing Service: Credential Request for QESAC
+    Signing Service->>EUDI Wallet: QESAC Issuance
+
+    Note over User, Signing Service: Phase 2: Service Provider Access
     User->>Service Provider: Service Access
     Service Provider->>Signing Service: Request Signing of Document
-    Signing Service->>User: PID Presentation Request via OID4VP
-    EUDI Wallet->>Signing Service: PID Presentation
+    Signing Service->>User: PID, QESAC Presentation Request (Authentication)
+    EUDI Wallet->>Signing Service: PID, QESAC Presentation
 
-    Note over Signing Service, RQES Provider: Phase 2: Certificate Listing and Selection
+    Note over Signing Service, RQES Provider: Phase 3: Certificate Listing and Selection
     Signing Service->>RQES Provider: POST /csc/v2/credentials/list
     RQES Provider->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
 
-    Note over User, RQES Provider: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
-    Signing Service->>User: PID Presentation Request (Signature Confirmation)
-    EUDI Wallet->>Signing Service: PID Presentation
+    Note over User, RQES Provider: Phase 4: Signature Confirmation & Private Key Unlocking (Credential Authorization)
+    Signing Service->>User: PID, QESAC Presentation Request (Signature Confirmation)
+    EUDI Wallet->>Signing Service: PID, QESAC Presentation
 
-    
+    alt oauth2code Credential Authz
     User->>RQES Provider: Credential Authorization (for oauth2code flow)
     activate RQES Provider
+    else explicit Credential Authz
     activate Signing Service
     User->>Signing Service: Credential Authorization (for explicit flow)
     deactivate Signing Service
+    
     
 
     Signing Service->>RQES Provider: POST /csc/v2/credentials/authorize
     deactivate RQES Provider
     RQES Provider->>Signing Service: SAD
+    end
 
-    Note over Signing Service, RQES Provider: Phase 4: Signature Creation
+    Note over Signing Service, RQES Provider: Phase 5: Signature Creation
     Signing Service->>RQES Provider: POST /csc/v2/signatures/signHash
     RQES Provider->>Signing Service: Signed Hash
 
-    Note over User, Signing Service: Phase 5: Signed Document Formation and Retrieval
+    Note over User, Signing Service: Phase 6: Signed Document Formation and Retrieval
     Signing Service->>Service Provider: Signed Document
     Service Provider->>User: Signed Document
 ```
@@ -133,24 +151,23 @@ The architecture will be broken down in 6 main phases:
   participant EUDI Wallet
   participant Signing Service
 
-  User->>Signing Service: Request registration
-  Signing Service->>User: PID Presentation Request via OID4VP
+  User->>Signing Service: User Login/Registration to Signing Service (eg. via Username, Password)
+  Signing Service->>User: PID Presentation (Binding) Request via OID4VP
   EUDI Wallet->>Signing Service: PID Presentation
+  Note over User, Signing Service: At this point the user has been strongly authenticated.
   
   Signing Service->>User: Credential Offer Deeplink for QESAC
   EUDI Wallet->>Signing Service: Credential Request for QESAC
   Signing Service->>EUDI Wallet: QESAC Issuance
 ```
 
-Before the user can get access to the Signing Service to be able to sign documents, the user will need to be registered with the Signing Service.
+Before the user can get access to the Signing Service to be able to sign documents, the user will need to be registered and authorized with the Signing Service.
 
-The registration process should be accessible only to users who are strongly authenticated with the service.
+During the registration flow, the signing service should request identification and authentication data from the user in a way that the unique identification of the user is ensured (eg, a combination of Username, Password, VCs).
 
-During the registration procedure, the Signing Service must request the user's PID to be presented with, at least, the [mandatory attributes](https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/1.4.0/annexes/annex-3/annex-3.01-pid-rulebook/#23-pid-attributes) (`family_name`, `given_name`, `birth_date`, `age_over_18`, `issuance_date`, `expiry_date`) included in the presentation.
+During the registration procedure, the Signing Service must also request the user's PID to be presented with, at least, the [mandatory attributes](https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/1.4.0/annexes/annex-3/annex-3.01-pid-rulebook/#23-pid-attributes) (`family_name`, `given_name`, `birth_date`, `age_over_18`, `issuance_date`, `expiry_date`, `issuing_authority`, `issuing_country`) included in the presentation.
 
-Checks should be performed in order to make sure the presented document is valid and current (out of scope).
-
-The Signing Service should then use these attributes, along with data from the authentication context of the user to issue a QES Auth Credential (QESAC), including in its `token` claim a unique identifier or token, binding the user's profile to this VC.
+The Signing Service should bind the user’s PID to its corresponding and uniquely identified user (by utilizing the authentication data) and issue a QES Auth Credential (QESAC). The QESAC must contain a `token` claim, bound to the user's profile.
 
 For the issuance of the QESAC, the process detailed in [RFC-001 (Issue Verifiable Credential)](ewc-rfc001-issue-verifiable-credential.md) must be used.
 
@@ -179,7 +196,7 @@ If needed, the user's credential ID can also be included in the QESAC to assist 
 
 Since each Signing Service has its own requirements and processes and should not be used by another Signing Service, the `vct` of the QESAC can be set by each Signing Service accordingly.
  
-## 4.2 Phase 2: Service Provider Access & User Authentication
+## 4.2 Phase 2: Service Provider Access & User Authentication for Signing
 
 #### Overview:
 
@@ -196,13 +213,13 @@ Since each Signing Service has its own requirements and processes and should not
   EUDI Wallet->>Signing Service: PID, QESAC Presentation
 ```
 
-In the first part of the signing procedure, the **User** accesses (through their browser) the **Service Provider** to request a document to be signed.
+In the second part of the signing procedure, the **User** accesses (through their browser) the **Service Provider** to request a document to be signed.
 
 ### 4.2.1: Service Access by User:
 
-Initially, the User accesses the Service Provider through their browser. Upon arrival, the user should be presented with an Authentication screen, requesting presentation of their PID.
+Initially, the User accesses the Service Provider through their browser. Upon arrival, the user should be presented with an Authentication screen, should they not have already been strongly authenticated (during phase 1).
 
-### 4.2.2: User Authentication
+### 4.2.2: User Authentication for Signing
 
 The Signing Service should require the user is authenticated. Authentication of the user happens through a presentation of their PID and their QESAC.
 
@@ -210,7 +227,7 @@ The Signing Service should, at minimum, make the following verifications during 
 
 - The VPs of the QESAC, PID are valid.
 - The `token` inside the QESAC is valid and not recalled.
-- The PID attributes presented match the attributes presented during the issuance of the QESAC.
+- The user profile binded to the presented PID matches the profile binded to the QESAC.
 - If a `credential_id` is included in the QESAC, the credential with the specified ID exists.
 
 ## 4.3 Phase 3: Certificate Listing and Selection (Optional)
@@ -333,9 +350,9 @@ The actual process of the certificate selection is not detailed in this RFC, as 
 
 During this step of the process, the Signing of the Signer's Document (SD) must be confirmed by the user and the Private Key of the User's Certificate will need to be unlocked (authorized for use), in order to obtain the `Signature Activation Data (SAD)`.
 
-### 4.4.1: Signing Confirmation as Willful Act
+### 4.4.1: Signing Confirmation
 
-In order to confirm that the signature approval is a willful act, a second PID Presentation must be requested by the Signing Service:
+In order to confirm that the signature approval is a willful act, a second PID and QESAC Presentation must be requested by the Signing Service:
 
 ```mermaid
    sequenceDiagram
@@ -343,15 +360,15 @@ In order to confirm that the signature approval is a willful act, a second PID P
   participant EUDI Wallet
   participant Signing Service
 
-  Signing Service->>User: PID Presentation Request via OID4VP
-  EUDI Wallet->>Signing Service: PID Presentation
+  Signing Service->>User: PID, QESAC Presentation Request via OID4VP
+  EUDI Wallet->>Signing Service: PID, QESAC Presentation
 ```
 
-During this step, the Signing Service must confirm that the PID attributes presented exactly match the PID attributes presented in Phase 1. Any deviation should result in the immediate termination of the process.
+During this step, the Signing Service must confirm that the PID and QESAC attributes presented exactly match the PID, QESAC attributes presented in Phase 2. Any deviation should result in the immediate termination of the process.
 
 ### 4.4.2: Private Key Unlocking (Credential Authorization)
 
-The Signing Service will need to parse the `auth.mode` object of the user's credential to determine the mode of credential authorization:
+The Signing Service will need to parse the `auth.mode` object of the user's credential to determine the mode of credential authorization (see `credentials/list` response example in Phase 3). Credential Authorization can support either of the following methods, according to the CSC API Spec:
 
 #### Authorization Code Flow (oauth2code):
 
@@ -501,5 +518,5 @@ The transfer of the document to the Service Provider is out of scope of this RFC
 
 1. OpenID Foundation (2023), 'OpenID for Verifiable Presentations (OID4VP)', Available at: [https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID2.html](https://openid.net/specs/openid-4-verifiable-presentations-1_0-ID2.html)
 2. European Commission (2023) The European Digital Identity Wallet Architecture and Reference Framework (2023-04, v1.1.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases)
-3. Cloud Signing Consortium API Specification v2 (2023), Available at: [https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf)
+3. Cloud Signature Consortium API Specification v2 (2023), Available at: [https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf)
 4. ETSI TS 119 432 V1.2.1 (2020), Available at: [https://www.etsi.org/deliver/etsi_ts/119400_119499/119432/01.02.01_60/ts_119432v010201p.pdf](https://www.etsi.org/deliver/etsi_ts/119400_119499/119432/01.02.01_60/ts_119432v010201p.pdf)
