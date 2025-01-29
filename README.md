@@ -63,6 +63,8 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC 2.1)
 
+**NOTE:** This is the planned compliance info. The ITB compliance tests are ongoing and will be updated once ready. 
+
 ### Individual Wallets
 
 | Wallet                  | App Link                                                                                                                                                    | [RFC001](ewc-rfc001-issue-verifiable-credential.md) | [RFC002](ewc-rfc002-present-verifiable-credentials.md) | [RFC003](ewc-rfc003-issue-person-identification-data.md) | [RFC004](ewc-rfc004-individual-wallet-attestation.md) | [RFC005](ewc-rfc005-issue-legal-person-identification-data.md) | [RFC007](payment-rfcs/ewc-rfc007-payment-wallet-attestation.md) | [RFC100](ewc-rfc100-interoperability-profile-towards-itb-v1.0.md) |
@@ -81,6 +83,7 @@ Following are the candidates' RFCs taken up. Note that the title, etc, may chang
 | iGrant.io - Organisation Wallet | [Link](https://docs.igrant.io)                                  | ✅                                                   | ✅                                                      | ✅                                                        | ✅                                                     | ✅                                                              | ✅                                                               | ✅                                                                 |
 | VIDidentity Studio              | [Link](https://docs.vidchain.net/docs/Components/vidcredential) | ✅                                                   | ✅                                                      | ✅                                                        |                                                       | ✅                                                              |                                                                 | ✅                                                                 |
 | Lissi EUDI Wallet Connector     | [Link](https://www.lissi.id/eudi-wallet-connector)              | ✅                                                   | ✅                                                      |                                                          | ✅                                                     |                                                                | ✅                                                               | ✅                                                                 |
+| Archipels Business              | [Link](https://app.archipels.io)                                | ✅                                                   | ✅                                                      |                                                          |                                                       | ✅                                                              |                                                                 | ✅                                                                 |
 
 ### Issuer-only
 
