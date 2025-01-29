@@ -1,10 +1,6 @@
-# RFC-011-PaymentsWithVerifiableReceipts-Draft 0.2
+# EWC RFC011: Payments With Receipts - v0.2
 
-**Status: Under development**
-
- 
-
-Authors:  
+**Authors:**
 
 - Dr Triantafyllou Nikos (University of the Aegean)
 - Mr Lal Chandran (iGrant.io, Sweden)
@@ -13,34 +9,30 @@ Authors:
 - Mr Antti Kettunen (Tietoevry / Finnish Tax Administration)
 - Mr Mikael Hallstrom (Finnish Tax Administration)
 
-<Please add your name>
+**Reviewers:**
 
-Reviewers:  
+* Visa
+* Wordline
 
-- Visa
-- Worldline
-
-<Please add your name as a reviewer once you review>
-
-
----
+**Status:** Work in Progress
 
 ## Table of Contents
 
-1. [Summary](#10-summary)
-2. [Motivation](#20-motivation)
-3. [Pre-requisites](#30-pre-requisites)
-4. [Workflows](#40-workflows)
-   - [Embedded Method High-Level Flow](#41-embedded-method-high-level-flow)
-   - [Receipt Issued to the Individual EUDI Wallet](#412-receipt-issued-to-the-individual-eudi-wallet)
-   - [Pull-Method High-Level Flow](#42-pull-method-high-level-flow)
-   - [Receipt Issued to the Individual’s EUDI Wallet](#421-receipt-issued-to-the-individuals-eudi-wallet)
-5. [Messages](#50-messages)
-6. [Data Model](#60-data-model)
-7. [Conclusions](#70-conclusions)
-8. [References](#80-references)
+- [EWC RFC011: Payments With Receipts - v0.2](#ewc-rfc011-payments-with-receipts---v02)
+  - [Table of Contents](#table-of-contents)
+  - [1.0 Summary](#10-summary)
+  - [2.0 Motivation](#20-motivation)
+  - [3.0 Pre-requisites](#30-pre-requisites)
+  - [4.0 Workflows](#40-workflows)
+  - [4.1 Embedded Method High-Level Flow](#41-embedded-method-high-level-flow)
+    - [4.1.2	Receipt issued to the individual EUDI wallet](#412receipt-issued-to-the-individual-eudi-wallet)
+  - [4.2 Pull-method High-Level Flow](#42-pull-method-high-level-flow)
+    - [4.2.1 Receipt issued to the individual’s EUDI wallet](#421-receipt-issued-to-the-individuals-eudi-wallet)
+  - [5.0 Messages](#50-messages)
+  - [6.0 Data Model](#60-data-model)
+  - [7.0 Conclusions](#70-conclusions)
+  - [8.0 References](#80-references)
 
----
 
 ## 1.0 Summary
 
@@ -52,8 +44,6 @@ The document defines two distinct approaches for issuing a vReceipt to an EUDI W
 2. Detached Flow: This process operates independently of the payment method, enabling the issuance of a vReceipt even when the payment itself is not EUDI Wallet-enabled.
 
 While this specification primarily addresses vReceipts for travel tickets, the methodology is versatile and can be adapted to other types of purchases.
-
----
 
 ## 2.0 Motivation
 
@@ -69,8 +59,6 @@ Buyer purchases products either for personal or business use. For business use, 
 
 The proposed solution supports both methods.
 
----
-
 ## 3.0 Pre-requisites
 
 The following are the prerequisites for this RFC:
@@ -83,8 +71,6 @@ The following are the prerequisites for this RFC:
 4. For Embedded flow:  
    - The individual (buyer) intends to authorise the payment with their EUDI Wallet at the merchant in a merchant-led flow (RFC008 [4]).
 5. Prerequisites from RFC001 [1], RFC002[2], RFC007[3], and RFC008[4].
-
----
 
 ## 4.0 Workflows
 
@@ -107,8 +93,6 @@ Each of these two methods operates on a different premise:
 - In the embedded flow, the EUDI Wallet must be used as the means of payments in a merchant-led flow to enable the payment process within the vReceipt issuance, requiring, as a result, a single interaction by the individual with the EUDI Wallet to authorize the payment request and receive the vReceipt.
 
 Given that the current version of the ARF (v1.4) does not support an automated eAddress mechanism pointing to the endpoints controlled by the wallet of a specific entity (following the OIDC4VCI protocol), this document primarily describes the embedded and the pull methods.
-
----
 
 ## 4.1 Embedded Method High-Level Flow
 
@@ -139,17 +123,14 @@ sequenceDiagram
     Organisational_Wallet->>Individuals_Wallet: vReceipt
 ```
 
-| **Event Name**                     | **Description**                                                                                                                                                                                                                                                                                                                                                           |
-|------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **vReceipt Issuance Initiation**   | - The individual (buyer) arrives at the merchant's checkout point.<br> - The individual (buyer) selects one of the EUDI Wallet payment options based on merchant-captured authentication data (See Chapter 3.3 in Payment Authentication (SCA) using EUDI Wallets Implementation Guide).<br> - The merchant calculates the exact payment amount and initiates issuing a verifiable receipt (vReceipt) to the individual’s EUDIW via the OIDC4VCI protocol.<br> - The individual (buyer) interacts with their EUDI Wallet to accept the merchant's vReceipt offer (by scanning a QR code or tapping a deep link). |
-| **Payment Authorization**          | - As part of the vReceipt issuance flow, the merchant sends a Payment Authorization Request to the individual’s (buyer’s) EUDI Wallet without requiring additional interaction from the individual (buyer).<br> - This request is implemented as a dynamic credential request using the OIDC4VP protocol, as described in RFC008 [4].<br> - The payment request includes all necessary transaction details to ensure dynamic linking and supports any required verifications (e.g., applying discounts or validating the buyer's PID) needed to determine the specific price for the requested goods.<br> - The individual’s (buyer’s) EUDI Wallet processes the merchant's authorization request in accordance with RFC008 [4] and sends the appropriate response back to the merchant. |
+| **Event Name**                                     | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **vReceipt Issuance Initiation**                   | - The individual (buyer) arrives at the merchant's checkout point.<br> - The individual (buyer) selects one of the EUDI Wallet payment options based on merchant-captured authentication data (See Chapter 3.3 in Payment Authentication (SCA) using EUDI Wallets Implementation Guide).<br> - The merchant calculates the exact payment amount and initiates issuing a verifiable receipt (vReceipt) to the individual’s EUDIW via the OIDC4VCI protocol.<br> - The individual (buyer) interacts with their EUDI Wallet to accept the merchant's vReceipt offer (by scanning a QR code or tapping a deep link).                                                                                                                                                                                                                                  |
+| **Payment Authorization**                          | - As part of the vReceipt issuance flow, the merchant sends a Payment Authorization Request to the individual’s (buyer’s) EUDI Wallet without requiring additional interaction from the individual (buyer).<br> - This request is implemented as a dynamic credential request using the OIDC4VP protocol, as described in RFC008 [4].<br> - The payment request includes all necessary transaction details to ensure dynamic linking and supports any required verifications (e.g., applying discounts or validating the buyer's PID) needed to determine the specific price for the requested goods.<br> - The individual’s (buyer’s) EUDI Wallet processes the merchant's authorization request in accordance with RFC008 [4] and sends the appropriate response back to the merchant.                                                          |
 | **Payment Confirmation and vReceipt Transmission** | - Upon receiving the Verifiable Presentation (VP) from the individual’s (buyer’s) EUDI Wallet, the merchant validates it and forwards the signed payment authorization (containing the payment transaction data) to the payment network (e.g., 3DS).<br> - The merchant responds to the buyer's wallet with a Credential Response in a deferred flow.<br> - After receiving the Credential Response, the individual’s (buyer’s) EUDI Wallet periodically sends Deferred Credential Requests to the merchant to check the status of the vReceipt issuance.<br> - The merchant MUST respond with one of the following:<br>   - `issuance_pending`: If the merchant is awaiting payment verification from the payment network.<br>   - `invalid_transaction_id`: If the payment fails.<br>   - The vReceipt credential: If the payment is completed. |
 
 
----
-
 ### 4.1.2	Receipt issued to the individual EUDI wallet
---- 
 
 ```mermaid
 sequenceDiagram
@@ -187,20 +168,17 @@ sequenceDiagram
 
 The flow above describes Steps 1 to 8 in RFC001 [1]. Steps 9 to 11 are defined in RFC007 [3]  and RFC008 [4]. Finally, Steps 12 to 17 are described again in RFC001 [1]. 
 
-
-
 ## 4.2 Pull-method High-Level Flow
 
 The issuance of a vReceipt can be conceptualised as a three-part process, as presented in the following table. 
 
-
 Using this approach, the receipt can be stored in the individual’s (or their employer’s) EUDI wallet, progressively replacing the current practices of sending the receipt as a PDF or paper-based document. The next section presents the case for issuing the vReceipt to the individual’s EUDI Wallet, however the flow for issuing the vReceipt to the of organisational EUDI Wallet of the individual -buyer- is identical with the only change being that the eAddress must be controlled by the individuals organisation. 
 
-| **Event Name**                    | **Description**                                                                                                                                                                                                                                     |
-|-----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Payment Confirmation and Invite Generation** | - The merchant receives a payment confirmation from their payment service provider (PSP) that the customer's payment has been processed successfully.<br> - The merchant generates a vReceipt invitation, a URI directing the customer to the merchant's vReceipt issuing service. This invitation is uniquely tied to the specific payment transaction through a session identifier embedded within the URI. |
-| **vReceipt Invitation Transmission** | - The merchant provides this invite (URI) to the individual (buyer) potentially using an out-of-band method (e.g., text message, email, QR code) as part of the payment flow.                                                                        |
-| **vReceipt Issuance**             | - The customer accesses the vReceipt invitation (URI), redirecting them to the merchant's vReceipt issuance service.<br> - The service retrieves the relevant receipt details (e.g., using the session ID). It generates an OIDC4VCI request to issue the vReceipt as an Electronic Attribute Attestation (EAA) to the EUDI wallet.<br> - The system then presents the credential issuance invitation to the individual via a QR code or deep link.<br> - The individual receives the vReceipt in their EUDI wallet. |
+| **Event Name**                                 | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Payment Confirmation and Invite Generation** | - The merchant receives a payment confirmation from their payment service provider (PSP) that the customer's payment has been processed successfully.<br> - The merchant generates a vReceipt invitation, a URI directing the customer to the merchant's vReceipt issuing service. This invitation is uniquely tied to the specific payment transaction through a session identifier embedded within the URI.                                                                                                        |
+| **vReceipt Invitation Transmission**           | - The merchant provides this invite (URI) to the individual (buyer) potentially using an out-of-band method (e.g., text message, email, QR code) as part of the payment flow.                                                                                                                                                                                                                                                                                                                                        |
+| **vReceipt Issuance**                          | - The customer accesses the vReceipt invitation (URI), redirecting them to the merchant's vReceipt issuance service.<br> - The service retrieves the relevant receipt details (e.g., using the session ID). It generates an OIDC4VCI request to issue the vReceipt as an Electronic Attribute Attestation (EAA) to the EUDI wallet.<br> - The system then presents the credential issuance invitation to the individual via a QR code or deep link.<br> - The individual receives the vReceipt in their EUDI wallet. |
 
 
 ### 4.2.1 Receipt issued to the individual’s EUDI wallet
@@ -243,14 +221,9 @@ sequenceDiagram
 ```
 
 
-
----
-
 ## 5.0 Messages
 
 For details about the specific OIDC4VCI messages supported, please review EWC RFC001 [1].
-
----
 
 ## 6.0 Data Model
 
@@ -258,15 +231,11 @@ Any implementation of eReceipts must ensure compatibility across different syste
 
 The schema of the vReceipt in SD-JWT format is available [here](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/wp2-schemas/data-schemas/ds007-vReceipt.json).
 
----
-
 ## 7.0 Conclusions
 
 This specification has outlined a foundation for creating verifiable Receipts (vReceipts) as Electronic Attribute Attestations (EAAs) within the EUDI Wallet ecosystem. By defining the necessary flows, data models, and protocols, we have established a clear methodology for generating and managing vReceipts, tailored explicitly for travel ticket transactions. Furthermore, this document states the differences between the different delivery methods of the vReceipt - pull, push and embedded - and justifies the requirements for each.
 
 As this is an initial approach, several challenges remain to be addressed. User experience (UX) constraints must be carefully considered to ensure seamless interactions between individuals (buyers), merchants, and organisations. Additionally, security implications associated with issuing and storing vReceipts require thorough evaluation to maintain trust and integrity within the system. Future iterations of this specification may explore alternative technological stacks, such as DIDcomm, to enhance interoperability and functionality, even if they extend beyond the current ARF compliance framework. These advancements aim to refine the vReceipt issuance process, addressing existing limitations and paving the way for broader application across diverse domains.
-
----
 
 ## 8.0 References
 
