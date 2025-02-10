@@ -89,7 +89,7 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     O-->>I: OAuth authorization server metadata
                 
     Note over I,TA: Issuer Authorization Verification
-    I->> I: signed metadata verification
+    I->> I: validate signed metadata
     I->>TA: Request Issuer Authorization Status
     TA-->>I: Confirm PID provider is trusted 
     
@@ -587,7 +587,7 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 # 6.0 Reference
 
 1. OpenID Foundation (2024), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html) (Accessed: October 10, 2024).
-2. European Commission (2024) The European Digital Identity Wallet Architecture and Reference Framework (2024-09, v1.4.1)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: October 16, 2024). Detail of Annex regarding PID issuance is available at: https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md
+2. European Commission (2024) The European Digital Identity Wallet Architecture and Reference Framework (2024-09, v1.5)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: February 10, 2025). Detail of Annex regarding PID issuance is available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md)
 3. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 4. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 5. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 1.0, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
@@ -605,15 +605,16 @@ For a JWT there are multiple ways for resolving the public key using the `kid` h
 Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
 
 # Appendix C: PID attribute schema according to IA and ARF
-This schema has been composed according to the IA 2997 Annex [6].
+This schema has been composed according to the CIR 2024/2997 Annex [6].
 The description of each attribute is present both on ARF annex [7] and IA 2997 Annex[6] (this if of course the master reference for encoding, formats and so on).
 > [!NOTE]
-> The json schema format is simple descriptive.
+> The json schema format is simple descriptive, and it includes both data and metadata.
 
 ```json
 {  
-   "title":"PID Schema",
+   "title":"PID_Schema",
    "type":"object",
+
    "properties":{  
       "family_name":{  
          "type":"string"
@@ -622,23 +623,27 @@ The description of each attribute is present both on ARF annex [7] and IA 2997 A
          "type":"string"
       },
       "birth_date":{  
-         "type":"string"      
+         "type":"date"      
       },
       "birth_place":{  
-         "type":"string"      
+         "type":"string"  ,
+         "description":"The country as an alpha-2 country code as specified in ISO 3166-1, or the state, province, district, or local area or the municipality, city, town, or village where the user to whom the person identification data relates was born."    
       },
       "nationality":{  
-         "type":"string"      
+         "type":"string" ,    
+         "description":"One or more alpha-2 country codes as specified in ISO 3166-1, representing the nationality of the user to whom the person identification data relates." 
       },
       "resident_address":{
          "type":"string",
          "description":"The full address of the place where the user to whom the person identification data relates currently resides or can be contacted (street name, house number, city etc.)"
       },
       "resident_country":{  
-         "type":"string"      
+         "type":"string",
+         "description":"The country where the user to whom the person identification data relates currently resides, as an alpha-2 country code as specified in ISO 3166-1."      
       },
       "resident_state":{  
-          "type":"string"      
+          "type":"string",
+         "description":"The state, province, district, or local area where the user to whom the person identification data relates currently resides."      
       },
       "resident_city":{  
           "type":"string"      
@@ -656,13 +661,9 @@ The description of each attribute is present both on ARF annex [7] and IA 2997 A
           "type":"string",      
           "description":"A value assigned to the natural person that is unique among all personal administrative numbers issued by the provider of person identification data. Where Member States opt to include this attribute, they shall describe in their electronic identification schemes under which the person identification data is issued, the policy that they apply to the values of this attribute, including, where applicable, specific conditions for the processing of this value."
       },
-      "personal_administrative_number":{  
-          "type":"string",      
-          "description":"A value assigned to the natural person that is unique among all personal administrative numbers issued by the provider of person identification data. Where Member States opt to include this attribute, they shall describe in their electronic identification schemes under which the person identification data is issued, the policy that they apply to the values of this attribute, including, where applicable, specific conditions for the processing of this value."
-      },
       "portrait":{  
           "type":"string",      
-          "description":"Facial image of the wallet user compliant with ISO 19794-5 or ISO 39794 specifications."
+          "description":"Facial image of the wallet user compliant with ISO 19794-5 or ISO 39794 specifications.The image SHALL be encoded as binary data."
       },
       "family_name_birth":{  
           "type":"string",      
@@ -684,18 +685,70 @@ The description of each attribute is present both on ARF annex [7] and IA 2997 A
       "mobile_phone_number":{  
           "type":"string",      
           "description":"Mobile telephone number of the user to whom the person identification data relates, starting with the ‘+’ symbol as the international code prefix and the country code, followed by numbers only."
-      }
+      },
+      "issuance_date":{
+        "type":"string",
+        "description":"Date (and if possible time) when the person identification data was issued and/or the administrative validity period of the person identification data began. (specified only in the ARF PID rulebook). "
+      },
+      "age_over_18":{
+        "type":"boolean",      
+        "description":"Attesting whether the User to whom the person identification data relates is currently an adult (true) or a minor (false). (specified only in the ARF PID rulebook)."
+      },
+      "age_over_NN":{
+        "type":"boolean",      
+        "description":"Attesting whether the User to whom the person identification data relates is at least NN years old. N <> 18. (specified only in the ARF PID rulebook)."
+      },
+      "age_in_years":{
+        "type":"number",      
+        "description":"The current age of the User to whom the person identification data relates in years. (specified only in the ARF PID rulebook)."
+      },
+      "age_birth_year":{
+        "type":"number",      
+        "description":"The year when the User to whom the person identification data relates was born. (specified only in the ARF PID rulebook)."
+      },
+
+
+      "expiry_date":{  
+         "type":"date"  
+      },
+      "issuing_authority":{  
+         "type":"string"  ,
+         "description": "Name of the administrative authority that issued the person identification data, or the ISO 3166 alpha-2 country code of the respective Member State if there is no separate authority entitled to issue person identification data."
+      },
+      "issuing_country":{  
+         "type":"string",
+         "description": "Alpha-2 country code, as specified in ISO 3166-1, of the country or territory of the provider of the person identification data."   
+      },
+      "document_number":{  
+         "type":"string",
+         "description": "A number for the person identification data, assigned by the provider of person identification data."   
+      },
+      "issuing_jurisdiction":{  
+         "type":"string",
+         "description": "Country subdivision code of the jurisdiction that issued the person identification data, as specified in ISO 3166-2:2020, Clause 8. The first part of the code shall be the same as the value for the issuing country."   
+      },
+      "location_status":{  
+         "type":"string",
+         "description": "	The location of validity status information on the person identification data where the providers of person identification data revoke person identification data."   
+      },
+      "trust_anchor":{
+        "type":"string",      
+        "description":"This attribute indicates at least the URL at which a machine-readable version of the trust anchor to be used for verifying the PID can be found or looked up. Note: This attribute corresponds to the location meant in Annex V point h) or Annex VII point h) of the [European Digital Identity Regulation], which is mandatory for QEAAs. This PID Rulebook add this as an optional attribute for PIDs as well, so PID Providers are able to ensure that PIDs can be validated by Relying Parties in the same manner as QEAAs. (specified only in the ARF PID rulebook)."
+      },
+
   },
    "required":[  
       "family_name",
       "given_name",
       "birth_date",
       "birth_place",
-      "nationality"
+      "nationality",
+      "expiry_date",
+      "issuing_authority",
+      "issuing_country"
    ]
 }
 ```
-
 # Appendix C: SD-JWT PID example
 
 This is an example of a PID formatted according to Reference implementation (Nov 2024 ).
@@ -713,6 +766,7 @@ The disclosed payload
 ```json
 
 {
+  "$schema":"www.europa.ec/mypid.json",
   "iss": "https://example.com/issuer",
   "iat": 1683000000,
   "exp": 1883000000,
