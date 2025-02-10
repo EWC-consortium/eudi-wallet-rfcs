@@ -1,4 +1,4 @@
-# EWC RFC003: Issue Person Identification Data (PID) - v1.1
+# EWC RFC003: Issue Person Identification Data (PID) - v2.0
 
 **Authors:**
 
@@ -17,7 +17,7 @@
 
 **Table of Contents**
 
-- [EWC RFC003: Issue Person Identification Data (PID) - v1.1](#ewc-rfc003-issue-person-identification-data-pid---v11)
+- [EWC RFC003: Issue Person Identification Data (PID) - v2.0](#ewc-rfc003-issue-person-identification-data-pid---v20)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Messages](#30-messages)
@@ -28,28 +28,30 @@
   - [3.2 Credential offer response](#32-credential-offer-response)
   - [3.3 Discover request](#33-discover-request)
   - [3.4 Discover response](#34-discover-response)
-  - [3.5 Authorization request](#35-authorization-request)
+  - [3.5 Issuer Authorization verification](#35-issuer-authorization-verification)
+  - [3.6 Authorization request](#36-authorization-request)
   - [3.6 Authorization response](#36-authorization-response)
   - [3.7 Token request](#37-token-request)
     - [3.7.1 Authorisation code flow](#371-authorisation-code-flow)
-    - [3.7.2 Pre-authorised code flow](#372-pre-authorised-code-flow)
-  - [3.8 Token response](#38-token-response)
-  - [3.9 Credential request](#39-credential-request)
-  - [3.10 Credential response](#310-credential-response)
-    - [3.10.1  In-time](#3101--in-time)
+    - [3.8.2 Pre-authorised code flow](#382-pre-authorised-code-flow)
+  - [3.9 Token response](#39-token-response)
+  - [3.10 Credential request](#310-credential-request)
+  - [3.11 Credential response](#311-credential-response)
+    - [3.11.1  In-time](#3111--in-time)
     - [3.10.2 Deferred](#3102-deferred)
-  - [3.11 Issuer Authorization Verification](#311-issuer-authorization-verification)
-  - [3.12 Check Wallet's Conformity](#312-check-wallets-conformity)
+  - [3.12 Issuer Authorization Verification](#312-issuer-authorization-verification)
+  - [3.13 Check Wallet's Conformity](#313-check-wallets-conformity)
 - [4.0 Alternate response format](#40-alternate-response-format)
 - [5.0 Implementers](#50-implementers)
 - [6.0 Reference](#60-reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
-- [Appendix B: SD-JWT PID example](#appendix-b-sd-jwt-pid-example)
+- [Appendix C: PID attribute schema according to IA and ARF](#appendix-c-pid-attribute-schema-according-to-ia-and-arf)
+- [Appendix C: SD-JWT PID example](#appendix-c-sd-jwt-pid-example)
 
 
 # 1.0 Summary
 
-This specification implements the OID4VCI workflow for issuing Person Identification Data (PID) credentials by government-approved identity providers within the European Wallet Ecosystem. It defines a standard process to minimize risks and ensure interoperability in issuing high-assurance PIDs across the EUDI wallet ecosystem, adhering to the requirements set forth in the ARF [2].
+This specification implements the OID4VCI workflow for issuing Person Identification Data (PID) credentials by government-approved identity providers within the European Wallet Ecosystem. It defines a standard process to minimize risks and ensure interoperability in issuing high-assurance PIDs across the EUDI wallet ecosystem, adhering to the requirements set forth in the ARF [2] and in the implementing act 2024/2977 for PID and EAA issuance [6].
 
 # 2.0 Motivation
 
@@ -61,11 +63,12 @@ The PID credential issuance process incorporates comprehensive steps to ensure t
 
 ### Preliminary Steps for PID Issuance
 
-1. **Wallet Conformity:** Before initiating the PID issuance, the user's wallet must be confirmed to comply with established standards. This includes possessing an internal certificate from Certification Assessment Bodies (CAB) that validates its conformity, ensuring the wallet's capability to securely manage the PID and associated qualified electronic attestations.
+1. **Wallet Conformity:** Before initiating the PID issuance, the wallet unit must be confirmed to comply with established standards. This includes possessing an internal certificate from Certification Assessment Bodies (CAB) that validates its conformity, ensuring the wallet's capability to securely manage the PID and associated qualified electronic attestations.
 
-2. **Trust Anchor Verification:** The issuing entity's authorization within the Trust Anchor framework must be validated, ensuring it is listed as an authorized actor, thus guaranteeing that only verified entities can issue the PID.
-
+2. **Trust Anchor Verification:** The authorization of PID provider within the Trust Anchor framework must be validated, ensuring it is listed as an authorized actor, thus ensuring that only verified entities can issue the PID.
 3. **Data Acquisition from Reliable Sources:** Personal data used for PID generation must be sourced from authentic and current databases, such as civil registries, ensuring the PID credentials are based on accurate and up-to-date information.
+   
+4.  **PID provider authentication vs the wallet unit** The PID provider must be authenticated by the wallet using its relying party certificate. 
 
 ### PID Credential Issuance Process
 
@@ -84,10 +87,11 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     O-->> I: OpenID credential issuer configuration
     I->> O: GET: /.well-known/oauth-authorization-server
     O-->>I: OAuth authorization server metadata
-        
+                
     Note over I,TA: Issuer Authorization Verification
+    I->> I: validate signed metadata
     I->>TA: Request Issuer Authorization Status
-    TA-->>I: Confirm Issuer is Trusted
+    TA-->>I: Confirm PID provider is trusted 
     
     Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
     opt authorization flow
@@ -118,6 +122,7 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     AS-->>O: Provide Personal Identifier Data
     
     O-->>I: Credential response with PID, stored securely in wallet
+    I->> I: Validation of the signature vs pid provider signature certificate
 
 ```
 
@@ -134,7 +139,7 @@ Following the issuance of the PID, initial and periodic verification procedures 
 For PID credential issuance, this RFC allows both authorization and preauthorized code flows. 
 Credential offer can be provided by reference and by value.
 In the first case the `credential_offer_uri` query parameter contains the URL where the credential offer from the government-approved identity provider can be resolved. 
-This approach ensures a streamlined user experience while maintaining the necessary information exchange for the PID issuance process. The holder wallet obtains the above by scanning a QR code for cross-device workflows or via a deeplink for same-device workflows.
+This approach ensures a streamlined user experience while maintaining the necessary information exchange for the PID issuance process. The wallet user obtains the above by scanning a QR code for cross-device workflows or via a deeplink for same-device workflows.
 
 Here there's an example:
 
@@ -159,7 +164,7 @@ On resolving the `credential_offer_uri` query parameter, the issuer responds wit
 }
 ```
 
-The holder's wallet retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, vc+sd-jwt) is specified, focusing on the PID. This process ensures that the credential issuance aligns with the stringent requirements for PID within the EWC ecosystem.
+The wallet instance retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, vc+sd-jwt) is specified, focusing on the PID. This process ensures that the credential issuance aligns with the stringent requirements for PID within the EWC ecosystem.
 
 For the pre-authorized flow, the credential response format is adapted to include the necessary grants for PID issuance:
 
@@ -183,7 +188,7 @@ For the pre-authorized flow, the credential response format is adapted to includ
 
 ## 3.3 Discover request
 
-The holder's wallet initiates a request to discover the government identity provider’s authorization server configurations, essential for PID credential issuance. To obtain the issuer's configurations, the wallet resolves the /.well-known/openid-credential-issuer endpoint using the credential_issuer URI found in the PID credential offer response (as per EWC RFC001):
+The wallet instance initiates a request to discover the government identity provider’s authorization server configurations, essential for PID credential issuance. To obtain the issuer's configurations, the wallet resolves the /.well-known/openid-credential-issuer endpoint using the credential_issuer URI found in the PID credential offer response (as per EWC RFC001):
 
 ```http
 GET https://identity-provider.gov/.well-known/openid-credential-issuer
@@ -203,7 +208,31 @@ Upon resolving the well-known endpoints, the **identity provider** responds with
 
 Once the well-known endpoint for **authorization servers** configuration is resolved, the response will follow the oauth standard or openid specification
 
-## 3.5 Authorization request
+## 3.5 Issuer Authorization verification 
+According to IA 2997 draft [6] the PID provider must be authenticated to the wallet (art 8 comma 3) using a relying party access certificate (The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)).
+The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself. This authentication is based on the RP access certificate validation performed by the wallet instance.
+
+PID Issuer must sign the metadata hash and must add the signed payload to a signed_metadata attribute together with the certificate. 
+Taking as example the RFC001 par 3.4 Discover response, the final result could be like the following:
+
+```json
+{
+  "credential_issuer": "https://server.example.com",
+  "authorization_servers": [
+    "https://server.example.com"
+  ],
+   ......
+  "signed_metadata": {
+      "wac": 
+        {"certificate": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7xN5PlABUpkfhXOX1A6F..."},
+      "payload" : "SIGNED_METADATA_HASHES" }
+}
+```
+The wallet instance verifies the signature.
+The wallet validates the certificate against a built-in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
+In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signature certificate.
+
+## 3.6 Authorization request
 
 The authorization request seeks permission to access the PID credential endpoint. Here is an adapted example of this request, specifically aimed at PID issuance by a government identity provider:
 
@@ -379,7 +408,7 @@ This request is made with the following query params:
   </tr>
 </table>
 
-### 3.7.2 Pre-authorised code flow
+### 3.8.2 Pre-authorised code flow
 
 In scenarios where a pre-authorized code is used, the token request is structured as follows:
 
@@ -416,7 +445,7 @@ This request is made with the following query params:
   </tr>
 </table>
 
-## 3.8 Token response
+## 3.9 Token response
 
 The token response for PID credential issuance includes:
 
@@ -433,9 +462,9 @@ The token response for PID credential issuance includes:
 ```
 This response grants the wallet an access token and a refresh token to be used  for the request of PID credential.
 
-## 3.9 Credential request
+## 3.10 Credential request
 
-To request the PID credential, the holder’s wallet sends a request to the PID Endpoint as follows:
+To request the PID credential, the wallet instance sends a request to the PID Endpoint as follows:
 
 ```http
 POST /credential
@@ -452,13 +481,14 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 }
 ```
 
-This request specifies the format and type of credential being requested, along with a JWT proof of the holder’s identity.
+This request specifies the format and type of credential being requested, along with a JWT proof of the user’s identity.
 
-## 3.10 Credential response
+## 3.11 Credential response
 
 The issuance of PID credentials may proceed directly or be deferred, contingent on the issuer's readiness to issue the credential immediately or require additional processing time.
+The wallet should verify the signature pf the credential against the certificate collected at the beginning and verified against the trusted list.(the certificate used signing the credential must be the same of the one collected at the beginning).
 
-### 3.10.1  In-time
+### 3.11.1  In-time
 
 In cases where the PID credential is immediately available, the response is structured as follows:
 
@@ -493,13 +523,13 @@ POST /deferred-credential
 Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
 ```
 
-The holder can later use the acceptance_token to request the credential once it's ready for issuance.
+The user can later use the acceptance_token to request the credential once it's ready for issuance.
 
-## 3.11 Issuer Authorization Verification
+## 3.12 Issuer Authorization Verification
 
 During this process, the wallet queries the Trust Anchor to ascertain the issuer's trust status, thereby affirming that the issuer has been vetted and is compliant with established standards and regulations governing PID. It ensures that only entities with verified trustworthiness can issue PID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
 
-## 3.12 Check Wallet's Conformity
+## 3.13 Check Wallet's Conformity
 
 This verification process involves assessing whether the wallet possesses an internal certificate, issued by Certification Assessment Bodies (CAB), which confirms its compliance with the requisite standards for securely handling PID digital identities and associated qualified electronic attestations. It guarantees the secure storage and management of the PID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
 
@@ -557,10 +587,13 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 # 6.0 Reference
 
 1. OpenID Foundation (2024), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html) (Accessed: October 10, 2024).
-2. European Commission (2024) The European Digital Identity Wallet Architecture and Reference Framework (2024-09, v1.4.1)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: October 16, 2024).
+2. European Commission (2024) The European Digital Identity Wallet Architecture and Reference Framework (2024-09, v1.5)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: February 10, 2025). Detail of Annex regarding PID issuance is available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md)
 3. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 4. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 5. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 1.0, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
+6. Implementing Act 2024/2977, Available at  [http://data.europa.eu/eli/reg_impl/2024/2977/oj](http://data.europa.eu/eli/reg_impl/2024/2977/oj)
+7. RFC004 for wallet authentication, Available at [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md)
+8. ETSI 119.471 v 0.0.11 [https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf] (https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf)
 
 # Appendix A: Public key resolution
 
@@ -571,14 +604,159 @@ For a JWT there are multiple ways for resolving the public key using the `kid` h
 
 Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
 
-# Appendix B: SD-JWT PID example
+# Appendix C: PID attribute schema according to IA and ARF
+This schema has been composed according to the CIR 2024/2997 Annex [6].
+The description of each attribute is present both on ARF annex [7] and IA 2997 Annex[6] (this if of course the master reference for encoding, formats and so on).
+> [!NOTE]
+> The json schema format is simple descriptive, and it includes both data and metadata.
+
+```json
+{  
+   "title":"PID_Schema",
+   "type":"object",
+
+   "properties":{  
+      "family_name":{  
+         "type":"string"
+      },
+      "given_name":{  
+         "type":"string"
+      },
+      "birth_date":{  
+         "type":"date"      
+      },
+      "birth_place":{  
+         "type":"string"  ,
+         "description":"The country as an alpha-2 country code as specified in ISO 3166-1, or the state, province, district, or local area or the municipality, city, town, or village where the user to whom the person identification data relates was born."    
+      },
+      "nationality":{  
+         "type":"string" ,    
+         "description":"One or more alpha-2 country codes as specified in ISO 3166-1, representing the nationality of the user to whom the person identification data relates." 
+      },
+      "resident_address":{
+         "type":"string",
+         "description":"The full address of the place where the user to whom the person identification data relates currently resides or can be contacted (street name, house number, city etc.)"
+      },
+      "resident_country":{  
+         "type":"string",
+         "description":"The country where the user to whom the person identification data relates currently resides, as an alpha-2 country code as specified in ISO 3166-1."      
+      },
+      "resident_state":{  
+          "type":"string",
+         "description":"The state, province, district, or local area where the user to whom the person identification data relates currently resides."      
+      },
+      "resident_city":{  
+          "type":"string"      
+      },
+      "resident_postal_code":{  
+          "type":"string"      
+      },
+      "resident_street":{  
+          "type":"string"      
+      },
+      "resident_house_number":{  
+          "type":"string"      
+      },
+      "personal_administrative_number":{  
+          "type":"string",      
+          "description":"A value assigned to the natural person that is unique among all personal administrative numbers issued by the provider of person identification data. Where Member States opt to include this attribute, they shall describe in their electronic identification schemes under which the person identification data is issued, the policy that they apply to the values of this attribute, including, where applicable, specific conditions for the processing of this value."
+      },
+      "portrait":{  
+          "type":"string",      
+          "description":"Facial image of the wallet user compliant with ISO 19794-5 or ISO 39794 specifications.The image SHALL be encoded as binary data."
+      },
+      "family_name_birth":{  
+          "type":"string",      
+          "description":"Last name(s) or surname(s) of the person identification data user at the time of birth."
+      },
+      "given_name_birth":{  
+          "type":"string",      
+          "description":"First name(s), including middle name(s), of the person identification data user at the time of birth."
+      },
+      "sex":{  
+          "type":"number",      
+          "enum":[0,1,2,3,4,5,6,9],
+          "description":"Values shall be one of the following: 0 = not known; 1 = male; 2 = female; 3 = other; 4 = inter; 5 = diverse; 6 = open; 9 = not applicable. For values 0, 1, 2 and 9, ISO/IEC 5218 applies."
+      },
+      "email_address":{  
+          "type":"string",      
+          "description":"Electronic mail address of the user to whom the person identification data relates [in conformance with RFC 5322]."
+      },
+      "mobile_phone_number":{  
+          "type":"string",      
+          "description":"Mobile telephone number of the user to whom the person identification data relates, starting with the ‘+’ symbol as the international code prefix and the country code, followed by numbers only."
+      },
+      "issuance_date":{
+        "type":"string",
+        "description":"Date (and if possible time) when the person identification data was issued and/or the administrative validity period of the person identification data began. (specified only in the ARF PID rulebook). "
+      },
+      "age_over_18":{
+        "type":"boolean",      
+        "description":"Attesting whether the User to whom the person identification data relates is currently an adult (true) or a minor (false). (specified only in the ARF PID rulebook)."
+      },
+      "age_over_NN":{
+        "type":"boolean",      
+        "description":"Attesting whether the User to whom the person identification data relates is at least NN years old. N <> 18. (specified only in the ARF PID rulebook)."
+      },
+      "age_in_years":{
+        "type":"number",      
+        "description":"The current age of the User to whom the person identification data relates in years. (specified only in the ARF PID rulebook)."
+      },
+      "age_birth_year":{
+        "type":"number",      
+        "description":"The year when the User to whom the person identification data relates was born. (specified only in the ARF PID rulebook)."
+      },
+
+
+      "expiry_date":{  
+         "type":"date"  
+      },
+      "issuing_authority":{  
+         "type":"string"  ,
+         "description": "Name of the administrative authority that issued the person identification data, or the ISO 3166 alpha-2 country code of the respective Member State if there is no separate authority entitled to issue person identification data."
+      },
+      "issuing_country":{  
+         "type":"string",
+         "description": "Alpha-2 country code, as specified in ISO 3166-1, of the country or territory of the provider of the person identification data."   
+      },
+      "document_number":{  
+         "type":"string",
+         "description": "A number for the person identification data, assigned by the provider of person identification data."   
+      },
+      "issuing_jurisdiction":{  
+         "type":"string",
+         "description": "Country subdivision code of the jurisdiction that issued the person identification data, as specified in ISO 3166-2:2020, Clause 8. The first part of the code shall be the same as the value for the issuing country."   
+      },
+      "location_status":{  
+         "type":"string",
+         "description": "	The location of validity status information on the person identification data where the providers of person identification data revoke person identification data."   
+      },
+      "trust_anchor":{
+        "type":"string",      
+        "description":"This attribute indicates at least the URL at which a machine-readable version of the trust anchor to be used for verifying the PID can be found or looked up. Note: This attribute corresponds to the location meant in Annex V point h) or Annex VII point h) of the [European Digital Identity Regulation], which is mandatory for QEAAs. This PID Rulebook add this as an optional attribute for PIDs as well, so PID Providers are able to ensure that PIDs can be validated by Relying Parties in the same manner as QEAAs. (specified only in the ARF PID rulebook)."
+      },
+
+  },
+   "required":[  
+      "family_name",
+      "given_name",
+      "birth_date",
+      "birth_place",
+      "nationality",
+      "expiry_date",
+      "issuing_authority",
+      "issuing_country"
+   ]
+}
+```
+# Appendix C: SD-JWT PID example
 
 This is an example of a PID formatted according to Reference implementation (Nov 2024 ).
 
 ```json
 {
   "format": "vc+sd-jwt",
-  "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiREdYYWl2U0FwbEtVa3Q5NmZUV29CQ3dIVUV1Rk5ROTlmMi1KeUZDV01qTSIsIk15dk1HX0IyVzltSy1Wa0FEMFJFY3BwZFJxNF9IbG5rRFlSbHNoNXBrbG8iLCJQbmg2V0JkTUREeXhkRks1YVQ4X1p3ajlpRTYyakM4RE00UDNYc0xFLUxVIiwiUWh5TDN5aXR1LURyUUZfNjhvOXoxWmJ0c0FGeWw1ckVzV0NSakxoNEpHayIsIlVudG04Sm1NT0FIYlg1TXZKcWY4LWM4Ynd2OGV6U0ZSczhjZDVEbWtOblEiXSwidmN0IjoiZXUuZXVyb3BhLmVjLmV1ZGkucGlkLjEiLCJfc2RfYWxnIjoic2hhMy0yNTYiLCJpc3MiOiJodHRwczovL2lzc3Vlci1iYWNrZW5kLmV1ZGl3LmRldiIsImNuZiI6eyJqd2siOnsia3R5IjoiUlNBIiwiZSI6IkFRQUIiLCJ1c2UiOiJzaWciLCJraWQiOiJkNzE4NWVjYS04YThiLTQwYTItOTMzYi1iM2YxNWI5YjVhMWUiLCJpYXQiOjE3MzE2Njg1OTIsIm4iOiJ6QU14YTJUeEpnM2hJS2o0V0d5RW1TTWNEbGpRY2xOVEFuZERmbHdUTnZZbldYbENBLVhCb2d6UnpBclI0OG9kSko4Yi1OcjlmNW9ZSElwOFdkTm9BczRodmUxTkJRdXdTdVlOaS1TTFZrY05ENGhuMWdWbXlpZXd6Tmx2UjZMTDdKb0JSRHRUZTNQYVI5WEFvQkhSeWNxNGpNeThyM3hMb1gwWHhtQW9jdHh0bTZyN2V5Mmg5NTF2VUVlaFZrblg1OC1STzJKanBZbDFzUldJTWJRQ19oVFlxdkgwc1ZGd1V4dG5RcWE1M2VTejlVWk81Wmt6SmE3VnM5Z1NNQ2NYUnR6OFhCWFR3V05NOWg4ZERoak56RVhScHpZcGdJYU00VElEZDRpLV9VUHM5ZU4zTFdzVWlzaVktakFTNmtFeDZhcFNHa1ppdC04YnYxSHktMldkT3cifX0sImV4cCI6MTczNDI2MDU5MywiaWF0IjoxNzMxNjY4NTkzLCJhZ2VfZXF1YWxfb3Jfb3ZlciI6eyJfc2QiOlsiaXBTODMtM1BZVWstRXN5WHpwYUMtUHRYWVNNZ1JacHFNZG5VX0JTNFd1MCJdfX0.8WXGs3v-9drBO_6DiwKZ92DrCeNyAsAIgKidFZtIzBPVj_v5idjUJimqG3GzqRgSESCo28M6WliOu31bD2QoZw~WyJVai1pTDlsX19CRktFUWp5cTJEVDRnIiwiaXNzdWFuY2VfZGF0ZSIsIjIwMjQtMTEtMTUiXQ~WyJRaEwwRXpHSXVpRlJWY0NlQ3NrY0h3IiwiZ2l2ZW5fbmFtZSIsIlR5bGVyIl0~WyJZQXlENGt2MUQ3aTJ3dUJKMl93TFNRIiwiZmFtaWx5X25hbWUiLCJOZWFsIl0~WyJIMjBSQXpDN0MzMHpqNXBYbl9QOWZRIiwiYmlydGhkYXRlIiwiMTk1NS0wNC0xMiJd~WyJMam1ManNoVUFfNzBGX2d1Mm1HWnVBIiwiMTgiLHRydWVd~WyIxMEpKTDR2ZjZrMk9kSlV2VnY0OV93IiwiZ2VuZGVyIiwxXQ~WyJBY0RWdVN2RHp1N1pvWXJvdWE4ekxRIiwiYWdlX2luX3llYXJzIiw3MF0~WyJiMEJ3Y1E5cUdxSVZQVjkzSHAtdjVBIiwiYmlydGhkYXRlX3llYXIiLCIxOTU1Il0~WyJ4QmdaX0RxS3RYR19DRllCTE01cmxRIiwiY291bnRyeSIsIkFUIl0~WyJNajJ5M0p3R29BQzhqaEIxRFc5Zjl3IiwicmVnaW9uIiwiTG93ZXIgQXVzdHJpYSJd~WyJPUHduYkpCT0s2Vll0alBMMDZWeHNRIiwibG9jYWxpdHkiLCJHZW1laW5kZSBCaWJlcmJhY2giXQ~WyJadnVxeHcxSDBwbVJMN0VWSVRDb1VnIiwicG9zdGFsX2NvZGUiLCIzMzMxIl0~WyJleDBxQmVhRXRZeU5IV2ZsaDRGTG1nIiwic3RyZWV0X2FkZHJlc3MiLCIxMDEgVHJhdW5lciJd~WyJDY0xtekpPREJGMVJKOXdyMG1NaEV3IiwiYWRkcmVzcyIseyJfc2QiOlsiLWQwTDdObFpDcnFUUW02OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
+  "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiR....2OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
   "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
   "c_nonce_expires_in": 86400
 }
@@ -588,6 +766,7 @@ The disclosed payload
 ```json
 
 {
+  "$schema":"www.europa.ec/mypid.json",
   "iss": "https://example.com/issuer",
   "iat": 1683000000,
   "exp": 1883000000,
@@ -600,20 +779,17 @@ The disclosed payload
       "y": "ZxjiWWbZMQGHVWKVQ4hbSIirsVfuecCE6t4jT9F2HZQ"
     }
   },
-  "is_over_18": true,
-  "is_over_21": true,
-  "is_over_65": true,
-  "address": {
-    "street_address": "123 Main St",
-    "locality": "Anytown",
-    "region": "Anystate",
-    "country": "US"
-  },
+  "resident_address": "123 Main St,123456 Anytown, Anystate, US",
+  "resident_street": "Main St",
+  "resident_house_number": "123",
+  "resident_postal_code": "123456",
+  "resident_city": "Anytown",
+  "resident_state": "Anystate",
+  "resident_country": "US",
   "email": "johndoe@example.com",
   "phone_number": "+1-202-555-0101",
   "family_name": "Doe",
-  "birthdate": "1940-01-01",
+  "birth_date": "1940-01-01",
   "given_name": "John"
 }
 ```
-
