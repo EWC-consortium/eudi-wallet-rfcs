@@ -12,7 +12,7 @@
 * Marie Austenaa, Visa Europe, UK
 * Laurent Bailly, Visa Europe, France
 
-**Status:** *In Review*
+**Status:** Approved v1.1 for release
 
 Copyright © 2024 All Rights Reserved
 Published under a Creative Commons Attribution 4.0 International License
@@ -513,7 +513,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
    <td colspan="2" ><strong><code>jwk</code></strong>
    </td>
-   <td>
+   <td>JSON Web Key as per specification
    </td>
   </tr>
   <tr>
@@ -523,7 +523,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
    <td><strong><code>kty</code></strong>
    </td>
-   <td>
+   <td>Key type
    </td>
   </tr>
   <tr>
@@ -533,7 +533,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
    <td><strong><code>crv</code></strong>
    </td>
-   <td>
+   <td>Curve of the key
    </td>
   </tr>
   <tr>
@@ -543,7 +543,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
    <td><strong><code>x</code></strong>
    </td>
-   <td>
+   <td>The x-coordinate for the elliptic curve point
    </td>
   </tr>
   <tr>
@@ -553,7 +553,7 @@ The table lists the attributes and possible values of the Payment Wallet Attesta
    </td>
    <td><strong><code>y</code></strong>
    </td>
-   <td>
+   <td>The y-coordinate for the elliptic curve point
    </td>
   </tr>
 </table>
