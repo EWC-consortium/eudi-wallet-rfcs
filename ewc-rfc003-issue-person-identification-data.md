@@ -1,4 +1,4 @@
-# EWC RFC003: Issue Person Identification Data (PID) - v1.2
+# EWC RFC003: Issue Person Identification Data (PID) - v2.0
 
 **Authors:**
 
@@ -17,7 +17,7 @@
 
 **Table of Contents**
 
-- [EWC RFC003: Issue Person Identification Data (PID) - v1.2](#ewc-rfc003-issue-person-identification-data-pid---v12)
+- [EWC RFC003: Issue Person Identification Data (PID) - v2.0](#ewc-rfc003-issue-person-identification-data-pid---v20)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Messages](#30-messages)
@@ -45,14 +45,7 @@
 - [5.0 Implementers](#50-implementers)
 - [6.0 Reference](#60-reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
-- [Appendix C: PID attribute schema according to IA](#appendix-c-pid-attribute-schema-according-to-ia)
-- [Appendix C: SD-JWT PID example](#appendix-c-sd-jwt-pid-example)
->>>>>>> eudi-wallet-rfcs/main
-- [4.0 Alternate response format](#40-alternate-response-format)
-- [5.0 Implementers](#50-implementers)
-- [6.0 Reference](#60-reference)
-- [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
-- [Appendix C: PID attribute schema according to IA](#appendix-c-pid-attribute-schema-according-to-ia)
+- [Appendix C: PID attribute schema according to IA and ARF](#appendix-c-pid-attribute-schema-according-to-ia-and-arf)
 - [Appendix C: SD-JWT PID example](#appendix-c-sd-jwt-pid-example)
 
 
@@ -94,11 +87,11 @@ The PID issuance follows detailed steps starting from the discovery of issuer ca
     O-->> I: OpenID credential issuer configuration
     I->> O: GET: /.well-known/oauth-authorization-server
     O-->>I: OAuth authorization server metadata
-    I->> O: get PID provider RP access certificate
-            
+                
     Note over I,TA: Issuer Authorization Verification
+    I->> I: signed metadata verification
     I->>TA: Request Issuer Authorization Status
-    TA-->>I: Confirm Issuer is Trusted and wallet relying party access certificate validation 
+    TA-->>I: Confirm PID provider is trusted 
     
     Note over I,O: Authenticate, Authorize, Check Wallet's Conformity
     opt authorization flow
@@ -216,11 +209,27 @@ Upon resolving the well-known endpoints, the **identity provider** responds with
 Once the well-known endpoint for **authorization servers** configuration is resolved, the response will follow the oauth standard or openid specification
 
 ## 3.5 Issuer Authorization verification 
-According to IA 2997 draft [6] the PID provider must be authenticated to the wallet (art 8 comma 3) using a relying party access certificate.
-The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)
+According to IA 2997 draft [6] the PID provider must be authenticated to the wallet (art 8 comma 3) using a relying party access certificate (The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)).
 The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself. This authentication is based on the RP access certificate validation performed by the wallet instance.
-The wallet instance collects the PID provider RP access certificate from the "credential_issuer" URL present in the credential issuer metadata parameters (or it could be extended by oid4vci specs).
-The wallet validates the certificate against a built in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
+
+PID Issuer must sign the metadata hash and must add the signed payload to a signed_metadata attribute together with the certificate. 
+Taking as example the RFC001 par 3.4 Discover response, the final result could be like the following:
+
+```json
+{
+  "credential_issuer": "https://server.example.com",
+  "authorization_servers": [
+    "https://server.example.com"
+  ],
+   ......
+  "signed_metadata": {
+      "wac": 
+        {"certificate": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7xN5PlABUpkfhXOX1A6F..."},
+      "payload" : "SIGNED_METADATA_HASHES" }
+}
+```
+The wallet instance verifies the signature.
+The wallet validates the certificate against a built-in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
 In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signature certificate.
 
 ## 3.6 Authorization request
@@ -595,7 +604,7 @@ For a JWT there are multiple ways for resolving the public key using the `kid` h
 
 Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
 
-# Appendix C: PID attribute schema according to IA 
+# Appendix C: PID attribute schema according to IA and ARF
 This schema has been composed according to the IA 2997 Annex [6].
 The description of each attribute is present both on ARF annex [7] and IA 2997 Annex[6] (this if of course the master reference for encoding, formats and so on).
 > [!NOTE]
@@ -694,7 +703,7 @@ This is an example of a PID formatted according to Reference implementation (Nov
 ```json
 {
   "format": "vc+sd-jwt",
-  "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiREdYYWl2U0FwbEtVa3Q5NmZUV29CQ3dIVUV1Rk5ROTlmMi1KeUZDV01qTSIsIk15dk1HX0IyVzltSy1Wa0FEMFJFY3BwZFJxNF9IbG5rRFlSbHNoNXBrbG8iLCJQbmg2V0JkTUREeXhkRks1YVQ4X1p3ajlpRTYyakM4RE00UDNYc0xFLUxVIiwiUWh5TDN5aXR1LURyUUZfNjhvOXoxWmJ0c0FGeWw1ckVzV0NSakxoNEpHayIsIlVudG04Sm1NT0FIYlg1TXZKcWY4LWM4Ynd2OGV6U0ZSczhjZDVEbWtOblEiXSwidmN0IjoiZXUuZXVyb3BhLmVjLmV1ZGkucGlkLjEiLCJfc2RfYWxnIjoic2hhMy0yNTYiLCJpc3MiOiJodHRwczovL2lzc3Vlci1iYWNrZW5kLmV1ZGl3LmRldiIsImNuZiI6eyJqd2siOnsia3R5IjoiUlNBIiwiZSI6IkFRQUIiLCJ1c2UiOiJzaWciLCJraWQiOiJkNzE4NWVjYS04YThiLTQwYTItOTMzYi1iM2YxNWI5YjVhMWUiLCJpYXQiOjE3MzE2Njg1OTIsIm4iOiJ6QU14YTJUeEpnM2hJS2o0V0d5RW1TTWNEbGpRY2xOVEFuZERmbHdUTnZZbldYbENBLVhCb2d6UnpBclI0OG9kSko4Yi1OcjlmNW9ZSElwOFdkTm9BczRodmUxTkJRdXdTdVlOaS1TTFZrY05ENGhuMWdWbXlpZXd6Tmx2UjZMTDdKb0JSRHRUZTNQYVI5WEFvQkhSeWNxNGpNeThyM3hMb1gwWHhtQW9jdHh0bTZyN2V5Mmg5NTF2VUVlaFZrblg1OC1STzJKanBZbDFzUldJTWJRQ19oVFlxdkgwc1ZGd1V4dG5RcWE1M2VTejlVWk81Wmt6SmE3VnM5Z1NNQ2NYUnR6OFhCWFR3V05NOWg4ZERoak56RVhScHpZcGdJYU00VElEZDRpLV9VUHM5ZU4zTFdzVWlzaVktakFTNmtFeDZhcFNHa1ppdC04YnYxSHktMldkT3cifX0sImV4cCI6MTczNDI2MDU5MywiaWF0IjoxNzMxNjY4NTkzLCJhZ2VfZXF1YWxfb3Jfb3ZlciI6eyJfc2QiOlsiaXBTODMtM1BZVWstRXN5WHpwYUMtUHRYWVNNZ1JacHFNZG5VX0JTNFd1MCJdfX0.8WXGs3v-9drBO_6DiwKZ92DrCeNyAsAIgKidFZtIzBPVj_v5idjUJimqG3GzqRgSESCo28M6WliOu31bD2QoZw~WyJVai1pTDlsX19CRktFUWp5cTJEVDRnIiwiaXNzdWFuY2VfZGF0ZSIsIjIwMjQtMTEtMTUiXQ~WyJRaEwwRXpHSXVpRlJWY0NlQ3NrY0h3IiwiZ2l2ZW5fbmFtZSIsIlR5bGVyIl0~WyJZQXlENGt2MUQ3aTJ3dUJKMl93TFNRIiwiZmFtaWx5X25hbWUiLCJOZWFsIl0~WyJIMjBSQXpDN0MzMHpqNXBYbl9QOWZRIiwiYmlydGhkYXRlIiwiMTk1NS0wNC0xMiJd~WyJMam1ManNoVUFfNzBGX2d1Mm1HWnVBIiwiMTgiLHRydWVd~WyIxMEpKTDR2ZjZrMk9kSlV2VnY0OV93IiwiZ2VuZGVyIiwxXQ~WyJBY0RWdVN2RHp1N1pvWXJvdWE4ekxRIiwiYWdlX2luX3llYXJzIiw3MF0~WyJiMEJ3Y1E5cUdxSVZQVjkzSHAtdjVBIiwiYmlydGhkYXRlX3llYXIiLCIxOTU1Il0~WyJ4QmdaX0RxS3RYR19DRllCTE01cmxRIiwiY291bnRyeSIsIkFUIl0~WyJNajJ5M0p3R29BQzhqaEIxRFc5Zjl3IiwicmVnaW9uIiwiTG93ZXIgQXVzdHJpYSJd~WyJPUHduYkpCT0s2Vll0alBMMDZWeHNRIiwibG9jYWxpdHkiLCJHZW1laW5kZSBCaWJlcmJhY2giXQ~WyJadnVxeHcxSDBwbVJMN0VWSVRDb1VnIiwicG9zdGFsX2NvZGUiLCIzMzMxIl0~WyJleDBxQmVhRXRZeU5IV2ZsaDRGTG1nIiwic3RyZWV0X2FkZHJlc3MiLCIxMDEgVHJhdW5lciJd~WyJDY0xtekpPREJGMVJKOXdyMG1NaEV3IiwiYWRkcmVzcyIseyJfc2QiOlsiLWQwTDdObFpDcnFUUW02OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
+  "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiR....2OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
   "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
   "c_nonce_expires_in": 86400
 }
@@ -716,20 +725,17 @@ The disclosed payload
       "y": "ZxjiWWbZMQGHVWKVQ4hbSIirsVfuecCE6t4jT9F2HZQ"
     }
   },
-  "is_over_18": true,
-  "is_over_21": true,
-  "is_over_65": true,
-  "address": {
-    "street_address": "123 Main St",
-    "locality": "Anytown",
-    "region": "Anystate",
-    "country": "US"
-  },
+  "resident_address": "123 Main St,123456 Anytown, Anystate, US",
+  "resident_street": "Main St",
+  "resident_house_number": "123",
+  "resident_postal_code": "123456",
+  "resident_city": "Anytown",
+  "resident_state": "Anystate",
+  "resident_country": "US",
   "email": "johndoe@example.com",
   "phone_number": "+1-202-555-0101",
   "family_name": "Doe",
-  "birthdate": "1940-01-01",
+  "birth_date": "1940-01-01",
   "given_name": "John"
 }
 ```
-
