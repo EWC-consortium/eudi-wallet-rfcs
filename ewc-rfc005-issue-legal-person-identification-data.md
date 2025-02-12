@@ -23,7 +23,7 @@ The EWC LSP must align with the standard protocol, OID4VCI, for issuing LPID fro
 
 The LPID issuance process is implemented by PID providers according to national law. The process may differ between member states but some verifications must be implemented in an LPID issuance process across all PID providers. These verifications include:
 
-1. **Authentication:** The natural person requesting a LPID on behalf of a legal person must ne authenticated using LoA High.
+1. **Authentication:** The natural person requesting a LPID on behalf of a legal person must be authenticated using LoA High.
 
 2. **Authorization:** The representative rights of the natural person requesting a LPID must be verified.
 
