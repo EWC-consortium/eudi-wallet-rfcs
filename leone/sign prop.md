@@ -12,7 +12,7 @@
 
     opt via cred passtrough
     User->>Service Provider: User Login to Signing Service (eg. via Username, Password, VCs)
-    Service Provider->>SS: user authentication 
+    Service Provider->>Signing Service: user authentication 
     end 
     
     opt via oauth/authorize
@@ -20,7 +20,7 @@
     Signing Service->>Service Provider: bearer token provisioning
     end 
     
-    Signing Service->>cp: POST /csc/v2/credentials/list
+    Signing Service->>RQES Provider: POST /csc/v2/credentials/list
     RQES Provider->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
     User-->Signing Service: credential selection
 
