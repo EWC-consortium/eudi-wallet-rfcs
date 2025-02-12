@@ -1,49 +1,49 @@
 ```mermaid
    sequenceDiagram
-    participant User as U
-    participant EUDI Wallet as W
-    participant Service Provider as SP
+    participant User
+    participant EUDI Wallet
+    participant Service Provider
     box CSC Protocol Usage
-    participant Signing Service as SS
-    participant RQES Provider as cp
+    participant Signing Service 
+    participant RQES Provider
     end
 
     Note over Signing Service, RQES Provider: Phase 1: Certificate Listing and Selection
 
     opt via cred passtrough
-    U->>SP: User Login to Signing Service (eg. via Username, Password, VCs)
-    SP->>SS: user authentication 
+    User->>Service Provider: User Login to Signing Service (eg. via Username, Password, VCs)
+    Service Provider->>SS: user authentication 
     end 
     
     opt via oauth/authorize
-    U->>SS: User Login to Signing Service (eg. via Username, Password, VCs)
-    SS->>SP: bearer token provisioning
+    User->>Signing Service: User Login to Signing Service (eg. via Username, Password, VCs)
+    Signing Service->>Service Provider: bearer token provisioning
     end 
     
-    SS->>cp: POST /csc/v2/credentials/list
-    cp->>SS: { credentialIDs: [...], credentialInfos: [...] }
-    U-->SS: credential selection
+    Signing Service->>cp: POST /csc/v2/credentials/list
+    RQES Provider->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
+    User-->Signing Service: credential selection
 
     Note over User, Signing Service: Phase 2: Signature request
-    SP-->SP: document signing prepare
-    SP-->SS: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
-    SS->>U: PID, signature transaction authorization Presentation
+    ServiceProvider-->Service Provider: document signing prepare
+    Service Provider-->Signing Service: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
+    Signing Service->>User: PID, signature transaction authorization Presentation
     
     Note over User, Signing Service: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
-    W->>SS: PID Presentation, transaction selfsigned authorization via OID4VP
+    EUDI Wallet->>SS: PID Presentation, transaction selfsigned authorization via OID4VP
     
     
     
     
     
     Signing Service->>RQES Provider: POST /csc/v2/credentials/authorize
-    cp->>SS: SAD
+    RQES Provider->>Signing Service: SAD
     
     Note over Signing Service, RQES Provider: Phase 5: Signature Creation
-    SS->>cp: POST /csc/v2/signatures/signHash
-    cp->>SS: Signed Hash
+    Signing Service->>cp: POST /csc/v2/signatures/signHash
+    RQES Provider->>Signing Service: Signed Hash
 
     Note over User, Signing Service: Phase 6: Signed Document Formation and Retrieval
-    SS->>SP: Signed Document
-    SP->>U: Signed Document
+    Signing Service->>Service Provider: Signed Document
+    Service Provider->>User: Signed Document
 ```
