@@ -25,12 +25,12 @@
     User-->Signing Service: credential selection
 
     Note over User, Signing Service: Phase 2: Signature request
-    ServiceProvider-->Service Provider: document signing prepare
+    Service Provider-->Service Provider: document signing prepare
     Service Provider-->Signing Service: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
     Signing Service->>User: PID, signature transaction authorization Presentation
     
     Note over User, Signing Service: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
-    EUDI Wallet->>SS: PID Presentation, transaction selfsigned authorization via OID4VP
+    EUDI Wallet->>Signing Service: PID Presentation, transaction selfsigned authorization via OID4VP
     
     
     
@@ -40,7 +40,7 @@
     RQES Provider->>Signing Service: SAD
     
     Note over Signing Service, RQES Provider: Phase 5: Signature Creation
-    Signing Service->>cp: POST /csc/v2/signatures/signHash
+    Signing Service->>RQES Provider: POST /csc/v2/signatures/signHash
     RQES Provider->>Signing Service: Signed Hash
 
     Note over User, Signing Service: Phase 6: Signed Document Formation and Retrieval
