@@ -13,13 +13,11 @@
     
     Note over Signing Service, RQES Provider: Phase 1: Certificate Listing and Selection
     
-    opt via authlogin
+    alt via authlogin
     Signing Service->>User: ask for authentication
     User->>Signing Service: User Login to Signing Service (eg. via Username, Password, VCs)
     Signing Service->>RQES Provider: user authentication 
-    end 
-    
-    opt via oauth/authorize (scope service)
+    else via oauth2/authorize (scope service)
     Signing Service->>RQES Provider: oauth/authorize
     User->>RQES Provider: User Login to RQES Provider directly
     end
@@ -32,9 +30,9 @@
     User->>Signing Service: credential selection
     end
 
-    Note over User, Signing Service: Phase 2: Signature Confirmation & Private Key Unlocking (Credential Authorization)
+    Note over User, RQES Provider: Phase 2: Signature Confirmation & Private Key Unlocking (Credential Authorization)
     
-    Signing Service-->RQES Provider: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
+    Signing Service-->RQES Provider: Request Signing of Document: oauth2/authorize (hashes, URIs, cert identifier)
     RQES Provider->>User: PID, signature transaction authorization Presentation
     EUDI Wallet->>RQES Provider: PID Presentation, transaction selfsigned authorization via OID4VP
     
