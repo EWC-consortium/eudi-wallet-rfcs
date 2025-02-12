@@ -8,16 +8,18 @@
     participant RQES Provider
     end
 
+    Service Provider-->Service Provider: document signing prepare
+    Service Provider-->Signing Service: signature request
+    
     Note over Signing Service, RQES Provider: Phase 1: Certificate Listing and Selection
-
-    opt via cred passtrough
-    User->>Service Provider: User Login to Signing Service (eg. via Username, Password, VCs)
-    Service Provider->>Signing Service: user authentication 
+    opt via authlogin
+    User->>Signing Service: User Login to Signing Service (eg. via Username, Password, VCs)
+    Signing Service->>RQES Provider: user authentication 
     end 
     
     opt via oauth/authorize
     User->>Signing Service: User Login to Signing Service (eg. via Username, Password, VCs)
-    Signing Service->>Service Provider: bearer token provisioning
+    Signing Service->>RQES Provider: bearer token provisioning
     end 
     
     Signing Service->>RQES Provider: POST /csc/v2/credentials/list
@@ -25,7 +27,6 @@
     User-->Signing Service: credential selection
 
     Note over User, Signing Service: Phase 2: Signature request
-    Service Provider-->Service Provider: document signing prepare
     Service Provider-->Signing Service: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
     Signing Service->>User: PID, signature transaction authorization Presentation
     
