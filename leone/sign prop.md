@@ -12,35 +12,33 @@
     Service Provider-->Signing Service: signature request
     
     Note over Signing Service, RQES Provider: Phase 1: Certificate Listing and Selection
+    
     opt via authlogin
+    Signing Service->>User: ask for authentication
     User->>Signing Service: User Login to Signing Service (eg. via Username, Password, VCs)
     Signing Service->>RQES Provider: user authentication 
     end 
     
-    opt via oauth/authorize
-    User->>Signing Service: User Login to Signing Service (eg. via Username, Password, VCs)
-    Signing Service->>RQES Provider: bearer token provisioning
+    opt via oauth/authorize (scope service)
+    Signing Service->>RQES Provider: oauth/authorize
+    User->>RQES Provider: User Login to RQES Provider directly
     end 
+    Signing Service<<-RQES Provider: bearer token provisioning
     
     Signing Service->>RQES Provider: POST /csc/v2/credentials/list
     RQES Provider->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
+    opt more than one enabled certificate 
     User-->Signing Service: credential selection
 
-    Note over User, Signing Service: Phase 2: Signature request
-    Service Provider-->Signing Service: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
-    Signing Service->>User: PID, signature transaction authorization Presentation
+    Note over User, Signing Service: Phase 2: Signature Confirmation & Private Key Unlocking (Credential Authorization)
     
-    Note over User, Signing Service: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
-    EUDI Wallet->>Signing Service: PID Presentation, transaction selfsigned authorization via OID4VP
+    RQES Provider<--Signing Service: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
+    RQES Provider->>User: PID, signature transaction authorization Presentation
+    EUDI Wallet->>RQES Provider: PID Presentation, transaction selfsigned authorization via OID4VP
     
-    
-    
-    
-    
-    Signing Service->>RQES Provider: POST /csc/v2/credentials/authorize
     RQES Provider->>Signing Service: SAD
     
-    Note over Signing Service, RQES Provider: Phase 5: Signature Creation
+    Note over Signing Service, RQES Provider: Phase 3: Signature Creation
     Signing Service->>RQES Provider: POST /csc/v2/signatures/signHash
     RQES Provider->>Signing Service: Signed Hash
 
