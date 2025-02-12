@@ -32,7 +32,7 @@
 
     Note over User, RQES Provider: Phase 2: Signature Confirmation & Private Key Unlocking (Credential Authorization)
     
-    Signing Service-->RQES Provider: Request Signing of Document: oauth2/authorize (hashes, URIs, cert identifier)
+    Signing Service->>RQES Provider: Request Signing of Document: oauth2/authorize (hashes, URIs, cert identifier)
     RQES Provider->>User: PID, signature transaction authorization Presentation
     EUDI Wallet->>RQES Provider: PID Presentation, transaction selfsigned authorization via OID4VP
     
