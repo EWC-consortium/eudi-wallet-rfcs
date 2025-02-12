@@ -22,17 +22,19 @@
     opt via oauth/authorize (scope service)
     Signing Service->>RQES Provider: oauth/authorize
     User->>RQES Provider: User Login to RQES Provider directly
-    end 
-    Signing Service<<-RQES Provider: bearer token provisioning
-    
+    end
+
+    RQES Provider->>Signing Service: bearer token provisioning
+
     Signing Service->>RQES Provider: POST /csc/v2/credentials/list
     RQES Provider->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
     opt more than one enabled certificate 
-    User-->Signing Service: credential selection
+    User->>Signing Service: credential selection
+    end
 
     Note over User, Signing Service: Phase 2: Signature Confirmation & Private Key Unlocking (Credential Authorization)
     
-    RQES Provider<--Signing Service: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
+    Signing Service-->RQES Provider: Request Signing of Document: oauth/authorize (hashes, URIs, cert identifier)
     RQES Provider->>User: PID, signature transaction authorization Presentation
     EUDI Wallet->>RQES Provider: PID Presentation, transaction selfsigned authorization via OID4VP
     
