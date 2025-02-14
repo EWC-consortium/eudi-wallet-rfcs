@@ -217,19 +217,17 @@ Taking as example the RFC001 par 3.4 Discover response, the final result could b
 
 ```json
 {
-  "credential_issuer": "https://server.example.com",
-  "authorization_servers": [
-    "https://server.example.com"
-  ],
+  "metadata1":"xyz",
+  "metadata2":"wwe",  
    ......
-  "signed_metadata": {
-      "wac": 
-        {"certificate": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7xN5PlABUpkfhXOX1A6F..."},
-      "payload" : "SIGNED_METADATA_HASHES" }
+  "signed_metadata": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 }
 ```
-The wallet instance verifies the signature.
-The wallet validates the certificate against a built-in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
+The wallet has 
+1. to validate the signature and so the integrity of the jwt, 
+2. to validate the payload against the metadata list that is in the json
+3. to extract from the header the certificate and to validate it against a built-in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
+
 In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signature certificate.
 
 ## 3.6 Authorization request
@@ -587,7 +585,7 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 # 6.0 Reference
 
 1. OpenID Foundation (2024), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html) (Accessed: October 10, 2024).
-2. European Commission (2024) The European Digital Identity Wallet Architecture and Reference Framework (2024-09, v1.5)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: February 10, 2025). Detail of Annex regarding PID issuance is available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md)
+2. European Commission (2025) The European Digital Identity Wallet Architecture and Reference Framework (2025-02, v1.5.1)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: February 10, 2025). Detail of Annex regarding PID issuance is available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md)
 3. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 4. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
 5. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 1.0, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
@@ -605,10 +603,12 @@ For a JWT there are multiple ways for resolving the public key using the `kid` h
 Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
 
 # Appendix C: PID attribute schema according to IA and ARF
-This schema has been composed according to the CIR 2024/2997 Annex [6].
+This schema has been composed according to the CIR 2024/2997 Annex [6] and merging the information of the pid rulebook of the ARF [2]
 The description of each attribute is present both on ARF annex [7] and IA 2997 Annex[6] (this if of course the master reference for encoding, formats and so on).
+The optional attributes that are only present in the ARF PID rulebook have been marked.
 > [!NOTE]
 > The json schema format is simple descriptive, and it includes both data and metadata.
+> At this moment the ARF indicates only the mdoc format, so we include here a json sheme that do not refers specifically sdjwt or mdoc cases, but simply describe the functional content of a PID
 
 ```json
 {  
