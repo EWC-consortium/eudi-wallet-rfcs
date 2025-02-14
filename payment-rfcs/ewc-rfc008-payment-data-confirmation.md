@@ -231,15 +231,8 @@ The id of the input descriptor requesting the PWA, here `7c94e62d-82c2-41d7-a649
 {
   "id": "8dd03977-74e4-4b10-ad6d-05a681f44fc9",
   "format": {
-    "vc+sd-jwt": {
-      "alg": [
-        "ES256"
-      ]
-    },
-    "vp+sd-jwt": {
-      "alg": [
-        "ES256"
-      ]
+    "dc+sd-jwt": {
+      "alg": ["ES256"]
     }
   },
   "input_descriptors": [
