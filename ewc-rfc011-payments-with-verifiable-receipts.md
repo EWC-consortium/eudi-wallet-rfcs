@@ -1,4 +1,4 @@
-# EWC RFC011: Payments With Receipts - v0.2
+# EWC RFC011: Payments With Verifiable Receipts - v0.2
 
 **Authors:**
 
@@ -18,7 +18,7 @@
 
 ## Table of Contents
 
-- [EWC RFC011: Payments With Receipts - v0.2](#ewc-rfc011-payments-with-receipts---v02)
+- [EWC RFC011: Payments With Verifiable Receipts - v0.2](#ewc-rfc011-payments-with-verifiable-receipts---v02)
   - [Table of Contents](#table-of-contents)
   - [1.0 Summary](#10-summary)
   - [2.0 Motivation](#20-motivation)
