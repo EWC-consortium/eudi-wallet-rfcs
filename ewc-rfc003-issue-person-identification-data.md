@@ -217,18 +217,19 @@ Taking as example the RFC001 par 3.4 Discover response, the final result could b
 
 ```json
 {
-  "credential_issuer": "https://server.example.com",
-  "authorization_servers": [
-    "https://server.example.com"
-  ],
    ......
-  "signed_metadata": {
-      "wac": 
-        {"certificate": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7xN5PlABUpkfhXOX1A6F..."},
-      "payload" : "SIGNED_METADATA_HASHES" }
+  "signed_metadata": "ASDLJALSKDJALKSJD.ASFCVANSDNAKSD.ASDLJASLKDASD"
 }
 ```
-The wallet instance verifies the signature.
+and a decoded sample could be like this
+
+```json
+{
+ "signed_metadata": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+}
+```
+in the header of jwt there's the x5c certificate used to sign, and the payload there is the signed list of metadata. 
+The wallet instance verifies the metadata signature.
 The wallet validates the certificate against a built-in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
 In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signature certificate.
 
