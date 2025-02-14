@@ -1,0 +1,2 @@
+Algorithm,Curve (crv),Cryptographic Family,JWT Header Representation
+ES256,P-256,EC,"""alg"": ""ES256"", ""crv"": ""P-256"""
