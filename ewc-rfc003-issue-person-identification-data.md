@@ -45,7 +45,7 @@
 - [5.0 Implementers](#50-implementers)
 - [6.0 Reference](#60-reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
-- [Appendix C: PID attribute schema according to IA and ARF](#appendix-c-pid-attribute-schema-according-to-ia-and-arf)
+- [Appendix B: PID attribute schema according to IA and ARF](#appendix-b-pid-attribute-schema-according-to-ia-and-arf)
 - [Appendix C: SD-JWT PID example](#appendix-c-sd-jwt-pid-example)
 
 
@@ -229,6 +229,7 @@ The wallet has
 3. to extract from the header the certificate and to validate it against a built-in PID issuer trusted list reference endpoint (an official authoritative source) and it validates its trusted CA root.
 
 In any case the signature of the credential, issued at the end of the process and delivered to the wallet, must be validated against the pid provider signature certificate.
+> Note: Pid Provider authentication and the definition of rp access certificates is still under development so it won't be mandatory in EWC integration test bed.
 
 ## 3.6 Authorization request
 
@@ -602,153 +603,14 @@ For a JWT there are multiple ways for resolving the public key using the `kid` h
 
 Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
 
-# Appendix C: PID attribute schema according to IA and ARF
-This schema has been composed according to the CIR 2024/2997 Annex [6] and merging the information of the pid rulebook of the ARF [2]
+# Appendix B: PID attribute schema according to IA and ARF
+The PID scheme has been composed according to the CIR 2024/2997 Annex [6] and merging the information of the pid rulebook of the ARF [2]. Its definition reference is [https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds012-person-identification-data.json](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds012-person-identification-data.json)
 The description of each attribute is present both on ARF annex [7] and IA 2997 Annex[6] (this if of course the master reference for encoding, formats and so on).
 The optional attributes that are only present in the ARF PID rulebook have been marked.
 > [!NOTE]
-> The json schema format is simple descriptive, and it includes both data and metadata.
-> At this moment the ARF indicates only the mdoc format, so we include here a json sheme that do not refers specifically sdjwt or mdoc cases, but simply describe the functional content of a PID
+ The json schema format is simple descriptive, and it includes both data and metadata.
+ At this stage the ARF indicates only the mdoc format, so we include here a json sheme that do not refers specifically sdjwt or mdoc cases, but simply describe the functional content of the PID.
 
-```json
-{  
-   "title":"PID_Schema",
-   "type":"object",
-
-   "properties":{  
-      "family_name":{  
-         "type":"string"
-      },
-      "given_name":{  
-         "type":"string"
-      },
-      "birth_date":{  
-         "type":"date"      
-      },
-      "birth_place":{  
-         "type":"string"  ,
-         "description":"The country as an alpha-2 country code as specified in ISO 3166-1, or the state, province, district, or local area or the municipality, city, town, or village where the user to whom the person identification data relates was born."    
-      },
-      "nationality":{  
-         "type":"string" ,    
-         "description":"One or more alpha-2 country codes as specified in ISO 3166-1, representing the nationality of the user to whom the person identification data relates." 
-      },
-      "resident_address":{
-         "type":"string",
-         "description":"The full address of the place where the user to whom the person identification data relates currently resides or can be contacted (street name, house number, city etc.)"
-      },
-      "resident_country":{  
-         "type":"string",
-         "description":"The country where the user to whom the person identification data relates currently resides, as an alpha-2 country code as specified in ISO 3166-1."      
-      },
-      "resident_state":{  
-          "type":"string",
-         "description":"The state, province, district, or local area where the user to whom the person identification data relates currently resides."      
-      },
-      "resident_city":{  
-          "type":"string"      
-      },
-      "resident_postal_code":{  
-          "type":"string"      
-      },
-      "resident_street":{  
-          "type":"string"      
-      },
-      "resident_house_number":{  
-          "type":"string"      
-      },
-      "personal_administrative_number":{  
-          "type":"string",      
-          "description":"A value assigned to the natural person that is unique among all personal administrative numbers issued by the provider of person identification data. Where Member States opt to include this attribute, they shall describe in their electronic identification schemes under which the person identification data is issued, the policy that they apply to the values of this attribute, including, where applicable, specific conditions for the processing of this value."
-      },
-      "portrait":{  
-          "type":"string",      
-          "description":"Facial image of the wallet user compliant with ISO 19794-5 or ISO 39794 specifications.The image SHALL be encoded as binary data."
-      },
-      "family_name_birth":{  
-          "type":"string",      
-          "description":"Last name(s) or surname(s) of the person identification data user at the time of birth."
-      },
-      "given_name_birth":{  
-          "type":"string",      
-          "description":"First name(s), including middle name(s), of the person identification data user at the time of birth."
-      },
-      "sex":{  
-          "type":"number",      
-          "enum":[0,1,2,3,4,5,6,9],
-          "description":"Values shall be one of the following: 0 = not known; 1 = male; 2 = female; 3 = other; 4 = inter; 5 = diverse; 6 = open; 9 = not applicable. For values 0, 1, 2 and 9, ISO/IEC 5218 applies."
-      },
-      "email_address":{  
-          "type":"string",      
-          "description":"Electronic mail address of the user to whom the person identification data relates [in conformance with RFC 5322]."
-      },
-      "mobile_phone_number":{  
-          "type":"string",      
-          "description":"Mobile telephone number of the user to whom the person identification data relates, starting with the ‘+’ symbol as the international code prefix and the country code, followed by numbers only."
-      },
-      "issuance_date":{
-        "type":"string",
-        "description":"Date (and if possible time) when the person identification data was issued and/or the administrative validity period of the person identification data began. (specified only in the ARF PID rulebook). "
-      },
-      "age_over_18":{
-        "type":"boolean",      
-        "description":"Attesting whether the User to whom the person identification data relates is currently an adult (true) or a minor (false). (specified only in the ARF PID rulebook)."
-      },
-      "age_over_NN":{
-        "type":"boolean",      
-        "description":"Attesting whether the User to whom the person identification data relates is at least NN years old. N <> 18. (specified only in the ARF PID rulebook)."
-      },
-      "age_in_years":{
-        "type":"number",      
-        "description":"The current age of the User to whom the person identification data relates in years. (specified only in the ARF PID rulebook)."
-      },
-      "age_birth_year":{
-        "type":"number",      
-        "description":"The year when the User to whom the person identification data relates was born. (specified only in the ARF PID rulebook)."
-      },
-
-
-      "expiry_date":{  
-         "type":"date"  
-      },
-      "issuing_authority":{  
-         "type":"string"  ,
-         "description": "Name of the administrative authority that issued the person identification data, or the ISO 3166 alpha-2 country code of the respective Member State if there is no separate authority entitled to issue person identification data."
-      },
-      "issuing_country":{  
-         "type":"string",
-         "description": "Alpha-2 country code, as specified in ISO 3166-1, of the country or territory of the provider of the person identification data."   
-      },
-      "document_number":{  
-         "type":"string",
-         "description": "A number for the person identification data, assigned by the provider of person identification data."   
-      },
-      "issuing_jurisdiction":{  
-         "type":"string",
-         "description": "Country subdivision code of the jurisdiction that issued the person identification data, as specified in ISO 3166-2:2020, Clause 8. The first part of the code shall be the same as the value for the issuing country."   
-      },
-      "location_status":{  
-         "type":"string",
-         "description": "	The location of validity status information on the person identification data where the providers of person identification data revoke person identification data."   
-      },
-      "trust_anchor":{
-        "type":"string",      
-        "description":"This attribute indicates at least the URL at which a machine-readable version of the trust anchor to be used for verifying the PID can be found or looked up. Note: This attribute corresponds to the location meant in Annex V point h) or Annex VII point h) of the [European Digital Identity Regulation], which is mandatory for QEAAs. This PID Rulebook add this as an optional attribute for PIDs as well, so PID Providers are able to ensure that PIDs can be validated by Relying Parties in the same manner as QEAAs. (specified only in the ARF PID rulebook)."
-      },
-
-  },
-   "required":[  
-      "family_name",
-      "given_name",
-      "birth_date",
-      "birth_place",
-      "nationality",
-      "expiry_date",
-      "issuing_authority",
-      "issuing_country"
-   ]
-}
-```
 # Appendix C: SD-JWT PID example
 
 This is an example of a PID formatted according to Reference implementation (Nov 2024 ).
