@@ -593,6 +593,7 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 6. Implementing Act 2024/2977, Available at  [http://data.europa.eu/eli/reg_impl/2024/2977/oj](http://data.europa.eu/eli/reg_impl/2024/2977/oj)
 7. RFC004 for wallet authentication, Available at [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md)
 8. ETSI 119.471 v 0.0.11 [https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf] (https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf)
+9. IANA JWT claim registry [https://www.iana.org/assignments/jwt/jwt.xhtml](https://www.iana.org/assignments/jwt/jwt.xhtml)
 
 # Appendix A: Public key resolution
 
@@ -609,7 +610,10 @@ The description of each attribute is present both on ARF annex [7] and IA 2997 A
 The optional attributes that are only present in the ARF PID rulebook have been marked.
 > [!NOTE]
  The json schema format is simple descriptive, and it includes both data and metadata.
- At this stage the ARF indicates only the mdoc format, so we include here a json sheme that do not refers specifically sdjwt or mdoc cases, but simply describe the functional content of the PID.
+ In EWC we use json shemes that do not refers specifically sdjwt or mdoc cases, but they simply describe the functional content of the PID and the other credentials.
+ As now (February 2025) The ARF 1.5.1 contains only details for mdoc encoding rif [https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/latest/annexes/annex-3/annex-3.01-pid-rulebook/#42-encoding-of-pid-attributes-and-metadata](https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/latest/annexes/annex-3/annex-3.01-pid-rulebook/#42-encoding-of-pid-attributes-and-metadata) while the encoding for sdjwt is still missing [https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/latest/annexes/annex-3/annex-3.01-pid-rulebook/#5-sd-jwt-vc-based-encoding-of-pid
+ ](https://eu-digital-identity-wallet.github.io/eudi-doc-architecture-and-reference-framework/latest/annexes/annex-3/annex-3.01-pid-rulebook/#5-sd-jwt-vc-based-encoding-of-pid
+ ). A pull request about sdjwt format has been made [https://github.com/danielfett/eudi-doc-architecture-and-reference-framework/blob/danielfett/update-pid-rulebook/docs/annexes/annex-3/annex-3.01-pid-rulebook.md#2532-data-element-identifer-to-claim-mapping](https://github.com/danielfett/eudi-doc-architecture-and-reference-framework/blob/danielfett/update-pid-rulebook/docs/annexes/annex-3/annex-3.01-pid-rulebook.md#2532-data-element-identifer-to-claim-mapping) and this proposal is based on IANA jwt claim registry [9] but it's not approved and official. 
 
 # Appendix C: SD-JWT PID example
 
