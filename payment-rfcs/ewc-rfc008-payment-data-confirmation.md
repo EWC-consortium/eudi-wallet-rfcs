@@ -224,8 +224,9 @@ In addition to the above, the verifier may want to validate the user’s Wallet 
 
 ## 6.1 Presentation definition
 
-Below is a non-normative example of a presentation definition to request the Payment Wallet Attestation by specifying the credential type. If the relying party has further information about other attribute values, additional constraints may be used to identify a particular PWA in the user’s wallet.
-The id of the input descriptor requesting the PWA, here `7c94e62d-82c2-41d7-a649-6c204bf59d1c`, should be referenced in `credential_ids` of the authorization request.
+Below is a non-normative example of a presentation definition where a Merchant or Payment Initiation Service Provider (PISP) requests a Payment Wallet Attestation specifically for a Visa card payment instrument. The example demonstrates how to request a PWA by specifying both the credential type and additional constraints on the funding source attributes.
+
+The presentation definition's input descriptor ID (`7c94e62d-82c2-41d7-a649-6c204bf59d1c`) must be referenced in the `credential_ids` parameter of the authorization request to properly link the request to this definition.
 
 ```json
 {
@@ -260,13 +261,50 @@ The id of the input descriptor requesting the PWA, here `7c94e62d-82c2-41d7-a649
           },
           {
             "path": [
-              "$.accounts"
+              "$.fundingSource.aliasId"
             ]
           },
           {
             "path": [
-              "$.account_holder_id"
+              "$.fundingSource.currency"
             ]
+          },
+          {
+            "path": [
+              "$.fundingSource.iin"
+            ]
+          },
+          {
+            "path": [
+              "$.fundingSource.panLastFour"
+            ]
+          },
+          {
+            "path": [
+              "$.fundingSource.parLastFour"
+            ]
+          },
+          {
+            "path": [
+              "$.fundingSource.scheme"
+            ],
+            "filter": {
+              "type": "string",
+              "contains": {
+                "const": "Visa"
+              }
+            }
+          },
+          {
+            "path": [
+              "$.fundingSource.type"
+            ],
+            "filter": {
+              "type": "string",
+              "contains": {
+                "const": "card"
+              }
+            }
           }
         ]
       }
