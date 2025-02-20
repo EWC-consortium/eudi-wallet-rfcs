@@ -925,11 +925,11 @@ Schema as JSON-schema[11]
   "type": "object",
   "properties": {
     "issuing_authority": {
-      "description": "Name of issuer from the MS that issued the ODI instance",
+      "description": "Name of the administrative authority that has issued this LPID instance, or the ISO 3166 Alpha-2 country code of the respective Member State if there is no separate authority authorized to issue LPIDs.",
       "type": "string"
     },
     "issuing_authority_id": {
-      "description": "ODI Id of the issuing authority. (Business register identifier for BRIS)",
+      "description": "EUDI of the issuing authority.",
       "type": "string"
     },
     "issuing_country": {
@@ -939,38 +939,39 @@ Schema as JSON-schema[11]
       "maxLength": 2
     },
     "issuing_jurisdiction": {
-      "description": "As defined in ISO 3166-2:2020, of the issuing country or territory.",
+      "description": "Country subdivision code of the jurisdiction that issued the PID, as defined in ISO 3166-2:2020, Clause 8. The first part of the code SHALL be the same as the value for issuing_country.",
       "type": "string",
       "minLength": 2,
       "maxLength": 6
     },    
     "issuance_date": {
-      "description": "Date and possibly time of issuance",
+      "description": "Date (and possibly time) when the PID was issued.",
       "type": "string",
       "format": "datetime"
     },
     "expiry_date": {
-      "description": "Date and possibly time of ODI expiration",
+      "description": "Date (and possibly time) when the PID will expire.",
+      "type": "string",
       "format": "datetime"
     },
     "authentic_source_id": {
-      "description": "ODI Id of the issuing authority. (Business register identifier for BRIS)",
+      "description": "EUID for the public sector body or private entity responsible for an authentic source that is a repository or system, considered to be the primary source of information or recognized as authentic in national law.",
       "type": "string"
     },
     "authentic_source_name": {
-      "description": "Name of issuer from the MS that issued the ODI instance",
+      "description": "Name of the public sector body or private entity responsible for an authentic source that is a repository or system, considered to be the primary source of information or recognized as authentic in national law.",
       "type": "string"
     },
-    "credentialSubject": {
+    "credential_subject": {
       "description": "Attributes representing a Legal PID",
       "type": "object",
       "properties": {
         "legal_person_id": {
-          "description": "Unique id for organisation according to EUID",
+          "description": "Unique id for organisations in EUID structure.",
           "type": "string"
         },
         "legal_person_name": {
-          "description": "Legal person name",
+          "description": "Official current legal person name as registered in the business register.",
           "type": "string"
         }
       },
@@ -979,7 +980,7 @@ Schema as JSON-schema[11]
         "legal_person_name"
       ]
     },
-    "credentialStatus": {
+    "credential_status": {
       "description": "Defines suspension and/or revocation details for the issued credential. Further redefined by the type extension",
       "type": "object",
       "properties": {
@@ -998,25 +999,25 @@ Schema as JSON-schema[11]
         "type"
       ]
     },
-    "credentialSchema": {
+    "credential_schema": {
       "description": "One or more schemas that validate the Verifiable Credential.",
       "anyOf": [
         {
-          "$ref": "#/$defs/credentialSchema"
+          "$ref": "#/$defs/credential_schema"
         },
         {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/credentialSchema"
+            "$ref": "#/$defs/credential_schema"
           }
         }
       ]
     }
   },
   "required": [
-    "credentialSubject",
-    "credentialStatus",
-    "credentialSchema",
+    "credential_subject",
+    "credential_status",
+    "credential_schema",
     "issuing_authority",
     "issuing_authority_id",
     "issuer_country",
@@ -1024,12 +1025,12 @@ Schema as JSON-schema[11]
     "expiry_date"
   ],
   "$defs": {
-    "credentialSchema": {
+    "credential_schema": {
       "description": "Contains information about the credential schema on which the issued credential is based",
       "type": "object",
       "properties": {
         "id": {
-          "description": "References the credential schema stored on the Trusted Schemas Registry (TSR) on which the Verifiable Authorisation is based on",
+          "description": "ID to find information about the structure of the LPID.",
           "type": "string",
           "format": "uri"
         },
