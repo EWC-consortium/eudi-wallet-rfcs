@@ -232,13 +232,11 @@ The presentation definition's input descriptor ID (`7c94e62d-82c2-41d7-a649-6c20
 {
   "id": "8dd03977-74e4-4b10-ad6d-05a681f44fc9",
   "format": {
-    "vc+sd-jwt": {
-      "alg": [
+    "dc+sd-jwt": {
+      "sd-jwt_alg_values": [
         "ES256"
-      ]
-    },
-    "vp+sd-jwt": {
-      "alg": [
+      ],
+      "kb-jwt_alg_values": [
         "ES256"
       ]
     }

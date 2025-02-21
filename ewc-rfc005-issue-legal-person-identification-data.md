@@ -273,7 +273,7 @@ Upon resolving the well-known endpoints, the **identity provider** responds with
   ],
   "credentials_supported": {
     "PersonIdentificationData": {
-      "format": "vc+sd-jwt",
+      "format": "dc+sd-jwt",
       "scope": "PersonIdentificationData",
       "cryptographic_binding_methods_supported": [
         "jwk"
@@ -413,7 +413,7 @@ On resolving the `credential_offer_uri` query parameter, the issuer responds wit
 }
 ```
 
-The holder's wallet retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, vc+sd-jwt) is specified, focusing on the LPID. This process ensures that the credential issuance aligns with the stringent requirements for LPID within the EWC ecosystem.
+The holder's wallet retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, dc+sd-jwt) is specified, focusing on the LPID. This process ensures that the credential issuance aligns with the stringent requirements for LPID within the EWC ecosystem.
 
 For the pre-authorized flow, the credential response format is adapted to include the necessary grants for LPID issuance:
 
@@ -422,7 +422,7 @@ For the pre-authorized flow, the credential response format is adapted to includ
   "credential_issuer": "https://identity-provider.gov",
   "credentials": [
     {
-      "format": "vc+sd-jwt",
+      "format": "dc+sd-jwt",
       "types": [
         "VerifiableCredential",
         "PersonIdentificationData"
@@ -726,7 +726,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "vc+sd-jwt",
+   "format": "dc+sd-jwt",
    "credential_definition": {
       "vct": "PersonIdentificationData"
    },
@@ -749,7 +749,7 @@ In cases where the LPID credential is immediately available, the response is str
 
 ```json
 {
-  "format": "vc+sd-jwt",
+  "format": "dc+sd-jwt",
   "credential": "eyJ0eXAiOi...F0YluuK2Cog", //EncodedLPIDCredential
   "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
   "c_nonce_expires_in": 86400
@@ -1059,7 +1059,7 @@ The credential can be issued, either directly into the organization's wallet or 
 {
   "credential_configurations_supported": {
     "EWC_LPID_Attestation": {
-      "format": "vc+sd-jwt",
+      "format": "dc+sd-jwt",
       "vct": "EWC_LPID_Attestation",
       "claims": {
         "legal_person_id": {

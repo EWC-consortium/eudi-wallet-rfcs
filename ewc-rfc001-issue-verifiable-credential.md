@@ -239,7 +239,7 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
   ],
   "credential_configurations_supported": {
     "VerifiablePortableDocumentA1": {
-      "format": "vc+sd-jwt",
+      "format": "dc+sd-jwt",
       "scope": "VerifiablePortableDocumentA1",
       "cryptographic_binding_methods_supported": [
         "jwk"
@@ -288,7 +288,7 @@ Once the well-known endpoint for **issuer server** configuration is resolved, th
 ```
 
 > [!NOTE]
-> The `credential_configurations_supported` field and it's values change based on the supported credential formats 1) `mso_mdoc` 2) `jwt_vc_json` 3) `vc+sd-jwt`
+> The `credential_configurations_supported` field and it's values change based on the supported credential formats 1) `mso_mdoc` 2) `jwt_vc_json` 3) `dc+sd-jwt`
 > It is important to consult the relevant documentation for each format to ensure that all required fields and values are correctly configured.
 > The supported credential format identifiers in the context of EWC LSPs, can be found [here](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-supported-formats.csv).
 
@@ -398,7 +398,7 @@ The query params for the authorisation request with `authorization_details` are 
   [
       {
           "type": "openid_credential",
-          "format": "vc+sd-jwt",
+          "format": "dc+sd-jwt",
           "vct": "VerifiablePortableDocumentA1"
       }
   ]
@@ -721,7 +721,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 > [!NOTE]
 > In the above, the credentialSubject is optional and is not considered within the scope of EWC LSP. 
 
-**For IETF SD-JWT VC with credential format identifier** `vc+sd-jwt`:
+**For IETF SD-JWT VC with credential format identifier** `dc+sd-jwt`:
 
 
 ```http
@@ -730,7 +730,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "vc+sd-jwt",
+   "format": "dc+sd-jwt",
    "vct": "SD_JWT_VC_example_in_OpenID4VCI",
    "proof": {
       "proof_type": "jwt",
