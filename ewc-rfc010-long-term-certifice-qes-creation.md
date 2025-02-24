@@ -239,7 +239,6 @@ Since each Signing Service has its own requirements and processes and should not
 
     User->>Service Provider: Service Access
     Service Provider->>Signing Service: Request Signing of Document
-    deactivate Service Provider
     alt Signing Service manages QeSAC
       Signing Service->>User: PID+QESAC Presentation Request via OID4VP
       EUDI Wallet->>Signing Service: PID+QESAC Presentation
