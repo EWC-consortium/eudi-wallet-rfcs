@@ -5,7 +5,6 @@
 **Authors:**
 
 - Mr. Kyriakos Giannakis (Intesi Group, Italy | Flare, Greece)
-- Mr. Leone Riello (Infocert, Italy)
 
 **Reviewers:**
 
