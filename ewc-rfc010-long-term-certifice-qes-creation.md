@@ -5,11 +5,11 @@
 **Authors:**
 
 - Mr. Kyriakos Giannakis (Intesi Group, Italy | Flare, Greece)
-- Mr. Leone Riello (Infocert, Italy)
 
 **Reviewers:**
 
 - Dr. Andreas Abraham (ValidatedID, Spain)
+- Mr. Leone Riello (Infocert, Italy)
 - Mr. Luigi Rizzo (Infocert, Italy)
 - Dr. Nikos Triantafyllou (University of the Aegean, Greece)
 - Mr. Jon Ølnes (Signicat, Norway)
