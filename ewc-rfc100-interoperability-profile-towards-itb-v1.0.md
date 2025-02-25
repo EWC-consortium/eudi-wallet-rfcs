@@ -289,7 +289,7 @@ must support the following RFCs :
 2. [EWC RFC002: Present Verifiable Credentials - v2.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md)
 
 Furthermore, for EWC Phase 2.0 piloting support for:
-1. [Selective Disclosure - JSON Web Token Verifiable Credential	vc+sd-jwt](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-sd-jwt-vc-01)
+1. [Selective Disclosure - JSON Web Token Verifiable Credential	dc+sd-jwt](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-sd-jwt-vc-01)
 2. [Selective Disclosure - JSON Web Token Verifiable Presentation	vp+sd-jwt](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-sd-jwt-vc-01)
 
 is mandatory. 

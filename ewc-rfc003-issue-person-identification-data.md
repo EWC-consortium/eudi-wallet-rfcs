@@ -164,7 +164,7 @@ On resolving the `credential_offer_uri` query parameter, the issuer responds wit
 }
 ```
 
-The wallet instance retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, vc+sd-jwt) is specified, focusing on the PID. This process ensures that the credential issuance aligns with the stringent requirements for PID within the EWC ecosystem.
+The wallet instance retrieves this JSON response and processes it accordingly. The format of the credential (e.g., jwt_vc, dc+sd-jwt) is specified, focusing on the PID. This process ensures that the credential issuance aligns with the stringent requirements for PID within the EWC ecosystem.
 
 For the pre-authorized flow, the credential response format is adapted to include the necessary grants for PID issuance:
 
@@ -471,7 +471,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "vc+sd-jwt",
+   "format": "dc+sd-jwt",
    "vct": "urn:eu.europa.ec.eudi:pid:1",
    "proof": {
       "proof_type": "jwt",
@@ -493,7 +493,7 @@ In cases where the PID credential is immediately available, the response is stru
 
 ```json
 {
-  "format": "vc+sd-jwt",
+  "format": "dc+sd-jwt",
   "credential": "eyJ0eXAiOi...F0YluuK2Cog", //EncodedPIDCredential
   "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
   "c_nonce_expires_in": 86400
@@ -621,7 +621,7 @@ This is an example of a PID formatted according to Reference implementation (Nov
 
 ```json
 {
-  "format": "vc+sd-jwt",
+  "format": "dc+sd-jwt",
   "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiR....2OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
   "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
   "c_nonce_expires_in": 86400
