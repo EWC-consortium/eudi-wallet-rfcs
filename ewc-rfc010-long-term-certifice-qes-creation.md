@@ -108,7 +108,7 @@ QTSP is responsible for signature authorization, that could be done using the wa
       alt  oauth2-flow Credential Selection
         Signing Service->>RQES Provider: POST /csc/v2/oauth2/authorize using clientID/secret
         User->>RQES Provider: authentication using username/password or other methods available
-        RQES Provider-->Signing Service: bearer token provisioning to Signing Service
+        RQES Provider-->>Signing Service: bearer token provisioning to Signing Service
         Signing Service->>RQES Provider: POST credentials/list (to get credentialID)
       else explicit-flow Credential Selection
         User->>Signing Service: provides username/password (RQeSP account)
@@ -131,18 +131,18 @@ QTSP is responsible for signature authorization, that could be done using the wa
     
     Note over Signing Service, RQES Provider: Phase 2: Service Authentication and Certificate Selection
     alt User has QeSAC enrolled on his wallet
-      User-->Signing Service: User provides PID + QESAC Presentation 
+      User-->>Signing Service: User provides PID + QESAC Presentation 
     else 
       alt Signing Service collects authentication data from user and interacts with RQeS Provider (explicit flow)
-        User-->Signing Service: User provides userid/pwd (Signing Service account) for authentication  
+        User-->>Signing Service: User provides userid/pwd (Signing Service account) for authentication  
         Signing Service->>RQES Provider: auth/login authentication using user credentials
       else Signing Service redirects user to RQeS provider oauth server (oauth2 flow)
         Signing Service->>RQES Provider: /csc/v2/oauth2/authorize (scope=service)
         User->>RQES Provider: user authentication using PID + optional membership AC, or username/password (RQeSP account)
       end 
-      RQES Provider-->Signing Service: bearer token provisioning
+      RQES Provider-->>Signing Service: bearer token provisioning
       Signing Service->>RQES Provider: POST /csc/v2/credentials/list
-      RQES Provider-->Signing Service: { credentialIDs: [...], credentialInfos: [...] }
+      RQES Provider-->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
     end
       alt credentialID list with multiple values
         User->>Signing Service: credentialID selection
@@ -164,7 +164,7 @@ QTSP is responsible for signature authorization, that could be done using the wa
       Signing Service->>RQES Provider: POST /csc/v2/credentials/getChallenge, /csc/v2/credentials/authorize
       deactivate Signing Service
     end
-    RQES Provider-->Signing Service: SAD
+    RQES Provider-->>Signing Service: SAD
     
     Note over Signing Service, RQES Provider: Phase 4: Signature Creation
     Signing Service->>RQES Provider: POST /csc/v2/signatures/signHash
@@ -187,12 +187,12 @@ QTSP is responsible for signature authorization, that could be done using the wa
     Note over User, Signing Service: Phase 0 (optional): Signing Service User Registration
       activate Signing Service
       Signing Service->>User: PID Presentation (Binding) Request via OID4VP
-      EUDI Wallet-->Signing Service: PID Presentation
+      EUDI Wallet-->>Signing Service: PID Presentation
       Note over Signing Service: At this point the user has been strongly authenticated.</BR> Whether a QeSAC would not be provided, a Signing Service account should be offered to the user instead
       alt  oauth2-flow Credential Selection
         Signing Service->>RQES Provider: POST /csc/v2/oauth2/authorize using clientID/secret
         User->>RQES Provider: authentication using username/password or other methods available
-        RQES Provider-->Signing Service: bearer token provisioning to Signing Service
+        RQES Provider-->>Signing Service: bearer token provisioning to Signing Service
         Signing Service->>RQES Provider: POST credentials/list (to get credentialID)
       else explicit-flow Credential Selection
         User->>Signing Service: provides username/password (RQeSP account)
@@ -260,7 +260,7 @@ Since each Signing Service has its own requirements and processes and should not
     
     alt User has QeSAC enrolled on his wallet
       Signing Service->>User: PID+QESAC Presentation Request via OID4VP
-      EUDI Wallet-->Signing Service: PID+QESAC Presentation
+      EUDI Wallet-->>Signing Service: PID+QESAC Presentation
     else  
       Signing Service->>User: userid/pwd authentication
     end
@@ -297,9 +297,9 @@ The User's Signing Certificates (`Credentials`) from the Remote QES Service are 
         User->>RQES Provider: user authentication using PID + optional membership AC, or username/password (RQeSP account)
    end 
 
-   RQES Provider-->Signing Service: bearer token provisioning
+   RQES Provider-->>Signing Service: bearer token provisioning
    Signing Service->>RQES Provider: POST /csc/v2/credentials/list
-   RQES Provider-->Signing Service: { credentialIDs: [...], credentialInfos: [...] }
+   RQES Provider-->>Signing Service: { credentialIDs: [...], credentialInfos: [...] }
    
    alt credentialID list with multiple values
         User->>Signing Service: credentialID selection
@@ -420,7 +420,7 @@ The Strong Customer Authentication is performed using two factors, that generall
       Signing Service->>RQES Provider: POST /csc/v2/credentials/getChallenge, /csc/v2/credentials/authorize
       deactivate Signing Service
     end
-    RQES Provider-->Signing Service: SAD
+    RQES Provider-->>Signing Service: SAD
 ```
 
 During this step, the Signing Service could delegate the authorization to the RQeS Provider's page (oauth2code flow), or it could engage csc apis in order to trigger the OTP sending and OTP and PIN collection in order to invoke the csc authorize api (according to challeng flows enabled by QTSP).
