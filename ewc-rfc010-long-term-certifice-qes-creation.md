@@ -94,21 +94,25 @@ The architecture will be broken down in 6 main phases:
     participant RQES Provider
     end
     
-    opt Signing Service could offer a registration service based on <br/>an access credential (QESAC) that stores user credential to access RQeS provider
+    opt Signing Service could offer a registration service based on <br/>an access credential (QESAC) that stores User's credential to access RQeS provider
     Note over User, Signing Service: Phase 0 (optional): Signing Service User Registration
       activate Signing Service
       Signing Service->>User: PID Presentation (Binding) Request via OID4VP
       EUDI Wallet->>Signing Service: PID Presentation
       Note over Signing Service: At this point the user has been strongly authenticated.
       alt  oauth2-flow Credential Selection
-        Signing Service->>RQES Provider: POST credentials/authorize using clientID/secret
-        User->>RQES Provider: authentication using username/password
+        Signing Service->>RQES Provider: POST oauth2/authorize using clientID/secret
+        User->>RQES Provider: authentication using username/password or other methods available
+        RQES Provider->>Signing Service: provides a bearer token to SS
         Signing Service->>RQES Provider: POST credentials/list (to get credentialID)
       else explicit-flow Credential Selection
         User->>Signing Service: provides username/password
-        Signing Service->>RQES Provider: POST oauth2/authLogin using username/password
+        Signing Service->>RQES Provider: POST auth/login using username/password
         Signing Service->>RQES Provider: POST credentials/list (to get credentialID)
       end
+    alt if user has more than one certificate, he has to choose one
+      User->>Signing Service: user selects CredentialIDs
+    end
     Signing Service->>EUDI Wallet: QESAC Issuance and dissemination
     deactivate Signing Service
     end
@@ -117,13 +121,14 @@ The architecture will be broken down in 6 main phases:
     activate Service Provider
     User->>Service Provider: Service Access
     Service Provider->>Signing Service: Request Signing of Document
-    Signing Service->>User: user authentication
     deactivate Service Provider
     
     Note over Signing Service, RQES Provider: Phase 2: Service Authentication, Certificate Listing and Selection
+
+
     alt Signing Service collects authentication data from user and interacts with RQeS Provider (explicit flow)
-      User->>Signing Service: User provides PID+QESAC Presentation or userid/pwd for authentication  
-      Signing Service->>RQES Provider: oauth2/authLogin authentication using user credentials
+      User->>Signing Service: User provides PID + QESAC Presentation or userid/pwd for authentication  
+      Signing Service->>RQES Provider: auth/login authentication using user credentials
       User->>Signing Service: credentialID selection
     else Signing Service redirects user to RQeS provider oauth server (oauth2 flow)
       Signing Service->>RQES Provider: oauth2/authorize (scope=service)
@@ -136,19 +141,19 @@ The architecture will be broken down in 6 main phases:
       User->>Signing Service: credentialID selection 
     end
 
-    Note over User, RQES Provider: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization)
+    Note over User, RQES Provider: Phase 3: Signature Confirmation & Private Key Unlocking (Credential Authorization). Credential 
     Signing Service->>User: Signing Document & Signature Confirmation
-    
+
     alt oauth2-flow Credential Authz
       activate RQES Provider
       Note over Signing Service,RQES Provider: Signing service redirect towards RQES provider via oauth2 flow, sending SD hashes and URIs
-      Signing Service->>RQES Provider: POST /csc/v2/credentials/pushedAuthorize & /csc/v2/credentials/authorize
+      Signing Service->>RQES Provider: POST oauth2/pushedAuthorize & oauth2/authorize
       User->>RQES Provider: Credential Authorization (user can select pin/otp or VP with PID and self attested signature authorization in QTSP authz page)
       deactivate RQES Provider
     else explicit-flow Credential Authz
       activate Signing Service
       User->>Signing Service: Credential Authorization (for explicit flow)
-      Signing Service->>RQES Provider: POST getChallenge, credentials/authorize
+      Signing Service->>RQES Provider: POST /csc/v2/credentials/getChallenge, /csc/v2/credentials/authorize
       deactivate Signing Service
     end
     RQES Provider->>Signing Service: SAD
