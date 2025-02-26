@@ -214,7 +214,8 @@ QESAC is a "Qualified Electronic Signature Access Credential", and it is bound t
 During the onboarding process the user could be asked to authenticate to RQeS provider too, in order to allow the Signing Service to access to the list of certificates, and so to allow the user to choose one or more certificates.
 The Signing Service should bind the user’s PID to its corresponding and uniquely identified user (by utilizing the authentication data) and issue a QES Auth Credential (QESAC). The QESAC must contain a `token` claim, bound to the user's profile.
 
-For the issuance of the QESAC, the process detailed in [RFC-001 (Issue Verifiable Credential)](ewc-rfc001-issue-verifiable-credential.md) must be used.
+> [!NOTE]
+For the issuance of the QESAC, the process detailed in [RFC-001 (Issue Verifiable Credential)](ewc-rfc001-issue-verifiable-credential.md) must be used. In the sequence diagram, wallet engagement via user agent and a credential offer are simplified in a single interaction where the QeSAC is produced and issued to the wallet.
 
 ### QESAC Claims Example:
 
