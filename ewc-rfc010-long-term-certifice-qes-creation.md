@@ -183,21 +183,21 @@ QTSP is responsible for signature authorization, that could be done using the wa
   participant EUDI Wallet
   participant Signing Service
 
-        opt Signing Service could offer a registration service based on <br/>an access credential (QESAC) that stores User's credential to access RQeS provider (QTSPid + userid + credentialID)
+    opt Signing Service could offer a registration service based on <br/>an access credential (QESAC) that stores User's credential to access RQeS provider (QTSPid + userid + credentialID)
     Note over User, Signing Service: Phase 0 (optional): Signing Service User Registration
       activate Signing Service
       Signing Service->>User: PID Presentation (Binding) Request via OID4VP
       EUDI Wallet-->Signing Service: PID Presentation
       Note over Signing Service: At this point the user has been strongly authenticated.</BR> Whether a QeSAC would not be provided, a Signing Service account should be offered to the user instead
       alt  oauth2-flow Credential Selection
-        Signing Service->>RQES Provider: POST oauth2/authorize using clientID/secret
+        Signing Service->>RQES Provider: POST /csc/v2/oauth2/authorize using clientID/secret
         User->>RQES Provider: authentication using username/password or other methods available
-        RQES Provider-->Signing Service: bearer token to SS
+        RQES Provider-->Signing Service: bearer token provisioning to Signing Service
         Signing Service->>RQES Provider: POST credentials/list (to get credentialID)
       else explicit-flow Credential Selection
         User->>Signing Service: provides username/password (RQeSP account)
         Signing Service->>RQES Provider: POST auth/login using username/password
-        Signing Service->>RQES Provider: POST credentials/list (to get credentialID)
+        Signing Service->>RQES Provider: POST /csc/v2/credentials/list (to get credentialID)
       end
     alt if user has more than one certificate, he has to choose one
       User->>Signing Service: user selects CredentialIDs
@@ -205,7 +205,6 @@ QTSP is responsible for signature authorization, that could be done using the wa
     Signing Service->>EUDI Wallet: QESAC Issuance and dissemination
     deactivate Signing Service
     end
-  end
 
 ```
 This is an optional initial phase that foresees an onboarding process on Signing Service. 
