@@ -445,7 +445,7 @@ The signature authorization in CSC api v2 framework addresses the **transaction 
     alt oauth2-flow Credential Authz
       activate RQES Provider
       Note over Signing Service,RQES Provider: Signing service redirect towards RQES provider via oauth2 flow, sending SD hashes and URIs
-      Signing Service->>RQES Provider: POST /csc/v2/oauth2/pushed_authorize & oauth2/authorize
+      Signing Service->>RQES Provider: POST /csc/v2/oauth2/pushed_authorize (optional) & oauth2/authorize
       User->>RQES Provider: Credential Authorization (user selects according to available methods: pin/otp or VP with PID / self attested signature authorization (optional) in QTSP authz page)
       deactivate RQES Provider
     else explicit-flow Credential Authz
@@ -466,14 +466,45 @@ The Signing Service will need to parse the `auth.mode` object of the user's cred
 
 #### Authorization Code Flow (oauth2code):
 
-If the auth mode is set to follow the **OAuth2 Authorization Code Flow**, the Signing Service will need to redirect the user to the RQES Provider's `oauth2/authorize` and the `oauth2/token` endpoints, as defined by [RFC-6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1) and while following the procedure in the CSC API v2 Spec.
-The user is redirected to the RQeS Provider's page where all available authorization methods could be offered to the user.
+If the auth mode is set to follow the **OAuth2 Authorization Code Flow**, the Signing Service could initialize the authorization transaction invoking the `oauth2/pushed_authorize` api (optional). This is a POST call that allow the Signing Service to send all SD hashes that will be stored by the RQeS authorization server and kept linked to the authorization process. Signing Service shall redirect the user to the RQES Provider's `oauth2/authorize` (optionally sending hashes or the token received from the `pushed_authorize` and the `oauth2/token` endpoints, as defined by [RFC-6749](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1) and while following the procedure in the CSC API v2 Spec.
+The user, redirected to the RQeS Provider's page, will choose among all available authorization methods offered by the QTSP (some options are enlisted, and could differ among QTSPs):
 1. PIN + OTP triggering and collection process (according to enabled methods that are profiled for the credentialID)
-2. PID and selfAttested signature authorization credential (optional) presentation: PID is used to verify the coherence between the authorizer and the owner of the LT certificate, and the evidence of the authorization could be collected as a self attested credential, where the transaction data is filled with the hashes of the documents and their URIs. 
-> [!NOTE] The presentation definition must have a "constraint" where "subject_is_issuer": "required",
+2. PID and selfAttested signature authorization credential (optional) presentation: PID is used to verify the coherence between the authorizer and the owner of the LT certificate (a membership credential could be used instead), and the evidence of the authorization could be collected as a self attested credential, where the transaction data is filled with the hashes of the documents and their URIs. 
 
-The credentialID is included in the authorize call, and this would allow the inclusion of the short term certificate issuance in the signature process. in case this credentialID would be null.
+The credentialID is included in the authorize call, and this would allow the inclusion of the short term certificate issuance in the signature proces: in case this credentialID would be null.
 
+> [Note!]
+> 1. The `pushed_authorize` POST method allows a bigger amount of data than the `authorize` GET call.
+> 2. The self attested authorization credential is presentation definition that must have a "constraint" where "subject_is_issuer": "required" [5]
+
+**oauth2/pushed_authorize:** 
+
+Sample Pushed Authorization Request (Credential authorization with authorization details)
+
+```http request
+
+POST oauth2/pushed_authorize HTTP/1.1
+Host: www.domain.org
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic czZCaGRSa3F0Mzo3RmpmcDBaQnIxS3REUmJuZlZkbUl3
+response_type=code&
+client_id=<OAuth2_client_id>&
+redirect_uri=<OAuth2_redirect_uri>&
+code_challenge=K2-ltc83acc4h0c9w6ESC_rEMTJ3bww-uCHaoeK1t8U&
+code_challenge_method=S256&
+&state=12345678
+&authorization_details=%5B%7B%22type%22:%22credential%22,%22signatureQualifier%22:%22eu_eidas_qes%22,%22documentDigests%22:%5B%7B%22hash%22:%22sTOgwOm+474gFj0q0x1iSNspKqbcse4IeiqlDg/HWuI=%22,%22label%22:%22Example%20Contract%22%7D,%7B%22hash%22:%22HZQzZmMAIWekfGH0/ZKW1nsdt0xg3H6bZYztgsMTLw0=%22,%22label%22:%22Example%20Terms%20of%20Service%22%7D%5D,%22hashAlgorithmOID%22:%222.16.840.1.101.3.4.2.1%22%7D%5D
+```
+Sample Pushed Authorization Response
+
+HTTP/1.1 201 Created
+Cache-Control: no-cache, no-store
+Content-Type: application/json
+{
+   "request_uri": "urn:example:bwc4JK-ESC0w8acc191e-Y1LTC2",
+   "expires_in": 90
+}
+ 
 **oauth2/authorize:**
 
 ```http request
