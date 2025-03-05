@@ -534,6 +534,70 @@ client_id=<OAuth2_client_id>&
 client_secret=<OAuth2_client_secret>&
 redirect_uri=<OAuth2_redirect_uri>
 ```
+
+**signature authorization presentation definition:**
+According to [5] and [6] an example is provided: 
+
+```json
+
+{
+  "presentation_definition": {
+    "id": "sign-with-wallet",
+    "name": "Richiesta di firma per licensee@example.com",
+    "purpose": "please authorize signature providing your consent",
+
+    "transaction_data": [
+    {
+      "type": "qes_authorization",
+      "input_descriptor_ids": [ "PID" ],
+      "signatureQualifier": "eu_eidas_qes",
+      "credentialID":"$.credentialID",
+      "documentDigests": [
+       {
+        "hash": "sTOgwOm+474gFj0q0x1iSNspKqbcse4IeiqlDg/HWuI=",
+        "label": "Example Contract",
+        "hashAlgorithmOID": "2.16.840.1.101.3.4.2.1",
+        "documentLocations": [
+         {
+          "uri": "https://protected.rp.example/contract-01.pdf?token=HS9naJKWwp901hBcK348IUHiuH8374",
+          "method": {
+          "type": "public"
+          }
+         },
+        ],
+        "dtbsr": "VYDl4oTeJ5TmIPCXKdTX1MSWRLI9CKYcyMRz6xlaGg"
+       }
+      ]
+    }
+    ],
+    "input_descriptors": [
+     {
+       "id": "PID",
+       "format": {
+          "vc+sd-jwt": {}
+       },
+       "constraints": [{
+          <...>
+       }]
+     }]
+  }
+}
+
+``` 
+Below is a non-normative example of a Key Binding JWT when a digital credential of a credential format SD-JWT VC is returned in the VP Token (Key Binding JWT is signed using the user-controlled key that proofs possession of the digital credential):
+
+```json
+{
+   "nonce": "1234567890",
+   "aud": "https://verifier.example.org",
+   "iat": 1709573255,
+   "sd_hash": "UqAzPP5Xy1ip2II2c0E4x6U1yHL7_wI5x6VBoe4S1Sk",
+   "transaction_data": [ 
+       "db7031926f79ae41106bc8b50c3e290aa94ea730b8d4fa46a64bb678321272d0"           
+   ]
+}
+``` 
+
 #### Explicit Flow (explicit):
 
 In the case of `explicit` credential authorization, the Signing Service will need to parse the `expression` parameter of the respective credential and present the required authorization prompts to the User (for example, a PIN prompt).
@@ -648,3 +712,4 @@ The transfer of the document to the Service Provider is out of scope of this RFC
 3. Cloud Signature Consortium API Specification v2 (2023), Available at: [https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf](https://cloudsignatureconsortium.org/wp-content/uploads/2023/04/csc-api-v2.0.0.2.pdf)
 4. ETSI TS 119 432 V1.2.1 (2020), Available at: [https://www.etsi.org/deliver/etsi_ts/119400_119499/119432/01.02.01_60/ts_119432v010201p.pdf](https://www.etsi.org/deliver/etsi_ts/119400_119499/119432/01.02.01_60/ts_119432v010201p.pdf)
 5. OID4VP v24 [https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#name-new-parameters](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#name-new-parameters)
+6. Proposal for transaction data OID4VP [https://docs.google.com/document/d/1E_UlB3fh9zbWiPrzFThEnt69hYN60CWk/edit?tab=t.0](https://docs.google.com/document/d/1E_UlB3fh9zbWiPrzFThEnt69hYN60CWk/edit?tab=t.0)
