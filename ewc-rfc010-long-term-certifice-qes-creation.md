@@ -1,4 +1,4 @@
-# RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates
+# RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates - v1.1
 
 **Status: Approved**
 
@@ -20,7 +20,7 @@
 
 # Table of Contents
 
-- [RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates](#rfc-010-document-signing-on-a-remote-signing-service-provider-using-long-term-certificates)
+- [RFC-010 Document Signing on a Remote Signing Service Provider using Long-Term Certificates - v1.1](#rfc-010-document-signing-on-a-remote-signing-service-provider-using-long-term-certificates---v11)
 - [Table of Contents](#table-of-contents)
 - [1.0 Summary:](#10-summary)
 - [2.0 Motivation:](#20-motivation)
