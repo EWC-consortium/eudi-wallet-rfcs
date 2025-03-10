@@ -30,7 +30,7 @@ Published under a Creative Commons Attribution 4.0 International License
 ## **1.0 Summary**
 This specification defines the issuance process of a **Photo ID Verifiable Credential**. The credential is derived from a passport’s **Machine-Readable Zone (MRZ)** or **NFC chip**.
 
-The issuance process may include additional steps, such as biometric checks or verifying a credential that underwent a strong onboarding process, such as a **Personal ID (PID) credential**. The issuance follows the **OpenID4VCI** framework, ensuring interoperability with **EUDI Wallets**.
+The issuance process may include additional steps, such as biometric checks or verifying a credential issued with high level of assurance (LOA HIGH), such as a **Personal ID (PID) credential**. The issuance follows the **OpenID4VCI** framework, ensuring interoperability with **EUDI Wallets**.
 
 ---
 
