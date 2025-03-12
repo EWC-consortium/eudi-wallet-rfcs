@@ -4,6 +4,7 @@
 
 * Matteo Marangoni, SICPA, Spain
 * Xavi Vila, SICPA, Spain
+* Dimitroglo, Veaceslav, SICPA, Spain
 * Mr. Daniele Ribaudo, Intesi Group, Italy
 
 **Reviewers:**
