@@ -61,12 +61,14 @@ There are 2 possible scenarios for issuing a Photo ID attestation:
     - The QTSP requests the required data from the citizen at the moment of issuing the Photo ID attestation.
     - The QTSP performs the required identity verification before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
 
+### 2.1 Scenario 2: Issuance by a Qualified Trust Service Provider
+
 In this RFC we will be focusing on the **scenario 2)**, where the QTSP will:
 
 - Request the required electronic Machine-Readable Travel Document (eMRTD) data from the citizen at the moment of issuing the Photo ID attestation.
 - Authenticate the citizen's identity using EUDI Wallet and **PID**.
-- Perform an attestation-binding, using attributes from both documents like `name` and `date of birth`.
-
+- Verify that the eMRTD is issued by a trusted authority and has a valid expiration date.
+- Perform user binding verification by comparing attributes from the PID such as first and last name and date of birth, to those in the identity document. 
 
 ---
 
@@ -90,9 +92,14 @@ In the scope of this RFC, the following conditions should be met before issuing 
 ---
 
 ## **4.0 Issuance Flow**
-The issuance process follows **OpenID4VCI** Dynamic Credential Request (draft 13), ensuring a standardized method for **credential issuance**.
 
-### High-level flow diagram:
+The issuance process follows **OpenID4VCI** Authorisation Code flow as described in the [EWC RFC001: Issue Verifiable Credential - v2.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md), and extends it by implementing Dynamic Credential Request (OpenID4VCI draft 13), ensuring a standardized method for **credential issuance**.
+
+It follows the OpenID4VC High Assurance Interop profile, where it is recommended that the Credential Issuer and the Wallet MUST support the authorization code flow. So no pre-authorized code flow is used.
+
+### High-level flow diagram.
+
+This diagram provides a high-level overview of the credential issuance process, highlighting the main steps involved.
 
 ```mermaid
 sequenceDiagram
@@ -128,7 +135,9 @@ sequenceDiagram
     IS->>IS: Evict User Data
 ```
 
-### Detailed flow diagram:
+### Detailed flow diagram
+
+This diagram provides a more detailed breakdown of the credential issuance process, highlighting the individual steps and interactions involved.
 
 ```mermaid
 sequenceDiagram
@@ -212,18 +221,37 @@ Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Is
 ### 4.2.2. Credential Issuance Request (OpenID4VCI)
 
 The issuance process starts when the user (UA) scans an OpenID4VCI credential offer QR or clicks on a deeplink.
-**Wallet** will invoke **UA (User Agent)** to send Authorisation Request to the **Authorization Server (QTSP ISSUER)**
+**Wallet** will invoke **UA (User Agent)** to send Authorisation Request to the **Authorization Server (QTSP ISSUER)**.
+
+```json
+//TODO add credential offer example
+```
 
 After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will start the dynamic credential request to obtain the required data ( PID and Passport) to obtain PhotoID attestation.
-Dynamic credential request consists of two steps.
+
+```json
+//TODO add Authorisation Request example
+```
+
+Dynamic credential request will consist of two steps, described in the following sections.
 
 ### 4.2.3. Dynamic Credential Request - Step 1: PID Validation
 
-First steps will use OPENID4VP to request and verify the user’s PID.
+First steps will use OPENID4VP – as described in [EWC RFC002: Present Verifiable Credentials - v1.0
+](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md) to request and verify the user’s PID.
+
+```json
+//TODO add Authorisation Request example with redirect uri
+```
 
 ### 4.2.4. Dynamic Credential Request - Step 2: Passport Validation
 
 After PID validation, the second step of the **Dynamic Credential Request** triggers an OAuth2-like flow to obtain Passport Data.
+
+```json
+//TODO add redirect request example
+```
+
 The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user will grant permission to share Passport data with the issuer.
 
 ### 4.2.5. Credential Issuance Completion
@@ -231,14 +259,10 @@ The user will be redirected to a Passport Reading Service application and prompt
 Issuer performs an attribute-based verification to ensure PID data corresponds and matches a subset of the Passport’s claims. 
 Once identity is verified, the **attestation is issued and sealed**.
 
----
-
 ## **5.0 Electronic Attestation Type**
 The attestation is issued in one of the follows:
 - **SD-JWT format**, as defined in **[`ds013-photo-id.json`](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds013-photo-id.json)**.
 - **mDoc format**, as specified in **ISO/IEC TS 23220-4 Annex C (2024-08-14)**.
-
----
 
 ## **6.0 References**
 1. **EUDI Wallet JSON Schema**: [`ds013-photo-id.json`](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds013-photo-id.json)
@@ -246,4 +270,3 @@ The attestation is issued in one of the follows:
 3. **ISO/IEC 18013-5**: Specifies **mobile driving licenses and digital identity display properties**.
 4. **OpenID4VCI**: [Draft Specification](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html).
 
----
