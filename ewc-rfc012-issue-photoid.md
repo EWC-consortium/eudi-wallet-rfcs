@@ -89,7 +89,7 @@ In the scope of this RFC, the following conditions must be met before issuing a 
 ---
 
 ## **4.0 Issuance Flow**
-The issuance process follows **OpenID4VCI**, ensuring a standardized method for **credential issuance**.
+The issuance process follows **OpenID4VCI** Dynamic Credential Request, ensuring a standardized method for **credential issuance**.
 
 ```mermaid
 sequenceDiagram
@@ -150,10 +150,10 @@ sequenceDiagram
 
 | Actor | Description |
 |--------|------------|
-| **UA (User Agent)** | The user's browser or mobile app used to interact with different entities. |
+| **UA (User Agent)** | The user's browser used to interact with different entities. |
 | **W (EUDI Wallet)** | The user's digital wallet storing credentials. |
-| **IS (PhotoID Issuer - QTSP)** | A Qualified Trust Service Provider (QTSP) issuing the verifiable credential. |
-| **QS (Qualified Seal - QTSP)** | The entity responsible for digitally sealing/verifying the issued credential. |
+| **IS (PhotoID Issuer - QTSP)** | A Qualified Trust Service Provider (QTSP) issuing the attestations. |
+| **QS (Qualified Seal - QTSP)** | The QTSP responsible for digitally sealing/verifying the issued attestations. |
 | **PS (Passport Scanner App)** | The app used to scan the user's passport and extract relevant data. |
 | **ES (External Source - Passport Scanner BE)** | A backend service for processing and validating scanned passport data. |
 
@@ -162,91 +162,43 @@ sequenceDiagram
 ## 4.2 Flow Details
 
 ### 4.2.1. Setup Phase
-Before any credentials are issued, the **EUDI Wallet (W)** and the **PhotoID Issuer (IS)** establish a connection.
+Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Issuer (IS)** establish a connection.
 
 1. **Wallet (W) discovers Issuer (IS)**
    - **W → IS:** Discover Request
    - **IS → W:** Discover Response
 
+   TBD
+
 ---
 
 ### 4.2.2. Credential Issuance Request (OpenID4VCI)
-The issuance process begins with the **user (UA)** initiating the process.
 
-1. **Wallet prompts the user to interact with the Issuer**
-   - **W → UA:** Open (redirects user to the Issuer)
+The issuance process begins with the **user (UA)** initiating the process by scanning an OPENID4VCI credential offer QR or clicking on a deeplink.
+**Wallet** will invoke **UA (User Agent)** to send Authorisation Request to the **Authorization Server (QTSP ISSUER)**
 
-2. **User Authorization Request**
-   - **UA → IS:** Authorization Request
+After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will start the dynamic credential request to otain the required data ( PID and Passport) to obtain PhotoID attestation.
+Dynamic
 
 ---
 
 ### 4.2.3. Dynamic Credential Request - Step 1: PID Validation
-The **Photo ID (PID) validation** is the first step in verifying the user’s identity.
 
-1. **IS Requests PID Presentation Authorization**
-   - **IS → UA:** PID Presentation Authorization Request
-
-2. **User grants permission via Wallet**
-   - **UA → W:** Open
-   - **W → IS:** PID Presentation Authorization Response
-
-3. **Issuer validates the PID**
-   - **IS → W:** Direct Post Response
-   - **W → UA:** Open (redirects user)
-   - **UA → IS:** Follow Redirect
-   - **IS:** Internally checks if PID is valid
+First stems will be using OPENID4VP to request and verify PID of the user.
 
 ---
 
 ### 4.2.4. Dynamic Credential Request - Step 2: Passport Validation
-After PID validation, the user’s passport is scanned and verified.
 
-1. **IS Requests User to Scan Passport**
-   - **IS → UA:** Passport Scan Request (with `redirect_uri`)
-
-2. **User Opens Passport Scanner App**
-   - **UA → PS:** Open
-
-3. **Passport is Scanned**
-   - **PS:** Scans the passport
-   - **PS → ES:** Sends scanned data for verification
-
-4. **Passport Scanner App Redirects with an Authorization Code**
-   - **PS → UA:** Open `redirect_uri` (with `auth_code`)
-
-5. **User Follows Redirect to Issuer**
-   - **UA → IS:** Follow Redirect (with `auth_code`)
-
-6. **Issuer Retrieves Scanned Data**
-   - **IS → ES:** Fetch Scanned Data (with `auth_code`)
-   - **IS:** Stores scanned data temporarily
-   - **IS:** Matches data with PID Presentation
-
-7. **If validation is successful, the issuer authorizes credential issuance**
-   - **IS → UA:** Authorization Response
+After PID validation, the second step of Dynamic Credential Request will trigger an OUTH2 like flow to obtain Passport Data.
+The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alogside additional biometric checks to unsure holder of phisical document is managing the application. Finally the user will grant permission to share Passport data with the issuer.
 
 ---
 
-### 5. Credential Issuance Completion
+### 4.2.5. Credential Issuance Completion
+
+Issuer performs an attricutes based verification to ensure PID data correspond and match a subset of Passport's claims.  
 Once identity is verified, the **credential is issued and sealed**.
-
-1. **Wallet Finalizes the Issuance**
-   - **UA → W:** Open
-
-2. **Wallet Requests a Token**
-   - **W → IS:** Token Request
-   - **IS → W:** Token Response
-
-3. **Wallet Requests Credential**
-   - **W → IS:** Credential Request
-
-4. **Issuer Seals the Credential**
-   - **IS → QS:** Seal Attestation
-   - **QS → IS:** Attestation Sealed
-
-5. **Credential is Issued to Wallet**
-   - **IS → W:** Credential Response
 
 ---
 
