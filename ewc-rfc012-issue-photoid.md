@@ -85,6 +85,63 @@ In the scope of this RFC, the following conditions must be met before issuing a 
 ## **4.0 Issuance Flow**
 The issuance process follows **OpenID4VCI**, ensuring a standardized method for **credential issuance**.
 
+```mermaid
+sequenceDiagram
+    participant UA as USER's User Agent
+    participant W as EUDI Wallet
+    participant IS as PhotoId Issuer(QTSP)
+    participant QS as Qualified Seal (QTSP)
+    participant PS as Passport Scanner App
+    participant ES as Passport Scanner BE <br> (External Source)
+    Note over W,IS: Setup
+
+    W->>IS: Discover Request
+    IS-->>W: Discover Response
+
+   
+    Note over W,IS: Issuance request (OpenID4VCI)
+    W->>UA: Open
+    UA->>+IS: Authorisation Request
+    
+    Note over W,IS: Dynamic credential request: 1) PID
+    IS->>UA: PID Presentation Authorisation Request 
+    UA->>W: Open
+    W->>IS: PID Presentation Authorisation Response
+    IS-->>W: Direct Post Response
+    W->>UA: Open
+    UA->>IS: Follow Redirect
+    IS->>IS: Check if PID is valid
+    
+    Note over PS,IS: Dynamic credential request: 2) Passport
+    IS->>UA: Passport scan request (with redirect_uri)
+    UA->>+PS: Open
+    PS->>PS: Scan passport
+    PS->>ES: Scanned Data
+    PS->>-UA: Open redirect_uri (with auth_code)
+    UA->>IS: Follow Redirect (with auth_code)
+    IS->>ES: Get Scanned Data (with auth_code)
+    IS->>IS: Store data temporarily
+    IS->>IS: Match data with PID presentation
+
+
+    IS-->>-UA: Authorisation Response
+    UA->>W: Open
+
+    Note over W,IS: Complete Issuance
+
+    W->>+IS: Token Request
+    IS-->>-W: Token Response
+   
+    W->>+IS: Credential Request
+    IS->>+QS: Seal Attestation
+    QS-->>-IS: Attestation sealed
+    IS-->>-W: Credential Response
+
+    IS->>IS: Evict User Data
+```
+
+
+
 1. **Credential Offer:**  
    - The issuer sends a credential offer to the wallet.
    
