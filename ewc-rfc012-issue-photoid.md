@@ -72,25 +72,25 @@ In this RFC we will be focusing on the **scenario 2)**, where the QTSP will:
 
 ## **3.0 Pre-requisites**
 
-In the scope of this RFC, the following conditions must be met before issuing a **Photo ID Electronic Attestation of Attributes (EAA)**:
+In the scope of this RFC, the following conditions should be met before issuing a **Photo ID Electronic Attestation of Attributes (EAA)**:
 
 1. **Personal ID Verification**  
-   - The user must hold a valid **Personal ID (PID)** issued by a trusted authority.
+   - The user MUST hold a valid **Personal ID (PID)** issued by a trusted authority on an EUDI Wallet.
    
 2. **Passport Scan**  
-   - The QTSP must be registered with the Passport reader application.
-   - The user must scan the **MRZ** or **NFC chip** of their passport.
+   - The QTSP MUST be registered with the Passport reader application (client credentials or any other method).
+   - The user MUST hold a valid **Passport** issued by a trusted authority on an eMRTD (Biometric passport).
 
 3. **Liveness Check (Optional)**  
-   - The system may require a **selfie** or a **short video** to detect liveness and compare it against the document portrait.
+   - The system MAY require a **selfie** or a **short video** to detect liveness and compare it against the document portrait.
 
 4. **EUDI Wallet Support**  
-   - The wallet requesting the credential must support **OpenID4VCI** and **ISO/IEC 18013-5** display properties.
+   - The wallet requesting the credential MUST support **OpenID4VCI** and **ISO/IEC 18013-5** display properties.
 
 ---
 
 ## **4.0 Issuance Flow**
-The issuance process follows **OpenID4VCI** Dynamic Credential Request, ensuring a standardized method for **credential issuance**.
+The issuance process follows **OpenID4VCI** Dynamic Credential Request (draft 13), ensuring a standardized method for **credential issuance**.
 
 ### High-level flow diagram:
 
@@ -209,8 +209,6 @@ Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Is
 
    The Wallet and Issuer exchange metadata to establish connection endpoints and cryptographic parameters necessary for secure communication. This typically includes OpenID discovery mechanisms.
 
----
-
 ### 4.2.2. Credential Issuance Request (OpenID4VCI)
 
 The issuance process starts when the user (UA) scans an OpenID4VCI credential offer QR or clicks on a deeplink.
@@ -219,30 +217,24 @@ The issuance process starts when the user (UA) scans an OpenID4VCI credential of
 After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will start the dynamic credential request to obtain the required data ( PID and Passport) to obtain PhotoID attestation.
 Dynamic credential request consists of two steps.
 
----
-
 ### 4.2.3. Dynamic Credential Request - Step 1: PID Validation
 
 First steps will use OPENID4VP to request and verify the user’s PID.
 
----
-
 ### 4.2.4. Dynamic Credential Request - Step 2: Passport Validation
 
-After PID validation, the second step of the Dynamic Credential Request triggers an OAuth2-like flow to obtain Passport Data.
+After PID validation, the second step of the **Dynamic Credential Request** triggers an OAuth2-like flow to obtain Passport Data.
 The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user will grant permission to share Passport data with the issuer.
-
----
 
 ### 4.2.5. Credential Issuance Completion
 
 Issuer performs an attribute-based verification to ensure PID data corresponds and matches a subset of the Passport’s claims. 
-Once identity is verified, the **credential is issued and sealed**.
+Once identity is verified, the **attestation is issued and sealed**.
 
 ---
 
-## **5.0 Verifiable Credential Type**
-The credential follows:
+## **5.0 Electronic Attestation Type**
+The attestation is issued in one of the follows:
 - **SD-JWT format**, as defined in **[`ds013-photo-id.json`](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds013-photo-id.json)**.
 - **mDoc format**, as specified in **ISO/IEC TS 23220-4 Annex C (2024-08-14)**.
 
