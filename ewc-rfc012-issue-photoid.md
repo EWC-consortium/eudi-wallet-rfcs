@@ -75,9 +75,10 @@ In this RFC we will be focusing on the **scenario 2)**, where the QTSP will:
 In the scope of this RFC, the following conditions must be met before issuing a **Photo ID Electronic Attestation of Attributes (EAA)**:
 
 1. **Personal ID Verification**  
-   - The user must present a valid **Personal ID (PID)** issued by a trusted authority.
+   - The user must hold a valid **Personal ID (PID)** issued by a trusted authority.
    
 2. **Passport Scan**  
+   - The QTSP must be registered with the Passport reader application.
    - The user must scan the **MRZ** or **NFC chip** of their passport.
 
 3. **Liveness Check (Optional)**  
@@ -90,6 +91,44 @@ In the scope of this RFC, the following conditions must be met before issuing a 
 
 ## **4.0 Issuance Flow**
 The issuance process follows **OpenID4VCI** Dynamic Credential Request, ensuring a standardized method for **credential issuance**.
+
+### High-level flow diagram:
+
+```mermaid
+sequenceDiagram
+
+    participant W as EUDI Wallet
+    participant IS as PhotoId Issuer(QTSP)
+    participant PS as Passport Scanner App
+    
+    Note over W,IS: Setup
+
+    W->>IS: Discover Request
+    IS-->>W: Discover Response
+
+   
+    Note over W,IS: Issuance request (OpenID4VCI)
+    W->>+IS: Auth Request 
+    
+    Note over W,IS: Dynamic credential request: 1) PID
+    IS->>+W: Request PID 
+    W-->>-IS: Present PID
+    IS-->>IS: Check if PID is valid
+    
+    Note over PS,IS: Dynamic credential request: 2) Passport
+    IS->>+PS: Passport scan 
+    PS-->>-IS: Passport data
+    IS-->>IS: Match data with PID presentation
+    IS-->>-W: Auth Response 
+
+    Note over W,IS: Complete Issuance  
+    W->>+IS: Credential Request
+    IS-->>-W: Credential Response
+
+    IS->>IS: Evict User Data
+```
+
+### Detailed flow diagram:
 
 ```mermaid
 sequenceDiagram
