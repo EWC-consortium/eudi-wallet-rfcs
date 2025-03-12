@@ -36,7 +36,7 @@ Published under a Creative Commons Attribution 4.0 International License
 ## **1.0 Summary**
 This specification defines the implementation of the "Photo ID profile" defined in Annex C of ISO/IEC TS 23220-4, in mdoc and SD-JWT. The attestation issued is derived from an **electronic Machine-Readable Travel Document (eMRTD)** by a Qualified Trust Service Provider (QTP).
 
-The issuance process includes eID verification of an attestation issued with high level of assurance (LoA High), such as a **Personal ID (PID) credential** and may include additional steps, such as biometric checks. The issuance follows the **OpenID4VC** framework, ensuring interoperability with **EUDI Wallets**.
+The issuance process includes verifying an eID attestation issued with a high Level of Assurance (LoA High), such as a **Personal ID (PID) credential** and may include additional steps, such as biometric checks. The issuance follows the **OpenID4VC** framework, ensuring interoperability with **EUDI Wallets**.
 
 ### **Key Benefits:**
 
@@ -58,12 +58,12 @@ There are 2 possible scenarios for issuing a Photo ID attestation:
     - The **Issuance Authority** performs the required identity verification before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
 
 2. **Issuance by a Qualified Trust Service Provider**  
-    - The QTSP requests the required data to the citizen at the moment of issuing the Photo ID attestation.
+    - The QTSP requests the required data from the citizen at the moment of issuing the Photo ID attestation.
     - The QTSP performs the required identity verification before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
 
 In this RFC we will be focusing on the **scenario 2)**, where the QTSP will:
 
-- Request the required the electronic Machine-Readable Travel Document (eMRTD) data to the citizen at the moment of issuing the Photo ID attestation.
+- Request the required electronic Machine-Readable Travel Document (eMRTD) data from the citizen at the moment of issuing the Photo ID attestation.
 - Authenticate the citizen's identity using EUDI Wallet and **PID**.
 - Perform an attestation-binding, using attributes from both documents like `name` and `date of birth`.
 
@@ -72,7 +72,7 @@ In this RFC we will be focusing on the **scenario 2)**, where the QTSP will:
 
 ## **3.0 Pre-requisites**
 
-In the scope of this RFC, the following conditions must be met before issuing a **Photo ID EAA**:
+In the scope of this RFC, the following conditions must be met before issuing a **Photo ID Electronic Attestation of Attributes (EAA)**:
 
 1. **Personal ID Verification**  
    - The user must present a valid **Personal ID (PID)** issued by a trusted authority.
@@ -168,36 +168,36 @@ Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Is
    - **W → IS:** Discover Request
    - **IS → W:** Discover Response
 
-   TBD
+   The Wallet and Issuer exchange metadata to establish connection endpoints and cryptographic parameters necessary for secure communication. This typically includes OpenID discovery mechanisms.
 
 ---
 
 ### 4.2.2. Credential Issuance Request (OpenID4VCI)
 
-The issuance process begins with the **user (UA)** initiating the process by scanning an OPENID4VCI credential offer QR or clicking on a deeplink.
+The issuance process starts when the user (UA) scans an OpenID4VCI credential offer QR or clicks on a deeplink.
 **Wallet** will invoke **UA (User Agent)** to send Authorisation Request to the **Authorization Server (QTSP ISSUER)**
 
-After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will start the dynamic credential request to otain the required data ( PID and Passport) to obtain PhotoID attestation.
-Dynamic
+After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will start the dynamic credential request to obtain the required data ( PID and Passport) to obtain PhotoID attestation.
+Dynamic credential request consists of two steps.
 
 ---
 
 ### 4.2.3. Dynamic Credential Request - Step 1: PID Validation
 
-First stems will be using OPENID4VP to request and verify PID of the user.
+First steps will use OPENID4VP to request and verify the user’s PID.
 
 ---
 
 ### 4.2.4. Dynamic Credential Request - Step 2: Passport Validation
 
-After PID validation, the second step of Dynamic Credential Request will trigger an OUTH2 like flow to obtain Passport Data.
-The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alogside additional biometric checks to unsure holder of phisical document is managing the application. Finally the user will grant permission to share Passport data with the issuer.
+After PID validation, the second step of the Dynamic Credential Request triggers an OAuth2-like flow to obtain Passport Data.
+The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user will grant permission to share Passport data with the issuer.
 
 ---
 
 ### 4.2.5. Credential Issuance Completion
 
-Issuer performs an attricutes based verification to ensure PID data correspond and match a subset of Passport's claims.  
+Issuer performs an attribute-based verification to ensure PID data corresponds and matches a subset of the Passport’s claims. 
 Once identity is verified, the **credential is issued and sealed**.
 
 ---
