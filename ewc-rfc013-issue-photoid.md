@@ -1,4 +1,4 @@
-# EWC RFC012: Issuing Photo ID Verifiable Credential - v1.0
+# EWC RFC013: Issuing Photo ID Verifiable Credential - v1.0
 
 **Authors:**
 
