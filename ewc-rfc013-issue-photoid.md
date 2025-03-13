@@ -153,28 +153,36 @@ sequenceDiagram
     W->>IS: Discover Request
     IS-->>W: Discover Response
 
-   
+
     Note over W,IS: Issuance request (OpenID4VCI)
     W->>UA: Open
     UA->>+IS: Authorisation Request
-    
+
     Note over W,IS: Dynamic credential request: 1) PID
-    IS->>UA: PID Presentation Authorisation Request 
+    IS->>UA: PID Presentation Authorisation Request
     UA->>W: Open
     W->>IS: PID Presentation Authorisation Response
     IS-->>W: Direct Post Response
     W->>UA: Open
     UA->>IS: Follow Redirect
     IS->>IS: Check if PID is valid
-    
-    Note over PS,IS: Dynamic credential request: 2) Passport
-    IS->>UA: Passport scan request (with redirect_uri)
-    UA->>+PS: Open
+
+    Note over UA,ES: Scan Passport And get claims for PhotoId:
+    IS->>UA: Open
+    UA->>+ES: Authorization Request
+    ES->>UA: Passport Scan Request
+    UA->>PS: Open
+
     PS->>PS: Scan passport
     PS->>ES: Scanned Data
-    PS->>-UA: Open redirect_uri (with auth_code)
-    UA->>IS: Follow Redirect (with auth_code)
-    IS->>ES: Get Scanned Data (with auth_code)
+    PS->>UA: Open
+    UA->>ES: Follow Redirect
+    ES-->>UA: Authorization Response
+    UA->>IS: Open
+    IS->>ES: Token Request
+    ES-->>IS: Opaque Token Response
+    IS->>ES: Get Claims from userinfo via Access Token
+    ES-->>-IS: Claims Response
     IS->>IS: Store data temporarily
     IS->>IS: Match data with PID presentation
 
@@ -182,11 +190,11 @@ sequenceDiagram
     IS-->>-UA: Authorisation Response
     UA->>W: Open
 
-    Note over W,IS: Complete Issuance
+    Note over W,QS: Complete Issuance
 
     W->>+IS: Token Request
     IS-->>-W: Token Response
-   
+
     W->>+IS: Credential Request
     IS->>+QS: Seal Attestation
     QS-->>-IS: Attestation sealed
