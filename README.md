@@ -54,12 +54,12 @@ These are the approved RFCs identified to be specified towards wallet providers,
 
 Following are the candidates' RFCs taken up. Note that the title, etc, may change.
 
-| **RFC #** | **RFC Title**                                                                                          |
-| --------- | ------------------------------------------------------------------------------------------------------ |
-| RFC-006   | [Organisational Wallet Unit Attestation - v0.9](/ewc-rfc006-organisational-wallet-unit-attestation.md) |
-| RFC-009   | Payment Transaction Initiation                                                                         |
-| RFC-011   | Payments with verifiable receipts                                                                      |
-| RFC-012   | Trust Mechanism                                                                                        |
+| **RFC #** | **RFC Title**                                                                                                 |
+| --------- | ------------------------------------------------------------------------------------------------------------- |
+| RFC-006   | [Organisational Wallet Unit Attestation - v0.9](/ewc-rfc006-organisational-wallet-unit-attestation.md)        |
+| RFC-009   | Payment Transaction Initiation                                                                                |
+| RFC-011   | Payments with verifiable receipts                                                                             |
+| RFC-012   | [Trust Mechanism](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc012-trust-mechanism.md) |
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC 2.2)
 
