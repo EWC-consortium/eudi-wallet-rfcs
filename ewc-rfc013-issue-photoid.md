@@ -35,7 +35,7 @@ Published under a Creative Commons Attribution 4.0 International License
 ---
 
 ## **1.0 Summary**
-This specification defines the implementation of the "Photo ID profile" defined in Annex C of ISO/IEC TS 23220-4, in mdoc and SD-JWT. The attestation issued is derived from an **electronic Machine-Readable Travel Document (eMRTD)** by a Qualified Trust Service Provider (QTP).
+This specification defines the implementation of the "Photo ID profile" defined in Annex C of ISO/IEC TS 23220-4, in mdoc and SD-JWT. The attestation issued is derived from an **electronic Machine-Readable Travel Document (eMRTD)** by a Qualified Trust Service Provider (QTSP).
 
 The issuance process includes verifying an eID attestation issued with a high Level of Assurance (LoA High), such as a **Personal ID (PID) credential** and may include additional steps, such as biometric checks. The issuance follows the **OpenID4VC** framework, ensuring interoperability with **EUDI Wallets**.
 
@@ -43,7 +43,7 @@ The issuance process includes verifying an eID attestation issued with a high Le
 
 - **Enhancing digital identity verification** while maintaining strong security and privacy guarantees.
 - **Facilitating travel and remote identity proofing**, reducing the need for physical document checks.
-- **Complying with international standards** such as **SD-JWT**, and **mDoc (ISO/IEC TS 23220-4 Annex C, 2024-08-14)**.
+- **Complying with international standards** such as **SD-JWT**, and **mDoc (ISO/IEC TS 23220)**.
 - **Enabling selective disclosure**, allowing users to share only necessary attributes (e.g., verifying age without revealing full birthdate), enhancing privacy and data minimization.
 
 ---
@@ -52,7 +52,7 @@ The issuance process includes verifying an eID attestation issued with a high Le
 
 A **Photo ID** is a document type used for identity documents that perform the function of a photo-based eID. In practical terms, a **Photo ID attestation** provides a **digital representation of a passport** that can be used for **identity verification** in various online and offline use cases where the biometric verification of the photo is required.
 
-There are 2 possible scenarios for issuing a Photo ID attestation:
+We consider 2 possible scenarios for issuing a Photo ID attestation:
 
 1. **Direct issuance by Passport issuing authority**
     - The **Issuance Authority** has all the necessary data required to issue a valid photo ID credential.
@@ -60,7 +60,7 @@ There are 2 possible scenarios for issuing a Photo ID attestation:
 
 2. **Issuance by a Qualified Trust Service Provider**  
     - The QTSP requests the required data from the citizen at the moment of issuing the Photo ID attestation.
-    - The QTSP performs the required identity verification before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
+    - The QTSP performs the required identity verification before issuing the attestation to the citizen (this might include remote or physical identity proofing, authentication using PID or in-person verification).
 
 ### 2.1 Scenario 2: Issuance by a Qualified Trust Service Provider
 
