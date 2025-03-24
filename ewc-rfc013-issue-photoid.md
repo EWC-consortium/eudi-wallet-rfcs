@@ -48,49 +48,78 @@ The issuance process includes verifying an eID attestation issued with a high Le
 
 ---
 
-## **2.0 Motivation**
+## 2 Motivation
 
-A **Photo ID** is a document type used for identity documents that perform the function of a photo-based eID. In practical terms, a **Photo ID attestation** provides a **digital representation of a passport** that can be used for **identity verification** in various online and offline use cases where the biometric verification of the photo is required.
+### 2.1 The need of a photo ID
+
+The need for a photo ID arises from the limitations of the current Personal ID (PID) issued within the European Digital Identity Wallet (EUDI Wallet) ecosystem. Specifically, PIDs may not always include a photo, which is a required attribute in certain use cases where biometric verification is necessary or a physical presence of the individual is required. Furthermore, some use cases, such as traveling, require specific documentation (e.g., passport) that includes a document number, which is not included in the PID schema. Therefore, a separate photo ID attestation is necessary to fulfill these requirements.
+
+### 2.2 ISO/IEC TS 23220 and Photo ID Issuance Process
+
+The ISO/IEC TS 23220 series provides a comprehensive framework for identity management via mobile devices. Specifically, in ISO/IEC TS 23220-2, the standard outlines the data model and encoding rules required for generic eID systems, which forms the foundation for our Photo ID implementation.
+
+Section 5 of ISO/IEC TS 23220-2 describes the identity data collection and confirmation process, highlighting how "ID documents are issued by binding an applicant with a real-life identity." The standard emphasizes that "an issuer collects evidence to verify the attributes provided by the applicant, and this process is called identity proofing." This corresponds directly to the identity verification procedures an issuer will perform when issuing Photo ID attestations.
+
+![identity-data-collection-and-issuance](images/identity-data-collection-and-issuance.png)
+
+ISO/IEC TS 23220-2 Figure 1 illustrates the issuing process of an eID document, showing how an applicant provides an application form and evidence (such as ID cards issued by an Authority) to the issuer. The issuer then collects other evidence if needed, proves the applicant's identity, binds that identity with the holder, and confirms the applicant through photo ID or by person of authority.
+
+Furthermore, Section 6 of ISO/IEC TS 23220-2 defines the data model specification that we will implement for our Photo ID, including the meta attributes for person entity (Section 6.3.1) which specifies the data elements that express attributes for describing a natural person, including crucial elements like family name, given names, date of birth, portrait, and biometric templates.
+
+### 2.3 ETSI TS 119 461 and Identity Proofing Requirements
+
+The identity proofing and verification procedures mentioned above are further elaborated and standardized in ETSI TS 119 461, which specifies "policy and security requirements for trust service components providing identity proofing of trust service subjects." This standard is particularly relevant to our implementation as it defines the requirements for identity proofing at two levels: Baseline and Extended Level of Identity Proofing (LoIP).
+
+Section 9 of ETSI TS 119 461 defines various use cases for identity proofing, including:
+
+* Physical presence (Section 9.2.1)
+* Attended remote identity proofing using identity documents (Section 9.2.2)
+* Unattended remote identity proofing using identity documents (Section 9.2.3)
+* Identity proofing using eID means (Section 9.2.4)
+* Identity proofing using digital signature with certificate (Section 9.2.5)
+
+In our implementation, the passport validation step described in Section 4.2.4 of this RFC will follow the unattended remote identity proofing requirements specified in Section 9.2.3 of ETSI TS 119 461. This includes requirements related to automated validation of digital identity documents (VAL-8.3.2 requirements) and binding to applicant by automated face biometrics (BIN-8.4.3 requirements).
+
+By adhering to both the ISO/IEC TS 23220 data model and the ETSI TS 119 461 identity proofing requirements, our Photo ID issuance process ensures a high level of interoperability within the European identity ecosystem.
+
+## 3.0 Scope
 
 We consider 2 possible scenarios for issuing a Photo ID attestation:
 
-1. **Direct issuance by Passport issuing authority**
-    - The **Issuance Authority** has all the necessary data required to issue a valid photo ID credential.
-    - The **Issuance Authority** performs the required identity verification before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
+1. The **Issuance Authority** has all the necessary data required to issue a valid photo ID credential. The **Issuance Authority** performs the required identity proofing before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
 
-2. **Issuance by a Qualified Trust Service Provider**  
-    - The QTSP requests the required data from the citizen at the moment of issuing the Photo ID attestation.
-    - The QTSP performs the required identity verification before issuing the attestation to the citizen (this might include remote or physical identity proofing, authentication using PID or in-person verification).
+2. **Issuer requests the required data from the citizen at the moment of issuing the photo ID attestation. The Issuer performs the required identity verification before issuing the attestation to the citizen.
 
-### 2.1 Scenario 2: Issuance by a Qualified Trust Service Provider
+In this RFC we will be focusing on the **scenario 2).
 
-In this RFC we will be focusing on the **scenario 2)**, where the QTSP will:
+### 3.1 level of assurance of the Photo ID attestation
 
-- Request the required electronic Machine-Readable Travel Document (eMRTD) data from the citizen at the moment of issuing the Photo ID attestation.
-- Authenticate the citizen's identity using EUDI Wallet and **PID**.
-- Verify that the eMRTD is issued by a trusted authority and has a valid expiration date.
-- Perform user binding verification by comparing attributes from the PID such as first and last name and date of birth, to those in the identity document. 
+The level of assurance for identity proofing is a critical aspect of the Photo ID attestation issuance process. ETSI TS 119 461 defines two levels of assurance for identity proofing: Baseline and Extended. Depending on the usage of the Photo ID attestation, either of these levels could be considered.
 
----
+The Baseline level of assurance is sufficient for use cases where the risk of identity fraud is low, such as online services that require a basic level of identity verification. In contrast, the Extended level of assurance could be required for use cases where the risk of identity fraud is higher, such as online services that require a high level of identity verification, or where the user is requesting access to sensitive information.
+
 
 ## **3.0 Pre-requisites**
 
-In the scope of this RFC, the following conditions should be met before issuing a **Photo ID Electronic Attestation of Attributes (EAA)**:
+### Level of Assurance (LoA) Substantial
 
-1. **Personal ID Verification**  
-   - The user MUST hold a valid **Personal ID (PID)** issued by a trusted authority on an EUDI Wallet.
-   
-2. **Passport Scan**  
-   - The QTSP MUST be registered with the Passport reader application (client credentials or any other method).
-   - The user MUST hold a valid **Passport** issued by a trusted authority on an eMRTD (Biometric passport).
+// TODO 
 
-3. **Liveness Check (Optional)**  
-   - The system MAY require a **selfie** or a **short video** to detect liveness and compare it against the document portrait.
+### Level of Assurance (LoA) High
 
-4. **EUDI Wallet Support**  
-   - The wallet requesting the credential MUST support **OpenID4VCI** and **ISO/IEC 18013-5** display properties.
+In the context of the Photo ID attestation, the Extended level of assurance is recommended, as it provides a higher level of confidence in the user's identity. 
 
----
+To achieve it:
+
+- Perform an ID proofing by requesting the Machine-Readable Travel Document (eMRTD) data from the citizen at the moment of issuing the Photo ID attestation, and then use an ID proofing service provider to verify the identity of the user with an Extended level of assurance.
+
+- Authenticate the citizen's identity using EUDI Wallet and **PID**, which is already issued with a LoA High, and then the Photo ID data would be complemented including the data provided by the passport.
+
+  - Authenticate the citizen's identity using EUDI Wallet and **PID**.
+  - requesting the Machine-Readable Travel Document (eMRTD) data from the citizen at the moment of issuing the Photo ID attestation.
+  - Verify that the eMRTD is issued by a trusted authority and has a valid expiration date.
+  - Perform user binding verification by comparing attributes from the PID such as first and last name and date of birth, to those in the identity document.
+
 
 ## **4.0 Issuance Flow**
 
