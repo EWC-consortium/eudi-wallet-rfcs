@@ -92,7 +92,15 @@ We consider 2 possible scenarios for issuing a Photo ID attestation:
 
 In this RFC we will be focusing on the **scenario 2).
 
-### 3.1 level of assurance of the Photo ID attestation
+### 3.1 Photo ID as an Electronic Attestation of Attributes
+
+Depending on the recognition needs and handling within the digital identity ecosystem, Photo ID could be issued as Qualified or as non-Qualified attestation of attributes as per eIDAS regulation.
+
+Qualified attestations are issued by accredited entities, adhere to specific legal and technical standards ensuring a high level of trust and legal validity, and are integrated within a formal trust framework with trusted lists. 
+
+Non-qualified attestations, on the other hand, are issued by a broader range of providers, operate under potentially diverse legal and contractual rules, and their trustworthiness and recognition depend on the specific context and agreements in place.
+
+### 3.1 Level of Identity Proofing
 
 The level of assurance for identity proofing is a critical aspect of the Photo ID attestation issuance process. ETSI TS 119 461 defines two levels of assurance for identity proofing: Baseline and Extended. Depending on the usage of the Photo ID attestation, either of these levels could be considered.
 
