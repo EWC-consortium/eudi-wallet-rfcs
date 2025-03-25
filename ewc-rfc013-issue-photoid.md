@@ -19,22 +19,23 @@ Published under a Creative Commons Attribution 4.0 International License
 ---
 
 ## **Table of Contents**
-- [1.0 Summary](#10-summary)
-- [2.0 Motivation](#20-motivation)
-- [3.0 Pre-requisites](#30-pre-requisites)
-- [4.0 Issuance Flow](#40-issuance-flow)
-  - [4.1 Actors](#41-actors)
-  - [4.2 Flow Details](#42-flow-details)
-    - [4.2.1 Setup Phase](#421-setup-phase)
-    - [4.2.2 Credential Issuance Request (OpenID4VCI)](#422-credential-issuance-request-openid4vci)
-    - [4.2.3 Dynamic Credential Request - Step 1: PID Validation](#423-dynamic-credential-request---step-1-pid-validation)
-    - [4.2.4 Dynamic Credential Request - Step 2: Passport Validation](#424-dynamic-credential-request---step-2-passport-validation)
-- [5.0 Verifiable Credential Type](#50-verifiable-credential-type)
-- [6.0 References](#60-references)
+- [1 Summary](#1-summary)
+- [2 Motivation](#2-motivation)
+- [3 Scope](#3-scope)
+- [4 Pre-requisites](#4-pre-requisites)
+- [5 Issuance Flow](#5-issuance-flow)
+  - [5.1 Actors](#51-actors)
+  - [5.2 Flow Details](#52-flow-details)
+    - [5.2.1 Setup Phase](#521-setup-phase)
+    - [5.2.2 Credential Issuance Request (OpenID4VCI)](#522-credential-issuance-request-openid4vci)
+    - [5.2.3 Dynamic Credential Request - Step 1: PID Validation](#523-dynamic-credential-request---step-1-pid-validation)
+    - [5.2.4 Dynamic Credential Request - Step 2: Passport Validation](#524-dynamic-credential-request---step-2-passport-validation)
+- [6 Verifiable Credential Type](#6-verifiable-credential-type)
+- [7 References](#7-references)
 
 ---
 
-## **1.0 Summary**
+## **1 Summary**
 This specification defines the implementation of the "Photo ID profile" defined in Annex C of ISO/IEC TS 23220-4, in mdoc and SD-JWT. The attestation issued is derived from an **electronic Machine-Readable Travel Document (eMRTD)** by a Qualified Trust Service Provider (QTSP).
 
 The issuance process includes verifying an eID attestation issued with a high Level of Assurance (LoA High), such as a **Personal ID (PID) credential** and may include additional steps, such as biometric checks. The issuance follows the **OpenID4VC** framework, ensuring interoperability with **EUDI Wallets**.
@@ -46,7 +47,6 @@ The issuance process includes verifying an eID attestation issued with a high Le
 - **Complying with international standards** such as **SD-JWT**, and **mDoc (ISO/IEC TS 23220)**.
 - **Enabling selective disclosure**, allowing users to share only necessary attributes (e.g., verifying age without revealing full birthdate), enhancing privacy and data minimization.
 
----
 
 ## 2 Motivation
 
@@ -70,6 +70,8 @@ Furthermore, Section 6 of ISO/IEC TS 23220-2 defines the data model specificatio
 
 The identity proofing and verification procedures mentioned above are further elaborated and standardized in ETSI TS 119 461, which specifies "policy and security requirements for trust service components providing identity proofing of trust service subjects." This standard is particularly relevant to our implementation as it defines the requirements for identity proofing at two levels: Baseline and Extended Level of Identity Proofing (LoIP).
 
+The Baseline level of assurance is sufficient for use cases where the risk of identity fraud is low, such as online services that require a basic level of identity verification. In contrast, the Extended level of assurance could be required for use cases where the risk of identity fraud is higher, such as online services that require a high level of identity verification, or where the user is requesting access to sensitive information.
+
 Section 9 of ETSI TS 119 461 defines various use cases for identity proofing, including:
 
 * Physical presence (Section 9.2.1)
@@ -82,54 +84,51 @@ In our implementation, the passport validation step described in Section 4.2.4 o
 
 By adhering to both the ISO/IEC TS 23220 data model and the ETSI TS 119 461 identity proofing requirements, our Photo ID issuance process ensures a high level of interoperability within the European identity ecosystem.
 
-## 3.0 Scope
+## 3 Scope
 
-We consider 2 possible scenarios for issuing a Photo ID attestation:
+We consider 2 possible scenarios when issuing a Photo ID attestation:
 
-1. The **Issuance Authority** has all the necessary data required to issue a valid photo ID credential. The **Issuance Authority** performs the required identity proofing before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
+1. The **Issuer** has all the necessary data required to issue a valid photo ID credential. This **Issuance Authority** performs the required identity proofing before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
 
-2. **Issuer requests the required data from the citizen at the moment of issuing the photo ID attestation. The Issuer performs the required identity verification before issuing the attestation to the citizen.
+2. **Issuer** requests the required data from the citizen at the moment of issuing the photo ID attestation. In this case the Issuer (e.g. a **QTSP**) performs the required identity verification before issuing the attestation to the citizen.
 
-In this RFC we will be focusing on the **scenario 2).
+In this RFC we will be focusing on the **scenario 2)**.
 
 ### 3.1 Photo ID as an Electronic Attestation of Attributes
 
-Depending on the recognition needs and handling within the digital identity ecosystem, Photo ID could be issued as Qualified or as non-Qualified attestation of attributes as per eIDAS regulation.
+Depending on the recognition needs and handling within the digital identity ecosystem, Photo ID could be issued as **Qualified** or as **non-Qualified** attestation of attributes as per eIDAS regulation.
 
-Qualified attestations are issued by accredited entities, adhere to specific legal and technical standards ensuring a high level of trust and legal validity, and are integrated within a formal trust framework with trusted lists. 
+* Non-qualified attestations, on the other hand, are issued by a broader range of providers, operate under potentially diverse legal and contractual rules, and their trustworthiness and recognition depend on the specific context and agreements in place.
+* Qualified attestations are issued by accredited entities, adhere to specific legal and technical standards ensuring a high level of trust and legal validity, and are integrated within a formal trust framework with trusted lists. 
 
-Non-qualified attestations, on the other hand, are issued by a broader range of providers, operate under potentially diverse legal and contractual rules, and their trustworthiness and recognition depend on the specific context and agreements in place.
+## 4 Pre-requisites
 
-### 3.1 Level of Identity Proofing
-
-The level of assurance for identity proofing is a critical aspect of the Photo ID attestation issuance process. ETSI TS 119 461 defines two levels of assurance for identity proofing: Baseline and Extended. Depending on the usage of the Photo ID attestation, either of these levels could be considered.
-
-The Baseline level of assurance is sufficient for use cases where the risk of identity fraud is low, such as online services that require a basic level of identity verification. In contrast, the Extended level of assurance could be required for use cases where the risk of identity fraud is higher, such as online services that require a high level of identity verification, or where the user is requesting access to sensitive information.
-
-
-## **3.0 Pre-requisites**
-
-### Level of Assurance (LoA) Substantial
+### 4.1 Photo ID as a EAA
 
 // TODO 
 
-### Level of Assurance (LoA) High
+### 4.2 Photo ID as a QEAA
 
-In the context of the Photo ID attestation, the Extended level of assurance is recommended, as it provides a higher level of confidence in the user's identity. 
+Annex C of the ETSI TS 119 461 specifies requirements for identity proofing targeted explicitly to fulfil requirements of the amended eIDAS regulation for issuing of qualified certificates and qualified electronic attestation of attributes.
 
-To achieve it:
+In this RFC 2 use cases of the Annex C.3 (Use cases for issuing of QEAA) are considered:
 
-- Perform an ID proofing by requesting the Machine-Readable Travel Document (eMRTD) data from the citizen at the moment of issuing the Photo ID attestation, and then use an ID proofing service provider to verify the identity of the user with an Extended level of assurance.
+- With PID: Use case for identity proofing by authentication using eID means (C.3.2):
 
-- Authenticate the citizen's identity using EUDI Wallet and **PID**, which is already issued with a LoA High, and then the Photo ID data would be complemented including the data provided by the passport.
-
-  - Authenticate the citizen's identity using EUDI Wallet and **PID**.
-  - requesting the Machine-Readable Travel Document (eMRTD) data from the citizen at the moment of issuing the Photo ID attestation.
-  - Verify that the eMRTD is issued by a trusted authority and has a valid expiration date.
+  - Requires Extended LoIP.
+  - Requires a notified eID with level **high** (EUDI Wallet with PID).
+  - The other attributes would be obtained from the Machine-Readable Travel Document (eMRTD) data, authenticated by the SOD signature.
   - Perform user binding verification by comparing attributes from the PID such as first and last name and date of birth, to those in the identity document.
 
+- Without PID: Use case for identity proofing by other identification means (C.3.4):
 
-## **4.0 Issuance Flow**
+  - Perform an unattended remote identity proofing using a digital identity document (eMRTD).
+  - Requires Extended LoIP.
+  - The ID proofing process must follow the unattended remote identity proofing requirements specified in Section 9.2.3 of ETSI TS 119 461. This includes requirements related to automated validation of digital identity documents and binding to applicant by automated face biometrics.
+
+
+
+## **5 Issuance Flow**
 
 The issuance process follows **OpenID4VCI** Authorisation Code flow as described in the [EWC RFC001: Issue Verifiable Credential - v2.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md), and extends it by implementing Dynamic Credential Request (OpenID4VCI draft 13), ensuring a standardized method for **credential issuance**.
 
@@ -240,7 +239,7 @@ sequenceDiagram
     IS->>IS: Evict User Data
 ```
 
-## 4.1 Actors
+## 5.1 Actors
 
 | Actor | Description |
 |--------|------------|
@@ -253,9 +252,9 @@ sequenceDiagram
 
 ---
 
-## 4.2 Flow Details
+## 5.2 Flow Details
 
-### 4.2.1. Setup Phase
+### 5.2.1. Setup Phase
 Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Issuer (IS)** establish a connection.
 
 1. **Wallet (W) discovers Issuer (IS)**
@@ -264,7 +263,7 @@ Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Is
 
    The Wallet and Issuer exchange metadata to establish connection endpoints and cryptographic parameters necessary for secure communication. This typically includes OpenID discovery mechanisms.
 
-### 4.2.2. Credential Issuance Request (OpenID4VCI)
+### 5.2.2. Credential Issuance Request (OpenID4VCI)
 
 The issuance process starts when the user (UA) scans an OpenID4VCI credential offer QR or clicks on a deeplink.
 **Wallet** will invoke **UA (User Agent)** to send Authorisation Request to the **Authorization Server (QTSP ISSUER)**.
@@ -281,7 +280,7 @@ After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will st
 
 Dynamic credential request will consist of two steps, described in the following sections.
 
-### 4.2.3. Dynamic Credential Request - Step 1: PID Validation
+### 5.2.3. Dynamic Credential Request - Step 1: PID Validation
 
 First steps will use OPENID4VP – as described in [EWC RFC002: Present Verifiable Credentials - v1.0
 ](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md) to request and verify the user’s PID.
@@ -290,7 +289,7 @@ First steps will use OPENID4VP – as described in [EWC RFC002: Present Verifiab
 //TODO add Authorisation Request example with redirect uri
 ```
 
-### 4.2.4. Dynamic Credential Request - Step 2: Passport Validation
+### 5.2.4. Dynamic Credential Request - Step 2: Passport Validation
 
 After PID validation, the second step of the **Dynamic Credential Request** triggers an OAuth2-like flow to obtain Passport Data.
 
@@ -300,17 +299,17 @@ After PID validation, the second step of the **Dynamic Credential Request** trig
 
 The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user will grant permission to share Passport data with the issuer.
 
-### 4.2.5. Credential Issuance Completion
+### 5.2.5. Credential Issuance Completion
 
 Issuer performs an attribute-based verification to ensure PID data corresponds and matches a subset of the Passport’s claims. 
 Once identity is verified, the **attestation is issued and sealed**.
 
-## **5.0 Electronic Attestation Type**
+## **6.0 Electronic Attestation Type**
 The attestation is issued in one of the follows:
 - **SD-JWT format**, as defined in **[`ds013-photo-id.json`](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds013-photo-id.json)**.
 - **mDoc format**, as specified in **ISO/IEC TS 23220-4 Annex C (2024-08-14)**.
 
-## **6.0 References**
+## **7.0 References**
 1. **EUDI Wallet JSON Schema**: [`ds013-photo-id.json`](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds013-photo-id.json)
 2. **ISO/IEC TS 23220-4 (E) Annex C** *(2024-08-14)*: Defines the **mDoc format** for Photo ID.
 3. **ISO/IEC 18013-5**: Specifies **mobile driving licenses and digital identity display properties**.
