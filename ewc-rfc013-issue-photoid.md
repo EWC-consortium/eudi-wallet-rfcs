@@ -124,7 +124,7 @@ In this RFC, 2 identity proofing use cases (of the Annex C.3 - Use cases for iss
   - The other attributes would be obtained from the Machine-Readable Travel Document (eMRTD) data, authenticated by the SOD signature.
   - Perform user binding verification by comparing attributes from the PID such as first and last name and date of birth, to those in the identity document.
 
-- Is proofing without PID: Use case for identity proofing by other identification means (C.3.4):
+- ID proofing without PID: Use case for identity proofing by other identification means (C.3.4):
 
   - Perform an unattended remote identity proofing using a digital identity document (eMRTD).
   - Requires Extended LoIP.
