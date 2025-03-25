@@ -64,7 +64,7 @@ Section 5 of ISO/IEC TS 23220-2 describes the identity data collection and confi
 
 ISO/IEC TS 23220-2 Figure 1 illustrates the issuing process of an eID document, showing how an applicant provides an application form and evidence (such as ID cards issued by an Authority) to the issuer. The issuer then collects other evidence if needed, proves the applicant's identity, binds that identity with the holder, and confirms the applicant through photo ID or by person of authority.
 
-Furthermore, Section 6 of ISO/IEC TS 23220-2 defines the data model specification that we will implement for our Photo ID, including the meta attributes for person entity (Section 6.3.1) which specifies the data elements that express attributes for describing a natural person, including crucial elements like family name, given names, date of birth, portrait, and biometric templates.
+Furthermore, Section 6 of ISO/IEC TS 23220-2 defines the data model specification that we will implement for the Photo ID, including the meta attributes for person entity (Section 6.3.1) which specifies the data elements that express attributes for describing a natural person, including crucial elements like family name, given names, date of birth, portrait, and biometric templates.
 
 ### 2.3 ETSI TS 119 461 and Identity Proofing Requirements
 
@@ -284,7 +284,9 @@ After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will st
 
 Dynamic credential request will consist of two steps, described in the following sections.
 
-### 5.2.3. Dynamic Credential Request - Step 1: PID Validation
+### 5.2.3. Dynamic Credential Request – Option A: ID proofing with PID 
+
+#### Step 1: User authentication with PID
 
 First steps will use OPENID4VP – as described in [EWC RFC002: Present Verifiable Credentials - v1.0
 ](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md) to request and verify the user’s PID.
@@ -293,15 +295,17 @@ First steps will use OPENID4VP – as described in [EWC RFC002: Present Verifiab
 //TODO add Authorisation Request example with redirect uri
 ```
 
-### 5.2.4. Dynamic Credential Request - Step 2: Passport Validation
+#### Step 2: Passport attributes Validation
 
-After PID validation, the second step of the **Dynamic Credential Request** triggers an OAuth2-like flow to obtain Passport Data.
+After PID validation, the second step of the **Dynamic Credential Request** triggers an OAuth2-like flow to obtain Passport data.
 
 ```json
 //TODO add redirect request example
 ```
 
 The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user will grant permission to share Passport data with the issuer.
+
+### 5.2.4. Dynamic Credential Request - Option B: Unattended remote ID Proofing using eMRTD 
 
 ### 5.2.5. Credential Issuance Completion
 
