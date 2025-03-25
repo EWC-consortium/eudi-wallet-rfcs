@@ -109,18 +109,22 @@ Depending on the recognition needs and handling within the digital identity ecos
 
 ### 4.2 Photo ID as a QEAA
 
+* **Issuer**: QEAA must be issued by a Qualified Trust Service Provider (QTSP).
+* **Identity Proofing**: The QTSP must verify the identity of the natural person to whom the QEAA is to be issued.
+* **Attribute Verification**: The QTSP must ensure with complete certainty the correctness and accuracy of the attested attributes of the person to whom the QEAA is issued. 
+
 Annex C of the ETSI TS 119 461 specifies requirements for identity proofing targeted explicitly to fulfil requirements of the amended eIDAS regulation for issuing of qualified certificates and qualified electronic attestation of attributes.
 
-In this RFC 2 use cases of the Annex C.3 (Use cases for issuing of QEAA) are considered:
+In this RFC, 2 identity proofing use cases (of the Annex C.3 - Use cases for issuing of QEAA) are considered:
 
-- With PID: Use case for identity proofing by authentication using eID means (C.3.2):
+- ID proofing with PID: Use case for identity proofing by authentication using eID means (C.3.2):
 
   - Requires Extended LoIP.
   - Requires a notified eID with level **high** (EUDI Wallet with PID).
   - The other attributes would be obtained from the Machine-Readable Travel Document (eMRTD) data, authenticated by the SOD signature.
   - Perform user binding verification by comparing attributes from the PID such as first and last name and date of birth, to those in the identity document.
 
-- Without PID: Use case for identity proofing by other identification means (C.3.4):
+- Is proofing without PID: Use case for identity proofing by other identification means (C.3.4):
 
   - Perform an unattended remote identity proofing using a digital identity document (eMRTD).
   - Requires Extended LoIP.
