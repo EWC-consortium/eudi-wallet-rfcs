@@ -284,7 +284,7 @@ After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will st
 
 Dynamic credential request will consist of two steps, described in the following sections.
 
-### 5.2.3. Dynamic Credential Request – Option A: ID proofing with PID 
+### 5.2.3. Dynamic Credential Request – Option A: ID proofing with PID
 
 #### Step 1: User authentication with PID
 
@@ -297,15 +297,19 @@ First steps will use OPENID4VP – as described in [EWC RFC002: Present Verifiab
 
 #### Step 2: Passport attributes Validation
 
-After PID validation, the second step of the **Dynamic Credential Request** triggers an OAuth2-like flow to obtain Passport data.
+After PID validation, the second step of the **Dynamic Credential Request** should trigger a flow to obtain Passport data.
+
+It is out of the scope of this document to describe the details of the passport reading process, but we expect the flow to be close to some OAuth2-based flow.
 
 ```json
 //TODO add redirect request example
 ```
 
-The user will be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user will grant permission to share Passport data with the issuer.
+If using OAuth2 authorization code flow, the user would be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user would grant permission to share Passport data with the issuer.
 
 ### 5.2.4. Dynamic Credential Request - Option B: Unattended remote ID Proofing using eMRTD 
+
+This step is analogous to the previous step, but in this case the id proofing process should include the unattended remote identity proofing requirements specified in Section 9.2.3 of ETSI TS 119 461.
 
 ### 5.2.5. Credential Issuance Completion
 
