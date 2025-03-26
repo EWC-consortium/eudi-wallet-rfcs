@@ -109,6 +109,8 @@ Depending on the recognition needs and handling within the digital identity ecos
 
 ### 4.2 Photo ID as a QEAA
 
+Besides the requirements laid down in Annex V of Regulation (EU) 2024/1183, when issuing a QEAA, the following requirements must be met:
+
 * **Issuer**: QEAA must be issued by a Qualified Trust Service Provider (QTSP).
 * **Identity Proofing**: The QTSP must verify the identity of the natural person to whom the QEAA is to be issued.
 * **Attribute Verification**: The QTSP must ensure with complete certainty the correctness and accuracy of the attested attributes of the person to whom the QEAA is issued. 
@@ -173,7 +175,6 @@ sequenceDiagram
     W->>+IS: Credential Request
     IS-->>-W: Credential Response
 
-    IS->>IS: Evict User Data
 ```
 
 ### Detailed flow diagram
