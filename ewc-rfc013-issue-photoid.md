@@ -163,20 +163,20 @@ sequenceDiagram
         Issuer->>Issuer: Check if PID is valid
         
         Note over Scanner,Issuer: Dynamic credential request: <br> 2) Passport
-        Wallet->>Scanner: Passport scan
-        Scanner-->>Wallet: Passport data
-        Wallet->>Issuer: Match data with PID presentation
+        Issuer->>Scanner: Passport scan
+        Scanner-->>Issuer: Passport data
+        Issuer->>Issuer: Match data with PID presentation
     else Opt 2: Unattended Remote ID Proofing
         Note over Issuer,Scanner: Dynamic credential request: <br> Unattended remote ID proofing
         Issuer->>+Scanner: Passport scan
         Scanner->>Scanner: Biometric and liveness check
-        Scanner-->>-Issuer: Passport data
+        Scanner-->>-Issuer: Passport data + ID proof
     end
     
     Issuer-->>-Wallet: Auth Response
     Note over Issuer,Wallet: Complete Issuance
-    Wallet->>Issuer: Credential Request
-    Issuer-->>Wallet: Credential Response
+    Wallet->>+Issuer: Credential Request
+    Issuer-->>-Wallet: Credential Response
 ```
 
 
