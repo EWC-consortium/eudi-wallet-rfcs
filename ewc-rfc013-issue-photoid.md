@@ -146,103 +146,39 @@ This diagram provides a high-level overview of the credential issuance process, 
 
 ```mermaid
 sequenceDiagram
-
-    participant W as EUDI Wallet
-    participant IS as PhotoId Issuer(QTSP)
-    participant PS as Passport Scanner App
+    participant Wallet as EUDI Wallet
+    participant Issuer as PhotoId Issuer(QTSP)
+    participant Scanner as Passport Scanner App
     
-    Note over W,IS: Setup
-
-    W->>IS: Discover Request
-    IS-->>W: Discover Response
-
-   
-    Note over W,IS: Issuance request (OpenID4VCI)
-    W->>+IS: Auth Request 
+    Note over Wallet, Issuer: Setup
+    Wallet->>Issuer: Discover Request
+    Issuer-->>Wallet: Discover Response
+    Note over Wallet, Issuer: Issuance request (OpenID4VCI)
+    Wallet->>+Issuer: Auth Request
     
-    Note over W,IS: Dynamic credential request: 1) PID
-    IS->>+W: Request PID 
-    W-->>-IS: Present PID
-    IS-->>IS: Check if PID is valid
+    alt Opt 1: With PID authentication
+        Note over Wallet,Issuer: Dynamic credential request: 1) PID
+        Issuer->>Wallet: Request PID
+        Wallet-->>Issuer: Present PID
+        Issuer->>Issuer: Check if PID is valid
+        
+        Note over Scanner,Issuer: Dynamic credential request: <br> 2) Passport
+        Wallet->>Scanner: Passport scan
+        Scanner-->>Wallet: Passport data
+        Wallet->>Issuer: Match data with PID presentation
+    else Opt 2: Unattended Remote ID Proofing
+        Note over Issuer,Scanner: Dynamic credential request: <br> Unattended remote ID proofing
+        Issuer->>+Scanner: Passport scan
+        Scanner->>Scanner: Biometric and liveness check
+        Scanner-->>-Issuer: Passport data
+    end
     
-    Note over PS,IS: Dynamic credential request: 2) Passport
-    IS->>+PS: Passport scan 
-    PS-->>-IS: Passport data
-    IS-->>IS: Match data with PID presentation
-    IS-->>-W: Auth Response 
-
-    Note over W,IS: Complete Issuance  
-    W->>+IS: Credential Request
-    IS-->>-W: Credential Response
-
+    Issuer-->>-Wallet: Auth Response
+    Note over Issuer,Wallet: Complete Issuance
+    Wallet->>Issuer: Credential Request
+    Issuer-->>Wallet: Credential Response
 ```
 
-### Detailed flow diagram
-
-This diagram provides a more detailed breakdown of the credential issuance process, highlighting the individual steps and interactions involved.
-
-```mermaid
-sequenceDiagram
-    participant UA as USER's User Agent
-    participant W as EUDI Wallet
-    participant IS as PhotoId Issuer(QTSP)
-    participant QS as Qualified Seal (QTSP)
-    participant PS as Passport Scanner App
-    participant ES as Passport Scanner BE <br> (External Source)
-    Note over W,IS: Setup
-
-    W->>IS: Discover Request
-    IS-->>W: Discover Response
-
-
-    Note over W,IS: Issuance request (OpenID4VCI)
-    W->>UA: Open
-    UA->>+IS: Authorisation Request
-
-    Note over W,IS: Dynamic credential request: 1) PID
-    IS->>UA: PID Presentation Authorisation Request
-    UA->>W: Open
-    W->>IS: PID Presentation Authorisation Response
-    IS-->>W: Direct Post Response
-    W->>UA: Open
-    UA->>IS: Follow Redirect
-    IS->>IS: Check if PID is valid
-
-    Note over UA,ES: Scan Passport And get claims for PhotoId:
-    IS->>UA: Open
-    UA->>+ES: Authorization Request
-    ES->>UA: Passport Scan Request
-    UA->>PS: Open
-
-    PS->>PS: Scan passport
-    PS->>ES: Scanned Data
-    PS->>UA: Open
-    UA->>ES: Follow Redirect
-    ES-->>UA: Authorization Response
-    UA->>IS: Open
-    IS->>ES: Token Request
-    ES-->>IS: Opaque Token Response
-    IS->>ES: Get Claims from userinfo via Access Token
-    ES-->>-IS: Claims Response
-    IS->>IS: Store data temporarily
-    IS->>IS: Match data with PID presentation
-
-
-    IS-->>-UA: Authorisation Response
-    UA->>W: Open
-
-    Note over W,QS: Complete Issuance
-
-    W->>+IS: Token Request
-    IS-->>-W: Token Response
-
-    W->>+IS: Credential Request
-    IS->>+QS: Seal Attestation
-    QS-->>-IS: Attestation sealed
-    IS-->>-W: Credential Response
-
-    IS->>IS: Evict User Data
-```
 
 ## 5.1 Actors
 
