@@ -1,4 +1,4 @@
-# **EWC RFC 012: Trust Mechanism - v0.9**
+# **EWC RFC 012: Trust Mechanism - v1.0**
 
 **Authors:**
 * Antti Kettunen, Tietoevry, Finland
@@ -14,12 +14,12 @@
 **Status:** Work in Progress
 
 **Table of contents**
-- [**EWC RFC 012: Trust Mechanism - v0.9**](#ewc-rfc-012-trust-mechanism---v09)
+- [**EWC RFC 012: Trust Mechanism - v1.0**](#ewc-rfc-012-trust-mechanism---v10)
 - [1. Introduction and scope](#1-introduction-and-scope)
   - [1.1 Trust model](#11-trust-model)
   - [1.2 Trusted list use](#12-trusted-list-use)
 - [2. Requirements](#2-requirements)
-  - [2.1 credential providers](#21-credential-providers)
+  - [2.1 Credential providers](#21-credential-providers)
   - [2.2 Holders and Relying Parties](#22-holders-and-relying-parties)
 - [3. EWC Trusted List](#3-ewc-trusted-list)
   - [3.1 EWC Trusted List contents](#31-ewc-trusted-list-contents)
@@ -84,7 +84,7 @@ flowchart TD
 
 The following role-specific requirements apply only in the context of the EWC Trusted List. Unless specifically noted, the requirements apply to all types of attestation providers (PID, WUA, QEAA, EAA, Pub-EAA).
 
-## 2.1 Attestation providers
+## 2.1 Credential providers
 
 The providers of attestations MUST comply with the following requirements:
 
@@ -187,8 +187,8 @@ The EWC Trusted List provides the following information for each registrant.
    <td>Country where the provider is registered in. <p><p>
     Format in ISO 3166-1 [15] Alpha 2 codes with the following exceptions:
     <p>
-    1) United Kingdom = "UK";<p>
-    2) Greece =  "EL";
+     1. United Kingdom = "UK";<p>
+     2. Greece =  "EL";
    </td>
   </tr>
   <tr>
@@ -427,10 +427,6 @@ When a Wallet Unit interacts with another service provider, trust validation mus
    * Fetch the DID Document: Retrieve the DID document from the registry or network.
    * Verify the Document: Confirm the document's authenticity and cryptographic integrity.  
    <br>
-    > **TO DISCUSS:** Can an identifier be part of multiple trust lists?  
-    > E.g. `did:ebsi` and `EWC Trust List`?  
-    > If it is OK, in which case the second look-up is only needed if the first fails, etc.
-
 
 2. **Service Status Validation:** Once the issuer is located in the **EWC Trust List (EWC TL)**, the **current status** of the trust service provider is validated by checking the **ServiceStatus** field. The possible values are:
     * **Granted:** The trust service provider is currently active and trusted: <code>[http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted](http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted)</code>. If the issuer is **listed and accredited**, and its **ServiceStatus is "granted"**, the relying party can **trust the issuer as a valid trust service provider**. This indicates that credentials issued by this provider can be considered valid.
