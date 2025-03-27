@@ -19,7 +19,7 @@
   - [1.1 Trust model](#11-trust-model)
   - [1.2 Trusted list use](#12-trusted-list-use)
 - [2. Requirements](#2-requirements)
-  - [2.1 Attestation providers](#21-attestation-providers)
+  - [2.1 credential providers](#21-credential-providers)
   - [2.2 Holders and Relying Parties](#22-holders-and-relying-parties)
 - [3. EWC Trusted List](#3-ewc-trusted-list)
   - [3.1 EWC Trusted List contents](#31-ewc-trusted-list-contents)
@@ -43,7 +43,7 @@ The EWC Large Scale Pilot (LSP) must ensure secure, verifiable, and interoperabl
 
 This specification defines the content of the EWC Trusted List and the requirements and interfaces for its use. It enables wallets, issuers, and relying parties to use the EWC trust infrastructure within the scope of the eIDAS Trust Framework, which in this document includes the eIDAS regulation, Implementing Acts (IA), and the Architecture and Reference Framework (ARF).
 
-The specification covers using trusted lists in the context of EWC Pilots to verify the issuer’s public key, which is used to sign the attestation.
+The specification covers using trusted lists in the context of EWC Pilots to verify the issuer’s public key, which is used to sign the credential.
 
 Note that this document is not authoritative outside of the pilot projects and that it may make choices and definitions that are not fully aligned with the eIDAS Trust Framework. These choices are made primarily for implementation simplicity purposes.
 
@@ -53,22 +53,22 @@ The eIDAS regulation defines the EU Trusted Lists as the authoritative records o
 
 The authoritative entities defined in the governance framework maintain the trusted lists. In eIDAS, these authorities are EU Member States (through Supervisory Bodies) or third countries with a Mutual Recognition Agreement (MRA) with the European Union. For piloting purposes, the **EWC consortium acts as an authoritative entity** maintaining an EWC Trusted List based on the **ETSI TS 119 612** [1] standard.
 
-In EWC pilots, all wallet providers, PID issuers, EAA issuers, and certificate providers must be registered in a Trusted List to obtain the authorised status. Once an entity is listed in the trusted list with an active service status, they have legal authorisation to operate as a service provider for the given service type. The service type can be wallet provider, PID issuer, etc. According to the ARF, the Trusted List identifies the registered entity using a service-specific, unique trust anchor. A trust anchor is a combination of a public key and the identifier of the associated entity and may be used to verify signatures created by that entity [Chapter 3.5 ARF 1.5]. However, as ARF is not yet clear about what that entity identifier is, it is omitted in the EWC Trust Mechanism for now. The trust anchor is primarily the issuer's public key, signing certificate or a Decentralized Identifier (DID). This is specified in Chapter 4.2.2.
+In EWC pilots, all wallet providers, PID issuers, EAA issuers, and certificate providers must be registered in a Trusted List to obtain the authorised status. Once an entity is listed in the trusted list with an active service status, they have legal authorisation to operate as a service provider for the given service type. The service type can be wallet provider, PID issuer, etc. According to the ARF, the Trusted List identifies the registered entity using a service-specific, unique trust anchor. A trust anchor is a combination of a public key and the identifier of the associated entity and may be used to verify signatures created by that entity [Chapter 3.5 ARF 1.5]. However, as ARF is not yet clear about what that entity identifier is, it is omitted in the EWC Trust Mechanism for now. In EWC Trusted List, the trust anchor is primarily the issuer's public key, signing certificate or a Decentralized Identifier (DID). This is specified in Chapter 4.2.2.
 
 The registered entity must have as many unique trust anchors as the services it is authorised to provide. For example, the same organisation can simultaneously provide multiple service types.
 
 ## 1.2 Trusted list use
 
-The Trusted List validates the service provider and the authorised service type and verifies the public key used to sign an object, such as an attestation or signed document. The public key is present in the attestation metadata and can be used to verify the key's authenticity and the provider's authorisation from the trust list. The figure below shows the basic premise of anchoring and verifying the attestation provider using trusted lists. 
+The Trusted List verifies the authorization of the service provider to provide the selected type of service. The trusted list also provides verification of the cryptographic material used to sign a credential or other document. The public key is present in the credential metadata and can be used to verify the key's authenticity and the provider's authorisation from the trust list. The figure below shows the basic premise of anchoring and verifying the attestation provider using trusted lists. 
 
 ```mermaid 
 flowchart TD
     n2["Attestation provider"] -- registered --> n1["Trusted List"]
-    n2 -- issues --> n4["Attestation"]
+    n2 -- issues --> n4["Credential"]
     n4 -- to --> n5["Wallet"]
     n7["Relying Party"] -- Verifies key &amp; provider --> n1
     n8["Public Key"] -- anchored --> n1
-    n5 -- presents attestation --> n7
+    n5 -- presents credential --> n7
     n8 -- included in metadata --> n4
     n2 -.- n8
     n2@{ shape: rounded}
@@ -91,36 +91,36 @@ The providers of attestations MUST comply with the following requirements:
 1. The provider must register its business information to the EWC Trusted List (See [EWC Trust List Github](https://github.com/EWC-consortium/ewc-trust-list) for details).
 
 2. The provider must register all services it provides and a single unique trust anchor for each service (see possible service types in chapter 3.2)
-    1. The trust anchor is either a public key, certificate, certificate chain or decentralized identifier. Whatever the chosen format, it MUST be the same as the anchor available in the metadata of the attestation. 
+    1. The trust anchor is either a public key, certificate, certificate chain or decentralized identifier. Whatever the chosen format, it MUST be the same as the anchor available in the metadata of the credential. 
 
-3. The provider must sign the attestation using the signing key linked to the registered trust anchor corresponding to the service type.
+3. The provider must sign the credential using the signing key linked to the registered trust anchor corresponding to the service type.
 
-4. The attestation metadata must include the same trust anchor registered in the Trusted List.
+4. The credential metadata must include the same trust anchor registered in the Trusted List.
 
-5. The attestation metadata must include the URI of the Trusted List where the attestation provider is registered.
+5. The credential metadata must include the URI of the Trusted List where the attestation provider is registered.
     2. The URI for the EWC Trusted List is [https://ewc-consortium.github.io/ewc-trust-list/EWC-TL](https://ewc-consortium.github.io/ewc-trust-list/EWC-TL)
 
 6. If the provider updates the keys to their registered service, the trust anchor in the trusted list MUST be updated. The trusted list will automatically retain historical keys.
 
 ## 2.2 Holders and Relying Parties
 
-The following requirements apply to all actors verifying or validating attestations (e.g., holders and relying parties). For simplicity, the term “verifier” refers to both roles.
+The following requirements apply to all actors verifying or validating credentials (e.g., holders and relying parties). For simplicity, the term “verifier” refers to both roles.
 
-In addition to the requirements below, the verifier must perform attestation-specific verifications according to the requirements of the respective RFCs.
+In addition to the requirements below, the verifier must perform credential-specific verifications according to the requirements of the respective RFCs.
 
-1. The verifier must extract the trust anchor and the Trusted List URI from the attestation metadata.
+1. The verifier must extract the trust anchor and the Trusted List URI from the credential metadata.
 
 2. The verifier must verify that the Trusted List URI is  [https://ewc-consortium.github.io/ewc-trust-list/EWC-TL](https://ewc-consortium.github.io/ewc-trust-list/EWC-TL)
 
 3. The verifier must verify that an entry matching the trust anchor is found in the trusted list and make the following verifications against the information retrieved from the trusted list.
 
     1. The trust anchor MUST be resolved to only one service type for one service provider.
-    2. The resolved service type MUST match the attestation type being verified. (e.g. Wallet Provider is only authorised to issue WUAs, nothing else). See service type to object mapping in chapter 3.2 
-    3. The StatusStartingTime must be earlier than the issuance time of the attestation being verified.
-    4. If the trust anchor is matched with a historical service entry (i.e. within ServiceHistory - subtree), then the verifier must also verify that the attestation issuance time is between the StatusStartingTime of the matched record and the StatusStartingTime of the next historical or currently active record.
+    2. The resolved service type MUST match the credential type being verified. (e.g. Wallet Provider is only authorised to issue WUAs, nothing else). See service type to object mapping in chapter 3.2 
+    3. The StatusStartingTime must be earlier than the issuance time of the credential being verified.
+    4. If the trust anchor is matched with a historical service entry (i.e. within ServiceHistory - subtree), then the verifier must also verify that the credential issuance time is between the StatusStartingTime of the matched record and the StatusStartingTime of the next historical or currently active record.
     5. The service status MUST be valid (i.e. “granted”). (See specific URI values for Service Status)
 
-4. If any of the verifications fail, the whole attestation verification MUST fail and be considered untrustworthy.
+4. If any of the verifications fail, the whole credential verification MUST fail and be considered untrustworthy.
 
 # 3. EWC Trusted List
 
@@ -395,10 +395,11 @@ The trusted list includes providers and all the services a provider is authorise
 
 The European Wallet Consortium (EWC) trust list is published on the [EWC Trust List](https://ewc-consortium.github.io/ewc-trust-list/EWC-TL) and used to validate trust. The service definitions referenced align with Chapter 3.2. Trust validation occurs when the wallet unit (WU) interacts with the relying party or issuer (attestation provider) in the following scenarios:
 
-* When a credential or attestation is received in the wallet, the WU checks if the issuer is valid. The issuer ensures that the wallet provider and wallet unit are valid. 
-* When any relying party (verifier) receives the credential, the wallet unit ensures that the relying party is valid, and the relying party ensures that the wallet provider and the issuer of the credentials are valid.
+* When a credential is received in the wallet, the WU checks if the issuer is valid. The issuer ensures that the wallet provider and wallet unit are valid. 
+* Before a credential is presented to any relying party (verifier), the wallet unit ensures that the relying party is valid and the relying party ensures that the wallet provider is valid.
+* After receiving the credential, the relying party verifies that the issuer of the credentials is valid.
 
->**NOTE:** During verification of an incoming credential or attestation, the WU or the RP shall consult the issuer’s service history (as per ETSI TS 119 612) to validate signatures against historical signing keys, ensuring trust continuity even when issuers rotate or update cryptographic keys.
+>**NOTE:** During verification of an incoming credential, the WU or the RP shall consult the issuer’s service history (as per ETSI TS 119 612) to validate signatures against historical signing keys, ensuring trust continuity even when issuers rotate or update cryptographic keys.
 
 ## 4.2 Verification process
 
@@ -486,7 +487,7 @@ In the OpenID4VP protocol, relying parties must:
 * **Protocol-specific checks:**
   * Digital Signature Resolution: Resolve public key details from credential headers using parameters such as <code><strong>kid</strong></code>, <code><strong>jwk</strong></code>, or <code><strong>x5c</strong></code>.
   * Key Binding: Verify the holder possesses the private keys corresponding to those associated with the credential issued by the issuer. This step forms part of the key binding check.
-  * Credential Status: Validate revocation and expiration details to confirm the credential’s current status.
+  * credential Status: Validate revocation and expiration details to confirm the credential’s current status.
 
 * **Trust List:**
 
@@ -494,7 +495,7 @@ In the OpenID4VP protocol, relying parties must:
     * Ensure the issuer is on the EWC Trust List with a service status <code><strong>granted</strong></code>, indicating authorisation to issue credentials.
     * Validate the credential’s digital signature to verify its integrity and authenticity.
     * Retrieve public keys, service types, and other issuer details from the trust list.
-    * Validate the attestation signature and confirm that the attestation type (e.g., PID, EAA, QEAA, Pub-EAA) aligns with the issuer’s service type.
+    * Validate the credential signature and confirm that the credential type (e.g., PID, EAA, QEAA, Pub-EAA) aligns with the issuer’s service type.
 
 Additionally, when the relying party receives credentials from the wallet unit, it must:
 
