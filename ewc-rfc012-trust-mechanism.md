@@ -130,142 +130,95 @@ The EWC Trusted List is based on a subset of information defined in ETSI TS 119 
 
 The EWC Trusted List provides the following information for each registrant.
 
-<table>
+<table border="1">
   <tr>
-   <td>Name
-   </td>
-   <td>Field name
-   </td>
-   <td>Description
-   </td>
+    <th>Name</th>
+    <th>Field name</th>
+    <th>Description</th>
   </tr>
   <tr>
-   <td>Provider name
-   </td>
-   <td>TSPName
-   </td>
-   <td>Name of the legal entity providing the service.
-   </td>
+    <td>Provider name</td>
+    <td>TSPName</td>
+    <td>Name of the legal entity providing the service.</td>
   </tr>
   <tr>
-   <td>Provider tradename
-   </td>
-   <td>TSPTradeName
-   </td>
-   <td>Official registration identifier or alternative name that uniquely identifies the provider
-   </td>
+    <td>Provider tradename</td>
+    <td>TSPTradeName</td>
+    <td>Official registration identifier or alternative name that uniquely identifies the provider.</td>
   </tr>
   <tr>
-   <td>Street address
-   </td>
-   <td>StreetAddress
-   </td>
-   <td>Street address of the provider
-   </td>
+    <td>Street address</td>
+    <td>StreetAddress</td>
+    <td>Street address of the provider.</td>
   </tr>
   <tr>
-   <td>City
-   </td>
-   <td>Locality
-   </td>
-   <td>City of the provider
-   </td>
+    <td>City</td>
+    <td>Locality</td>
+    <td>City of the provider.</td>
   </tr>
   <tr>
-   <td>Postal Code
-   </td>
-   <td>PostalCode
-   </td>
-   <td>Postal code of the provider.
-   </td>
+    <td>Postal Code</td>
+    <td>PostalCode</td>
+    <td>Postal code of the provider.</td>
   </tr>
   <tr>
-   <td>Country (code)
-   </td>
-   <td>CountryName
-   </td>
-   <td>Country where the provider is registered in. <p><p>
-    Format in ISO 3166-1 [15] Alpha 2 codes with the following exceptions:
-    <p>
-     1. United Kingdom = "UK";<p>
-     2. Greece =  "EL";
-   </td>
+    <td>Country (code)</td>
+    <td>CountryName</td>
+    <td>
+      Country where the provider is registered.<br>
+      Format: ISO 3166-1 Alpha-2 codes with exceptions:<br>
+      1. United Kingdom = "UK"<br>
+      2. Greece = "EL"
+    </td>
   </tr>
   <tr>
-   <td>Email
-   </td>
-   <td>ElectronicAddress
-   </td>
-   <td>Contact email of the provider.
-   </td>
+    <td>Email</td>
+    <td>ElectronicAddress</td>
+    <td>Contact email of the provider.</td>
   </tr>
   <tr>
-   <td>Information URI
-   </td>
-   <td>TSPInformationURI
-   </td>
-   <td>Specifies the URI(s) where users (e.g. relying parties) can  obtain provider-specific information
-   </td>
+    <td>Information URI</td>
+    <td>TSPInformationURI</td>
+    <td>URI(s) where users (e.g., relying parties) can obtain provider-specific information.</td>
   </tr>
   <tr>
-   <td>Service Type URI
-   </td>
-   <td>ServiceTypeIdentifier
-   </td>
-   <td>URI describes the type of the service. See chapter 3.2 for a list of possible Service type URIs.
-   </td>
+    <td>Service Type URI</td>
+    <td>ServiceTypeIdentifier</td>
+    <td>URI describing the type of the service. See chapter 3.2 for a list of possible service type URIs.</td>
   </tr>
   <tr>
-   <td>Service current status
-   </td>
-   <td>ServiceStatus
-   </td>
-   <td>The current status of the service is in the format of an identifier expressed as a URI. Possible values are:
-    <p>
-    <b>Granted</b>:
-    http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted \
-    <p><b>Withdrawn</b>: http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn
-   </td>
+    <td>Service current status</td>
+    <td>ServiceStatus</td>
+    <td>
+      The current status of the service as a URI identifier:<br>
+      <b>Granted</b>: <a href="http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted">http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/granted</a><br>
+      <b>Withdrawn</b>: <a href="http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn">http://uri.etsi.org/TrstSvc/TrustedList/Svcstatus/withdrawn</a>
+    </td>
   </tr>
   <tr>
-   <td>Service Status Starting time
-   </td>
-   <td>StatusStartingTime
-   </td>
-   <td>Data-time character string formatted according to ISO 8601 (UTC)
-   </td>
+    <td>Service Status Starting time</td>
+    <td>StatusStartingTime</td>
+    <td>Date-time character string formatted according to ISO 8601 (UTC).</td>
   </tr>
   <tr>
-   <td>Service name
-   </td>
-   <td>ServiceName
-   </td>
-   <td>Name of the service
-   </td>
+    <td>Service name</td>
+    <td>ServiceName</td>
+    <td>Name of the service.</td>
   </tr>
   <tr>
-   <td>Service endpoint (supply point) URI
-   </td>
-   <td>ServiceEndpointURI
-   </td>
-   <td>One or more URIs where relying parties can access the service, or component services or other types of services related to the service. 
-   </td>
+    <td>Service endpoint (supply point) URI</td>
+    <td>ServiceEndpointURI</td>
+    <td>One or more URIs where relying parties can access the service or related services.</td>
   </tr>
   <tr>
-   <td>Service definition URI
-   </td>
-   <td>ServiceDefinitionURI
-   </td>
-   <td>URIs where relying parties can obtain service-specific information.
-   </td>
+    <td>Service definition URI</td>
+    <td>ServiceDefinitionURI</td>
+    <td>URIs where relying parties can obtain service-specific information.</td>
   </tr>
   <tr>
-   <td>Service Digital Identity (Trust Anchor)
-   </td>
-   <td>DigitalIdentity
-   </td>
-   <td>It specifies one and only one service digital identifier / public key uniquely and unambiguously identifying the service with the type it is associated with.
-   </td>
+    <td>Service Digital Identity (Trust Anchor)</td>
+    <td>DigitalIdentity</td>
+    <td>Specifies a unique service digital identifier/public key identifying the service.</td>
   </tr>
 </table>
 
@@ -273,119 +226,72 @@ The EWC Trusted List provides the following information for each registrant.
 
 The trusted list includes providers and all the services a provider is authorised to provide within the scope of the governance framework. Each service has a service type, denoted with a unique type URI. Please note that for Service Provider types not yet covered by the ETSI 119 612 standard, a URI definition following the standard syntax is marked with “EWC” as the source. These URIs will be updated if a future version of the standard (or a dedicated one) is released.
 
-<table>
+<table border="1">
   <tr>
-   <td><strong>Service</strong>
-   </td>
-   <td><strong>Object</strong>
-   </td>
-   <td><strong>URI</strong>
-   </td>
-   <td><strong>Source</strong>
-   </td>
+    <th>Service</th>
+    <th>Object</th>
+    <th>URI</th>
+    <th>Source</th>
   </tr>
   <tr>
-   <td>QES Provider
-   </td>
-   <td>QC
-   </td>
-   <td><a href="http://uri.etsi.org/TrstSvc/Svctype/CA/QC">http://uri.etsi.org/TrstSvc/Svctype/CA/QC</a>
-   </td>
-   <td>ETSI 119 612
-   </td>
+    <td>QES Provider</td>
+    <td>QC</td>
+    <td><a href="http://uri.etsi.org/TrstSvc/Svctype/CA/QC">http://uri.etsi.org/TrstSvc/Svctype/CA/QC</a></td>
+    <td>ETSI 119 612</td>
   </tr>
   <tr>
-   <td>QEAA Provider
-   </td>
-   <td>QEAA
-   </td>
-   <td><a href="http://uri.etsi.org/TrstSvc/Svctype/EAA/Q">http://uri.etsi.org/TrstSvc/Svctype/EAA/Q</a>
-   </td>
-   <td>ETSI 119 612
-   </td>
+    <td>QEAA Provider</td>
+    <td>QEAA</td>
+    <td><a href="http://uri.etsi.org/TrstSvc/Svctype/EAA/Q">http://uri.etsi.org/TrstSvc/Svctype/EAA/Q</a></td>
+    <td>ETSI 119 612</td>
   </tr>
   <tr>
-   <td>EAA Provider
-   </td>
-   <td>EAA
-   </td>
-   <td><a href="http://uri.etsi.org/TrstSvc/Svctype/EAA">http://uri.etsi.org/TrstSvc/Svctype/EAA</a>
-   </td>
-   <td>ETSI 119 612
-   </td>
+    <td>EAA Provider</td>
+    <td>EAA</td>
+    <td><a href="http://uri.etsi.org/TrstSvc/Svctype/EAA">http://uri.etsi.org/TrstSvc/Svctype/EAA</a></td>
+    <td>ETSI 119 612</td>
   </tr>
   <tr>
-   <td>Pub-EAA Provider
-   </td>
-   <td>Pub-EAA
-   </td>
-   <td><a href="http://uri.etsi.org/TrstSvc/Svctype/EAA/Pub-EAA">http://uri.etsi.org/TrstSvc/Svctype/EAA/Pub-EAA</a>
-   </td>
-   <td>ETSI 119 612
-   </td>
+    <td>Pub-EAA Provider</td>
+    <td>Pub-EAA</td>
+    <td><a href="http://uri.etsi.org/TrstSvc/Svctype/EAA/Pub-EAA">http://uri.etsi.org/TrstSvc/Svctype/EAA/Pub-EAA</a></td>
+    <td>ETSI 119 612</td>
   </tr>
   <tr>
-   <td>Qualified Electronic Ledger
-   </td>
-   <td>Ledger record
-   </td>
-   <td><a href="http://uri.etsi.org/TrstSvc/Svctype/Ledgers/Q">http://uri.etsi.org/TrstSvc/Svctype/Ledgers/Q</a>
-
-   </td>
-   <td>ETSI 119 612
-   </td>
+    <td>Qualified Electronic Ledger</td>
+    <td>Ledger record</td>
+    <td><a href="http://uri.etsi.org/TrstSvc/Svctype/Ledgers/Q">http://uri.etsi.org/TrstSvc/Svctype/Ledgers/Q</a></td>
+    <td>ETSI 119 612</td>
   </tr>
   <tr>
-   <td>Non-qualified electronic ledger
-   </td>
-   <td>Ledger record
-   </td>
-   <td><a href="http://uri.etsi.org/TrstSvc/Svctype/Ledgers">http://uri.etsi.org/TrstSvc/Svctype/Ledgers</a>
-
-   </td>
-   <td>ETSI 119 612
-   </td>
+    <td>Non-qualified Electronic Ledger</td>
+    <td>Ledger record</td>
+    <td><a href="http://uri.etsi.org/TrstSvc/Svctype/Ledgers">http://uri.etsi.org/TrstSvc/Svctype/Ledgers</a></td>
+    <td>ETSI 119 612</td>
   </tr>
   <tr>
-   <td>Natural Person PID Provider
-   </td>
-   <td>PID
-   </td>
-   <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/PID">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/PID</a>
-   </td>
-   <td>**EWC**
-   </td>
+    <td>Natural Person PID Provider</td>
+    <td>PID</td>
+    <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/PID">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/PID</a></td>
+    <td><strong>EWC</strong></td>
   </tr>
   <tr>
-   <td>Legal Person PID Provider
-   </td>
-   <td>LPID
-   </td>
-   <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPID">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPID</a> 
-   </td>
-   <td>**EWC**
-   </td>
+    <td>Legal Person PID Provider</td>
+    <td>LPID</td>
+    <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPID">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPID</a></td>
+    <td><strong>EWC</strong></td>
   </tr>
   <tr>
-   <td>Natural Person Wallet Provider
-   </td>
-   <td>NPWP
-   </td>
-   <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/NPWP">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/NPWP</a>
-   </td>
-   <td>**EWC**
-   </td>
+    <td>Natural Person Wallet Provider</td>
+    <td>NPWP</td>
+    <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/NPWP">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/NPWP</a></td>
+    <td><strong>EWC</strong></td>
   </tr>
   <tr>
-   <td>Legal Person Wallet Provider
-   </td>
-   <td>LPWP
-   </td>
-   <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPWP">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPWP</a>
-   </td>
-   <td>**EWC**
-   </td>
-  </tr>
+    <td>Legal Person Wallet Provider</td>
+    <td>LPWP</td>
+    <td><a href="https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPWP">https://ewc-consortium.github.io/ewc-trust-list/TrstSvc/Svctype/LPWP</a></td>
+    <td><strong>EWC</strong></td>
   </tr>
 </table>
 
