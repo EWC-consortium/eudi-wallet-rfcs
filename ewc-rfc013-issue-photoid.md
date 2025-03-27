@@ -5,13 +5,13 @@
 * Matteo Marangoni, SICPA, Spain
 * Xavi Vila, SICPA, Spain
 * Dimitroglo, Veaceslav, SICPA, Spain
-* Mr. Daniele Ribaudo, Intesi Group, Italy
 
 **Reviewers:**
 
+* Mr. Lal Chandran, iGrant.io, Sweden
 * Viky Manaila, Intesi Group, Italy
 
-**Status:** Draft v1.0
+**Status:** pre-approve v1.0
 
 Copyright © 2025 All Rights Reserved  
 Published under a Creative Commons Attribution 4.0 International License
