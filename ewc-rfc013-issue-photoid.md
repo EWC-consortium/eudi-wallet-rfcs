@@ -105,7 +105,8 @@ Depending on the recognition needs and handling within the digital identity ecos
 
 ### 4.1 Photo ID as a EAA
 
-// TODO 
+⚠️ ***Open question for Revieers*** 
+We would appreciate your feedback on the following: Should the Photo ID be considered for issuance as a non-qualified EAA?
 
 ### 4.2 Photo ID as a QEAA
 
@@ -209,15 +210,8 @@ Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Is
 The issuance process starts when the user (UA) scans an OpenID4VCI credential offer QR or clicks on a deeplink.
 **Wallet** will invoke **UA (User Agent)** to send Authorisation Request to the **Authorization Server (QTSP ISSUER)**.
 
-```json
-//TODO add credential offer example
-```
-
 After receiving Authorisation Request the **IS (PhotoID Issuer - QTSP)** will start the dynamic credential request to obtain the required data ( PID and Passport) to obtain PhotoID attestation.
 
-```json
-//TODO add Authorisation Request example
-```
 
 Dynamic credential request will consist of two steps, described in the following sections.
 
@@ -228,9 +222,6 @@ Dynamic credential request will consist of two steps, described in the following
 First steps will use OPENID4VP – as described in [EWC RFC002: Present Verifiable Credentials - v1.0
 ](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc002-present-verifiable-credentials.md) to request and verify the user’s PID.
 
-```json
-//TODO add Authorisation Request example with redirect uri
-```
 
 #### Step 2: Passport attributes Validation
 
@@ -238,9 +229,6 @@ After PID validation, the second step of the **Dynamic Credential Request** shou
 
 It is out of the scope of this document to describe the details of the passport reading process, but we expect the flow to be close to some OAuth2-based flow.
 
-```json
-//TODO add redirect request example
-```
 
 If using OAuth2 authorization code flow, the user would be redirected to a Passport Reading Service application and prompted to scan their Passport alongside additional biometric checks to ensure the holder of the physical document is managing the application. Finally, the user would grant permission to share Passport data with the issuer.
 
