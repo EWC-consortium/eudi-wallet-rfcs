@@ -19,19 +19,27 @@ Published under a Creative Commons Attribution 4.0 International License
 ---
 
 ## **Table of Contents**
-- [1 Summary](#1-summary)
-- [2 Motivation](#2-motivation)
-- [3 Scope](#3-scope)
-- [4 Pre-requisites](#4-pre-requisites)
-- [5 Issuance Flow](#5-issuance-flow)
-  - [5.1 Actors](#51-actors)
-  - [5.2 Flow Details](#52-flow-details)
-    - [5.2.1 Setup Phase](#521-setup-phase)
-    - [5.2.2 Credential Issuance Request (OpenID4VCI)](#522-credential-issuance-request-openid4vci)
-    - [5.2.3 Dynamic Credential Request - Step 1: PID Validation](#523-dynamic-credential-request---step-1-pid-validation)
-    - [5.2.4 Dynamic Credential Request - Step 2: Passport Validation](#524-dynamic-credential-request---step-2-passport-validation)
-- [6 Verifiable Credential Type](#6-verifiable-credential-type)
-- [7 References](#7-references)
+
+1. [Summary](#1-summary)
+2. [Motivation](#2-motivation)  
+   2.1 [The need of a photo ID](#21-the-need-of-a-photo-id)  
+   2.2 [ISO/IEC TS 23220 and Photo ID Issuance Process](#22-isoiec-ts-23220-and-photo-id-issuance-process)  
+   2.3 [ETSI TS 119 461 and Identity Proofing Requirements](#23-etsi-ts-119-461-and-identity-proofing-requirements)
+3. [Scope](#3-scope)  
+   3.1 [Photo ID as an Electronic Attestation of Attributes](#31-photo-id-as-an-electronic-attestation-of-attributes)
+4. [Pre-requisites](#4-pre-requisites)  
+   4.1 [Photo ID as a EAA](#41-photo-id-as-a-eaa)  
+   4.2 [Photo ID as a QEAA](#42-photo-id-as-a-qeaa)
+5. [Issuance Flow](#5-issuance-flow)  
+   5.1 [Actors](#51-actors)  
+   5.2 [Flow Details](#52-flow-details)  
+      5.2.1 [Setup Phase](#521-setup-phase)  
+      5.2.2 [Credential Issuance Request (OpenID4VCI)](#522-credential-issuance-request-openid4vci)  
+      5.2.3 [Dynamic Credential Request – Option A: ID proofing with PID](#523-dynamic-credential-request--option-a-id-proofing-with-pid)  
+      5.2.4 [Dynamic Credential Request - Option B: Unattended remote ID Proofing using eMRTD](#524-dynamic-credential-request---option-b-unattended-remote-id-proofing-using-emrtd)  
+      5.2.5 [Credential Issuance Completion](#525-credential-issuance-completion)
+6. [Electronic Attestation Type](#60-electronic-attestation-type)
+7. [References](#70-references)
 
 ---
 
