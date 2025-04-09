@@ -206,12 +206,9 @@ sequenceDiagram
 
 | Actor | Description |
 |--------|------------|
-| **UA (User Agent)** | The user's browser used to interact with different entities. |
-| **W (EUDI Wallet)** | The user's digital wallet storing credentials. |
-| **IS (PhotoID Issuer - QTSP)** | A Qualified Trust Service Provider (QTSP) issuing the attestations. |
-| **QS (Qualified Seal - QTSP)** | The QTSP responsible for digitally sealing/verifying the issued attestations. |
-| **PS (Passport Scanner App)** | The app used to scan the user's passport and extract relevant data. |
-| **ES (External Source - Passport Scanner BE)** | A backend service for processing and validating scanned passport data. |
+| **EUDI Wallet** | The user's digital wallet storing credentials. |
+| **PhotoID Issuer - QTSP** | A Qualified Trust Service Provider (QTSP) issuing the attestations. |
+| **Passport Scanner App** | The app used to scan the user's passport and extract relevant data. |
 
 ---
 
@@ -271,20 +268,23 @@ The attestation is issued in one of the follows:
 
 ### 7.1. ISO 23220 - Photo ID Data model
 
-#### Top-Level Attributes
+### Credential Type / DocType for PhotoID
 
-| Attribute   | Required/Optional | Description |
-|------------|-------------------|-------------|
-| `iso23220` | Required          | ISO/IEC 23220-1 claims |
-| `photoid`  | Required          | org.iso.23220.photoid.1 claims |
-| `dtc`      | Optional          | DTC |
-| `iss`      | Required          | Issuer URI |
-| `iat`      | Required          | Issued at (timestamp) |
-| `exp`      | Optional          | Expiration timestamp |
-| `vct`      | Required          | Verifiable Credential Type (eu.europa.ec.eudi.photoid.1) |
+| Format  | attribute | Description |
+|---------|------|-------------|
+| mDOC    | `DocType` | `eu.europa.ec.eudi.photoid.1` |
+| SD-JWT  |    `vct`   | `eu.europa.ec.eudi.photoid.1` |
 
 
-#### `iso23220` Properties
+#### Top-Level Attributes / mDOC namespaces
+
+| SD-JWT Attribute  | mDOC namespace  | Required/Optional | Description |
+|------------|-------------------|-----------------|-------------|
+| `iso23220` |  org.iso.23220.1  | Required        | ISO/IEC 23220-1 claims |
+| `photoid`  | org.iso.23220.photoid.1  | Required        | PhotoId claims |
+| `dtc`      | org.iso.23220.dtc.1 | Optional          | DTC |
+
+#### `org.iso.23220.1` data elements
 
 | Attribute | Required/Optional | Description |
 |----------|-------------------|-------------|
@@ -312,7 +312,7 @@ The attestation is issued in one of the follows:
 | `iso23220.family_name_latin1` | Optional | Latin1-encoded family name. |
 | `iso23220.given_name_latin1` | Optional | Latin1-encoded given name. |
 
-#### `photoid` Properties
+#### `org.iso.23220.photoid.1` data elements
 
 | Attribute | Required/Optional | Description |
 |----------|-------------------|-------------|
@@ -326,7 +326,7 @@ The attestation is issued in one of the follows:
 | `photoid.travel_document_number` | Optional | Travel document (e.g., passport) number. |
 | `photoid.resident_state` | Optional | State/province/district of residence. |
 
-#### `dtc` Properties
+#### `dtc` data elements
 
 | Attribute | Required/Optional | Description |
 |----------|-------------------|-------------|
