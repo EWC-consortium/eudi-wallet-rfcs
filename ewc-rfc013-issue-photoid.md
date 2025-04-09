@@ -217,11 +217,7 @@ sequenceDiagram
 ### 5.2.1. Setup Phase
 Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Issuer (IS)** establish a connection.
 
-1. **Wallet (W) discovers Issuer (IS)**
-   - **W → IS:** Discover Request
-   - **IS → W:** Discover Response
-
-   The Wallet and Issuer exchange metadata to establish connection endpoints and cryptographic parameters necessary for secure communication. This typically includes OpenID discovery mechanisms.
+The Wallet and Issuer exchange metadata to establish connection endpoints and cryptographic parameters necessary for secure communication. This typically includes OpenID discovery mechanisms.
 
 ### 5.2.2. Credential Issuance Request (OpenID4VCI)
 
