@@ -11,7 +11,7 @@
 * Werner Folkendt, Bosch, Germany
 * Quentin Drouot, Archipels, France
 
-**Status:** Work in Progress
+**Status:** Approved
 
 **Table of contents**
 - [**EWC RFC 012: Trust Mechanism - v1.0**](#ewc-rfc-012-trust-mechanism---v10)
