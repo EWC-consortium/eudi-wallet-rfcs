@@ -288,67 +288,67 @@ The attestation is issued in one of the follows:
 
 | Attribute | Required/Optional | Description |
 |----------|-------------------|-------------|
-| `iso23220.family_name_unicode` | Required | Unicode-encoded family name of the document holder. |
-| `iso23220.given_name_unicode` | Required | Unicode-encoded first name of the document holder. |
-| `iso23220.birth_date` | Required | Date of birth in ISO 8601 format. |
-| `iso23220.portrait` | Required | A portrait image encoded as a Data URI. |
-| `iso23220.issue_date` | Required | Date when the document was issued. |
-| `iso23220.expiry_date` | Required | The date when the document expires. |
-| `iso23220.issuing_authority_unicode` | Required | The authority responsible for issuing the document. |
-| `iso23220.issuing_country` | Required | The country issuing the document. |
-| `iso23220.sex` | Optional | Holder's sex using ISO/IEC 5218. 0=Unknown, 1=Male, 2=Female, 9=Not applicable |
-| `iso23220.nationality` | Optional | Nationality (ISO 3166-1 alpha-2 or alpha-3 code). |
-| `iso23220.document_number` | Optional | Unique number identifying the document. |
-| `iso23220.name_at_birth` | Optional | The name of the individual at birth. |
-| `iso23220.birthplace` | Optional | Place of birth (country and city/state). |
-| `iso23220.portrait_capture_date` | Optional | Date when the portrait was taken. |
-| `iso23220.resident_address_unicode` | Optional | Unicode-encoded resident address. |
-| `iso23220.resident_city_unicode` | Optional | Unicode-encoded city of residence. |
-| `iso23220.resident_postal_code` | Optional | Postal code of the residence. |
-| `iso23220.resident_country` | Optional | Country of residence. |
-| `iso23220.age_over_18` | Required | Indicates if the individual is over 18. |
-| `iso23220.age_in_years` | Optional | The age of the individual in years. |
-| `iso23220.age_birth_year` | Optional | The birth year of the individual. |
-| `iso23220.family_name_latin1` | Optional | Latin1-encoded family name. |
-| `iso23220.given_name_latin1` | Optional | Latin1-encoded given name. |
+| `family_name_unicode` | Required | Unicode-encoded family name of the document holder. |
+| `given_name_unicode` | Required | Unicode-encoded first name of the document holder. |
+| `birth_date` | Required | Date of birth in ISO 8601 format. |
+| `portrait` | Required | A portrait image encoded as a Data URI. |
+| `issue_date` | Required | Date when the document was issued. |
+| `expiry_date` | Required | The date when the document expires. |
+| `issuing_authority_unicode` | Required | The authority responsible for issuing the document. |
+| `issuing_country` | Required | The country issuing the document. |
+| `sex` | Optional | Holder's sex using ISO/IEC 5218. 0=Unknown, 1=Male, 2=Female, 9=Not applicable |
+| `nationality` | Optional | Nationality (ISO 3166-1 alpha-2 or alpha-3 code). |
+| `document_number` | Optional | Unique number identifying the document. |
+| `name_at_birth` | Optional | The name of the individual at birth. |
+| `birthplace` | Optional | Place of birth (country and city/state). |
+| `portrait_capture_date` | Optional | Date when the portrait was taken. |
+| `resident_address_unicode` | Optional | Unicode-encoded resident address. |
+| `resident_city_unicode` | Optional | Unicode-encoded city of residence. |
+| `resident_postal_code` | Optional | Postal code of the residence. |
+| `resident_country` | Optional | Country of residence. |
+| `age_over_18` | Required | Indicates if the individual is over 18. |
+| `age_in_years` | Optional | The age of the individual in years. |
+| `age_birth_year` | Optional | The birth year of the individual. |
+| `family_name_latin1` | Optional | Latin1-encoded family name. |
+| `given_name_latin1` | Optional | Latin1-encoded given name. |
 
 #### `org.iso.23220.photoid.1` data elements
 
 | Attribute | Required/Optional | Description |
 |----------|-------------------|-------------|
-| `photoid.person_id` | Optional | Unique personal identifier. |
-| `photoid.birth_country` | Optional | Country where the individual was born. |
-| `photoid.birth_state` | Optional | State/province where the individual was born. |
-| `photoid.birth_city` | Optional | City where the individual was born. |
-| `photoid.administrative_number` | Optional | Audit/control number assigned by issuer. |
-| `photoid.resident_street` | Optional | Street address of residence. |
-| `photoid.resident_house_number` | Optional | House number of residence. |
-| `photoid.travel_document_number` | Optional | Travel document (e.g., passport) number. |
-| `photoid.resident_state` | Optional | State/province/district of residence. |
+| `person_id` | Optional | Unique personal identifier. |
+| `birth_country` | Optional | Country where the individual was born. |
+| `birth_state` | Optional | State/province where the individual was born. |
+| `birth_city` | Optional | City where the individual was born. |
+| `administrative_number` | Optional | Audit/control number assigned by issuer. |
+| `resident_street` | Optional | Street address of residence. |
+| `resident_house_number` | Optional | House number of residence. |
+| `travel_document_number` | Optional | Travel document (e.g., passport) number. |
+| `resident_state` | Optional | State/province/district of residence. |
 
-#### `dtc` data elements
+#### `org.iso.23220.dtc.1` data elements
 
 | Attribute | Required/Optional | Description |
 |----------|-------------------|-------------|
-| `dtc.dtc_version` | Optional | Version of the DTC definition |
-| `dtc.dtc_dg1` | Required | Full MRZ data, base64-encoded string |
-| `dtc.dtc_dg2` | Required | Biometric data (e.g., facial image), base64 |
-| `dtc.dtc_dg3` | Optional | Binary data for Data Group 3 |
-| `dtc.dtc_dg4` | Optional | Binary data for Data Group 4 |
-| `dtc.dtc_dg5` | Optional | Binary data for Data Group 5 |
-| `dtc.dtc_dg6` | Optional | Binary data for Data Group 6 |
-| `dtc.dtc_dg7` | Optional | Binary data for Data Group 7 |
-| `dtc.dtc_dg8` | Optional | Binary data for Data Group 8 |
-| `dtc.dtc_dg9` | Optional | Binary data for Data Group 9 |
-| `dtc.dtc_dg10` | Optional | Binary data for Data Group 10 |
-| `dtc.dtc_dg11` | Optional | Binary data for Data Group 11 |
-| `dtc.dtc_dg12` | Optional | Binary data for Data Group 12 |
-| `dtc.dtc_dg13` | Optional | Binary data for Data Group 13 |
-| `dtc.dtc_dg14` | Optional | Binary data for Data Group 14 |
-| `dtc.dtc_dg15` | Optional | Binary data for Data Group 15 |
-| `dtc.dtc_dg16` | Optional | Binary data for Data Group 16 |
-| `dtc.dtc_sod` | Required | Security Object Document (SOD), base64 |
-| `dtc.dg_content_info` | Optional | Binary data of DTCContentInfo |
+| `dtc_version` | Optional | Version of the DTC definition |
+| `dtc_dg1` | Required | Full MRZ data, base64-encoded string |
+| `dtc_dg2` | Required | Biometric data (e.g., facial image), base64 |
+| `dtc_dg3` | Optional | Binary data for Data Group 3 |
+| `dtc_dg4` | Optional | Binary data for Data Group 4 |
+| `dtc_dg5` | Optional | Binary data for Data Group 5 |
+| `dtc_dg6` | Optional | Binary data for Data Group 6 |
+| `dtc_dg7` | Optional | Binary data for Data Group 7 |
+| `dtc_dg8` | Optional | Binary data for Data Group 8 |
+| `dtc_dg9` | Optional | Binary data for Data Group 9 |
+| `dtc_dg10` | Optional | Binary data for Data Group 10 |
+| `dtc_dg11` | Optional | Binary data for Data Group 11 |
+| `dtc_dg12` | Optional | Binary data for Data Group 12 |
+| `dtc_dg13` | Optional | Binary data for Data Group 13 |
+| `dtc_dg14` | Optional | Binary data for Data Group 14 |
+| `dtc_dg15` | Optional | Binary data for Data Group 15 |
+| `dtc_dg16` | Optional | Binary data for Data Group 16 |
+| `dtc_sod` | Required | Security Object Document (SOD), base64 |
+| `dg_content_info` | Optional | Binary data of DTCContentInfo |
 
 
 ## **8.0 References**
