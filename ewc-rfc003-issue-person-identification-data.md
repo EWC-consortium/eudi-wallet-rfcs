@@ -1,4 +1,4 @@
-# EWC RFC003: Issue Person Identification Data (PID) - v2.0
+# EWC RFC003: Issue Person Identification Data (PID) - v2.1
 
 **Authors:**
 
@@ -17,7 +17,7 @@
 
 **Table of Contents**
 
-- [EWC RFC003: Issue Person Identification Data (PID) - v2.0](#ewc-rfc003-issue-person-identification-data-pid---v20)
+- [EWC RFC003: Issue Person Identification Data (PID) - v2.1](#ewc-rfc003-issue-person-identification-data-pid---v21)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Messages](#30-messages)
