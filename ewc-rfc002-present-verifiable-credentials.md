@@ -67,29 +67,11 @@ For cross device verification, there is an extra step to resolve the authoritsat
 ```
 Figure 2: Cross Device Verification Flow based on [1]
 
+Alternatively, The digital credentials api can be used to request a presentation.
+The underlying platform (i.e. browser, android, ios) will take care of performing
+this securely in same device and cross device scenarios.
+
 ## 3.1	Authorisation request
-
-Authorisation requests can be presented to the wallet by verifying in two ways: 1) by value 2) by reference as defined in JWT-Secured Authorization Request (JAR) via use of `request_uri` [3]. The custom URL scheme for authorisation requests is `openid4vp://`. An  example by value is as given below:
-
-```sh
-openid4vp://?client_id=https://example.verifier.com
-&response_type=vp_token
-&response_uri=https://example.verifier.com/direct_post
-&response_mode=direct_post
-&state=100b8521-461e-4f79-931e-ea5710c4fa5c
-&nonce=e6759e72-37e4-42f7-ab48-a9368971620f
-&presentation_definition={"id":+"2e3975b7-4834-4650-a97b-5c4f1cdf5f57",+"format":+{"jwt_vc":+{"alg":+["ES256"]},+"jwt_vp":+{"alg":+["ES256"]}},+"input_descriptors":+[{"id":+"841fd89b-f987-4052-88fc-30affccfd99c",+"constraints":+{"fields":+[{"path":+["$.type"],+"filter":+{"type":+"array",+"contains":+{"const":+"VerifiablePortableDocumentA1"}}}]}}]}
-```
-
-If `request_uri` field is present in the authorisation request, it means the authorisation request is presented by reference. Request URI has to be resolved to obtain the JWT, which contains the above fields in the claims. An example is as given below:
-
-```sh
-openid4vp://?request_uri=https://server.example.com/presentation-request
-```
-
-> [!NOTE]
-> The above authorisation request can be presented to the holder wallet as a QR code, a link or as NFC blip. For QR code based presentation, it is recommended to use the `request_uri` as **it makes the QR code compact**. 
-
 The authorisation request will contain the following fields:
 
 <table>
@@ -120,7 +102,7 @@ The authorisation request will contain the following fields:
   <tr>
    <td><code>response_mode</code>
    </td>
-   <td>The value must be <code>direct_post</code>
+   <td>The value must be one of: <code>direct_post</code>, <code>dc_api</code>, <code>dc_api.jwt</code>
    </td>
   </tr>
   <tr>
@@ -144,11 +126,50 @@ The authorisation request will contain the following fields:
 </table>
 
 > [!NOTE]
-> The authorisation request within EWC context only supports `direct_post` as `response_mode` due to security concerns that come with the alternative method using redirect URIs. 
+> The authorisation request within EWC context only supports a `response_mode` of `direct_post`, `dc_api` or `dc_api.jwt` due to security concerns that come with the alternative method using redirect URIs.
 
-### [3.1.1 Scope Parameter Usage](#3.1.1-scope-parameter-usage)
+Authorisation requests can be presented to the wallet by the verifier in three ways:
+1) By value
+2) By reference
+3) Using the Digital Credentials API.
 
-According to OIDCVP draft version >= 18, the scope parameter can be used as an optional parameter to request verifiable presentations using the scope parameter. When this parameter is presented, it must fulfill the following requirements: 
+Options 1 and 2 both use a custom URL scheme of `openid4vp://` for authorisation requests
+
+> [!NOTE]
+> For options 1 and 2 - The authorisation request can be presented to the holder wallet as a QR code, a link or as NFC blip. For QR code based presentation, it is recommended to use the `request_uri` as **it makes the QR code compact**.
+
+### By value
+When passing by value, the authorization response parameters are included directly in the authorization request URI.
+
+```sh
+openid4vp://?client_id=https://example.verifier.com
+&response_type=vp_token
+&response_uri=https://example.verifier.com/direct_post
+&response_mode=direct_post
+&state=100b8521-461e-4f79-931e-ea5710c4fa5c
+&nonce=e6759e72-37e4-42f7-ab48-a9368971620f
+&presentation_definition={"id":+"2e3975b7-4834-4650-a97b-5c4f1cdf5f57",+"format":+{"jwt_vc":+{"alg":+["ES256"]},+"jwt_vp":+{"alg":+["ES256"]}},+"input_descriptors":+[{"id":+"841fd89b-f987-4052-88fc-30affccfd99c",+"constraints":+{"fields":+[{"path":+["$.type"],+"filter":+{"type":+"array",+"contains":+{"const":+"VerifiablePortableDocumentA1"}}}]}}]}
+```
+
+### By reference
+Passing by reference works as defined in JWT-Secured Authorization Request (JAR) via use of `request_uri` [3].
+
+If `request_uri` field is present in the authorisation request, it means the authorisation request is presented by reference. Request URI has to be resolved to obtain the JWT, which contains the above fields in the claims. An example is as given below:
+
+```sh
+openid4vp://?request_uri=https://server.example.com/presentation-request
+```
+
+
+### Using the Digital Credentials API
+When using the digital credentials API with OpenID4VP, the value of the exchange protocol must be `openid4vp`.
+In addition, the response_mode of the authorization request must be either `dc_api` or `dc_api.jwt`
+
+
+
+### 3.1.1 Scope Parameter Usage
+
+According to OIDCVP draft version >= 18, the scope parameter can be used as an optional parameter to request verifiable presentations using the scope parameter. When this parameter is presented, it must fulfill the following requirements:
 
 1. The scope value MUST serve as an alias for a well-defined Presentation Definition, which will be referenced in the `presentation_submission` response parameter.
 2. Scope value definition MUST enable Verifiers to determine: 
@@ -199,7 +220,14 @@ An example `presentation_submission` values is as given:
 }
 ```
 
-Verifiable credentials matching the input descriptor constraints are embedded in the VP token. Presentation submission contains the descriptor map conveying which verifiable credentials are satisfying corresponding input descriptor constraints. Both `vp_token` and `presentation_submission` are sent by HTTP POST to the direct post endpoint. 
+Verifiable credentials matching the input descriptor constraints are embedded in the VP token. Presentation submission contains the descriptor map conveying which verifiable credentials are satisfying corresponding input descriptor constraints.
+
+The response mode controls how the authorization response should be returned to the verifier.
+
+
+### 3.2.1 Direct Post
+
+The authorization response is sent by the wallet directly to verifier using the direct post endpoint.
 
 ```http
 POST https://example.verifier.com/direct_post
@@ -210,7 +238,13 @@ Content-Type: application/x-www-form-urlencoded
 &state=475e634e-2633-4235-953d-eb879334cae7
 ```
 
-# 4.0	Alternate response format
+### 3.2.2 Digital Credentials API
+
+The authorization response is returned to the verifier via the digital credentials API as an instance of the `DigitalCredential` interface,
+where the `data` attribute will be the authorization response represented as an object.
+
+
+# 4.0   Alternate response format
 
 Standard HTTP response codes shall be supported. Any additional ones can 
 
