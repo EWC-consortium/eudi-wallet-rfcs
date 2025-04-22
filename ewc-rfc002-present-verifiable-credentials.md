@@ -1,11 +1,12 @@
-# EWC RFC002: Present Verifiable Credentials - v1.0
+# EWC RFC002: Present Verifiable Credentials - v2.0
 
 **Authors:** 
 * Mr George Padaytti (iGrant.io, Sweden)
 * Mr Lal Chandran (iGrant.io, Sweden)
 * Dr Andreas Abraham (ValidatedID, Spain)
+* Mr. Edward Curran (Lissi ID, Germany)
 
-**Reviewers:** 
+**Reviewers:**
 
 * Dr Nikos Triantafyllou (University of the Aegean, Greece)
 * Mr Florin Coptil (Bosch, Germany)
@@ -14,18 +15,23 @@
 * Mr Renaud Murat (Archipels, France)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 
-**Status:** Approved for v1.0 release
+**Status:** Approved
 
 **Table of Contents**
 
-- [EWC RFC002: Present Verifiable Credentials - v1.0](#ewc-rfc002-present-verifiable-credentials---v10)
+- [EWC RFC002: Present Verifiable Credentials - v2.0](#ewc-rfc002-present-verifiable-credentials---v20)
 - [1.0	Summary](#10summary)
 - [2.0	Motivation](#20motivation)
 - [3.0	Messages](#30messages)
   - [3.1	Authorisation request](#31authorisation-request)
+    - [By value](#by-value)
+    - [By reference](#by-reference)
+    - [Using the Digital Credentials API](#using-the-digital-credentials-api)
     - [3.1.1 Scope Parameter Usage](#311-scope-parameter-usage)
   - [3.2	Authorisation response](#32authorisation-response)
-- [4.0	Alternate response format](#40alternate-response-format)
+    - [3.2.1 Direct Post](#321-direct-post)
+    - [3.2.2 Digital Credentials API](#322-digital-credentials-api)
+- [4.0   Alternate response format](#40---alternate-response-format)
 - [5.0	Implementers](#50implementers)
 - [6.0	Reference](#60reference)
 - [Appendix A: Public key resolution](#appendix-a-public-key-resolution)
