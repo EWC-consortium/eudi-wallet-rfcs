@@ -126,8 +126,7 @@ Depending on the recognition needs and handling within the digital identity ecos
 
 ### 4.1 Photo ID as a EAA
 
-⚠️ ***Open question for Reviewers*** 
-We would appreciate your feedback on the following: Should the Photo ID be considered for issuance as a non-qualified EAA?
+For the scope of this RFC we are considering PhotoIDs as QEAAs.
 
 ### 4.2 Photo ID as a QEAA
 
