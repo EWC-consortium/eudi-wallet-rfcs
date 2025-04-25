@@ -109,18 +109,11 @@ By adhering to both the ISO/IEC TS 23220 data model and the ETSI TS 119 461 iden
 
 We consider 2 possible scenarios when issuing a Photo ID attestation:
 
-1. The **Issuer** has all the necessary data required to issue a valid photo ID credential. This **Issuance Authority** performs the required identity proofing before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
+1. The **Issuer**, a public sector body that is responsible for the authentic source or a public sector body that is designated by the Member State, directly issues a photo ID credential. This **Issuance Authority** performs the required identity proofing before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification). This would be the scenario of an Electronic attestation of attributes issued by or on behalf of a public sector body (**PuB-EAA**).
 
-2. **Issuer** requests the required data from the citizen at the moment of issuing the photo ID attestation. In this case the Issuer (e.g. a **QTSP**) performs the required identity verification before issuing the attestation to the citizen.
+2. **Issuer** requests the required data from the citizen at the moment of issuing the photo ID attestation. In this case the Issuer (e.g. a **QTSP**) performs the required identity verification before issuing the attestation to the citizen. This would be the scenario of a Qualified Electronic Attestation of Attributes (**QEAA**).
 
 In this RFC we will be focusing on the **scenario 2)**.
-
-### 3.1 Photo ID as an Electronic Attestation of Attributes
-
-Depending on the recognition needs and handling within the digital identity ecosystem, Photo ID could be issued as **Qualified** or as **non-Qualified** attestation of attributes as per eIDAS regulation.
-
-* Non-qualified attestations, on the other hand, are issued by a broader range of providers, operate under potentially diverse legal and contractual rules, and their trustworthiness and recognition depend on the specific context and agreements in place.
-* Qualified attestations are issued by accredited entities, adhere to specific legal and technical standards ensuring a high level of trust and legal validity, and are integrated within a formal trust framework with trusted lists. 
 
 ## 4.0 Pre-requisites
 
