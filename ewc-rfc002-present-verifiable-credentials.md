@@ -152,9 +152,12 @@ OIDC4VP [1] defines a mechanism to specify how the `client_id` should be interpr
 Authorisation requests can be presented to the wallet by the Verifier:
 
 1.  **By value:** All request parameters are URL-encoded directly into the invocation URI.
+
 2.  **By reference (using JAR [RFC9101]):** Request parameters are packaged into a JWT (Request Object), and the invocation URI contains either:
     *   `request`: The Request Object JWT itself.
     *   `request_uri`: A URL pointing to the Request Object JWT.
+
+3. Using the Digital Credentials (DC) API. Note that this is optional for EWC phase 03.
 
 > [!NOTE]
 > The EWC RFC002 example uses a custom URL scheme `openid4vp://`. Wallet invocation can also use Universal Links / App Links or manual QR code scanning without a specific scheme [1].
@@ -379,6 +382,9 @@ Cache-Control: no-store
 
 #### Digital Credentials API (`dc_api`, `dc_api.jwt`)
 
+> [!NOTE]
+> The Digital Credentials API within the scope of EWC LSP and is here to accomodate towards early tests and piloting.
+
 [1, Appendix A] When the request uses `response_mode=dc_api` or `dc_api.jwt`, the response is returned via the platform's DC API mechanism.
 
 *   The response is an instance of the `DigitalCredential` interface.
@@ -520,6 +526,8 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 13. RFC 9207 OAuth 2.0 Authorization Server Issuer Identification: [https://www.rfc-editor.org/rfc/rfc9207](https://www.rfc-editor.org/rfc/rfc9207)
 
 # Appendix A: Public key resolution
+
+Refer [RFC012](/ewc-rfc012-trust-mechanism.md) for key resolution and trust mechanims. 
 
 For a JWT (e.g., Request Object, VP Token, ID Token), there are multiple ways for resolving the public key needed for signature verification:
 
