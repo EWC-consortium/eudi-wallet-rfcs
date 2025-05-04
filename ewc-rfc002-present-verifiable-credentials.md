@@ -515,7 +515,7 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 9.  BCP 195 Recommendations for Secure Use of Transport Layer Security (TLS) and Datagram Transport Layer Security (DTLS): [https://www.rfc-editor.org/info/bcp195](https://www.rfc-editor.org/info/bcp195)
 10. RFC 6125 Representation and Verification of Domain-Based Application Service Identity... (TLS Server Identity Check): [https://www.rfc-editor.org/rfc/rfc6125](https://www.rfc-editor.org/rfc/rfc6125)
 11. OAuth 2.0 Security Best Current Practice: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics)
-12. W3C Digital Credentials API: [https://wicg.github.io/digital-credentials/](https://wicg.github.io/digital-credentials/)
+12. W3C Digital Credentials API: [https://w3c-fedid.github.io/digital-credentials/](https://w3c-fedid.github.io/digital-credentials/)
 13. RFC 9207 OAuth 2.0 Authorization Server Issuer Identification: [https://www.rfc-editor.org/rfc/rfc9207](https://www.rfc-editor.org/rfc/rfc9207)
 
 # Appendix A: Public key resolution
