@@ -66,7 +66,7 @@ The EWC LSP must align with the standard protocol for issuing credentials. This 
 
 # 3.0 Messages
 
-As shown in Figure 1 below, a individual using the wallet presents a credential to a verifier on the same device that the device the wallet resides on. The default `response_mode` (`fragment`) often uses redirects for this flow.
+As shown in Figure 1 below, a individual using the wallet presents a credential to a verifier on the same device that the device the wallet resides on.
 
 ```mermaid
   sequenceDiagram
@@ -75,7 +75,7 @@ As shown in Figure 1 below, a individual using the wallet presents a credential 
 
       V->>+I: GET: Authorization Request (e.g., via redirect)
       Note over I,V: User Authentication / Consent
-      I->>+V: Redirect: Authorization Response (e.g., `vp_token` in fragment)
+      I->>+V: Authorization Response
 ```
 Figure 1: Same Device Verification Flow (Conceptual, based on [1])
 
