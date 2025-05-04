@@ -1,4 +1,4 @@
-# EWC RFC013: Issuing Photo ID Verifiable Credential - v1.0
+# EWC RFC013: Issue Photo ID - v2.0
 
 **Authors:**
 
@@ -11,35 +11,46 @@
 * Mr. Lal Chandran, iGrant.io, Sweden
 * Viky Manaila, Intesi Group, Italy
 
-**Status:** pre-approve v1.0
+**Status:** Approved
 
 Copyright © 2025 All Rights Reserved  
 Published under a Creative Commons Attribution 4.0 International License
 
----
-
 ## **Table of Contents**
 
-1. [Summary](#10-summary)
-2. [Motivation](#20-motivation)  
-   2.1 [The need of a photo ID](#21-the-need-of-a-photo-id)  
-   2.2 [ISO/IEC TS 23220 and Photo ID Issuance Process](#22-isoiec-ts-23220-and-photo-id-issuance-process)  
-   2.3 [ETSI TS 119 461 and Identity Proofing Requirements](#23-etsi-ts-119-461-and-identity-proofing-requirements)
-3. [Scope](#30-scope)  
-   3.1 [Photo ID as an Electronic Attestation of Attributes](#31-photo-id-as-an-electronic-attestation-of-attributes)
-4. [Pre-requisites](#40-pre-requisites)  
-   4.1 [Photo ID as a EAA](#41-photo-id-as-a-eaa)  
-   4.2 [Photo ID as a QEAA](#42-photo-id-as-a-qeaa)
-5. [Issuance Flow](#50-issuance-flow)  
-   5.1 [Actors](#51-actors)  
-   5.2 [Flow Details](#52-flow-details)  
-      5.2.1 [Setup Phase](#521-setup-phase)  
-      5.2.2 [Credential Issuance Request (OpenID4VCI)](#522-credential-issuance-request-openid4vci)  
-      5.2.3 [Dynamic Credential Request](#523-dynamic-credential-request)  
-      5.2.4 [Credential Issuance Completion](#525-credential-issuance-completion)
-6. [Electronic Attestation Type](#60-electronic-attestation-type)
-7. [Schema definition](#70-schema-definition)
-8. [References](#80-references)
+- [EWC RFC013: Issue Photo ID - v2.0](#ewc-rfc013-issue-photo-id---v20)
+  - [**Table of Contents**](#table-of-contents)
+  - [**1.0 Summary**](#10-summary)
+    - [**Key Benefits:**](#key-benefits)
+  - [2.0 Motivation](#20-motivation)
+    - [2.1 The need of a photo ID](#21-the-need-of-a-photo-id)
+      - [2.1.1 Use cases: registration and communication of information in hospitality and short-term accommodation in Spain (Real Decreto 933/2021)](#211-use-cases-registration-and-communication-of-information-in-hospitality-and-short-term-accommodation-in-spain-real-decreto-9332021)
+    - [2.2 ISO/IEC TS 23220 and Photo ID Issuance Process](#22-isoiec-ts-23220-and-photo-id-issuance-process)
+    - [2.3 ETSI TS 119 461 and Identity Proofing Requirements](#23-etsi-ts-119-461-and-identity-proofing-requirements)
+  - [3.0 Scope](#30-scope)
+  - [4.0 Pre-requisites](#40-pre-requisites)
+    - [4.1 Photo ID as a EAA](#41-photo-id-as-a-eaa)
+    - [4.2 Photo ID as a QEAA](#42-photo-id-as-a-qeaa)
+  - [**5.0 Issuance Flow**](#50-issuance-flow)
+    - [High-level flow diagram.](#high-level-flow-diagram)
+  - [5.1 Actors](#51-actors)
+  - [5.2 Flow Details](#52-flow-details)
+    - [5.2.1. Setup Phase](#521-setup-phase)
+    - [5.2.2. Credential Issuance Request (OpenID4VCI)](#522-credential-issuance-request-openid4vci)
+    - [5.2.3. Dynamic Credential Request – Option A: ID proofing with PID](#523-dynamic-credential-request--option-a-id-proofing-with-pid)
+      - [Step 1: User authentication with PID](#step-1-user-authentication-with-pid)
+      - [Step 2: Passport attributes Validation](#step-2-passport-attributes-validation)
+    - [5.2.4. Dynamic Credential Request - Option B: Unattended remote ID Proofing using eMRTD](#524-dynamic-credential-request---option-b-unattended-remote-id-proofing-using-emrtd)
+    - [5.2.5. Credential Issuance Completion](#525-credential-issuance-completion)
+  - [**6.0 Electronic Attestation Type**](#60-electronic-attestation-type)
+  - [**7.0 Schema definition**](#70-schema-definition)
+    - [7.1. ISO 23220 - Photo ID Data model](#71-iso-23220---photo-id-data-model)
+    - [Credential Type / DocType for PhotoID](#credential-type--doctype-for-photoid)
+      - [Top-Level Attributes / mDOC namespaces](#top-level-attributes--mdoc-namespaces)
+      - [`org.iso.23220.1` data elements](#orgiso232201-data-elements)
+      - [`org.iso.23220.photoid.1` data elements](#orgiso23220photoid1-data-elements)
+      - [`org.iso.23220.dtc.1` data elements](#orgiso23220dtc1-data-elements)
+  - [**8.0 References**](#80-references)
 ---
 
 ## **1.0 Summary**
@@ -196,11 +207,11 @@ sequenceDiagram
 
 ## 5.1 Actors
 
-| Actor | Description |
-|--------|------------|
-| **EUDI Wallet** | The user's digital wallet storing credentials. |
+| Actor                     | Description                                                         |
+| ------------------------- | ------------------------------------------------------------------- |
+| **EUDI Wallet**           | The user's digital wallet storing credentials.                      |
 | **PhotoID Issuer - QTSP** | A Qualified Trust Service Provider (QTSP) issuing the attestations. |
-| **Passport Scanner App** | The app used to scan the user's passport and extract relevant data. |
+| **Passport Scanner App**  | The app used to scan the user's passport and extract relevant data. |
 
 ---
 
@@ -258,85 +269,85 @@ The attestation is issued in one of the follows:
 
 ### Credential Type / DocType for PhotoID
 
-| Format  | attribute | Description |
-|---------|------|-------------|
-| mDOC    | `DocType` | `eu.europa.ec.eudi.photoid.1` |
-| SD-JWT  |    `vct`   | `eu.europa.ec.eudi.photoid.1` |
+| Format | attribute | Description                   |
+| ------ | --------- | ----------------------------- |
+| mDOC   | `DocType` | `eu.europa.ec.eudi.photoid.1` |
+| SD-JWT | `vct`     | `eu.europa.ec.eudi.photoid.1` |
 
 
 #### Top-Level Attributes / mDOC namespaces
 
-| SD-JWT Attribute  | mDOC namespace  | Required/Optional | Description |
-|------------|-------------------|-----------------|-------------|
-| `iso23220` |  org.iso.23220.1  | Required        | ISO/IEC 23220-1 claims |
-| `photoid`  | org.iso.23220.photoid.1  | Required        | PhotoId claims |
-| `dtc`      | org.iso.23220.dtc.1 | Optional          | DTC |
+| SD-JWT Attribute | mDOC namespace          | Required/Optional | Description            |
+| ---------------- | ----------------------- | ----------------- | ---------------------- |
+| `iso23220`       | org.iso.23220.1         | Required          | ISO/IEC 23220-1 claims |
+| `photoid`        | org.iso.23220.photoid.1 | Required          | PhotoId claims         |
+| `dtc`            | org.iso.23220.dtc.1     | Optional          | DTC                    |
 
 #### `org.iso.23220.1` data elements
 
-| Attribute | Required/Optional | Description |
-|----------|-------------------|-------------|
-| `family_name_unicode` | Required | Unicode-encoded family name of the document holder. |
-| `given_name_unicode` | Required | Unicode-encoded first name of the document holder. |
-| `birth_date` | Required | Date of birth in ISO 8601 format. |
-| `portrait` | Required | A portrait image encoded as a Data URI. |
-| `issue_date` | Required | Date when the document was issued. |
-| `expiry_date` | Required | The date when the document expires. |
-| `issuing_authority_unicode` | Required | The authority responsible for issuing the document. |
-| `issuing_country` | Required | The country issuing the document. |
-| `sex` | Optional | Holder's sex using ISO/IEC 5218. 0=Unknown, 1=Male, 2=Female, 9=Not applicable |
-| `nationality` | Optional | Nationality (ISO 3166-1 alpha-2 or alpha-3 code). |
-| `document_number` | Optional | Unique number identifying the document. |
-| `name_at_birth` | Optional | The name of the individual at birth. |
-| `birthplace` | Optional | Place of birth (country and city/state). |
-| `portrait_capture_date` | Optional | Date when the portrait was taken. |
-| `resident_address_unicode` | Optional | Unicode-encoded resident address. |
-| `resident_city_unicode` | Optional | Unicode-encoded city of residence. |
-| `resident_postal_code` | Optional | Postal code of the residence. |
-| `resident_country` | Optional | Country of residence. |
-| `age_over_18` | Required | Indicates if the individual is over 18. |
-| `age_in_years` | Optional | The age of the individual in years. |
-| `age_birth_year` | Optional | The birth year of the individual. |
-| `family_name_latin1` | Optional | Latin1-encoded family name. |
-| `given_name_latin1` | Optional | Latin1-encoded given name. |
+| Attribute                   | Required/Optional | Description                                                                    |
+| --------------------------- | ----------------- | ------------------------------------------------------------------------------ |
+| `family_name_unicode`       | Required          | Unicode-encoded family name of the document holder.                            |
+| `given_name_unicode`        | Required          | Unicode-encoded first name of the document holder.                             |
+| `birth_date`                | Required          | Date of birth in ISO 8601 format.                                              |
+| `portrait`                  | Required          | A portrait image encoded as a Data URI.                                        |
+| `issue_date`                | Required          | Date when the document was issued.                                             |
+| `expiry_date`               | Required          | The date when the document expires.                                            |
+| `issuing_authority_unicode` | Required          | The authority responsible for issuing the document.                            |
+| `issuing_country`           | Required          | The country issuing the document.                                              |
+| `sex`                       | Optional          | Holder's sex using ISO/IEC 5218. 0=Unknown, 1=Male, 2=Female, 9=Not applicable |
+| `nationality`               | Optional          | Nationality (ISO 3166-1 alpha-2 or alpha-3 code).                              |
+| `document_number`           | Optional          | Unique number identifying the document.                                        |
+| `name_at_birth`             | Optional          | The name of the individual at birth.                                           |
+| `birthplace`                | Optional          | Place of birth (country and city/state).                                       |
+| `portrait_capture_date`     | Optional          | Date when the portrait was taken.                                              |
+| `resident_address_unicode`  | Optional          | Unicode-encoded resident address.                                              |
+| `resident_city_unicode`     | Optional          | Unicode-encoded city of residence.                                             |
+| `resident_postal_code`      | Optional          | Postal code of the residence.                                                  |
+| `resident_country`          | Optional          | Country of residence.                                                          |
+| `age_over_18`               | Required          | Indicates if the individual is over 18.                                        |
+| `age_in_years`              | Optional          | The age of the individual in years.                                            |
+| `age_birth_year`            | Optional          | The birth year of the individual.                                              |
+| `family_name_latin1`        | Optional          | Latin1-encoded family name.                                                    |
+| `given_name_latin1`         | Optional          | Latin1-encoded given name.                                                     |
 
 #### `org.iso.23220.photoid.1` data elements
 
-| Attribute | Required/Optional | Description |
-|----------|-------------------|-------------|
-| `person_id` | Optional | Unique personal identifier. |
-| `birth_country` | Optional | Country where the individual was born. |
-| `birth_state` | Optional | State/province where the individual was born. |
-| `birth_city` | Optional | City where the individual was born. |
-| `administrative_number` | Optional | Audit/control number assigned by issuer. |
-| `resident_street` | Optional | Street address of residence. |
-| `resident_house_number` | Optional | House number of residence. |
-| `travel_document_number` | Optional | Travel document (e.g., passport) number. |
-| `resident_state` | Optional | State/province/district of residence. |
+| Attribute                | Required/Optional | Description                                   |
+| ------------------------ | ----------------- | --------------------------------------------- |
+| `person_id`              | Optional          | Unique personal identifier.                   |
+| `birth_country`          | Optional          | Country where the individual was born.        |
+| `birth_state`            | Optional          | State/province where the individual was born. |
+| `birth_city`             | Optional          | City where the individual was born.           |
+| `administrative_number`  | Optional          | Audit/control number assigned by issuer.      |
+| `resident_street`        | Optional          | Street address of residence.                  |
+| `resident_house_number`  | Optional          | House number of residence.                    |
+| `travel_document_number` | Optional          | Travel document (e.g., passport) number.      |
+| `resident_state`         | Optional          | State/province/district of residence.         |
 
 #### `org.iso.23220.dtc.1` data elements
 
-| Attribute | Required/Optional | Description |
-|----------|-------------------|-------------|
-| `dtc_version` | Optional | Version of the DTC definition |
-| `dtc_dg1` | Required | Full MRZ data, base64-encoded string |
-| `dtc_dg2` | Required | Biometric data (e.g., facial image), base64 |
-| `dtc_dg3` | Optional | Binary data for Data Group 3 |
-| `dtc_dg4` | Optional | Binary data for Data Group 4 |
-| `dtc_dg5` | Optional | Binary data for Data Group 5 |
-| `dtc_dg6` | Optional | Binary data for Data Group 6 |
-| `dtc_dg7` | Optional | Binary data for Data Group 7 |
-| `dtc_dg8` | Optional | Binary data for Data Group 8 |
-| `dtc_dg9` | Optional | Binary data for Data Group 9 |
-| `dtc_dg10` | Optional | Binary data for Data Group 10 |
-| `dtc_dg11` | Optional | Binary data for Data Group 11 |
-| `dtc_dg12` | Optional | Binary data for Data Group 12 |
-| `dtc_dg13` | Optional | Binary data for Data Group 13 |
-| `dtc_dg14` | Optional | Binary data for Data Group 14 |
-| `dtc_dg15` | Optional | Binary data for Data Group 15 |
-| `dtc_dg16` | Optional | Binary data for Data Group 16 |
-| `dtc_sod` | Required | Security Object Document (SOD), base64 |
-| `dg_content_info` | Optional | Binary data of DTCContentInfo |
+| Attribute         | Required/Optional | Description                                 |
+| ----------------- | ----------------- | ------------------------------------------- |
+| `dtc_version`     | Optional          | Version of the DTC definition               |
+| `dtc_dg1`         | Required          | Full MRZ data, base64-encoded string        |
+| `dtc_dg2`         | Required          | Biometric data (e.g., facial image), base64 |
+| `dtc_dg3`         | Optional          | Binary data for Data Group 3                |
+| `dtc_dg4`         | Optional          | Binary data for Data Group 4                |
+| `dtc_dg5`         | Optional          | Binary data for Data Group 5                |
+| `dtc_dg6`         | Optional          | Binary data for Data Group 6                |
+| `dtc_dg7`         | Optional          | Binary data for Data Group 7                |
+| `dtc_dg8`         | Optional          | Binary data for Data Group 8                |
+| `dtc_dg9`         | Optional          | Binary data for Data Group 9                |
+| `dtc_dg10`        | Optional          | Binary data for Data Group 10               |
+| `dtc_dg11`        | Optional          | Binary data for Data Group 11               |
+| `dtc_dg12`        | Optional          | Binary data for Data Group 12               |
+| `dtc_dg13`        | Optional          | Binary data for Data Group 13               |
+| `dtc_dg14`        | Optional          | Binary data for Data Group 14               |
+| `dtc_dg15`        | Optional          | Binary data for Data Group 15               |
+| `dtc_dg16`        | Optional          | Binary data for Data Group 16               |
+| `dtc_sod`         | Required          | Security Object Document (SOD), base64      |
+| `dg_content_info` | Optional          | Binary data of DTCContentInfo               |
 
 
 ## **8.0 References**
