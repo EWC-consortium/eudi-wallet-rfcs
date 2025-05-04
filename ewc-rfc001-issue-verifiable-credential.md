@@ -1,4 +1,4 @@
-# EWC RFC001: Issue Verifiable Credential - v2.0
+# EWC RFC001: Issue Verifiable Credential - v3.0
 
 **Authors:**
 * Mr George Padaytti (iGrant.io, Sweden)
@@ -22,7 +22,7 @@
 
 **Table of Contents**
 
-- [EWC RFC001: Issue Verifiable Credential - v2.0](#ewc-rfc001-issue-verifiable-credential---v20)
+- [EWC RFC001: Issue Verifiable Credential - v3.0](#ewc-rfc001-issue-verifiable-credential---v30)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Overview of Endpoints](#30-overview-of-endpoints)
