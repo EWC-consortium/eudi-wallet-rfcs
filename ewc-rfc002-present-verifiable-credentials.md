@@ -211,23 +211,38 @@ When using the Digital Credentials API (DC API) [1, Appendix A], the request par
 *   For signed requests (e.g., using `request` parameter), the `client_id` (e.g., a DID or HTTPS entity ID) MUST be included *inside* the signed Request Object JWT. The `expected_origins` parameter MUST also be included outside the JWT.
 
 ```javascript
-// Conceptual DC API Call
-navigator.credentials.get({
-  digital: {
-    protocol: "openid4vp",
-    request: { // OIDC4VP parameters
-      response_type: "vp_token",
-      response_mode: "dc_api", // Or dc_api.jwt
-      nonce: "n-0S6_WzA2Mj",
-      // client_id is omitted for unsigned/web-origin
-      presentation_definition: { ... },
-      state: "...",
-      // For signed requests:
-      // request: "eyJhbGciOiJF...", // Signed Request Object JWT
-      // expected_origins: ["https://verifier.example.com"]
+// Request credentials
+const credentialResponse = await navigator.credentials.get({
+    digital: {
+        protocol: "openid4vp",
+        request: [{
+            response_type: "vp_token",
+            response_mode: "dc_api",
+            nonce: "hcXlreRWiJIyjv3VPp7z5ARuwbhArLFJnYje4XZs4lg",
+            dcql_query: {
+                credentials: [{
+                    id: "pid",
+                    format: "dc+sd-jwt",
+                    meta: {
+                        vct_values: ["urn:eu.europa.ec.eudi:pid:1"]
+                    },
+                    claims: [{
+                            path: ["family_name"]
+                        },
+                        {
+                            path: ["given_name"]
+                        }
+                    ]
+                }]
+            }
+        }]
     }
-  }
-}).then(credential => { /* Handle response */ });
+});
+
+// Process the response
+const data = credentialResponse.data;
+
+// Send to verifier...
 ```
 
 ### 3.1.4 Scope Parameter Usage
