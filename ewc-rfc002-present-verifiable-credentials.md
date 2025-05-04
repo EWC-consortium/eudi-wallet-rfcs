@@ -169,7 +169,6 @@ Authorization request parameters are included directly in the authorization requ
 ```sh
 openid4vp://?client_id=https://example.verifier.com&response_type=vp_token&response_uri=...&response_mode=direct_post&nonce=...&presentation_definition=...&state=...
 ```
-*(EWC example adapted)*
 
 #### By reference (GET)
 
@@ -178,7 +177,6 @@ Passing by reference using `request_uri` (the default `get` method). The Wallet 
 ```sh
 openid4vp://?request_uri=https://server.example.com/presentation-request/tRf739_poiU
 ```
-*(EWC example adapted)*
 
 The Verifier hosting the `request_uri` endpoint MUST expose it via HTTPS without requiring authentication. The resolved Request Object JWT contains the actual authorization parameters (e.g., `client_id`, `nonce`, `presentation_definition`).
 
@@ -193,7 +191,6 @@ GET /authorize?
   &request_uri=https://client.example.org/request/vapof4ql2i7m41m68uep
   &request_uri_method=post HTTP/1.1
 ```
-*(Example from OIDC4VP Draft 23, Sec 5.3)*
 
 1.  The Wallet sends an HTTP POST to the `request_uri` endpoint.
 2.  The POST body is `application/x-www-form-urlencoded` and MAY contain:
@@ -253,7 +250,6 @@ openid4vp://?client_id=https://example.verifier.com
 &state=...
 &nonce=...
 ```
-*(EWC example adapted)*
 
 ### 3.1.5 Requesting Credentials
 
@@ -355,7 +351,6 @@ vp_token=eyJraWQiOiJk...Z-1_msCBcxh7XEA
 &presentation_submission={...}
 &state=475e634e-2633-4235-953d-eb879334cae7
 ```
-*(EWC example adapted)*
 
 Example Verifier Response to Wallet POST:
 
@@ -368,7 +363,6 @@ Cache-Control: no-store
   "redirect_uri": "https://verifier.example.com/ui/callback?response_code=091535f699ea575c7937fa5f0f454aee"
 }
 ```
-*(Example from OIDC4VP Draft 23, Sec 7.2)*
 
 #### Direct Post JWT (`direct_post.jwt`)
 
@@ -468,7 +462,6 @@ error=invalid_request&
 error_description=unsupported%20client_id_scheme&
 state=eyJhb...6-sVA
 ```
-*(Example from OIDC4VP Draft 23, Sec 7.2)*
 
 # 4.0 Metadata
 
