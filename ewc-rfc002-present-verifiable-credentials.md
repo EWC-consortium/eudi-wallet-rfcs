@@ -377,7 +377,7 @@ Cache-Control: no-store
 #### Digital Credentials API (`dc_api`, `dc_api.jwt`)
 
 > [!NOTE]
-> The Digital Credentials API within the scope of EWC LSP and is here to accomodate towards early tests and piloting.
+> The Digital Credentials APIs are outside the scope of the EWC LSP, but are included here to support early testing and piloting efforts.
 
 [1, Appendix A] When the request uses `response_mode=dc_api` or `dc_api.jwt`, the response is returned via the platform's DC API mechanism.
 
