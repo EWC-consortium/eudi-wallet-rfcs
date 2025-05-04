@@ -30,15 +30,15 @@
   - [3.4 Discover response](#34-discover-response)
   - [3.5 Issuer Authorization verification](#35-issuer-authorization-verification)
   - [3.6 Authorization request](#36-authorization-request)
-  - [3.6 Authorization response](#36-authorization-response)
-  - [3.7 Token request](#37-token-request)
-    - [3.7.1 Authorization code flow](#371-authorization-code-flow)
+  - [3.7 Authorization response](#37-authorization-response)
+  - [3.8 Token request](#38-token-request)
+    - [3.8.1 Authorization code flow](#381-authorization-code-flow)
     - [3.8.2 Pre-authorized code flow](#382-pre-authorized-code-flow)
   - [3.9 Token response](#39-token-response)
   - [3.10 Credential request](#310-credential-request)
   - [3.11 Credential response](#311-credential-response)
     - [3.11.1  In-time](#3111--in-time)
-    - [3.10.2 Deferred](#3102-deferred)
+    - [3.11.2 Deferred](#3112-deferred)
   - [3.12 Issuer Authorization Verification](#312-issuer-authorization-verification)
   - [3.13 Check Wallet's Conformity](#313-check-wallets-conformity)
 - [4.0 Alternate response format](#40-alternate-response-format)
@@ -209,7 +209,7 @@ Upon resolving the well-known endpoints, the **identity provider** responds with
 Once the well-known endpoint for **authorization servers** configuration is resolved, the response will follow the oauth standard or openid specification
 
 ## 3.5 Issuer Authorization verification 
-According to IA 2997 draft [6] the PID provider must be authenticated to the wallet (art 8 comma 3) using a relying party access certificate (The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)).
+According to IA 2977 draft [6] the PID provider must be authenticated to the wallet (art 3 comma 8,9) using a relying party access certificate (The same requirement is expressed in ETSI TS 119 471 [8] (REQ-EAASP-4.2.2.1-21)).
 The authentication of the PID provider is a critical step in this process because it ensures that data of the user would not be shared with unauthorized subjects, so it's mandatory that it will take place at the beginning of the process itself. This authentication is based on the RP access certificate validation performed by the wallet instance.
 
 PID Issuer must sign the metadata hash and must add the signed payload to a signed_metadata attribute together with the certificate. 
@@ -341,7 +341,7 @@ Query params for the authorisation request are given below:
 
 > Note 2: In the authorization flow, we assume that the user will be asked to authenticate in order to provide his identity and optionally personal data will be collected and stored by identity provider. 
 
-## 3.6 Authorization response
+## 3.7 Authorization response
 
 Is is not expected that PID provider requires additional data from the Holder to issue PID as PID is expected to be first credential in the wallet upon initialization. After user authentication (usually by existing notified eID mean), PID provider issues an authorization response containing a `code` parameter with a short-lived authorization code. This streamlined response facilitates a quick and secure exchange, vital for the sensitive nature of PID credential issuance:
 
@@ -353,14 +353,16 @@ Location: https://Wallet.example.org/cb?code=SplxlOBeZQQYbYS6WxSbIA
 > [!NOTE]
 > The above can be deeplinked to the EUDI wallet as well.
 
-## 3.7 Token request
+## 3.8 Token request
 
 In this step wallet trustwothiness in verified. The validation mechanism is delegated to RFC004. 
 Wallet unit attestations received within token request will be verified; Wallet provider could be validated against trust framework and the wallet instance could be verified against a  trustlist for valid and not revoked wallet versions published by the wallet provider, if available. 
 The binding ow wallet instance and WUA must be verified too, in a similar manner of which the PID is bound to the wallet key in step 3.10 Credential Request/Response.
+In order to simplify the PID issuance pilot, the validation of Wallet attestations is not mandatory. 
+
 > Note: The validation of wallet is based on wallet unit attestation (rif RFC004 (WIP) [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md]) based on IETF attestation based client identification [11].
 
-### 3.7.1 Authorization code flow
+### 3.8.1 Authorization code flow
 
 For PID credential issuance, the token request using the authorization code flow is structured as follows:
 
@@ -375,12 +377,12 @@ Authorization: Bearer czZCaGRSa3F0MzpnWDFmQmF0M2JW
 &code_verifier=dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk
 &redirect_uri=https%3A%2F%2FWallet.example.org%2Fcb
 ```
-
-In order to simplify the PID issuance pilot, the validation of Wallet attestations is not mandatory. Whether this validation could be performed, two headers must be included<br>
+Whether the wallet attestation could be performed, two headers must be included<br>
 ```http
 OAuth-Client-Attestation: <wallet-unit-attestation-jwt>
 OAuth-Client-Attestation-PoP: <wallet-unit-attestation-pop-jwt>
 ```
+
 This request is made with the following query params:
 
 <table>
@@ -423,7 +425,11 @@ Content-Type: application/x-www-form-urlencoded
 &pre-authorized_code=SplxlOBeZQQYbYS6WxSbIA
 &tx_code=493536
 ```
-
+Whether the wallet attestation could be performed, two headers must be included<br>
+```http
+OAuth-Client-Attestation: <wallet-unit-attestation-jwt>
+OAuth-Client-Attestation-PoP: <wallet-unit-attestation-pop-jwt>
+```
 This request is made with the following query params:
 
 <table>
@@ -530,7 +536,7 @@ In cases where the PID credential is immediately available, the response is stru
 This response provides the PID credential in an encoded format, ensuring that the recipient can use it straightaway. The c_nonce ensures the response's freshness, enhancing security.
 > [!NOTE] 
 > A complete example of PID with sd jwt is provided in Appendix B
-### 3.10.2 Deferred
+### 3.11.2 Deferred
 
 Should the credential not be ready for immediate issuance, the response includes an acceptance token, signaling that the PID credential's issuance is deferred:
 
@@ -611,11 +617,11 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 
 # 6.0 Reference
 
-1. OpenID Foundation (2024), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html) (Accessed: October 10, 2024).
-2. European Commission (2025) The European Digital Identity Wallet Architecture and Reference Framework (2025-02, v1.5.1)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: February 10, 2025). Detail of Annex regarding PID issuance is available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md)
+1. OpenID Foundation (2025), 'OpenID for Verifiable Credential Issuance (OID4VCI)', Available at: [https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID2.html](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID2.html) (Accessed: April 10, 2025).
+2. European Commission (2025) The European Digital Identity Wallet Architecture and Reference Framework (2025-04, v1.8.0)  [Online]. Available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/releases) (Accessed: April 10, 2025). Detail of Annex regarding PID issuance is available at: [https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md](https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework/blob/main/docs/annexes/annex-3/annex-3.01-pid-rulebook.md)
 3. OAuth 2.0 Rich Authorization Requests, Available at: [https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-rar-11) (Accessed: February 01, 2024)
 4. Proof Key for Code Exchange by OAuth Public Clients, Available at: [https://datatracker.ietf.org/doc/html/rfc7636](https://datatracker.ietf.org/doc/html/rfc7636) (Accessed: February 01, 2024)
-5. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 1.0, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-sd-jwt-vc-1_0.html) (Accessed: February 16, 2024)
+5. OpenID4VC High Assurance Interoperability Profile with SD-JWT VC - draft 1.0, Available at [https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-1_0.html](https://openid.net/specs/openid4vc-high-assurance-interoperability-profile-1_0.html) (Accessed: March 16, 2025)
 6. Implementing Act 2024/2977, Available at  [http://data.europa.eu/eli/reg_impl/2024/2977/oj](http://data.europa.eu/eli/reg_impl/2024/2977/oj)
 7. RFC004 for wallet authentication, Available at [https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc004-individual-wallet-attestation.md)
 8. ETSI 119.471 v 0.0.11 [https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf] (https://docbox.etsi.org/esi/Open/Latest_Drafts/ETSI%20DRAFT%20TS_119_471v0.0.11-public.pdf)
@@ -633,8 +639,8 @@ For a JWT there are multiple ways for resolving the public key using the `kid` h
 Additionally, it is possible to specify JWK directly in the header using `jwk` header claim.
 
 # Appendix B: PID attribute schema according to IA and ARF
-The PID scheme has been composed according to the CIR 2024/2997 Annex [6] and merging the information of the pid rulebook of the ARF [2]. Its definition reference is [https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds012-person-identification-data.json](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds012-person-identification-data.json)
-The description of each attribute is present both on ARF annex [7] and IA 2997 Annex[6] (this if of course the master reference for encoding, formats and so on).
+The PID scheme has been composed according to the CIR 2024/2977 Annex [6] and merging the information of the pid rulebook of the ARF [2]. Its definition reference is [https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds012-person-identification-data.json](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds012-person-identification-data.json)
+The description of each attribute is present both on ARF annex [7] and IA 2977 Annex[6] (this if of course the master reference for encoding, formats and so on).
 The optional attributes that are only present in the ARF PID rulebook have been marked.
 > [!NOTE]
  The json schema format is simple descriptive, and it includes both data and metadata.
@@ -652,7 +658,7 @@ The optional attributes that are only present in the ARF PID rulebook have been 
 
 # Appendix C: SD-JWT PID example
 
-This is the example of a PID formatted according to Reference implementation, and present in the PID Rulebook .
+This is the example of a PID formatted according to ARF PID Rulebook .
 
 ```json
 {
@@ -668,8 +674,8 @@ The disclosed payload
 ```json
 
 {
-    "vct": "urn:eudi:pid:de:1",
-
+    "vct": "urn:eu.europa.ec.eudi:pid:1",
+    
     "given_name": "Jean",
     "family_name": "Dupont",
     "birthdate": "1980-05-23",
