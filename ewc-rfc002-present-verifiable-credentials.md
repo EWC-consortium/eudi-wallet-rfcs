@@ -203,6 +203,9 @@ This method allows the Wallet to inform the Verifier about its capabilities *bef
 
 #### Using the Digital Credentials API
 
+> [!NOTE]
+> The Digital Credentials APIs are outside the scope of the EWC LSP, but are included here to support early testing and piloting efforts.
+
 When using the Digital Credentials API (DC API) [1, Appendix A], the request parameters are passed as a JSON object to the API call.
 
 *   The exchange protocol identifier MUST be `openid4vp`.
@@ -399,24 +402,6 @@ Cache-Control: no-store
 *   The response is an instance of the `DigitalCredential` interface.
 *   The `data` attribute of this interface contains the OIDC4VP response parameters as a JSON object.
 *   If `dc_api.jwt` was used, the `data` object will contain the `response` parameter holding the JARM JWT, otherwise it contains the parameters directly (e.g., `vp_token`, `presentation_submission`).
-
-```javascript
-// Conceptual DC API Response Handling
-navigator.credentials.get(...)
-  .then(credential => {
-    // credential is a DigitalCredential instance
-    const responseData = credential.data;
-    if (responseData.response) { // dc_api.jwt was used
-      const jarmJwt = responseData.response;
-      // Process JARM JWT
-    } else { // dc_api was used
-      const vpToken = responseData.vp_token;
-      const presentationSubmission = responseData.presentation_submission;
-      const state = responseData.state;
-      // Process response parameters directly
-    }
-  });
-```
 
 ### 3.2.3 Signed Response (JARM)
 
