@@ -911,3 +911,11 @@ Please refer to the [implementers table](https://github.com/EWC-consortium/eudi-
 # Appendix A: Public key resolution
 
 Refer [RFC012](/ewc-rfc012-trust-mechanism.md) for key resolution and trust mechanims. 
+
+For a JWT (e.g., Request Object, VP Token, ID Token), there are multiple ways for resolving the public key needed for signature verification:
+
+1.  **`jwk` Header:** The public key JWK is directly embedded in the JOSE header.
+2.  **`kid` Header:** The header contains a Key ID. The key needs to be retrieved:
+    *   If the `kid` is a DID URL (e.g., `did:example:123#key-1`), use DID resolution to obtain the verification method (public key) from the DID Document.
+    *   If the issuer provides an AS Metadata endpoint (`iss` claim), fetch the `jwks_uri` from the metadata and find the key matching the `kid` in the JWK Set.
+3.  **`x5c` Header:** The header contains the X.509 certificate chain containing the public key. Validate the chain according to PKI rules.
