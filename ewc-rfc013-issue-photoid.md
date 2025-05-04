@@ -20,30 +20,29 @@ Published under a Creative Commons Attribution 4.0 International License
 
 ## **Table of Contents**
 
-1. [Summary](#1-summary)
-2. [Motivation](#2-motivation)  
+1. [Summary](#10-summary)
+2. [Motivation](#20-motivation)  
    2.1 [The need of a photo ID](#21-the-need-of-a-photo-id)  
    2.2 [ISO/IEC TS 23220 and Photo ID Issuance Process](#22-isoiec-ts-23220-and-photo-id-issuance-process)  
    2.3 [ETSI TS 119 461 and Identity Proofing Requirements](#23-etsi-ts-119-461-and-identity-proofing-requirements)
-3. [Scope](#3-scope)  
+3. [Scope](#30-scope)  
    3.1 [Photo ID as an Electronic Attestation of Attributes](#31-photo-id-as-an-electronic-attestation-of-attributes)
-4. [Pre-requisites](#4-pre-requisites)  
+4. [Pre-requisites](#40-pre-requisites)  
    4.1 [Photo ID as a EAA](#41-photo-id-as-a-eaa)  
    4.2 [Photo ID as a QEAA](#42-photo-id-as-a-qeaa)
-5. [Issuance Flow](#5-issuance-flow)  
+5. [Issuance Flow](#50-issuance-flow)  
    5.1 [Actors](#51-actors)  
    5.2 [Flow Details](#52-flow-details)  
       5.2.1 [Setup Phase](#521-setup-phase)  
       5.2.2 [Credential Issuance Request (OpenID4VCI)](#522-credential-issuance-request-openid4vci)  
-      5.2.3 [Dynamic Credential Request – Option A: ID proofing with PID](#523-dynamic-credential-request--option-a-id-proofing-with-pid)  
-      5.2.4 [Dynamic Credential Request - Option B: Unattended remote ID Proofing using eMRTD](#524-dynamic-credential-request---option-b-unattended-remote-id-proofing-using-emrtd)  
-      5.2.5 [Credential Issuance Completion](#525-credential-issuance-completion)
+      5.2.3 [Dynamic Credential Request](#523-dynamic-credential-request)  
+      5.2.4 [Credential Issuance Completion](#525-credential-issuance-completion)
 6. [Electronic Attestation Type](#60-electronic-attestation-type)
-7. [References](#70-references)
-
+7. [Schema definition](#70-schema-definition)
+8. [References](#80-references)
 ---
 
-## **1 Summary**
+## **1.0 Summary**
 This specification defines the implementation of the "Photo ID profile" defined in Annex C of ISO/IEC TS 23220-4, in mdoc and SD-JWT. The attestation issued is derived from an **electronic Machine-Readable Travel Document (eMRTD)** by a Qualified Trust Service Provider (QTSP).
 
 The issuance process includes verifying the identity of the subject using eID means issued with a high Level of Assurance (LoA High), such as a **Personal ID (PID) credential**, or alternatively conducting an unnattended remote identity proofing using identity documents. The issuance follows the **OpenID4VC** framework, ensuring interoperability with **EUDI Wallets**.
@@ -56,11 +55,23 @@ The issuance process includes verifying the identity of the subject using eID me
 - **Enabling selective disclosure**, allowing users to share only necessary attributes (e.g., verifying age without revealing full birthdate), enhancing privacy and data minimization.
 
 
-## 2 Motivation
+## 2.0 Motivation
 
 ### 2.1 The need of a photo ID
 
-The need for a photo ID arises from the limitations of the current Personal ID (PID) issued within the European Digital Identity Wallet (EUDI Wallet) ecosystem. Specifically, PIDs may not always include a photo, which is a required attribute in certain use cases where biometric verification is necessary or a physical presence of the individual is required. Furthermore, some use cases, such as traveling, require specific documentation (e.g., passport) that includes a document number, which is not included in the PID schema. Therefore, a separate photo ID attestation is necessary to fulfill these requirements.
+The need for a photo ID arises from the limitations of the current Personal ID (PID) issued within the European Digital Identity Wallet (EUDI Wallet) ecosystem. Specifically, PIDs may not always include a photo, which is a required attribute in certain use cases where biometric verification is necessary or a physical presence of the individual is required. 
+
+Furthermore, some use cases, such as traveling, require specific documentation (e.g., passport) that includes a document number, which is not included in the PID schema. Therefore, a separate photo ID attestation is necessary to fulfill these requirements.
+
+#### 2.1.1 Use cases: registration and communication of information in hospitality and short-term accommodation in Spain (Real Decreto 933/2021)
+
+RD 933/2021 is a national regulation aimed at improving public security by obliging accommodation providers (like hotels, hostels, vacation rentals, and vehicle rentals) to collect and share data on their guests or users with law enforcement authorities.
+
+Real Decreto 933/2021 specifies that for traveller registration, the identification document provided must be an official, recognized form of ID. Accepted documents include:
+
+- Spanish National Identity Document (DNI)
+- Passport (for both Spanish citizens and foreigners)
+- Residence permits or cards (e.g., NIE or equivalent valid documentation)
 
 ### 2.2 ISO/IEC TS 23220 and Photo ID Issuance Process
 
@@ -72,7 +83,9 @@ Section 5 of ISO/IEC TS 23220-2 describes the identity data collection and confi
 
 ISO/IEC TS 23220-2 Figure 1 illustrates the issuing process of an eID document, showing how an applicant provides an application form and evidence (such as ID cards issued by an Authority) to the issuer. The issuer then collects other evidence if needed, proves the applicant's identity, binds that identity with the holder, and confirms the applicant through photo ID or by person of authority.
 
-Furthermore, Section 6 of ISO/IEC TS 23220-2 defines the data model specification that we will implement for the Photo ID, including the meta attributes for person entity (Section 6.3.1) which specifies the data elements that express attributes for describing a natural person, including crucial elements like family name, given names, date of birth, portrait, and biometric templates.
+Furthermore, Section 6 of ISO/IEC TS 23220-2 defines the data model specification that photo ID profile is based on (Section 6.3) which includes the data elements that express attributes for describing a natural person, including crucial elements like family name, given names, date of birth, portrait, and biometric templates.
+
+Finally, Annex C of ISO/IEC TS 23220-4 describes the photo ID profile, including data elements as defined in ISO/IEC 23220-2 and specific ones under the namespace `org.iso.23220.photoid.1` and `org.iso.23220.dtc.1` (see [Schema definition](#70-schema-definition)).
 
 ### 2.3 ETSI TS 119 461 and Identity Proofing Requirements
 
@@ -90,31 +103,23 @@ Section 9 of ETSI TS 119 461 defines various use cases for identity proofing, in
 
 In our implementation, the passport validation step described in Section 4.2.4 of this RFC will follow the unattended remote identity proofing requirements specified in Section 9.2.3 of ETSI TS 119 461. This includes requirements related to automated validation of digital identity documents (VAL-8.3.2 requirements) and binding to applicant by automated face biometrics (BIN-8.4.3 requirements).
 
-By adhering to both the ISO/IEC TS 23220 data model and the ETSI TS 119 461 identity proofing requirements, our Photo ID issuance process ensures a high level of interoperability within the European identity ecosystem.
+By adhering to both the ISO/IEC TS 23220 data model and the ETSI TS 119 461 identity proofing requirements, the Photo ID issuance process ensures a high level of interoperability within the European identity ecosystem.
 
-## 3 Scope
+## 3.0 Scope
 
 We consider 2 possible scenarios when issuing a Photo ID attestation:
 
-1. The **Issuer** has all the necessary data required to issue a valid photo ID credential. This **Issuance Authority** performs the required identity proofing before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification).
+1. The **Issuer**, a public sector body that is responsible for the authentic source or a public sector body that is designated by the Member State, directly issues a photo ID credential. This **Issuance Authority** performs the required identity proofing before issuing the attestation to the citizen (this might include remote identity proofing, authentication using PID or in-person verification). This would be the scenario of an Electronic attestation of attributes issued by or on behalf of a public sector body (**PuB-EAA**).
 
-2. **Issuer** requests the required data from the citizen at the moment of issuing the photo ID attestation. In this case the Issuer (e.g. a **QTSP**) performs the required identity verification before issuing the attestation to the citizen.
+2. **Issuer** requests the required data from the citizen at the moment of issuing the photo ID attestation. In this case the Issuer (e.g. a **QTSP**) performs the required identity verification before issuing the attestation to the citizen. This would be the scenario of a Qualified Electronic Attestation of Attributes (**QEAA**).
 
 In this RFC we will be focusing on the **scenario 2)**.
 
-### 3.1 Photo ID as an Electronic Attestation of Attributes
-
-Depending on the recognition needs and handling within the digital identity ecosystem, Photo ID could be issued as **Qualified** or as **non-Qualified** attestation of attributes as per eIDAS regulation.
-
-* Non-qualified attestations, on the other hand, are issued by a broader range of providers, operate under potentially diverse legal and contractual rules, and their trustworthiness and recognition depend on the specific context and agreements in place.
-* Qualified attestations are issued by accredited entities, adhere to specific legal and technical standards ensuring a high level of trust and legal validity, and are integrated within a formal trust framework with trusted lists. 
-
-## 4 Pre-requisites
+## 4.0 Pre-requisites
 
 ### 4.1 Photo ID as a EAA
 
-⚠️ ***Open question for Revieers*** 
-We would appreciate your feedback on the following: Should the Photo ID be considered for issuance as a non-qualified EAA?
+For the scope of this RFC we are considering PhotoIDs as QEAAs.
 
 ### 4.2 Photo ID as a QEAA
 
@@ -143,7 +148,7 @@ In this RFC, 2 identity proofing use cases (of the Annex C.3 - Use cases for iss
 
 
 
-## **5 Issuance Flow**
+## **5.0 Issuance Flow**
 
 The issuance process follows **OpenID4VCI** Authorisation Code flow as described in the [EWC RFC001: Issue Verifiable Credential - v2.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc001-issue-verifiable-credential.md), and extends it by implementing Dynamic Credential Request (OpenID4VCI draft 13), ensuring a standardized method for **credential issuance**.
 
@@ -193,12 +198,9 @@ sequenceDiagram
 
 | Actor | Description |
 |--------|------------|
-| **UA (User Agent)** | The user's browser used to interact with different entities. |
-| **W (EUDI Wallet)** | The user's digital wallet storing credentials. |
-| **IS (PhotoID Issuer - QTSP)** | A Qualified Trust Service Provider (QTSP) issuing the attestations. |
-| **QS (Qualified Seal - QTSP)** | The QTSP responsible for digitally sealing/verifying the issued attestations. |
-| **PS (Passport Scanner App)** | The app used to scan the user's passport and extract relevant data. |
-| **ES (External Source - Passport Scanner BE)** | A backend service for processing and validating scanned passport data. |
+| **EUDI Wallet** | The user's digital wallet storing credentials. |
+| **PhotoID Issuer - QTSP** | A Qualified Trust Service Provider (QTSP) issuing the attestations. |
+| **Passport Scanner App** | The app used to scan the user's passport and extract relevant data. |
 
 ---
 
@@ -207,11 +209,7 @@ sequenceDiagram
 ### 5.2.1. Setup Phase
 Before any attestations are issued, the **EUDI Wallet (W)** and the **PhotoID Issuer (IS)** establish a connection.
 
-1. **Wallet (W) discovers Issuer (IS)**
-   - **W → IS:** Discover Request
-   - **IS → W:** Discover Response
-
-   The Wallet and Issuer exchange metadata to establish connection endpoints and cryptographic parameters necessary for secure communication. This typically includes OpenID discovery mechanisms.
+The Wallet and Issuer exchange metadata to establish connection endpoints and cryptographic parameters necessary for secure communication. This typically includes OpenID discovery mechanisms.
 
 ### 5.2.2. Credential Issuance Request (OpenID4VCI)
 
@@ -254,9 +252,98 @@ The attestation is issued in one of the follows:
 - **SD-JWT format**, as defined in **[`ds013-photo-id.json`](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds013-photo-id.json)**.
 - **mDoc format**, as specified in **ISO/IEC TS 23220-4 Annex C (2024-08-14)**.
 
-## **7.0 References**
+## **7.0 Schema definition**
+
+### 7.1. ISO 23220 - Photo ID Data model
+
+### Credential Type / DocType for PhotoID
+
+| Format  | attribute | Description |
+|---------|------|-------------|
+| mDOC    | `DocType` | `eu.europa.ec.eudi.photoid.1` |
+| SD-JWT  |    `vct`   | `eu.europa.ec.eudi.photoid.1` |
+
+
+#### Top-Level Attributes / mDOC namespaces
+
+| SD-JWT Attribute  | mDOC namespace  | Required/Optional | Description |
+|------------|-------------------|-----------------|-------------|
+| `iso23220` |  org.iso.23220.1  | Required        | ISO/IEC 23220-1 claims |
+| `photoid`  | org.iso.23220.photoid.1  | Required        | PhotoId claims |
+| `dtc`      | org.iso.23220.dtc.1 | Optional          | DTC |
+
+#### `org.iso.23220.1` data elements
+
+| Attribute | Required/Optional | Description |
+|----------|-------------------|-------------|
+| `family_name_unicode` | Required | Unicode-encoded family name of the document holder. |
+| `given_name_unicode` | Required | Unicode-encoded first name of the document holder. |
+| `birth_date` | Required | Date of birth in ISO 8601 format. |
+| `portrait` | Required | A portrait image encoded as a Data URI. |
+| `issue_date` | Required | Date when the document was issued. |
+| `expiry_date` | Required | The date when the document expires. |
+| `issuing_authority_unicode` | Required | The authority responsible for issuing the document. |
+| `issuing_country` | Required | The country issuing the document. |
+| `sex` | Optional | Holder's sex using ISO/IEC 5218. 0=Unknown, 1=Male, 2=Female, 9=Not applicable |
+| `nationality` | Optional | Nationality (ISO 3166-1 alpha-2 or alpha-3 code). |
+| `document_number` | Optional | Unique number identifying the document. |
+| `name_at_birth` | Optional | The name of the individual at birth. |
+| `birthplace` | Optional | Place of birth (country and city/state). |
+| `portrait_capture_date` | Optional | Date when the portrait was taken. |
+| `resident_address_unicode` | Optional | Unicode-encoded resident address. |
+| `resident_city_unicode` | Optional | Unicode-encoded city of residence. |
+| `resident_postal_code` | Optional | Postal code of the residence. |
+| `resident_country` | Optional | Country of residence. |
+| `age_over_18` | Required | Indicates if the individual is over 18. |
+| `age_in_years` | Optional | The age of the individual in years. |
+| `age_birth_year` | Optional | The birth year of the individual. |
+| `family_name_latin1` | Optional | Latin1-encoded family name. |
+| `given_name_latin1` | Optional | Latin1-encoded given name. |
+
+#### `org.iso.23220.photoid.1` data elements
+
+| Attribute | Required/Optional | Description |
+|----------|-------------------|-------------|
+| `person_id` | Optional | Unique personal identifier. |
+| `birth_country` | Optional | Country where the individual was born. |
+| `birth_state` | Optional | State/province where the individual was born. |
+| `birth_city` | Optional | City where the individual was born. |
+| `administrative_number` | Optional | Audit/control number assigned by issuer. |
+| `resident_street` | Optional | Street address of residence. |
+| `resident_house_number` | Optional | House number of residence. |
+| `travel_document_number` | Optional | Travel document (e.g., passport) number. |
+| `resident_state` | Optional | State/province/district of residence. |
+
+#### `org.iso.23220.dtc.1` data elements
+
+| Attribute | Required/Optional | Description |
+|----------|-------------------|-------------|
+| `dtc_version` | Optional | Version of the DTC definition |
+| `dtc_dg1` | Required | Full MRZ data, base64-encoded string |
+| `dtc_dg2` | Required | Biometric data (e.g., facial image), base64 |
+| `dtc_dg3` | Optional | Binary data for Data Group 3 |
+| `dtc_dg4` | Optional | Binary data for Data Group 4 |
+| `dtc_dg5` | Optional | Binary data for Data Group 5 |
+| `dtc_dg6` | Optional | Binary data for Data Group 6 |
+| `dtc_dg7` | Optional | Binary data for Data Group 7 |
+| `dtc_dg8` | Optional | Binary data for Data Group 8 |
+| `dtc_dg9` | Optional | Binary data for Data Group 9 |
+| `dtc_dg10` | Optional | Binary data for Data Group 10 |
+| `dtc_dg11` | Optional | Binary data for Data Group 11 |
+| `dtc_dg12` | Optional | Binary data for Data Group 12 |
+| `dtc_dg13` | Optional | Binary data for Data Group 13 |
+| `dtc_dg14` | Optional | Binary data for Data Group 14 |
+| `dtc_dg15` | Optional | Binary data for Data Group 15 |
+| `dtc_dg16` | Optional | Binary data for Data Group 16 |
+| `dtc_sod` | Required | Security Object Document (SOD), base64 |
+| `dg_content_info` | Optional | Binary data of DTCContentInfo |
+
+
+## **8.0 References**
 1. **EUDI Wallet JSON Schema**: [`ds013-photo-id.json`](https://github.com/EWC-consortium/eudi-wallet-rulebooks-and-schemas/blob/main/data-schemas/ds013-photo-id.json)
-2. **ISO/IEC TS 23220-4 (E) Annex C** *(2024-08-14)*: Defines the **mDoc format** for Photo ID.
+2. [ISO/IEC TS 23220-2]: Data objects and encoding rules for generic eID systems
+2. [**ISO/IEC TS 23220-4 (E) Annex C** *(2024-08-14)*: Defines the specific data attributes for Photo ID.
 3. **ISO/IEC 18013-5**: Specifies **mobile driving licenses and digital identity display properties**.
 4. **OpenID4VCI**: [Draft Specification](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html).
+5. [RD 933/2021]: [Real Decreto 933/2021](https://www.boe.es/eli/es/rd/2021/10/26/933), de 26 de octubre, por el que se establecen las obligaciones de registro documental e información de las personas físicas o jurídicas que ejercen actividades de hospedaje y alquiler de vehículos a motor.
 
