@@ -185,10 +185,10 @@ The Verifier hosting the `request_uri` endpoint MUST expose it via HTTPS without
 Passing by reference using `request_uri` and `request_uri_method=post` [1].
 
 ```sh
-GET /authorize?
+POST /authorize?
   client_id=x509_san_dns:client.example.org
   &client_metadata=...
-  &request_uri=https://client.example.org/request/vapof4ql2i7m41m68uep
+  &request_uri=https://server.example.com/presentation-request/tRf739_poiU
   &request_uri_method=post HTTP/1.1
 ```
 
