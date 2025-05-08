@@ -116,7 +116,7 @@ The authorisation request is based on OAuth 2.0 [RFC6749] and includes the follo
 | `dcql_query`                  | CONDITIONAL. A JSON-encoded object representing a query using the Digital Credentials Query Language (DCQL). See OIDC4VP [1] Spec Section 6 [1].                                                                                                                                                                  |
 | `scope`                       | CONDITIONAL. OAuth 2.0 scope parameter. Can be used as an alias for a pre-defined credential request. If `openid` is included, it becomes an OpenID Connect request potentially combined with SIOPv2.                                                                                                             |
 | `response_type`               | **REQUIRED**. Must include `vp_token`. May be combined with `id_token` (for SIOPv2) or `code` (for Auth Code flow, where VP Token is returned at Token Endpoint). EWC mandates only `vp_token`.                                                                                                                   |
-| `response_mode`               | OPTIONAL. Specifies how the Authorization Response is returned. OIDC4VP defines `direct_post` and supports JARM modes like `direct_post.jwt`. The default for `response_type=vp_token` is `fragment` (not recommended by EWC). EWC RFC002 context only supports `direct_post`, `dc_api` or `dc_api.jwt`.          |
+| `response_mode`               | OPTIONAL. Specifies how the Authorization Response is returned. OIDC4VP defines `direct_post` and supports JARM modes like `direct_post.jwt`. The default for `response_type=vp_token` is `fragment` (not recommended by EWC). EWC RFC002 context only supports `direct_post`, `direct_post.jwt`, `dc_api` or `dc_api.jwt`.          |
 | `response_uri`                | **REQUIRED** when `response_mode` is `direct_post` or `direct_post.jwt`. The URL where the Wallet sends the Authorization Response via HTTP POST. MUST NOT be present if `redirect_uri` is used.                                                                                                                  |
 | `redirect_uri`                | REQUIRED for non-direct_post flows like `fragment` or when using Authorization Code flow (`response_type=code`). MUST NOT be present if `response_uri` is used. EWC context deprecates its use.                                                                                                                   |
 | `state`                       | RECOMMENDED. Opaque value used by the Verifier to maintain state between the request and response. The Wallet MUST return this value unmodified. Values MUST only contain ASCII URL safe characters.                                                                                                              |
@@ -343,7 +343,7 @@ Depending on the request and response mode, the response includes:
 The `response_mode` parameter dictates how the response parameters are sent back to the Verifier.
 
 > [!NOTE]
-> EWC RFC002 context only supports `direct_post`, `dc_api` or `dc_api.jwt`. The base OIDC4VP specification's default for `response_type=vp_token` is `fragment`, which is not used here.
+> EWC RFC002 context only supports `direct_post`, `direct_post.jwt`, `dc_api` or `dc_api.jwt`. The base OIDC4VP specification's default for `response_type=vp_token` is `fragment`, which is not used here.
 
 #### Direct Post (`direct_post`)
 
