@@ -808,8 +808,7 @@ Content-Type: application/json
 Cache-Control: no-store
 
 {
-  "c_nonce": "wKI4LT17ac15ES9bw8ac4",
-  "c_nonce_expires_in": 600
+  "c_nonce": "wKI4LT17ac15ES9bw8ac4"
 }
 ```
 
