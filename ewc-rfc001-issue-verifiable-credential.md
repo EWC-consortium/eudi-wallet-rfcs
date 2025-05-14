@@ -606,8 +606,6 @@ Standard OAuth 2.0 response ([RFC6749] Section 5.1) plus OID4VCI extensions.
 | **`expires_in`**            | RECOMMENDED                                  | Lifetime in seconds.                                                                                                                                                                                                                                                                                                                                                                         |
 | **`refresh_token`**         | OPTIONAL                                     | Used to obtain new Access Tokens.                                                                                                                                                                                                                                                                                                                                                            |
 | **`scope`**                 | OPTIONAL                                     | Scope associated with the Access Token.                                                                                                                                                                                                                                                                                                                                                      |
-| **`c_nonce`**               | OPTIONAL                                     | Cryptographic nonce to be included in the proof of possession sent to the Credential Endpoint. REQUIRED if the Issuer requires nonce-bound proofs.                                                                                                                                                                                                                                           |
-| **`c_nonce_expires_in`**    | OPTIONAL                                     | Lifetime of the `c_nonce` in seconds. REQUIRED if `c_nonce` is present.                                                                                                                                                                                                                                                                                                                      |
 | **`authorization_details`** | REQUIRED (if requested with `authz_details`) | Array of objects detailing the granted authorization. [4] For `openid_credential` type, MUST include: <br/> - `type`: `openid_credential` <br/> - `credential_configuration_id`: Identifier from metadata <br/> - `credential_identifiers` (REQUIRED): Array of unique strings identifying the specific Credential Dataset instance(s) authorized by this token. Used in Credential Request. |
 
 ### 6.6.1 Successful Response (with `authorization_details`)
@@ -621,8 +619,6 @@ Cache-Control: no-store
   "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6Ikp..sHQ",
   "token_type": "bearer",
   "expires_in": 86400,
-  "c_nonce": "tZignsnFbp",
-  "c_nonce_expires_in": 86400,
   "authorization_details": [
     {
       "type": "openid_credential",
@@ -641,9 +637,8 @@ Cache-Control: no-store
     "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI4a5k..zEF",
     "token_type": "bearer",
     "expires_in": 86400,
-    "id_token": "eyJodHRwOi8vbWF0dHIvdGVuYW50L..3Mz",
-    "c_nonce": "PAPPf3h9lexTv3WYHZx8ajTe",
-    "c_nonce_expires_in": 86400
+    "id_token": "eyJodHRwOi8vbWF0dHIvdGVuYW50L..3Mz"
+
 }
 ```
 
@@ -673,7 +668,7 @@ Standard OAuth 2.0 errors ([RFC6749] Section 5.2). OID4VCI [1] Section 6.3 provi
 If the Issuer requires proof of possession (indicated by `proof_types_supported` in metadata for the configuration), the `proof` parameter MUST be included.
 
 *   The proof MUST incorporate the **Credential Issuer Identifier** as the audience (`aud` claim in JWT proof).
-*   If a `c_nonce` was received in the Token Response, it MUST be included in the proof (`nonce` claim in JWT proof).
+*   If a `c_nonce` was retrieved from the Nonce endpoint, it MUST be included in the proof (`nonce` claim in JWT proof).
 
 ### 6.7.3 Proof Types
 
