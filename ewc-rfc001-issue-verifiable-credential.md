@@ -736,23 +736,24 @@ Response containing the issued Credential(s) or indicating deferral.
 *   **Media Type:** `application/json` (unless encrypted).
 *   **Encrypted Response:** If requested and supported, the response body is a JWE ([RFC7516]) and the media type is `application/jwt`.
 
-| Field                    | Req / Opt                                          | Description                                                                                                                                                                                                     |
-| :----------------------- | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`format`**             | OPTIONAL                                           | Credential format identifier. May be needed if multiple formats possible for the configuration. (Removed in draft 15, but might be contextually useful).                                                        |
-| **`credential`**         | REQUIRED (for immediate single issuance)           | The issued Verifiable Credential. Encoding depends on the format (e.g., JWT string, base64url string for binary like mso_mdoc). Mutually exclusive with `credentials` and `transaction_id`.                     |
-| **`credentials`**        | REQUIRED (for immediate batch issuance)            | Array of objects, each containing a `credential` field with one issued Credential instance. Used for batch issuance. Mutually exclusive with `credential` (singular) and `transaction_id`. See OID4VCI [1] 8.3. |
-| **`transaction_id`**     | REQUIRED (for deferred issuance)                   | String identifying the deferred transaction. Used in subsequent requests to the Deferred Credential Endpoint. Mutually exclusive with `credential` and `credentials`.                                           |
-| **`c_nonce`**            | OPTIONAL                                           | A new nonce for the Wallet to use in a subsequent Credential Request with the same Access Token.                                                                                                                |
-| **`c_nonce_expires_in`** | OPTIONAL (REQUIRED if `c_nonce` present)           | Lifetime of the new `c_nonce`.                                                                                                                                                                                  |
-| **`notification_id`**    | OPTIONAL (if Notification Endpoint supported/used) | String identifying this issuance transaction for later use with the Notification Endpoint.                                                                                                                      |
+| Field                    | Req / Opt                                          | Description                                                                                                                                                                                                   |
+| :----------------------- |:---------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **`format`**             | OPTIONAL                                           | Credential format identifier. May be needed if multiple formats possible for the configuration. (Removed in draft 15, but might be contextually useful).                                                      |
+| **`credentials`**        | REQUIRED (for immediate single or batch issuance)  | Array of objects, each containing a `credential` field with one issued Credential instance. Mutually exclusive with `transaction_id`. See OID4VCI [1] 8.3.                                                    |
+| **`transaction_id`**     | REQUIRED (for deferred issuance)                   | String identifying the deferred transaction. Used in subsequent requests to the Deferred Credential Endpoint. Mutually exclusive with `credential` and `credentials`.                                         |
+| **`c_nonce`**            | OPTIONAL                                           | A new nonce for the Wallet to use in a subsequent Credential Request with the same Access Token.                                                                                                              |
+| **`c_nonce_expires_in`** | OPTIONAL (REQUIRED if `c_nonce` present)           | Lifetime of the new `c_nonce`.                                                                                                                                                                                |
+| **`notification_id`**    | OPTIONAL (if Notification Endpoint supported/used) | String identifying this issuance transaction for later use with the Notification Endpoint.                                                                                                                    |
 
 ### 6.8.1 Immediate Credential Response
 
 ```json
 {
-  "credential": "eyJ0eXAiOi...F0YluuK2Cog",
-  "c_nonce": "fGFF7UkhLa",
-  "c_nonce_expires_in": 86400
+  "credentials": [
+    {
+      "credential": "LUpixVCWJk0eOt4CXQe1NXK....WZwmhmn9OQp6YxX0a2L"
+    }
+  ]
 }
 ```
 
@@ -761,9 +762,7 @@ Response containing the issued Credential(s) or indicating deferral.
 *Status Code: 202 Accepted*
 ```json
 {
-  "transaction_id": "8xLOxBtZp8",
-  "c_nonce": "wlbQc6pCJp",
-  "c_nonce_expires_in": 86400
+  "transaction_id": "8xLOxBtZp8"
 }
 ```
 
