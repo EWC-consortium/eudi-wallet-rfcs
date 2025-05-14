@@ -666,7 +666,6 @@ Standard OAuth 2.0 errors ([RFC6749] Section 5.2). OID4VCI [1] Section 6.3 provi
 | **`credential_identifier`**       | REQUIRED (if received in Token Resp.)             | String identifying the specific Credential Dataset instance from the `credential_identifiers` array in the Token Response. Mutually exclusive with `credential_configuration_id`.                                  |
 | **`credential_configuration_id`** | REQUIRED (if `credential_identifier` not used)    | String identifying the Credential Configuration from Issuer metadata. Used when `scope` was used for authorization and no `credential_identifiers` were returned. Mutually exclusive with `credential_identifier`. |
 | **`proof`**                       | OPTIONAL (but required if Issuer supports proofs) | Object containing a single proof of possession for the key material the Credential instance should be bound to. MUST contain `proof_type`.                                                                         |
-| **Format-specific parameters**    | Depends on format                                 | May include format-specific request details not covered by `credential_configuration_id` or `credential_identifier`. Examples: `format`, `credential_definition`, `vct`. Check OID4VCI [1] Appendix A.             |
 
 ### 6.7.2 Proof of Possession
 
@@ -685,7 +684,7 @@ OID4VCI [1] Section 8.2.1 defines:
 
 ### 6.7.4 Credential Request Examples
 
-**For W3C VC with credential format identifier** `jwt_vc_json`:
+**For W3C VC with credential format** `jwt_vc_json` and `proof_type` of `jwt`:
 
 ```http
 POST /credential
@@ -693,13 +692,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "jwt_vc_json",
-   "credential_definition": {
-      "type": [
-         "VerifiableCredential",
-         "VerifiablePortableDocumentA1"
-      ]
-   },
+   "credential_identifier": "urn:eu.europa.ec.eudi:pid:1", 
    "proof": {
       "proof_type": "jwt",
       "jwt":"eyJraWQiOiJkaWQ6ZX..zM"
@@ -709,7 +702,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 > [!NOTE]
 > In the above, the credentialSubject is optional and is not considered within the scope of EWC LSP.
 
-**For IETF SD-JWT VC with credential format identifier** `dc+sd-jwt`:
+**For IETF SD-JWT VC with credential format** `dc+sd-jwt` and `proof_type` of `jwt`:
 
 
 ```http
@@ -718,8 +711,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "dc+sd-jwt",
-   "vct": "SD_JWT_VC_example_in_OpenID4VCI",
+   "credential_identifier": "urn:eu.europa.ec.eudi:pid:1",
    "proof": {
       "proof_type": "jwt",
       "jwt":"eyJ0eXAiOiJvc..1WlA"
