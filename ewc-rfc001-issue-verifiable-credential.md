@@ -661,7 +661,6 @@ Standard OAuth 2.0 errors ([RFC6749] Section 5.2). OID4VCI [1] Section 6.3 provi
 | **`credential_identifier`**       | REQUIRED (if received in Token Resp.)             | String identifying the specific Credential Dataset instance from the `credential_identifiers` array in the Token Response. Mutually exclusive with `credential_configuration_id`.                                  |
 | **`credential_configuration_id`** | REQUIRED (if `credential_identifier` not used)    | String identifying the Credential Configuration from Issuer metadata. Used when `scope` was used for authorization and no `credential_identifiers` were returned. Mutually exclusive with `credential_identifier`. |
 | **`proof`**                       | OPTIONAL (but required if Issuer supports proofs) | Object containing a single proof of possession for the key material the Credential instance should be bound to. MUST contain `proof_type`.                                                                         |
-| **Format-specific parameters**    | Depends on format                                 | May include format-specific request details not covered by `credential_configuration_id` or `credential_identifier`. Examples: `format`, `credential_definition`, `vct`. Check OID4VCI [1] Appendix A.             |
 
 ### 6.7.2 Proof of Possession
 
@@ -680,7 +679,7 @@ OID4VCI [1] Section 8.2.1 defines:
 
 ### 6.7.4 Credential Request Examples
 
-**For W3C VC with credential format identifier** `jwt_vc_json`:
+**For W3C VC with credential format** `jwt_vc_json` and `proof_type` of `jwt`:
 
 ```http
 POST /credential
@@ -688,13 +687,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "jwt_vc_json",
-   "credential_definition": {
-      "type": [
-         "VerifiableCredential",
-         "VerifiablePortableDocumentA1"
-      ]
-   },
+   "credential_identifier": "urn:eu.europa.ec.eudi:pid:1", 
    "proof": {
       "proof_type": "jwt",
       "jwt":"eyJraWQiOiJkaWQ6ZX..zM"
@@ -704,7 +697,7 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
 > [!NOTE]
 > In the above, the credentialSubject is optional and is not considered within the scope of EWC LSP.
 
-**For IETF SD-JWT VC with credential format identifier** `dc+sd-jwt`:
+**For IETF SD-JWT VC with credential format** `dc+sd-jwt` and `proof_type` of `jwt`:
 
 
 ```http
@@ -713,8 +706,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "dc+sd-jwt",
-   "vct": "SD_JWT_VC_example_in_OpenID4VCI",
+   "credential_identifier": "urn:eu.europa.ec.eudi:pid:1",
    "proof": {
       "proof_type": "jwt",
       "jwt":"eyJ0eXAiOiJvc..1WlA"
@@ -734,18 +726,20 @@ Response containing the issued Credential(s) or indicating deferral.
 | Field                    | Req / Opt                                          | Description                                                                                                                                                                                                     |
 | :----------------------- | :------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`format`**             | OPTIONAL                                           | Credential format identifier. May be needed if multiple formats possible for the configuration. (Removed in draft 15, but might be contextually useful).                                                        |
-| **`credential`**         | REQUIRED (for immediate single issuance)           | The issued Verifiable Credential. Encoding depends on the format (e.g., JWT string, base64url string for binary like mso_mdoc). Mutually exclusive with `credentials` and `transaction_id`.                     |
-| **`credentials`**        | REQUIRED (for immediate batch issuance)            | Array of objects, each containing a `credential` field with one issued Credential instance. Used for batch issuance. Mutually exclusive with `credential` (singular) and `transaction_id`. See OID4VCI [1] 8.3. |
+| **`credentials`**        | REQUIRED (for immediate single or batch issuance)  | Array of objects, each containing a `credential` field with one issued Credential instance. Mutually exclusive with `transaction_id`. See OID4VCI [1] 8.3.                                                    |
 | **`transaction_id`**     | REQUIRED (for deferred issuance)                   | String identifying the deferred transaction. Used in subsequent requests to the Deferred Credential Endpoint. Mutually exclusive with `credential` and `credentials`.                                           |
 | **`notification_id`**    | OPTIONAL (if Notification Endpoint supported/used) | String identifying this issuance transaction for later use with the Notification Endpoint.                                                                                                                      |
+
 
 ### 6.8.1 Immediate Credential Response
 
 ```json
 {
-  "credential": "eyJ0eXAiOi...F0YluuK2Cog",
-  "c_nonce": "fGFF7UkhLa",
-  "c_nonce_expires_in": 86400
+  "credentials": [
+    {
+      "credential": "LUpixVCWJk0eOt4CXQe1NXK....WZwmhmn9OQp6YxX0a2L"
+    }
+  ]
 }
 ```
 
@@ -754,9 +748,7 @@ Response containing the issued Credential(s) or indicating deferral.
 *Status Code: 202 Accepted*
 ```json
 {
-  "transaction_id": "8xLOxBtZp8",
-  "c_nonce": "wlbQc6pCJp",
-  "c_nonce_expires_in": 86400
+  "transaction_id": "8xLOxBtZp8"
 }
 ```
 
