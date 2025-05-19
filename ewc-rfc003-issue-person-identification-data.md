@@ -185,6 +185,7 @@ For the pre-authorized flow, the credential response format is adapted to includ
    }
 }
 ```
+In the case that PID Issuer is capable of issuing PID in multiple formats, all these formats are listed in array credential_configuration_ids. 
 
 ## 3.3 Discover request
 
@@ -493,6 +494,8 @@ PID issuer extracts from the jwt of the proof , the public key and the nonce in 
 > [!NOTE] 
 > The nonce of the proof is handle differently in oidc4vci versions (the one used in EWC is the 13rd).
 > In version 13 before credential request, pid issuer should send a nonce to the wallet that should be signed and set in the proof. In the latest published version a nonce endpoint should be provided to the wallet to get a nonce to be signed.
+
+If there are multiple credential_configuration_ids in credential offer, wallet sends multiple credential requests for each credential_configuration_ids in credential offer with the same access token.
 
 ## 3.11 Credential response
 
