@@ -1,4 +1,4 @@
-# EWC RFC002: Present Verifiable Credentials - v2.0
+# EWC RFC002: Present Verifiable Credentials - v3.0
 
 **Authors:**
 * Mr George Padaytti (iGrant.io, Sweden)
@@ -19,7 +19,7 @@
 
 **Table of Contents**
 
-- [EWC RFC002: Present Verifiable Credentials - v2.0](#ewc-rfc002-present-verifiable-credentials---v20)
+- [EWC RFC002: Present Verifiable Credentials - v3.0](#ewc-rfc002-present-verifiable-credentials---v20)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Messages](#30-messages)
