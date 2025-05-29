@@ -11,10 +11,9 @@
 
 **Reviewers:**
 
-* Visa
-* Wordline
+* Dr Andreas Abraham (ValidatedID, Spain)
+* Mr. Sebastian Bickerle (Lissi ID, Germany)
 
-**Status:** Work in Progress
 
 ## Table of Contents
 
@@ -101,26 +100,24 @@ The issuance of a vReceipt can be conceptualised as a three-part process, as pre
 
 ```mermaid
 sequenceDiagram
-    participant Individual_Buyer as Individual (Buyer)
-    participant Individuals_Wallet as Individual's Wallet
+    participant Individual as Individual (with Wallet)
     participant Organisational_Wallet as Organisational Wallet (Merchant)
     participant PSP_Bank as PSP (Bank)
 
-    Note over Individual_Buyer, Organisational_Wallet: vReceipt Issuance Initiation
-    Individual_Buyer->>Organisational_Wallet: Request Checkout
-    Organisational_Wallet->>Individuals_Wallet: vReceipt Credential offer (QR Code)
-    Individual_Buyer->>Individuals_Wallet: Accept vReceipt Offer
-    Individuals_Wallet->>Organisational_Wallet: Request vReceipt
+    Note over Individual, Organisational_Wallet: vReceipt Issuance Initiation
+    Individual->>Organisational_Wallet: Request Checkout
+    Organisational_Wallet->>Individual: vReceipt Credential offer (QR Code)
+    Individual->>Organisational_Wallet: Request vReceipt
 
-    Note over Individual_Buyer, PSP_Bank: Payment Authorization
-    Organisational_Wallet->>Individuals_Wallet: VP Payment Request (auth object, tx_data)
-    Individual_Buyer->>Individuals_Wallet: Consent VP disclosure, tx_data signing
-    Individuals_Wallet->>Organisational_Wallet: VP, signed tx_data
+    Note over Individual, PSP_Bank: Payment Authorization
+    Organisational_Wallet->>Individual: VP Payment Request (auth object, tx_data)
+    Individual->>Organisational_Wallet: VP, signed tx_data
+
     Organisational_Wallet->>PSP_Bank: Payment Network (payment request)
 
-    Note over Individual_Buyer, PSP_Bank: Payment Confirmation and vReceipt Issuance
+    Note over Individual, PSP_Bank: Payment Confirmation and vReceipt Issuance
     PSP_Bank->>Organisational_Wallet: Payment Confirmation
-    Organisational_Wallet->>Individuals_Wallet: vReceipt
+    Organisational_Wallet->>Individual: vReceipt
 ```
 
 | **Event Name**                                     | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
