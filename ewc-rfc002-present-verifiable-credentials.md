@@ -222,22 +222,7 @@ const credentialResponse = await navigator.credentials.get({
             response_type: "vp_token",
             response_mode: "dc_api",
             nonce: "hcXlreRWiJIyjv3VPp7z5ARuwbhArLFJnYje4XZs4lg",
-            dcql_query: {
-                credentials: [{
-                    id: "pid",
-                    format: "dc+sd-jwt",
-                    meta: {
-                        vct_values: ["urn:eu.europa.ec.eudi:pid:1"]
-                    },
-                    claims: [{
-                            path: ["family_name"]
-                        },
-                        {
-                            path: ["given_name"]
-                        }
-                    ]
-                }]
-            }
+            dcql_query: ... // see sample DCQL Queries below
         }]
     }
 });
@@ -293,9 +278,85 @@ The request provides an HTTPS URL. The Wallet MUST perform an HTTP GET request t
 
 The request includes a JSON-encoded object representing a query using the Digital Credentials Query Language (DCQL) [1]. This offers a potentially more flexible way to specify credential requirements compared to Presentation Exchange.
 
-```sh
-...&dcql_query={"credentials": [{"id": "cred1", "format": "vc+sd-jwt", "claims": [...]}]}...
+The SD JWT DCQL format is defined in Annex B.4.3 of OpenID4VP [1]. Below is a simple example of a SD JWT DCQL Query.
+
+```json
+{
+  "credentials": [
+    {
+      "id": "sd_jwt_pid",
+      "format": "dc+sd-jwt",
+      "meta": {
+        "vct_values": ["urn:eu.europa.ec.eudi:pid:1"]
+      },
+      "claims": [
+        {"path": ["given_name"]},
+        {"path": ["family_name"]},
+      ]
+    }
+  ]
+}
 ```
+
+The mDoc DCQL format is defined in Annex B.3.1 of OpenID4VP [1]. Below is a simple example of an mDoc DCQL Query.
+
+```json
+{
+  "credentials": [
+    {
+      "id": "mdoc_pid",
+      "format": "mso_mdoc",
+      "meta": {
+        "doctype_value": "..." // TBD what is mdoc doctype for PID
+      },
+      "claims": [
+        {"path": ["org.iso.18013.5.1", "family_name"]},
+        {"path": ["org.iso.18013.5.1", "given_name"]},
+      ]
+    }
+  ]
+}
+```
+
+The following is an example of a request for either mDoc or SD JWT. This request would be particularly useful for this pilot program, where you may be requesting against wallets that can support either mDoc or SD-JWT.
+```json
+{
+  "credentials": [
+    {
+      "id": "sd_jwt_pid",
+      "format": "dc+sd-jwt",
+      "meta": {
+        "vct_values": ["urn:eu.europa.ec.eudi:pid:1"]
+      },
+      "claims": [
+        {"path": ["given_name"]},
+        {"path": ["family_name"]},
+      ]
+    },
+    {
+      "id": "mdoc_pid",
+      "format": "mso_mdoc",
+      "meta": {
+        "doctype_value": "..." // TBD what is mdoc doctype for PID?
+      },
+      "claims": [
+        {"path": ["org.iso.18013.5.1", "family_name"]},
+        {"path": ["org.iso.18013.5.1", "given_name"]},
+      ]
+    },
+  ],
+  "credential_sets": [
+    {
+      "purpose": "Identification",
+      "options": [
+        [ "sd_jwt_pid" ],
+        [ "mdoc_pid" ]
+      ]
+    }
+  ]
+}
+```
+Please see Annex C of OpenID4VP [1] for more complex DCQL query examples including all of the DCQL query features.
 
 #### Using `scope`
 
@@ -474,7 +535,7 @@ Verifiers can discover Wallet capabilities using OAuth 2.0 Authorization Server 
 | Metadata Parameter                      | Description                                                                                                                                                                                                                                                 |
 | :-------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `presentation_definition_uri_supported` | OPTIONAL. Boolean indicating if the Wallet supports fetching Presentation Definitions via `presentation_definition_uri`. Default `true`.                                                                                                                    |
-| `vp_formats_supported`                  | **REQUIRED**. JSON object listing supported credential formats (keys are format identifiers like `jwt_vc_json`,  `mso_mdoc`, `vc+sd-jwt`, see Appendix B [1]). Values are objects that MAY contain `alg_values_supported` and format-specific capabilities. |
+| `vp_formats_supported`                  | **REQUIRED**. JSON object listing supported credential formats (keys are format identifiers like `jwt_vc_json`,  `mso_mdoc`, `dc+sd-jwt`, see Appendix B [1]). Values are objects that MAY contain `alg_values_supported` and format-specific capabilities. |
 | `client_id_schemes_supported`           | OPTIONAL. Array of strings listing the Client ID schemes the Wallet supports (e.g., `redirect_uri`, `did`, `https`). Default is pre-registration only.                                                                                                      |
 
 Metadata can be obtained dynamically (e.g., via `.well-known/oauth-authorization-server`) or statically (pre-configured).
@@ -495,8 +556,8 @@ OIDC4VP is format-agnostic, but specific formats require particular handling, es
 
 *   **`path_nested`:** Used in `presentation_submission.descriptor_map` to specify the path *within* a VP where the actual VC can be found, along with the VC's format.
 *   **W3C Verifiable Credentials (JWT):** Defines `jwt_vc_json`, `jwt_vp_json` format identifiers. Specifies algorithm parameters.
-*   **ISO mdoc (18013-5, 23220):** Defines `mso_mdoc` format. DCQL uses `namespace` and `claim_name`. `vp_token` contains base64url-encoded `DeviceResponse`. `presentation_submission` is often not used as data is self-contained.
-*   **IETF SD-JWT VC:** Defines `vc+sd-jwt` format. Metadata includes `sd-jwt_alg_values` and `kb-jwt_alg_values`. `vp_token` contains the combined SD-JWT VC and KB-JWT.
+*   **ISO mdoc (18013-5, 23220):** Defines `mso_mdoc` format. DCQL `meta` object contains `doctype_value`. DCQL uses `namespace` and `claim_name`. `vp_token` contains base64url-encoded `DeviceResponse`. `presentation_submission` is often not used as data is self-contained. (Defined in Annex B.3 of OpenID4VP [1])
+*   **IETF SD-JWT VC:** Defines `dc+sd-jwt` format. Verifier and Client metadata includes `sd-jwt_alg_values` and `kb-jwt_alg_values` [1]. DCQL `meta` object contains `vct_values` [1]. `vp_token` contains the combined SD-JWT VC and KB-JWT. (Defined in Annex B.4 of OpenID4VP [1])
 
 # 8.0 Implementers
 
