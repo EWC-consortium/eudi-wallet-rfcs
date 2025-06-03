@@ -391,9 +391,9 @@ Contains Issuer capabilities. Key parameters defined in OID4VCI Section [1] 11.2
         "locale": "en-US"
       }
     ],
-    "org.iso.18013.5.1.mDL": {
+    "eu.europa.ec.eudi.pid.1": {
       "format": "mso_mdoc",
-      "doctype": "org.iso.18013.5.1.mDL",
+      "doctype": "eu.europa.ec.eudi.pid.1",
       "cryptographic_binding_methods_supported": [
         "cose_key"
       ],

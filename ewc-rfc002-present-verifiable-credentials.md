@@ -307,7 +307,7 @@ The mDoc DCQL format is defined in Annex B.3.1 of OpenID4VP [1]. Below is a simp
       "id": "mdoc_pid",
       "format": "mso_mdoc",
       "meta": {
-        "doctype_value": "..." // TBD what is mdoc doctype for PID
+        "doctype_value": "eu.europa.ec.eudi.pid.1"
       },
       "claims": [
         {"path": ["org.iso.18013.5.1", "family_name"]},
@@ -337,7 +337,7 @@ The following is an example of a request for either mDoc or SD JWT. This request
       "id": "mdoc_pid",
       "format": "mso_mdoc",
       "meta": {
-        "doctype_value": "..." // TBD what is mdoc doctype for PID?
+        "doctype_value": "eu.europa.ec.eudi.pid.1"
       },
       "claims": [
         {"path": ["org.iso.18013.5.1", "family_name"]},
