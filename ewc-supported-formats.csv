@@ -3,3 +3,4 @@ W3C JWT - Verifiable Credential,jwt_vc_json
 W3C JWT - Verifiable Presentation,jwt_vp_json
 Selective Disclosure - JSON Web Token Verifiable Credential,vc+sd-jwt
 Selective Disclosure - JSON Web Token Verifiable Credential,dc+sd-jwt
+mDoc - ISO/IEC 18013-5 Credential Format,mso_mdoc
