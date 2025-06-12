@@ -49,14 +49,14 @@ These are the approved RFCs identified to be specified towards wallet providers,
 | RFC-007   | [Payment Wallet Attestation - v1.1](payment-rfcs/ewc-rfc007-payment-wallet-attestation.md)                                                                         |
 | RFC-008   | [Payment Data Confirmation - v1.0](payment-rfcs/ewc-rfc008-payment-data-confirmation.md)                                                                           |
 | RFC-010   | [Document Signing using Long-Term Certificates - v1.1](ewc-rfc010-long-term-certifice-qes-creation.md)                                                             |
+| RFC-011   | [Payments with Verifiable Receipts - v1.0](ewc-rfc011-payments-with-verifiable-receipts.md)                                                                        |
 | RFC-012   | [Trust Mechanism - v1.0](ewc-rfc012-trust-mechanism.md)                                                                                                            |
-| RFC-011   | Payments with verifiable receipts                                                                                                                                  |
 | RFC-013   | [Issue PhotoID - v2.0](ewc-rfc013-issue-photoid.md)                                                                                                                |
 | RFC-100   | [EWC Interoperability Profile Towards ITB - v2.0](https://github.com/EWC-consortium/eudi-wallet-rfcs/blob/main/ewc-rfc100-interoperability-profile-towards-itb.md) |
 
 ### RFCs Under Development
 
-The EWC Phase 03 is concluding; therefore, any new ones are being removed from the list. 
+The EWC Phase 03 is concluding; therefore, any new ones are being removed from the list.
 
 ## EWC Wallet Implementers (ITB - Compliant to EWC 3.0)
 

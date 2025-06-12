@@ -1,4 +1,4 @@
-# EWC RFC011: Payments With Verifiable Receipts - v0.2
+# EWC RFC011: Payments With Verifiable Receipts - v1.0
 
 **Authors:**
 
@@ -14,10 +14,11 @@
 * Dr Andreas Abraham (ValidatedID, Spain)
 * Mr. Sebastian Bickerle (Lissi ID, Germany)
 
+**Status:** Approved
 
 ## Table of Contents
 
-- [EWC RFC011: Payments With Verifiable Receipts - v0.2](#ewc-rfc011-payments-with-verifiable-receipts---v02)
+- [EWC RFC011: Payments With Verifiable Receipts - v1.0](#ewc-rfc011-payments-with-verifiable-receipts---v10)
   - [Table of Contents](#table-of-contents)
   - [1.0 Summary](#10-summary)
   - [2.0 Motivation](#20-motivation)
@@ -31,7 +32,6 @@
   - [6.0 Data Model](#60-data-model)
   - [7.0 Conclusions](#70-conclusions)
   - [8.0 References](#80-references)
-
 
 ## 1.0 Summary
 
