@@ -375,6 +375,89 @@ Contains Issuer capabilities. Key parameters defined in OID4VCI Section [1] 11.2
   }
 }
 ```
+**Example for ISO18013-5 mdl Credential:**
+```json
+{
+  "credential_configurations_supported": {
+    "credential_issuer": "https://server.example.com",
+    "authorization_servers": [
+      "https://server.example.com"
+    ],
+    "credential_endpoint": "https://server.example.com/credential",
+    "deferred_credential_endpoint": "https://server.example.com/credential_deferred",
+    "display": [
+      {
+        "name": "Example Issuer",
+        "locale": "en-US"
+      }
+    ],
+    "eu.europa.ec.eudi.pid.1": {
+      "format": "mso_mdoc",
+      "doctype": "eu.europa.ec.eudi.pid.1",
+      "cryptographic_binding_methods_supported": [
+        "cose_key"
+      ],
+      "credential_signing_alg_values_supported": [
+        "ES256"
+      ],
+      "display": [
+        {
+          "name": "Mobile Driving License",
+          "locale": "en-US",
+          "logo": {
+            "uri": "https://state.example.org/public/mdl.png",
+            "alt_text": "state mobile driving license"
+          },
+          "background_color": "#12107c",
+          "text_color": "#FFFFFF"
+        },
+        {
+          "name": "Digitaler Führerschein",
+          "locale": "de-DE",
+          "logo": {
+            "uri": "https://state.example.org/public/mdl.png",
+            "alt_text": "digitaler Führerschein"
+          },
+          "background_color": "#12107c",
+          "text_color": "#FFFFFF"
+        }
+      ],
+      "claims": [
+        {
+          "path": ["org.iso.18013.5.1","given_name"],
+          "display": [
+            {
+              "name": "Given Name",
+              "locale": "en-US"
+            },
+            {
+              "name": "Vorname",
+              "locale": "de-DE"
+            }
+          ]
+        },
+        {
+          "path": ["org.iso.18013.5.1","family_name"],
+          "display": [
+            {
+              "name": "Surname",
+              "locale": "en-US"
+            },
+            {
+              "name": "Nachname",
+              "locale": "de-DE"
+            }
+          ]
+        },
+        {
+          "path": ["org.iso.18013.5.1","expiry_date"],
+          "mandatory": true
+        }
+      ]
+    }
+  }
+}
+```
 
 ### 6.2.3 Authorization Server Metadata Response
 
@@ -438,7 +521,7 @@ The following table describes the query parameters used in the Authorization Req
 | `code_challenge_method` | OPTIONAL    | The method used to transform the code verifier (`S256` or `plain`). Defaults to `plain`. RECOMMENDED to use `S256`, as defined in [RFC7636] [5].                                                                                                                                                                                                                                                                              | Common          |
 | `state`                 | RECOMMENDED | Opaque value used by the client to maintain state between the request and callback, providing protection against CSRF.                                                                                                                                                                                                                                                                                                        | Common          |
 | `scope`                 | REQUIRED    | Specifies the scope of access requested. Used to identify the requested Credential Configuration(s) when not using `authorization_details`. The value can be consistent across multiple credential configuration objects. The Authorization Server must uniquely identify the Credential Issuer based on the scope value. Scope values in Issuer metadata may overlap with those in the `scopes_supported` of the AS.         | Scope           |
-| `authorization_details` | REQUIRED    | JSON array containing detailed authorization requests, including `openid_credential` type objects. Used instead of `scope` for fine-grained requests. See [RFC9396] [4]. <br/><br/> **W3C VC Example:** <br/>`[{"type":"openid_credential", "credential_configuration_id":"...", "credential_definition":{...}}]` <br/><br/> **SD-JWT VC Example:** <br/> `[{"type":"openid_credential", "format":"dc+sd-jwt", "vct":"..."}]` | Authz Details   |
+| `authorization_details` | REQUIRED    | JSON array containing detailed authorization requests, including `openid_credential` type objects. Used instead of `scope` for fine-grained requests. See [RFC9396] [4]. <br/><br/> **W3C VC Example:** <br/>`[{"type":"openid_credential", "credential_configuration_id":"...", "credential_definition":{...}}]` <br/><br/> **SD-JWT VC Example:** <br/> `[{"type":"openid_credential", "format":"dc+sd-jwt", "vct":"..."}]`<br/><br/> **ISO18013-5 mDoc Example:** <br/> `[{"type":"openid_credential", "credential_configuration_id":"eu.europa.ec.eudi.pid.1", "format": "mso_mdoc", "doctype": "eu.europa.ec.eudi.pid.1", claims":"..."}]` | Authz Details   |
 | `resource`              | RECOMMENDED | URI identifying the target Resource Server (Credential Issuer). SHOULD be included if the AS protects multiple Issuers (i.e., `authorization_servers` is present in Issuer metadata). See [RFC8707].                                                                                                                                                                                                                          | Scope (usually) |
 | `issuer_state`          | OPTIONAL    | A string value representing a specific processing context at the Credential Issuer. Usually provided in a Credential Offer and passed back by the Wallet.                                                                                                                                                                                                                                                                     | Common          |
 | `wallet_issuer`         | OPTIONAL    | String containing the Wallet's identifier. RECOMMENDED for Dynamic Credential Requests.                                                                                                                                                                                                                                                                                                                                       | Common          |
@@ -710,6 +793,22 @@ Authorization: Bearer eyJ0eXAi...KTjcrDMg
    "proof": {
       "proof_type": "jwt",
       "jwt":"eyJ0eXAiOiJvc..1WlA"
+   }
+}
+```
+**For ISO18013-5 mDL with credential format** `mso_mdoc` and `proof_type` of `jwt`:
+
+
+```http
+POST /credential
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAi...KTjcrDMg
+
+{
+   "credential_configuration_id": "eu.europa.ec.eudi.pid.1",
+   "proof": {
+      "proof_type": "jwt",
+      "jwt":"eyJraWQiOiJkaWQ6...QifQ"
    }
 }
 ```
