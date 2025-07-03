@@ -1,4 +1,4 @@
-# EWC RFC 006: Organisational Wallet Unit Attestation - v0.9
+# EWC RFC 006: Organisational Wallet Unit Attestation - v1.0
 
 **Authors:**
 
@@ -13,10 +13,10 @@
 * Ms. Malin Norlander, Bolagsverket, Sweden
 * Dr. Nikos Triantafyllou (University of the Aegean, Greece)
 
-**Status:** Work in Progress
+**Status:** Approved, but not mandatory
 
 **Table of Contents**
-- [EWC RFC 006: Organisational Wallet Unit Attestation - v0.9](#ewc-rfc-006-organisational-wallet-unit-attestation---v09)
+- [EWC RFC 006: Organisational Wallet Unit Attestation - v1.0](#ewc-rfc-006-organisational-wallet-unit-attestation---v10)
 - [1.0 Summary](#10-summary)
 - [2.0 Motivation](#20-motivation)
 - [3.0 Assumptions](#30-assumptions)

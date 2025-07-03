@@ -11,7 +11,7 @@
 * Werner Folkendt, Bosch, Germany
 * Quentin Drouot, Archipels, France
 
-**Status:** Work in Progress
+**Status:** Approved
 
 **Table of contents**
 - [**EWC RFC 012: Trust Mechanism - v1.0**](#ewc-rfc-012-trust-mechanism---v10)
@@ -321,10 +321,7 @@ Each credential contains metadata in its headers (for JWT-based credentials) or 
 
 When a Wallet Unit interacts with another service provider, trust validation must take place. A service provider can be an Issuer, Wallet Unit, or a Verifier (Relying Party). This validation involves checking the certificate of the interacting service provider against the EWC Trust List (EWC TL) [9] using the steps outlined below:
 
-1. **Certificate or Key ID Matching:** When **<code>x5c</code>** is used, the service provider’s certificate is queried and matched using one of the following:
-    * X.509 Subject Key Identifier (SKI)
-    * X.509 Subject Name
-    * X.509 Certificate
+1. **Certificate or Key ID Matching:** When **<code>x5c</code>** is used, the service provider’s certificate is queried and matched using the X.509 Certificate.
 
     If a **<code>kid</code>** is used instead, it can be either a DID (Decentralised Identifier) or a non-DID. If it uses DID, the following mechanism is used to resolve the keys:
 
