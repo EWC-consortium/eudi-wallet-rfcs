@@ -551,7 +551,6 @@ According to [5] and [6] an example is provided:
       "type": "qes_authorization",
       "input_descriptor_ids": [ "PID" ],
       "signatureQualifier": "eu_eidas_qes",
-      "credentialID":"$.credentialID",
       "documentDigests": [
        {
         "hash": "sTOgwOm+474gFj0q0x1iSNspKqbcse4IeiqlDg/HWuI=",
