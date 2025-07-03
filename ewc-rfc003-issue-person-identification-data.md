@@ -39,7 +39,7 @@
   - [3.11 Credential response](#311-credential-response)
     - [3.11.1  In-time](#3111--in-time)
     - [3.11.2 Deferred](#3112-deferred)
-  - [3.12 Issuer Authorization Verification](#312-issuer-authorization-verification)
+  - [3.11 Issuer Authorization Verification](#311-issuer-authorization-verification)
   - [3.13 Check Wallet's Conformity](#313-check-wallets-conformity)
 - [4.0 Alternate response format](#40-alternate-response-format)
 - [5.0 Implementers](#50-implementers)
@@ -185,6 +185,7 @@ For the pre-authorized flow, the credential response format is adapted to includ
    }
 }
 ```
+In the case that PID Issuer is capable of issuing PID in multiple formats, all these formats are listed in array credential_configuration_ids. 
 
 ## 3.3 Discover request
 
@@ -423,7 +424,7 @@ Content-Type: application/x-www-form-urlencoded
 
 &grant_type=urn:ietf:params:oauth:grant-type:pre-authorized_code
 &pre-authorized_code=SplxlOBeZQQYbYS6WxSbIA
-&user_pin=493536
+&tx_code=493536
 ```
 Whether the wallet attestation could be performed, two headers must be included<br>
 ```http
@@ -446,7 +447,7 @@ This request is made with the following query params:
    </td>
   </tr>
   <tr>
-   <td><code>user_pin</code>
+   <td><code>tx_code</code>
    </td>
    <td>The end user pin is decided by the issuer and sent to the holder through an out-of-band process. E.g. Email, SMS
    </td>
@@ -463,9 +464,6 @@ The token response for PID credential issuance includes:
     "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI4a5k..zEF",
     "token_type": "bearer",
     "expires_in": 86400,
-    "id_token": "eyJodHRwOi8vbWF0dHIvdGVuYW50L..3Mz",
-    "c_nonce": "PAPPf3h9lexTv3WYHZx8ajTe",
-    "c_nonce_expires_in": 86400
 }
 ```
 This response grants the wallet an access token and a refresh token to be used  for the request of PID credential.
@@ -480,12 +478,13 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAi...KTjcrDMg
 
 {
-   "format": "dc+sd-jwt",
-   "vct": "urn:eu.europa.ec.eudi:pid:1",
-   "proof": {
-      "proof_type": "jwt",
-      "jwt":"eyJraW...KWjceMcr"
-   }
+  "credential_identifier": "urn:eu.europa.ec.eudi:pid:1",
+  "proofs": {
+    "jwt": [
+      "eyJ0eXAiOiJvcGVuaWQ0dmNpLXByb29mK2p3dCIsImFsZyI6IkVTMjU2IiwiandrIjp7Imt0eSI6IkVDIiwiY3J2IjoiUC0yNTYiLCJ4IjoiblVXQW9BdjNYWml0aDhFN2kxOU9kYXhPTFlGT3dNLVoyRXVNMDJUaXJUNCIsInkiOiJIc2tIVThCalVpMVU5WHFpN1N3bWo4Z3dBS18weGtjRGpFV183MVNvc0VZIn19",
+      "eyJraWQiOiJkaWQ6ZXhhbXBsZTplYmZlYjFmNzEyZWJjNmYxYzI3NmUxMmVjMjEva2V5cy8xIiwiYWxnIjoiRVMyNTYiLCJ0eXAiOiJKV1QifQ"
+    ]
+  }
 }
 ```
 
@@ -495,6 +494,8 @@ PID issuer extracts from the jwt of the proof , the public key and the nonce in 
 > [!NOTE] 
 > The nonce of the proof is handle differently in oidc4vci versions (the one used in EWC is the 13rd).
 > In version 13 before credential request, pid issuer should send a nonce to the wallet that should be signed and set in the proof. In the latest published version a nonce endpoint should be provided to the wallet to get a nonce to be signed.
+
+If there are multiple credential_configuration_ids in credential offer, wallet sends multiple credential requests for each credential_configuration_ids in credential offer with the same access token.
 
 ## 3.11 Credential response
 
@@ -524,10 +525,14 @@ In cases where the PID credential is immediately available, the response is stru
 
 ```json
 {
-  "format": "dc+sd-jwt",
-  "credential": "eyJ0eXAiOi...F0YluuK2Cog", //EncodedPIDCredential
-  "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
-  "c_nonce_expires_in": 86400
+  "credentials": [
+    {
+      "credential": "LUpixVCWJk0eOt4CXQe1NXK....WZwmhmn9OQp6YxX0a2L"
+    },
+    {
+      "credential": "YXNkZnNhZGZkamZqZGFza23....29tZTIzMjMyMzIzMjMy"
+    }
+  ]
 }
 ```
 
@@ -540,22 +545,21 @@ Should the credential not be ready for immediate issuance, the response includes
 
 ```json
 {
-  "acceptance_token": "eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ",
-  "c_nonce": "wlbQc6pCJp",
-  "c_nonce_expires_in": 86400
+  "transaction_id": "8xLOxBtZp8"
 }
 ```
-
-If the response contains `acceptance_token` field, then it indicates the credential is not yet available and will be accessible through a deferred PID credential retrieval process:
+If the response contains `transaction_id` field, then it indicates the credential is not yet available and will be accessible through a deferred PID credential retrieval process:
 
 ```http
 POST /deferred-credential
+Host: server.example.com
+Content-Type: application/json
 Authorization: BEARER eyJ0eXAiOiJKV1QiLCJhbGci..zaEhOOXcifQ
+{
+  "transaction_id": "8xLOxBtZp8"
+}
 ```
-
-The user can later use the acceptance_token to request the credential once it's ready for issuance.
-
-## 3.12 Issuer Authorization Verification
+## 3.11 Issuer Authorization Verification
 
 During this process, the wallet queries the Trust Anchor to ascertain the issuer's trust status, thereby affirming that the issuer has been vetted and is compliant with established standards and regulations governing PID. It ensures that only entities with verified trustworthiness can issue PID. Further details will be added as soon as additional requirements are derived from ongoing discussions.
 
@@ -661,10 +665,11 @@ This is the example of a PID formatted according to ARF PID Rulebook .
 
 ```json
 {
-  "format": "dc+sd-jwt",
-  "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiR....2OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
-  "c_nonce": "fGFF7UkhLa", //NonceForThisCredential
-  "c_nonce_expires_in": 86400
+   "credentials": [
+     {
+        "credential": "eyJ0eXAiOiJ2YytzZC1qd3QiLCJhbGciOiJFUzI1NiJ9.eyJfc2QiOlsiNF9QeEs3blhUY2FqYWFUWXRuVXlUVVpjTmZaX2xwLTZuX2xYeFNHa3lFSSIsIjl0ekNvNXNrN2JhN0NkZUN2akdySnlCbjhKZHY0UjJMQzhWRndPUm5ja0UiLCJBVHY0VkNzZDlSTzVxWEFFX0VLMXgwTmtjR1FBT05JSWI1OGtWRG82SU1VIiwiREdYYWl2U0FwbEtVa3Q5NmZUV29CQ3dIVUV1Rk5ROTlmMi1KeUZDV01qTSIsIk15dk1HX0IyVzltSy1Wa0FEMFJFY3BwZFJxNF9IbG5rRFlSbHNoNXBrbG8iLCJQbmg2V0JkTUREeXhkRks1YVQ4X1p3ajlpRTYyakM4RE00UDNYc0xFLUxVIiwiUWh5TDN5aXR1LURyUUZfNjhvOXoxWmJ0c0FGeWw1ckVzV0NSakxoNEpHayIsIlVudG04Sm1NT0FIYlg1TXZKcWY4LWM4Ynd2OGV6U0ZSczhjZDVEbWtOblEiXSwidmN0IjoiZXUuZXVyb3BhLmVjLmV1ZGkucGlkLjEiLCJfc2RfYWxnIjoic2hhMy0yNTYiLCJpc3MiOiJodHRwczovL2lzc3Vlci1iYWNrZW5kLmV1ZGl3LmRldiIsImNuZiI6eyJqd2siOnsia3R5IjoiUlNBIiwiZSI6IkFRQUIiLCJ1c2UiOiJzaWciLCJraWQiOiJkNzE4NWVjYS04YThiLTQwYTItOTMzYi1iM2YxNWI5YjVhMWUiLCJpYXQiOjE3MzE2Njg1OTIsIm4iOiJ6QU14YTJUeEpnM2hJS2o0V0d5RW1TTWNEbGpRY2xOVEFuZERmbHdUTnZZbldYbENBLVhCb2d6UnpBclI0OG9kSko4Yi1OcjlmNW9ZSElwOFdkTm9BczRodmUxTkJRdXdTdVlOaS1TTFZrY05ENGhuMWdWbXlpZXd6Tmx2UjZMTDdKb0JSRHRUZTNQYVI5WEFvQkhSeWNxNGpNeThyM3hMb1gwWHhtQW9jdHh0bTZyN2V5Mmg5NTF2VUVlaFZrblg1OC1STzJKanBZbDFzUldJTWJRQ19oVFlxdkgwc1ZGd1V4dG5RcWE1M2VTejlVWk81Wmt6SmE3VnM5Z1NNQ2NYUnR6OFhCWFR3V05NOWg4ZERoak56RVhScHpZcGdJYU00VElEZDRpLV9VUHM5ZU4zTFdzVWlzaVktakFTNmtFeDZhcFNHa1ppdC04YnYxSHktMldkT3cifX0sImV4cCI6MTczNDI2MDU5MywiaWF0IjoxNzMxNjY4NTkzLCJhZ2VfZXF1YWxfb3Jfb3ZlciI6eyJfc2QiOlsiaXBTODMtM1BZVWstRXN5WHpwYUMtUHRYWVNNZ1JacHFNZG5VX0JTNFd1MCJdfX0.8WXGs3v-9drBO_6DiwKZ92DrCeNyAsAIgKidFZtIzBPVj_v5idjUJimqG3GzqRgSESCo28M6WliOu31bD2QoZw~WyJVai1pTDlsX19CRktFUWp5cTJEVDRnIiwiaXNzdWFuY2VfZGF0ZSIsIjIwMjQtMTEtMTUiXQ~WyJRaEwwRXpHSXVpRlJWY0NlQ3NrY0h3IiwiZ2l2ZW5fbmFtZSIsIlR5bGVyIl0~WyJZQXlENGt2MUQ3aTJ3dUJKMl93TFNRIiwiZmFtaWx5X25hbWUiLCJOZWFsIl0~WyJIMjBSQXpDN0MzMHpqNXBYbl9QOWZRIiwiYmlydGhkYXRlIiwiMTk1NS0wNC0xMiJd~WyJMam1ManNoVUFfNzBGX2d1Mm1HWnVBIiwiMTgiLHRydWVd~WyIxMEpKTDR2ZjZrMk9kSlV2VnY0OV93IiwiZ2VuZGVyIiwxXQ~WyJBY0RWdVN2RHp1N1pvWXJvdWE4ekxRIiwiYWdlX2luX3llYXJzIiw3MF0~WyJiMEJ3Y1E5cUdxSVZQVjkzSHAtdjVBIiwiYmlydGhkYXRlX3llYXIiLCIxOTU1Il0~WyJ4QmdaX0RxS3RYR19DRllCTE01cmxRIiwiY291bnRyeSIsIkFUIl0~WyJNajJ5M0p3R29BQzhqaEIxRFc5Zjl3IiwicmVnaW9uIiwiTG93ZXIgQXVzdHJpYSJd~WyJPUHduYkpCT0s2Vll0alBMMDZWeHNRIiwibG9jYWxpdHkiLCJHZW1laW5kZSBCaWJlcmJhY2giXQ~WyJadnVxeHcxSDBwbVJMN0VWSVRDb1VnIiwicG9zdGFsX2NvZGUiLCIzMzMxIl0~WyJleDBxQmVhRXRZeU5IV2ZsaDRGTG1nIiwic3RyZWV0X2FkZHJlc3MiLCIxMDEgVHJhdW5lciJd~WyJDY0xtekpPREJGMVJKOXdyMG1NaEV3IiwiYWRkcmVzcyIseyJfc2QiOlsiLWQwTDdObFpDcnFUUW02OVloMlNrVXZnaXpqWXRydHBnNl9xRW1xdW9UYyIsIjZRdFNWV0ZWR2ZEQmhfWW14UjJYcVZYNzZmV1IxYnNiX2xWSVNNeWNQYlUiLCJXaEprR3NKcGRiVDYyM2hTR3lLVXVHM0hlMzFIbFFJY2JEdXZiZU9IendRIiwiWmVLRFo4b3NsSHZ0S3NKWDNOY2wwTHNxQlkxVkxnd2xZSGtlSTdhMExkRSIsImtnQlVrWU9ObDgydUl1MG5DRzJDaUo5bmZnZF9aZkJPd0NkMWlxUkpUblUiXX1d~", //EncodedPIDCredential
+     }
+   ]
 }
 ```
 This credential can be decoded through [https://sdjwt.info/ ]
