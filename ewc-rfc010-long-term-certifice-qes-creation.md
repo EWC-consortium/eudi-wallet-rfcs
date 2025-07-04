@@ -549,7 +549,7 @@ According to [5] and [6] an example is provided:
     "transaction_data": [
     {
       "type": "qes_authorization",
-      "input_descriptor_ids": [ "PID" ],
+      "credential_ids": [ "PID" ],
       "signatureQualifier": "eu_eidas_qes",
       "documentDigests": [
        {
