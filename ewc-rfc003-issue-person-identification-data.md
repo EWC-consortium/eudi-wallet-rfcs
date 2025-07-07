@@ -39,7 +39,7 @@
   - [3.11 Credential response](#311-credential-response)
     - [3.11.1  In-time](#3111--in-time)
     - [3.11.2 Deferred](#3112-deferred)
-  - [3.12 Issuer Authorization Verification](#312-issuer-authorization-verification)
+  - [3.11 Issuer Authorization Verification](#311-issuer-authorization-verification)
   - [3.13 Check Wallet's Conformity](#313-check-wallets-conformity)
 - [4.0 Alternate response format](#40-alternate-response-format)
 - [5.0 Implementers](#50-implementers)
