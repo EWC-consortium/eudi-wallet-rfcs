@@ -20,6 +20,9 @@
 
 This repository is created to align the implementation of digital wallets across the EWC LSP consortium wallet providers. This also ensures all wallet providers can self-test and sign off against the EWC Interoperability Test Bed (ITB).
 
+<img width="1921" height="1082" alt="image" src="https://github.com/user-attachments/assets/c7e6ce8d-5e78-49be-a992-df7b9a8ac744" />
+
+
 ## Contributing
 
 Feel free to improve the plugin and send us a pull request. If you find any problems, please create an issue in this repo. Once implemented and aligned with the RFCs, wallet providers can raise a PR.
